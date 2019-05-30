@@ -44,7 +44,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       CoreSender<GraphOutput>(name, type,
   1),
   CoreGraphMultiReceivers<GraphInputs...>(name, type,
-  1) {
+  1){
     HLOG_SELF(0, "Creating CoreGraph with graph: " << graph << " type: " << (int) type << " and name: " << name)
     this->graph_ = graph;
     this->inputsCoreNodes_ = std::make_unique<std::set<CoreMultiReceivers<GraphInputs...> *>>();
@@ -409,7 +409,6 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
           this->printCluster(printer, it->second->getCore());
         }
       }
-
 //      Print graph footer
       printer->printGraphFooter(this);
     }
@@ -529,7 +528,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       copyNodes.push_back(insideNodes.second);
     }
 
-    for (std::shared_ptr<Node> node : copyNodes) {
+    for (std::shared_ptr<Node> const &node : copyNodes) {
       CoreNode *coreNode = node->getCore();
       coreNode->copyWholeNode(this->insideNodes());
     }
