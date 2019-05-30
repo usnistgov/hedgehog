@@ -1,25 +1,40 @@
 cmake_minimum_required(VERSION 3.13)
 project(hedgehog)
 
-
 add_definitions(-D_GLIBCXX_ASSERTIONS)
 
 # Ensure C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_COMPILER_IS_CLANGXX 1)
-    set(use-libclang ON)
-endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif (MSVC)
 
-#Options
-option(LOG "Activate logging" OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# Set targets
+option(LOG "Activate logging with GLOG" OFF)
+option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
+option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
+option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
+
+
+set(LOG OFF)
+set(BUILD_DOXYGEN OFF)
+set(RUN_GTEST OFF)
+set(BUILD_MAIN ON)
+
+# Cuda
+find_package(CUDA QUIET)
+
+if (CUDA_FOUND)
+    message(STATUS "CUDA found")
+    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+    set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
+endif (CUDA_FOUND)
+
+# Targets
 if (LOG)
     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
     find_package(GLOG REQUIRED)
@@ -29,25 +44,6 @@ if (LOG)
     add_definitions(-DHLOG_ENABLED)
     add_definitions(-DHLOG_LEVEL=0)
 endif (LOG)
-
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
-# Set targets
-option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
-option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
-option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
-
-set(BUILD_DOXYGEN ON)
-set(RUN_GTEST ON)
-set(BUILD_MAIN ON)
-
-# Cuda
-find_package(CUDA REQUIRED)
-
-if (CUDA_FOUND)
-    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-    set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
-endif (CUDA_FOUND)
 
 if (RUN_GTEST)
     # Download and unpack googletest at configure time
@@ -75,13 +71,12 @@ if (RUN_GTEST)
     endif ()
     #	enable_testing()
     add_subdirectory(tests)
-
+    message(STATUS "GTEST downloaded and imported")
 endif (RUN_GTEST)
 
-
 if (BUILD_DOXYGEN)
-    find_package(Doxygen)
-
+    find_package(Doxygen REQUIRED)
+    message(STATUS "Doxygen found")
     if (DOXYGEN_FOUND)
         add_definitions(-DPROFILE)
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doxygen/hedgehog.cfg ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
@@ -92,70 +87,92 @@ if (BUILD_DOXYGEN)
                 )
 
         install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION share/doc/Hedgehog)
-
-        remove_definitions(-DPROFILE)
     endif (DOXYGEN_FOUND)
 endif (BUILD_DOXYGEN)
 
-# Add Compile flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-if (NOT MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-endif (NOT MSVC)
+if (BUILD_MAIN)
+    message(STATUS "Build main")
+    # Add Compile flags
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
-endif (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+    if (NOT MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+    endif (NOT MSVC)
 
-# Set specific flags for filesystem [experimental] library
-if (CMAKE_COMPILER_IS_CLANGXX)
-    link_directories(/usr/local/Cellar/llvm/8.0.0/lib/)
-    link_libraries(c++fs)
-elseif (NOT MSVC)
-    link_libraries(stdc++fs)
-endif (CMAKE_COMPILER_IS_CLANGXX)
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(CMAKE_COMPILER_IS_CLANGXX 1)
+        set(use-libclang ON)
+    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
+    if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
+    endif (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
 
-# Set main executable to be moved to a specific target
-add_executable(main
-        main.cpp
+    # Set specific flags for filesystem [experimental] library
+    if (CMAKE_COMPILER_IS_CLANGXX)
+        message(${CMAKE_CXX_COMPILER})
+        string(REGEX REPLACE bin.* "" CLANG_FOLDER ${CMAKE_CXX_COMPILER})
+        string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
+        message("Try to find Filesystem library in " ${FS_LIB_PATH})
+        link_directories(${FS_LIB_PATH})
+        link_libraries(c++fs)
+    elseif (NOT MSVC)
+        link_libraries(stdc++fs)
+    endif (CMAKE_COMPILER_IS_CLANGXX)
 
-        src/hedgehog.h
+    # Set main executable to be moved to a specific target
+    add_executable(main
+            main.cpp
 
-        src/api/graph.h
-        src/api/abstract_task.h
-        src/api/abstract_state_manager.h
-        src/api/abstract_state.h
+            src/hedgehog.h
 
-        src/behaviour/execute.h
-        src/core/node/core_node.h
-        src/behaviour/threadable.h
-        src/behaviour/node.h
-        src/behaviour/io/sender.h
-        src/behaviour/io/multi_receivers.h
+            src/api/graph.h
+            src/api/abstract_task.h
+            src/api/abstract_state_manager.h
+            src/api/abstract_state.h
+            src/api/memory_manager/allocator/abstract_allocator.h
+            src/api/memory_manager/allocator/abstract_cuda_allocator.h
+            src/api/memory_manager/memory/abstract_release_rule.h
+            src/api/memory_manager/receiver/managed_memory_abstract_task.h
+            src/api/execution_pipeline/execution_pipeline.h
+            src/api/execution_pipeline/execution_pipeline_rule.h
+            src/api/execution_pipeline/execution_pipeline_switch.h
+            src/api/memory_manager/memory/managed_memory.h
+            src/api/memory_manager/memory_manager/abstract_memory_manager.h
+            src/api/memory_manager/memory_manager/static_memory_manager.h
+            src/api/memory_manager/memory_manager/dynamic_memory_manager.h
 
-        src/core/scheduler/abstract_scheduler.h
-        src/core/node/core_task.h
-        src/core/node/core_graph.h
-        src/core/io/base/sender/core_sender.h
-        src/core/io/base/sender/core_notifier.h
-        src/core/io/task/sender/core_task_sender.h
-        src/core/io/task/sender/core_task_notifier.h
-        src/core/io/graph/sender/core_graph_source.h
-        src/core/io/base/receiver/core_receiver.h
-        src/core/io/base/receiver/core_multi_receivers.h
-        src/core/io/base/receiver/core_slot.h
-        src/core/io/task/receiver/core_task_receiver.h
-        src/core/io/task/receiver/core_task_multi_receivers.h
-        src/core/io/task/receiver/core_task_slot.h
-        src/core/io/graph/receiver/core_graph_multi_receivers.h
-        src/core/io/graph/receiver/core_graph_receiver.h
-        src/core/io/graph/receiver/core_graph_sink.h
+            src/behaviour/execute.h
+            src/core/node/core_node.h
+            src/behaviour/threadable.h
+            src/behaviour/node.h
+            src/behaviour/io/sender.h
+            src/behaviour/io/multi_receivers.h
 
-        src/tools/helper.h
-        src/tools/traits.h
-        src/tools/graph_signal_handler.h
-        src/tools/printers/abstract_printer.h
-        src/tools/printers/dot_printer.h
-        src/tools/scheduler/default_scheduler.h src/api/memory_manager/memory/managed_memory.h src/api/memory_manager/memory_manager/abstract_memory_manager.h src/api/memory_manager/memory_manager/static_memory_manager.h src/api/memory_manager/memory_manager/dynamic_memory_manager.h src/tools/data_structure/pool.h src/api/memory_manager/allocator/abstract_allocator.h src/api/memory_manager/allocator/abstract_cuda_allocator.h src/api/memory_manager/memory/abstract_release_rule.h src/api/memory_manager/receiver/managed_memory_abstract_task.h src/api/execution_pipeline/execution_pipeline.h src/api/execution_pipeline/execution_pipeline_rule.h src/api/execution_pipeline/execution_pipeline_switch.h)
+            src/core/scheduler/abstract_scheduler.h
+            src/core/node/core_task.h
+            src/core/node/core_graph.h
+            src/core/io/base/sender/core_sender.h
+            src/core/io/base/sender/core_notifier.h
+            src/core/io/task/sender/core_task_sender.h
+            src/core/io/task/sender/core_task_notifier.h
+            src/core/io/graph/sender/core_graph_source.h
+            src/core/io/base/receiver/core_receiver.h
+            src/core/io/base/receiver/core_multi_receivers.h
+            src/core/io/base/receiver/core_slot.h
+            src/core/io/task/receiver/core_task_receiver.h
+            src/core/io/task/receiver/core_task_multi_receivers.h
+            src/core/io/task/receiver/core_task_slot.h
+            src/core/io/graph/receiver/core_graph_multi_receivers.h
+            src/core/io/graph/receiver/core_graph_receiver.h
+            src/core/io/graph/receiver/core_graph_sink.h
+
+            src/tools/helper.h
+            src/tools/traits.h
+            src/tools/graph_signal_handler.h
+            src/tools/printers/abstract_printer.h
+            src/tools/printers/dot_printer.h
+            src/tools/scheduler/default_scheduler.h
+            src/tools/data_structure/pool.h)
+endif (BUILD_MAIN)

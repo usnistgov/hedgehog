@@ -8,6 +8,7 @@
 template<class Data>
 class AbstractReleaseRule {
  public:
+  virtual ~AbstractReleaseRule() = default;
   virtual void used() = 0;
   virtual bool canRelease() = 0;
 
