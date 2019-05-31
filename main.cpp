@@ -68,16 +68,18 @@ class floatReleaseRule : public AbstractReleaseRule<float> {
   }
 };
 
-class ItoF : public ManagedMemoryAbstractTask<float, int, float> {
+class ItoF : public AbstractManagedMemoryReceiverTask<float, int, float> {
 
  public:
   ItoF() :
-      ManagedMemoryAbstractTask(std::make_shared<StaticMemoryManager<float>>(3, 1, std::make_unique<floatAllocator>()),
-                                "IToF",
-                                10) {
+      AbstractManagedMemoryReceiverTask(std::make_shared<StaticMemoryManager<float>>(3,
+                                                                                     1,
+                                                                                     std::make_unique<floatAllocator>()),
+                                        "IToF",
+                                        10) {
   }
 
-  ItoF(ItoF *rhs) : ManagedMemoryAbstractTask(rhs) {}
+  ItoF(ItoF *rhs) : AbstractManagedMemoryReceiverTask(rhs) {}
 
   std::shared_ptr<AbstractTask<ManagedMemory<float>, int, float>> copy() override {
     return std::make_shared<ItoF>(this);

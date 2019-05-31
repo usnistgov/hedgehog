@@ -6,12 +6,12 @@
 #define HEDGEHOG_HEDGEHOG_H
 
 #include "api/graph.h"
-#include "api/abstract_task.h"
-#include "api/abstract_state.h"
-#include "api/abstract_state_manager.h"
-#include "api/memory_manager/memory/managed_memory.h"
-#include "api/memory_manager/receiver/managed_memory_abstract_task.h"
-#include "api/memory_manager/memory_manager/static_memory_manager.h"
-#include "api/memory_manager/memory_manager/dynamic_memory_manager.h"
+#include "api/task/abstract_task.h"
+#include "api/state_manager/abstract_state.h"
+#include "api/state_manager/abstract_state_manager.h"
+#include "behaviour/memory_manager/managed_memory.h"
+#include "api/task/abstract_managed_memory_receiver_task.h"
+#include "api/memory_manager/static_memory_manager.h"
+#include "api/memory_manager/dynamic_memory_manager.h"
 
 #endif //HEDGEHOG_HEDGEHOG_H

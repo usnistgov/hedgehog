@@ -8,8 +8,8 @@
 #include <memory>
 #include <mutex>
 
-#include "../memory_manager/abstract_memory_manager.h"
-#include "abstract_release_rule.h"
+#include "abstract_memory_manager.h"
+#include "../../api/memory_manager/abstract_release_rule.h"
 
 template<class Data>
 class ManagedMemory : public std::enable_shared_from_this<ManagedMemory<Data>> {

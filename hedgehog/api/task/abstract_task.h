@@ -5,12 +5,12 @@
 #ifndef HEDGEHOG_TASK_H
 #define HEDGEHOG_TASK_H
 
-#include "../behaviour/io/multi_receivers.h"
-#include "../behaviour/io/sender.h"
-#include "../behaviour/execute.h"
-#include "../behaviour/threadable.h"
-#include "../core/node/core_node.h"
-#include "../core/node/core_task.h"
+#include "../../behaviour/io/multi_receivers.h"
+#include "../../behaviour/io/sender.h"
+#include "../../behaviour/execute.h"
+#include "../../behaviour/threadable.h"
+#include "../../core/node/core_node.h"
+#include "../../core/node/core_task.h"
 
 template<class TaskOutput, class ...TaskInputs>
 class AbstractTask :

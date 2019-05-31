@@ -5,7 +5,7 @@
 #ifndef HEDGEHOG_ABSTRACT_STATE_MANAGER_H
 #define HEDGEHOG_ABSTRACT_STATE_MANAGER_H
 
-#include "abstract_task.h"
+#include "../task/abstract_task.h"
 #include "abstract_state.h"
 
 template<class StateOutput, class ...StateInputs>

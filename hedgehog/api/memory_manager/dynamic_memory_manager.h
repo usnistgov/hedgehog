@@ -5,7 +5,7 @@
 #ifndef HEDGEHOG_DYNAMIC_MEMORY_MANAGER_H
 #define HEDGEHOG_DYNAMIC_MEMORY_MANAGER_H
 
-#include "abstract_memory_manager.h"
+#include "../../behaviour/memory_manager/abstract_memory_manager.h"
 
 template<class Data>
 class DynamicMemoryManager : public AbstractMemoryManager<Data> {

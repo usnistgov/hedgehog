@@ -8,9 +8,9 @@
 #include <deque>
 #include <memory>
 
-#include "../memory/abstract_release_rule.h"
-#include "../allocator/abstract_allocator.h"
-#include "../../../tools/data_structure/pool.h"
+#include "../../api/memory_manager/abstract_release_rule.h"
+#include "abstract_allocator.h"
+#include "../../tools/data_structure/pool.h"
 
 template<class Data>
 class AbstractMemoryManager {

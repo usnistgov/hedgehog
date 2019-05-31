@@ -6,7 +6,7 @@
 #define HEDGEHOG_ABSTRACT_CUDA_ALLOCATOR_H
 
 #include <cstdio>
-#include "abstract_allocator.h"
+#include "../../behaviour/memory_manager/abstract_allocator.h"
 
 template<class Data>
 class AbstractCudaAllocator : public AbstractAllocator<Data> {
