@@ -1,7 +1,5 @@
-cmake_minimum_required(VERSION 3.13)
-project(hedgehog)
-
-add_definitions(-D_GLIBCXX_ASSERTIONS)
+cmake_minimum_required(VERSION 3.10)
+project(hedgehog VERSION 0.0.1 LANGUAGES CXX)
 
 # Ensure C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -12,6 +10,27 @@ if (MSVC)
 endif (MSVC)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# Create version.h file in api folder
+string(TIMESTAMP DATE "%m/%d/%Y")
+file(WRITE hedgehog/version.h "#include <string> \n\n")
+file(APPEND hedgehog/version.h "/// @file Version.h\n")
+file(APPEND hedgehog/version.h "/// @author Alexandre Bardakoff - Timothy Blattner\n")
+file(APPEND hedgehog/version.h "/// @date ${DATE}\n")
+file(APPEND hedgehog/version.h "/// @brief Hedgehog version\n\n")
+file(APPEND hedgehog/version.h "namespace hh{\n")
+file(APPEND hedgehog/version.h "/// \\namespace hh hedgehog namespace\n\n")
+file(APPEND hedgehog/version.h "// hedgehog version number\n")
+file(APPEND hedgehog/version.h "\tconst int MAJOR_VERSION = ${PROJECT_VERSION_MAJOR};\n")
+file(APPEND hedgehog/version.h "\tconst int MINOR_VERSION = ${PROJECT_VERSION_MINOR};\n")
+file(APPEND hedgehog/version.h "\tconst int PATCH_VERSION = ${PROJECT_VERSION_PATCH};\n")
+file(APPEND hedgehog/version.h "\tconst std::string FULL_VERSION = \"${PROJECT_VERSION}\"; // NOLINT\n")
+file(APPEND hedgehog/version.h "}\n")
+
+
+install(DIRECTORY hedgehog
+        DESTINATION include
+        COMPONENT headers)
 
 # Set targets
 option(LOG "Activate logging with GLOG" OFF)
@@ -93,6 +112,9 @@ endif (BUILD_DOXYGEN)
 
 if (BUILD_MAIN)
     message(STATUS "Build main")
+
+    add_definitions(-D_GLIBCXX_ASSERTIONS)
+
     # Add Compile flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
@@ -111,12 +133,15 @@ if (BUILD_MAIN)
 
     # Set specific flags for filesystem [experimental] library
     if (CMAKE_COMPILER_IS_CLANGXX)
-        message(${CMAKE_CXX_COMPILER})
         string(REGEX REPLACE bin.* "" CLANG_FOLDER ${CMAKE_CXX_COMPILER})
         string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
         message("Try to find Filesystem library in " ${FS_LIB_PATH})
         link_directories(${FS_LIB_PATH})
-        link_libraries(c++fs)
+        if (APPLE)
+            link_libraries(c++fs)
+        else (APPLE)
+            link_libraries(stdc++fs)
+        endif (APPLE)
     elseif (NOT MSVC)
         link_libraries(stdc++fs)
     endif (CMAKE_COMPILER_IS_CLANGXX)
@@ -125,54 +150,54 @@ if (BUILD_MAIN)
     add_executable(main
             main.cpp
 
-            src/hedgehog.h
+            hedgehog/hedgehog.h
 
-            src/api/graph.h
-            src/api/abstract_task.h
-            src/api/abstract_state_manager.h
-            src/api/abstract_state.h
-            src/api/memory_manager/allocator/abstract_allocator.h
-            src/api/memory_manager/allocator/abstract_cuda_allocator.h
-            src/api/memory_manager/memory/abstract_release_rule.h
-            src/api/memory_manager/receiver/managed_memory_abstract_task.h
-            src/api/execution_pipeline/execution_pipeline.h
-            src/api/execution_pipeline/execution_pipeline_rule.h
-            src/api/execution_pipeline/execution_pipeline_switch.h
-            src/api/memory_manager/memory/managed_memory.h
-            src/api/memory_manager/memory_manager/abstract_memory_manager.h
-            src/api/memory_manager/memory_manager/static_memory_manager.h
-            src/api/memory_manager/memory_manager/dynamic_memory_manager.h
+            hedgehog/api/graph.h
+            hedgehog/api/abstract_task.h
+            hedgehog/api/abstract_state_manager.h
+            hedgehog/api/abstract_state.h
+            hedgehog/api/memory_manager/allocator/abstract_allocator.h
+            hedgehog/api/memory_manager/allocator/abstract_cuda_allocator.h
+            hedgehog/api/memory_manager/memory/abstract_release_rule.h
+            hedgehog/api/memory_manager/receiver/managed_memory_abstract_task.h
+            hedgehog/api/execution_pipeline/execution_pipeline.h
+            hedgehog/api/execution_pipeline/execution_pipeline_rule.h
+            hedgehog/api/execution_pipeline/execution_pipeline_switch.h
+            hedgehog/api/memory_manager/memory/managed_memory.h
+            hedgehog/api/memory_manager/memory_manager/abstract_memory_manager.h
+            hedgehog/api/memory_manager/memory_manager/static_memory_manager.h
+            hedgehog/api/memory_manager/memory_manager/dynamic_memory_manager.h
 
-            src/behaviour/execute.h
-            src/core/node/core_node.h
-            src/behaviour/threadable.h
-            src/behaviour/node.h
-            src/behaviour/io/sender.h
-            src/behaviour/io/multi_receivers.h
+            hedgehog/behaviour/execute.h
+            hedgehog/core/node/core_node.h
+            hedgehog/behaviour/threadable.h
+            hedgehog/behaviour/node.h
+            hedgehog/behaviour/io/sender.h
+            hedgehog/behaviour/io/multi_receivers.h
 
-            src/core/scheduler/abstract_scheduler.h
-            src/core/node/core_task.h
-            src/core/node/core_graph.h
-            src/core/io/base/sender/core_sender.h
-            src/core/io/base/sender/core_notifier.h
-            src/core/io/task/sender/core_task_sender.h
-            src/core/io/task/sender/core_task_notifier.h
-            src/core/io/graph/sender/core_graph_source.h
-            src/core/io/base/receiver/core_receiver.h
-            src/core/io/base/receiver/core_multi_receivers.h
-            src/core/io/base/receiver/core_slot.h
-            src/core/io/task/receiver/core_task_receiver.h
-            src/core/io/task/receiver/core_task_multi_receivers.h
-            src/core/io/task/receiver/core_task_slot.h
-            src/core/io/graph/receiver/core_graph_multi_receivers.h
-            src/core/io/graph/receiver/core_graph_receiver.h
-            src/core/io/graph/receiver/core_graph_sink.h
+            hedgehog/core/scheduler/abstract_scheduler.h
+            hedgehog/core/node/core_task.h
+            hedgehog/core/node/core_graph.h
+            hedgehog/core/io/base/sender/core_sender.h
+            hedgehog/core/io/base/sender/core_notifier.h
+            hedgehog/core/io/task/sender/core_task_sender.h
+            hedgehog/core/io/task/sender/core_task_notifier.h
+            hedgehog/core/io/graph/sender/core_graph_source.h
+            hedgehog/core/io/base/receiver/core_receiver.h
+            hedgehog/core/io/base/receiver/core_multi_receivers.h
+            hedgehog/core/io/base/receiver/core_slot.h
+            hedgehog/core/io/task/receiver/core_task_receiver.h
+            hedgehog/core/io/task/receiver/core_task_multi_receivers.h
+            hedgehog/core/io/task/receiver/core_task_slot.h
+            hedgehog/core/io/graph/receiver/core_graph_multi_receivers.h
+            hedgehog/core/io/graph/receiver/core_graph_receiver.h
+            hedgehog/core/io/graph/receiver/core_graph_sink.h
 
-            src/tools/helper.h
-            src/tools/traits.h
-            src/tools/graph_signal_handler.h
-            src/tools/printers/abstract_printer.h
-            src/tools/printers/dot_printer.h
-            src/tools/scheduler/default_scheduler.h
-            src/tools/data_structure/pool.h)
+            hedgehog/tools/helper.h
+            hedgehog/tools/traits.h
+            hedgehog/tools/graph_signal_handler.h
+            hedgehog/tools/printers/abstract_printer.h
+            hedgehog/tools/printers/dot_printer.h
+            hedgehog/tools/scheduler/default_scheduler.h
+            hedgehog/tools/data_structure/pool.h)
 endif (BUILD_MAIN)

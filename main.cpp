@@ -1,8 +1,8 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "src/hedgehog.h"
-#include "src/tools/graph_signal_handler.h"
+#include "hedgehog/hedgehog.h"
+#include "hedgehog/tools/graph_signal_handler.h"
 //
 //using namespace std;
 //

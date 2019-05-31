@@ -73,7 +73,7 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
 
   bool automaticStart() const { return automaticStart_; }
 
-  virtual Node *getNode() override {
+  Node *getNode() override {
     return task_;
   }
 

@@ -32,13 +32,13 @@ class AbstractMemoryManager {
           std::is_base_of_v<AbstractAllocator<Data>, UserDefinedAllocator>
       >::type
   >
-  AbstractMemoryManager(size_t poolSize, std::unique_ptr<UserDefinedAllocator> allocator) {
+  AbstractMemoryManager(size_t poolSize, std::unique_ptr<UserDefinedAllocator> allocator)
+      : conditionVariable_(std::make_unique<std::condition_variable>()) {
     this->pool_ = std::make_unique<Pool<Data>>(poolSize, this);
     this->allocator_ =
         std::unique_ptr<AbstractAllocator<Data>>{
             static_cast<AbstractAllocator<Data> *>(std::move(allocator).release())};
     this->allocator_->initialize();
-    this->conditionVariable_ = std::make_unique<std::condition_variable>();
   }
 
   virtual ~AbstractMemoryManager() {

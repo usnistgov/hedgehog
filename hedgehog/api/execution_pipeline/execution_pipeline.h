@@ -28,7 +28,7 @@ class ExecutionPipeline : public ExecutionPipelineSwitch<GraphInputs...>{
 
   }
 
-  void wakeUp() override final {
+  void wakeUp() final {
     CoreTaskSlot::wakeUp();
   }
 

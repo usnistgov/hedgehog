@@ -15,68 +15,23 @@
 #  Hedgehog_FOUND
 #
 
+
+# Ensure C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
+endif (MSVC)
+
+# Try to found Hedgehog
 SET(Hedgehog_FOUND ON)
 
-include(CheckCXXCompilerFlag)
-
-#set(CMAKE_CXX_STANDARD 11)
-#set(CMAKE_XX_STANDARD_REQUIRED ON)
-
-CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
-
-#TODO: Need to define variables for clang
-
-if (COMPILER_SUPPORTS_CXX17)
-    set(Hedgehog_CXX_FLAGS "${Hedgehog_CXX_FLAGS} -std=c++17")
-    if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
-        set(Hedgehog_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
-    endif (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
-
-    if (CMAKE_COMPILER_IS_CLANGXX)
-        list(APPEND Hedgehog_LIBRARIES "c++fs")
-    elseif (NOT MSVC)
-        list(APPEND Hedgehog_LIBRARIES "stdc++fs")
-    endif ()
-
-else ()
-    if (Hedgehog_FIND_REQUIRED)
-        message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler for Hedgehog.")
-    else ()
-        message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler for Hedgehog.")
-    endif ()
-
-    SET(Hedgehog_FOUND OFF)
-endif ()
-
-
-find_package(Threads QUIET)
-
-if (Threads_FOUND)
-    if (CMAKE_USE_PTHREADS_INIT)
-        list(APPEND Hedgehog_CXX_FLAGS "-pthread")
-    endif (CMAKE_USE_PTHREADS_INIT)
-
-    list(APPEND Hedgehog_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
-
-    #set(Hedgehog_LIBRARIES "${Hedgehog_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}")
-
-else ()
-    if (Hedgehog_FIND_REQUIRED)
-        message(FATAL_ERROR "Unable to find threads. Hedgehog must have a threading library i.e. pthreads.")
-    else ()
-        message(STATUS "Unable to find threads. Hedgehog must have a threading library i.e. pthreads.")
-    endif ()
-    SET(Hedgehog_FOUND OFF)
-endif ()
-
-
 FIND_PATH(Hedgehog_INCLUDE_DIR hedgehog.h
-        /usr/include
-        /usr/local/include
+        /usr/include/hedgehog
+        /usr/local/include/hedgehog
         )
 
-
-#    Check include files
 IF (NOT Hedgehog_INCLUDE_DIR)
     SET(Hedgehog_FOUND OFF)
     MESSAGE(STATUS "Could not find Hedgehog includes. Hedgehog_FOUND now off")
@@ -88,8 +43,54 @@ IF (Hedgehog_FOUND)
     ENDIF (NOT Hedgehog_FIND_QUIETLY)
 ELSE (Hedgehog_FOUND)
     IF (Hedgehog_FIND_REQUIRED)
-        MESSAGE(FATAL_ERROR "Could not find Hedgehog header files")
+        MESSAGE(FATAL_ERROR "Could not find Hedgehog header files, please set the cmake variable Hedgehog_INCLUDE_DIR")
     ENDIF (Hedgehog_FIND_REQUIRED)
 ENDIF (Hedgehog_FOUND)
 
 MARK_AS_ADVANCED(Hedgehog_INCLUDE_DIR)
+
+# Find other libraries
+find_package(Threads QUIET)
+if (Threads_FOUND)
+    if (CMAKE_USE_PTHREADS_INIT)
+        list(APPEND Hedgehog_CXX_FLAGS "-pthread")
+    endif (CMAKE_USE_PTHREADS_INIT)
+    list(APPEND Hedgehog_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+else ()
+    if (Hedgehog_FIND_REQUIRED)
+        message(FATAL_ERROR "Unable to find threads. Hedgehog must have a threading library i.e. pthreads.")
+    else ()
+        message(STATUS "Unable to find threads. Hedgehog must have a threading library i.e. pthreads.")
+    endif ()
+    SET(Hedgehog_FOUND OFF)
+endif ()
+
+find_package(CUDA QUIET)
+if (CUDA_FOUND)
+    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+    set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
+else ()
+    message(STATUS "Unable to find CUDA. All features won't be available.")
+endif ()
+
+# Set Hedgehog_CXX_FLAGS
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(CMAKE_COMPILER_IS_CLANGXX 1)
+    set(use-libclang ON)
+endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+# Set specific flags for filesystem [experimental] library
+if (CMAKE_COMPILER_IS_CLANGXX)
+    string(REGEX REPLACE bin.* "" CLANG_FOLDER ${CMAKE_CXX_COMPILER})
+    string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
+    link_directories(${FS_LIB_PATH})
+    if (APPLE)
+        list(APPEND Hedgehog_LIBRARIES "c++fs")
+    else (APPLE)
+        list(APPEND Hedgehog_LIBRARIES "stdc++fs")
+    endif (APPLE)
+elseif (NOT MSVC)
+    list(APPEND Hedgehog_LIBRARIES "stdc++fs")
+endif (CMAKE_COMPILER_IS_CLANGXX)
+
+

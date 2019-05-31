@@ -70,7 +70,7 @@ class CoreNode {
     numberThreads_ = numberThreads == 0 ? 1 : numberThreads;
     HLOG_SELF(0,
               "Creating CoreNode with type: " << (int) type << ", name: " << name << " and number of Threads: "
-                                              << this->numberThreads_);
+                                              << this->numberThreads_)
     this->insideNodes_ = std::make_shared<std::multimap<std::string, std::shared_ptr<Node>>>();
   }
 
