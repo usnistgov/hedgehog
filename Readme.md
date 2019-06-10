@@ -1,4 +1,4 @@
-# Hedgehog (hh) : A library to generate hybrid pipeline workflow systems
+# Hedgehog (hh) : A library to generate heterogeneous pipeline workflow systems
 
 The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
 
