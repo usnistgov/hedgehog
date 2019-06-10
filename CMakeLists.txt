@@ -146,10 +146,7 @@ if (BUILD_MAIN)
         link_libraries(stdc++fs)
     endif (CMAKE_COMPILER_IS_CLANGXX)
 
-    # Set main executable to be moved to a specific target
-    add_executable(main
-            main.cpp
-
+    set(HEDGEHOG_SRC
             hedgehog/hedgehog.h
 
             hedgehog/api/graph.h
@@ -164,6 +161,7 @@ if (BUILD_MAIN)
             hedgehog/api/memory_manager/abstract_release_rule.h
             hedgehog/api/memory_manager/static_memory_manager.h
             hedgehog/api/memory_manager/dynamic_memory_manager.h
+            hedgehog/api/cuda/abstract_cuda_task.h
 
             hedgehog/behaviour/execute.h
             hedgehog/behaviour/threadable.h
@@ -200,5 +198,17 @@ if (BUILD_MAIN)
             hedgehog/tools/printers/dot_printer.h
             hedgehog/tools/scheduler/default_scheduler.h
             hedgehog/tools/data_structure/pool.h
+
             )
+
+    # Set main executable to be moved to a specific target
+    if (CUDA_FOUND)
+        message(STATUS "CUDA enabled")
+        cuda_add_executable(main
+                main.cpp ${HEDGEHOG_SRC})
+        target_compile_definitions(main PUBLIC -DHH_USE_CUDA)
+    else()
+    add_executable(main
+            main.cpp ${HEDGEHOG_SRC})
+    endif()
 endif (BUILD_MAIN)

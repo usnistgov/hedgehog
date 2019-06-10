@@ -13,5 +13,6 @@
 #include "api/task/abstract_managed_memory_receiver_task.h"
 #include "api/memory_manager/static_memory_manager.h"
 #include "api/memory_manager/dynamic_memory_manager.h"
+#include "api/cuda/abstract_cuda_task.h"
 
 #endif //HEDGEHOG_HEDGEHOG_H
