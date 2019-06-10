@@ -24,7 +24,7 @@ class AbstractTask :
 
  public:
   AbstractTask() {
-    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>("Task", 0, NodeType::Task, this, false);
+    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>("Task", 1, NodeType::Task, this, false);
   }
 
   explicit AbstractTask(std::string_view const &name, size_t numberThreads = 1, bool automaticStart = false) {
