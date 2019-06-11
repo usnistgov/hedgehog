@@ -21,8 +21,8 @@
 //      start,
 //      finish;
 //  Graph<float, int, double, char> g("GraphOutput");
-//  auto task = std::make_shared<ItoF>();
-//  g.input(task);
+//  auto queue = std::make_shared<ItoF>();
+//  g.input(queue);
 ////  g.output(task);
 //
 //  g.executeGraph();

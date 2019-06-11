@@ -154,9 +154,7 @@ if (BUILD_MAIN)
             hedgehog/api/task/abstract_managed_memory_receiver_task.h
             hedgehog/api/state_manager/abstract_state_manager.h
             hedgehog/api/state_manager/abstract_state.h
-            hedgehog/api/execution_pipeline/execution_pipeline.h
-            hedgehog/api/execution_pipeline/execution_pipeline_rule.h
-            hedgehog/api/execution_pipeline/execution_pipeline_switch.h
+            hedgehog/api/execution_pipeline/abstract_execution_pipeline.h
             hedgehog/api/memory_manager/abstract_cuda_allocator.h
             hedgehog/api/memory_manager/abstract_release_rule.h
             hedgehog/api/memory_manager/static_memory_manager.h
@@ -180,11 +178,11 @@ if (BUILD_MAIN)
             hedgehog/core/io/base/receiver/core_receiver.h
             hedgehog/core/io/base/receiver/core_multi_receivers.h
             hedgehog/core/io/base/receiver/core_slot.h
-            hedgehog/core/io/task/sender/core_task_sender.h
-            hedgehog/core/io/task/sender/core_task_notifier.h
-            hedgehog/core/io/task/receiver/core_task_receiver.h
-            hedgehog/core/io/task/receiver/core_task_multi_receivers.h
-            hedgehog/core/io/task/receiver/core_task_slot.h
+            hedgehog/core/io/queue/sender/core_queue_sender.h
+            hedgehog/core/io/queue/sender/core_queue_notifier.h
+            hedgehog/core/io/queue/receiver/core_queue_receiver.h
+            hedgehog/core/io/queue/receiver/core_queue_multi_receivers.h
+            hedgehog/core/io/queue/receiver/core_queue_slot.h
             hedgehog/core/io/graph/receiver/core_graph_multi_receivers.h
             hedgehog/core/io/graph/receiver/core_graph_receiver.h
             hedgehog/core/io/graph/receiver/core_graph_sink.h
@@ -199,7 +197,11 @@ if (BUILD_MAIN)
             hedgehog/tools/scheduler/default_scheduler.h
             hedgehog/tools/data_structure/pool.h
 
-            )
+            hedgehog/behaviour/switch_rule.h
+            hedgehog/core/node/execution_pipeline/core_switch_sender.h
+            hedgehog/core/node/execution_pipeline/core_switch.h
+
+            hedgehog/core/behaviour/core_execute.h hedgehog/core/defaults/default_task_core.h hedgehog/api/state_manager/default_state_manager.h hedgehog/core/node/execution_pipeline/core_execution_pipeline.h hedgehog/core/defaults/default_execution_pipeline.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)
@@ -207,8 +209,9 @@ if (BUILD_MAIN)
         cuda_add_executable(main
                 main.cpp ${HEDGEHOG_SRC})
         target_compile_definitions(main PUBLIC -DHH_USE_CUDA)
-    else()
-    add_executable(main
-            main.cpp ${HEDGEHOG_SRC})
-    endif()
+    else ()
+        add_executable(main
+                main.cpp ${HEDGEHOG_SRC})
+    endif ()
+
 endif (BUILD_MAIN)

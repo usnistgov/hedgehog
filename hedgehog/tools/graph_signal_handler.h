@@ -32,14 +32,17 @@ class GraphSignalHandler {
       signalHandled_ = true;
 
       std::cout << "signal caught: " << signum << ": (" << signalString << ")" << std::endl;
-      graphInstance_->createDotFile(signalString + "-graph-output.dot");
+      graphInstance_->createDotFile(signalString + "-coreGraph-output.dot",
+                                    ColorScheme::EXECUTION,
+                                    StructureOptions::ALL,
+                                    DebugOptions::DEBUG);
 //      exit(signum);
     }
   }
 
   static void atExit() {
     if (graphInstance_)
-      graphInstance_->createDotFile("Exit-graph-output.dot");
+      graphInstance_->createDotFile("Exit-coreGraph-output.dot");
   }
 
   /**

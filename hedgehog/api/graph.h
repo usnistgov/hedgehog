@@ -27,7 +27,7 @@ class Graph :
   static_assert(HedgehogTraits::isUnique<GraphInputs...>, "A Graph can't accept multiple inputs with the same type.");
  private:
   CoreGraph<GraphOutput, GraphInputs...> *graphCore_ = nullptr;
-  std::set<std::shared_ptr<Node>> insideNodes_ = {};
+//  std::set<std::shared_ptr<Node>> insideNodes_ = {};
 
  public:
   Graph() {
@@ -42,8 +42,8 @@ class Graph :
     delete graphCore_;
   };
 
-  CoreNode *getCore() final { return this->graphCore_; }
-  std::string_view const &name() { return this->getCore()->name(); }
+  CoreNode *core() final { return this->graphCore_; }
+  std::string_view const &name() { return this->core()->name(); }
 
   template<
       class UserDefinedMultiReceiver,
@@ -55,7 +55,7 @@ class Graph :
   >
   void input(std::shared_ptr<UserDefinedMultiReceiver> input) {
     assert(input != nullptr);
-    this->insideNodes_.insert(input);
+//    this->insideNodes_.insert(input);
     this->graphCore_->input(std::dynamic_pointer_cast<MultiReceivers<GraphInputs...>>(input));
   }
 
@@ -69,7 +69,7 @@ class Graph :
   >
   void output(std::shared_ptr<UserDefinedSender> output) {
     assert(output != nullptr);
-    this->insideNodes_.insert(output);
+//    this->insideNodes_.insert(output);
     this->graphCore_->output(std::static_pointer_cast<Sender<GraphOutput>>(output));
   }
 
@@ -92,8 +92,8 @@ class Graph :
     static_assert(HedgehogTraits::contains_v<Output, Inputs>,
                   "The given io cannot be linked to this io: No common types.");
 
-    this->insideNodes_.insert(from);
-    this->insideNodes_.insert(to);
+//    this->insideNodes_.insert(from);
+//    this->insideNodes_.insert(to);
     this->graphCore_->addEdge(std::static_pointer_cast<Sender<Output>>(from),
                               std::static_pointer_cast<typename Helper::HelperMultiReceiversType<Inputs>::type>(to));
   }
@@ -126,7 +126,7 @@ class Graph :
                      ColorScheme colorScheme = ColorScheme::NONE,
                      StructureOptions structureOptions = StructureOptions::NONE,
                      DebugOptions debugOption = DebugOptions::NONE) {
-    auto core = this->getCore();
+    auto core = this->core();
     DotPrinter printer(std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core);
     core->visit(&printer);
   }

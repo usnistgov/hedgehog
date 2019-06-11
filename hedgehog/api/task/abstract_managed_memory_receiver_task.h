@@ -27,13 +27,12 @@ class AbstractManagedMemoryReceiverTask : public AbstractTask<ManagedMemory<Task
     this->memoryManager_ = mm;
   }
 
-  explicit AbstractManagedMemoryReceiverTask(AbstractManagedMemoryReceiverTask<TaskOutput, TaskInputs...> *rhs)
-      : AbstractTask<ManagedMemory<TaskOutput>, TaskInputs...>(rhs), memoryManager_(rhs->memoryManager_) {}
+
 
   std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &memoryManager() const { return memoryManager_; }
 
-  std::shared_ptr<ManagedMemory<TaskOutput>> getMemory(std::unique_ptr<AbstractReleaseRule<TaskOutput>> rr,
-                                                       int numberElements) {
+  std::shared_ptr<ManagedMemory<TaskOutput>>
+  getMemory(std::unique_ptr<AbstractReleaseRule<TaskOutput>> rr, int numberElements) {
     assert(memoryManager_ != nullptr);
     return this->memoryManager_->getMemory(std::move(rr), numberElements);
   }
