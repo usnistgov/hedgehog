@@ -7,9 +7,11 @@
 
 #include <deque>
 #include <memory>
+#include <condition_variable>
 
-#include "../../api/memory_manager/abstract_release_rule.h"
 #include "abstract_allocator.h"
+#include "../../api/memory_manager/abstract_release_rule.h"
+#include "../../tools/logger.h"
 #include "../../tools/data_structure/pool.h"
 
 template<class Data>

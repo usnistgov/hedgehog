@@ -5,15 +5,15 @@
 #ifndef HEDGEHOG_CORE_GRAPH_SINK_H
 #define HEDGEHOG_CORE_GRAPH_SINK_H
 
-#include "../../task/receiver/core_task_multi_receivers.h"
+#include "../../queue/receiver/core_queue_multi_receivers.h"
 template<class GraphOutput>
-class CoreGraphSink : public CoreTaskMultiReceivers<GraphOutput>, public Node {
+class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput>, public Node {
 
  public:
   CoreGraphSink() : CoreNode("Sink", NodeType::Sink, 1),
                     CoreSlot("Sink", NodeType::Sink, 1),
                     CoreReceiver<GraphOutput>("Sink", NodeType::Sink, 1),
-                    CoreTaskMultiReceivers<GraphOutput>("Sink", NodeType::Sink, 1) {
+                    CoreQueueMultiReceivers<GraphOutput>("Sink", NodeType::Sink, 1) {
     HLOG_SELF(0, "Creating CoreGraphSink")
   }
 
@@ -30,7 +30,7 @@ class CoreGraphSink : public CoreTaskMultiReceivers<GraphOutput>, public Node {
     }
   }
 
-  Node *getNode() override {
+  Node *node() override {
     return this;
   }
 
@@ -46,7 +46,7 @@ class CoreGraphSink : public CoreTaskMultiReceivers<GraphOutput>, public Node {
     HLOG_SELF(2, "Notification received")
   }
 
-  CoreNode *getCore() override {
+  CoreNode *core() override {
     return this;
   }
 };

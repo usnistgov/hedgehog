@@ -8,42 +8,46 @@
 #include <variant>
 
 #include "../../tools/traits.h"
-#include "../io/task/receiver/core_task_multi_receivers.h"
-#include "../io/task/sender/core_task_sender.h"
+#include "../io/queue/receiver/core_queue_multi_receivers.h"
+#include "../io/queue/sender/core_queue_sender.h"
 
 #include "../../behaviour/execute.h"
 
 #include "../../tools/logger.h"
+#include "../behaviour/core_execute.h"
 
 template<class TaskOutput, class ...TaskInputs>
 class AbstractTask;
 
 template<class TaskOutput, class ...TaskInputs>
-class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceivers<TaskInputs...> {
+class CoreTask
+    : public virtual CoreQueueSender<TaskOutput>,
+      public CoreQueueMultiReceivers<TaskInputs...>,
+      public virtual CoreExecute<TaskInputs> ... {
  private:
   AbstractTask<TaskOutput, TaskInputs...> *task_ = nullptr;
   bool automaticStart_ = false;
  public:
-  TaskCore(std::string_view const &name,
+  CoreTask(std::string_view const &name,
            size_t const numberThreads,
            NodeType const type,
            AbstractTask<TaskOutput, TaskInputs...> *task,
            bool automaticStart) : CoreNode(name, type, numberThreads),
                                   CoreNotifier(name, type, numberThreads),
+                                  CoreQueueSender<TaskOutput>(name, type, numberThreads),
                                   CoreSlot(name, type, numberThreads),
                                   CoreReceiver<TaskInputs>(name, type, numberThreads)...,
-  CoreTaskSender<TaskOutput>(name, type, numberThreads),
-  CoreTaskMultiReceivers<TaskInputs...>(name, type, numberThreads), task_(task),
+  CoreQueueMultiReceivers<TaskInputs...>(name, type, numberThreads), task_(task),
   automaticStart_(automaticStart) {
-    HLOG_SELF(0, "Creating TaskCore with task: " << task << " type: " << (int) type << " and name: " << name)
+    HLOG_SELF(0, "Creating CoreTask with task: " << task << " type: " << (int) type << " and name: " << name)
   }
 
-  TaskCore(TaskCore<TaskOutput, TaskInputs...> *const rhs, AbstractTask<TaskOutput, TaskInputs...> *task) :
+  CoreTask(CoreTask<TaskOutput, TaskInputs...> *const rhs, AbstractTask<TaskOutput, TaskInputs...> *task) :
       CoreNode(rhs->name(), rhs->type(), rhs->numberThreads()),
       CoreNotifier(rhs->name(), rhs->type(), rhs->numberThreads()),
       CoreSlot(rhs->name(), rhs->type(), rhs->numberThreads()),
       CoreReceiver<TaskInputs>(rhs->name(), rhs->type(), rhs->numberThreads())...,
-      CoreTaskSender<TaskOutput>(rhs
+      CoreQueueSender<TaskOutput>(rhs
   ->
   name(), rhs
   ->
@@ -51,7 +55,7 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
   ->
   numberThreads()
   ),
-  CoreTaskMultiReceivers<TaskInputs...>(rhs
+  CoreQueueMultiReceivers<TaskInputs...>(rhs
   ->
   name(), rhs
   ->
@@ -66,14 +70,14 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
                                             << rhs->id() << ")")
   }
 
-  ~TaskCore() override {
-    HLOG_SELF(0, "Destructing TaskCore")
+  ~CoreTask() override {
+    HLOG_SELF(0, "Destructing CoreTask")
     task_ = nullptr;
   }
 
   bool automaticStart() const { return automaticStart_; }
 
-  Node *getNode() override {
+  Node *node() override {
     return task_;
   }
 
@@ -85,14 +89,14 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
     HLOG_SELF(1, "Visit")
     if (printer->hasNotBeenVisited(this)) {
       printer->printNodeInformation(this);
-      CoreTaskSender < TaskOutput > ::visit(printer);
+      CoreQueueSender < TaskOutput > ::visit(printer);
     }
   }
 
-  void copyInnerStructure(TaskCore<TaskOutput, TaskInputs...> *rhs) {
+  void copyInnerStructure(CoreTask<TaskOutput, TaskInputs...> *rhs) {
     HLOG_SELF(0, "Duplicate CoreTask information from " << rhs->name() << "(" << rhs->id() << ")")
-    CoreTaskMultiReceivers < TaskInputs...>::copyInnerStructure(rhs);
-    CoreTaskSender < TaskOutput > ::copyInnerStructure(rhs);
+    CoreQueueMultiReceivers < TaskInputs...>::copyInnerStructure(rhs);
+    CoreQueueSender < TaskOutput > ::copyInnerStructure(rhs);
     CoreNode::copyInnerStructure(rhs);
   }
 
@@ -105,22 +109,22 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
 
       if (sharedAbstractTaskCopy == nullptr) {
         HLOG_SELF(0,
-                  "A copy for the task " << name
-                                         << " has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.")
-        std::cerr << "A copy for the task " << name
+                  "A copy for the queue " << name
+                                          << " has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.")
+        std::cerr << "A copy for the queue " << name
                   << " has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object."
                   << std::endl;
         exit(42);
       }
 
-      auto coreCopy = dynamic_cast<TaskCore<TaskOutput, TaskInputs...> *>(sharedAbstractTaskCopy->getCore());
+      auto coreCopy = dynamic_cast<CoreTask<TaskOutput, TaskInputs...> *>(sharedAbstractTaskCopy->core());
 
       if (coreCopy == nullptr) {
         HLOG_SELF(0,
-                  "A copy for the task " << name
-                                         << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized task constructor.")
-        std::cerr << "A copy for the task " << name
-                  << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized task constructor."
+                  "A copy for the queue " << name
+                                          << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized queue constructor.")
+        std::cerr << "A copy for the queue " << name
+                  << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized queue constructor."
                   << std::endl;
         exit(42);
       }
@@ -142,38 +146,35 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
 
     HLOG_SELF(2, "Run")
 
-    this->task()->initialize();
-
+    this->preRun();
     if (this->automaticStart()) {
       start = std::chrono::high_resolution_clock::now();
-      (this->executionCall<TaskInputs>(nullptr), ...);
+      (static_cast<CoreExecute<TaskInputs> *>(this)->callExecute(nullptr), ...);
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
     }
 
     while (!this->callCanTerminate(true)) {
-
       start = std::chrono::high_resolution_clock::now();
       this->waitForNotification();
       finish = std::chrono::high_resolution_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
-
       start = std::chrono::high_resolution_clock::now();
       (this->operateReceivers<TaskInputs>(), ...);
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
     }
+    this->postRun();
 
-    this->task_->shutdown();
-    this->notifyAllTerminated();
     this->wakeUp();
   }
+ public:
 
   bool callCanTerminate(bool lock) {
     if (lock) {
       this->lockUniqueMutex();
     }
-    bool result = this->task()->canTerminate() && this->receiversEmpty();
+    bool result = this->node()->canTerminate() && this->receiversEmpty();
     HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
     if (lock) {
       this->unlockUniqueMutex();
@@ -191,11 +192,12 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
   void operateReceivers() {
     HLOG_SELF(2, "Operate receivers")
     this->lockUniqueMutex();
-    auto receiver = static_cast<CoreTaskReceiver<Input> *>(this);
+    auto receiver = static_cast<CoreQueueReceiver<Input> *>(this);
     if (!receiver->receiverEmpty()) {
       std::shared_ptr<Input> data = receiver->popFront();
       this->unlockUniqueMutex();
-      this->executionCall<Input>(data);
+      static_cast<CoreExecute<Input> *>(this)->callExecute(data);
+//      this->executionCall<Input>(data);
     } else {
       this->unlockUniqueMutex();
     }
@@ -216,7 +218,6 @@ class TaskCore : public CoreTaskSender<TaskOutput>, public CoreTaskMultiReceiver
                                             return !receiversEmpty || callCanTerminate;
                                           });
     HLOG_SELF(2, "Notification received")
-
   }
 
 };

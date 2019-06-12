@@ -2,8 +2,8 @@
 // Created by anb22 on 5/8/19.
 //
 
-#ifndef HEDGEHOG_CORE_TASK_SLOT_H
-#define HEDGEHOG_CORE_TASK_SLOT_H
+#ifndef HEDGEHOG_CORE_QUEUE_SLOT_H
+#define HEDGEHOG_CORE_QUEUE_SLOT_H
 #include <mutex>
 #include <condition_variable>
 #include <memory>
@@ -12,23 +12,23 @@
 
 #include "../../base/receiver/core_slot.h"
 
-class CoreTaskSlot : public virtual CoreSlot {
+class CoreQueueSlot : public virtual CoreSlot {
  private:
   std::shared_ptr<std::mutex> slotMutex_ = nullptr;
   std::shared_ptr<std::condition_variable> notifyConditionVariable_ = nullptr;
   std::shared_ptr<std::set<CoreNotifier *>> notifiers_ = nullptr;
 
  public:
-  CoreTaskSlot(std::string_view const &name, NodeType const type, size_t const numberThreads) : CoreSlot(name,
-                                                                                                         type,
-                                                                                                         numberThreads) {
-    HLOG_SELF(0, "Creating CoreTaskSlot with type: " << (int) type << " and name: " << name)
+  CoreQueueSlot(std::string_view const &name, NodeType const type, size_t const numberThreads) : CoreSlot(name,
+                                                                                                          type,
+                                                                                                          numberThreads) {
+    HLOG_SELF(0, "Creating CoreQueueSlot with type: " << (int) type << " and name: " << name)
     notifiers_ = std::make_shared<std::set<CoreNotifier *>>();
     slotMutex_ = std::make_shared<std::mutex>();
     notifyConditionVariable_ = std::make_shared<std::condition_variable>();
   }
 
-  ~CoreTaskSlot() override { HLOG_SELF(0, "Destructing CoreTaskSlot") }
+  ~CoreQueueSlot() override {HLOG_SELF(0, "Destructing CoreQueueSlot")}
 
   size_t numberInputNodes() const final { return this->notifiers()->size(); }
 
@@ -66,8 +66,8 @@ class CoreTaskSlot : public virtual CoreSlot {
     return slotMutex_;
   }
 
-  void copyInnerStructure(CoreTaskSlot *rhs) {
-    HLOG_SELF(0, "Duplicate CoreTaskSlot information from " << rhs->name() << "(" << rhs->id() << ")")
+  void copyInnerStructure(CoreQueueSlot *rhs) {
+    HLOG_SELF(0, "Duplicate CoreQueueSlot information from " << rhs->name() << "(" << rhs->id() << ")")
     this->slotMutex_ = rhs->slotMutex_;
     this->notifyConditionVariable_ = rhs->notifyConditionVariable_;
     this->notifiers_ = rhs->notifiers_;
@@ -78,4 +78,4 @@ class CoreTaskSlot : public virtual CoreSlot {
 
 };
 
-#endif //HEDGEHOG_CORE_TASK_SLOT_H
+#endif //HEDGEHOG_CORE_QUEUE_SLOT_H

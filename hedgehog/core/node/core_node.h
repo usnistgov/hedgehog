@@ -12,12 +12,13 @@
 #include <set>
 #include <chrono>
 #include <cmath>
+#include <vector>
 
 #include "../../tools/printers/abstract_printer.h"
 #include "../../behaviour/node.h"
 #include "../../tools/logger.h"
 
-enum struct NodeType { Graph, Task, StateManager, Sink, Source };
+enum struct NodeType { Graph, Task, StateManager, Sink, Source, ExecutionPipeline, Switch };
 
 class CoreNode {
  private:
@@ -76,9 +77,9 @@ class CoreNode {
 
   virtual ~CoreNode() {
     HLOG_SELF(0, "Destructing CoreNode")
-  };
+  }
 
-  std::string id() const {
+  virtual std::string id() const {
     std::stringstream ss{};
     ss << "x" << this;
     return ss.str();
@@ -102,13 +103,15 @@ class CoreNode {
   bool isInCluster() const { return this->isInCluster_; }
   bool isActive() const { return isActive_; }
 
+  virtual size_t deviceId() { return this->belongingNode()->deviceId(); }
+
   std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const { return creationTimeStamp_; }
   virtual std::chrono::duration<uint64_t,
-                                std::micro> const maxExecutionTime() const { return this->executionDuration_; };
+                                std::micro> const maxExecutionTime() const { return this->executionDuration_; }
   virtual std::chrono::duration<uint64_t,
-                                std::micro> const minExecutionTime() const { return this->executionDuration_; };
-  virtual std::chrono::duration<uint64_t, std::micro> const maxWaitTime() const { return this->waitDuration_; };
-  virtual std::chrono::duration<uint64_t, std::micro> const minWaitTime() const { return this->waitDuration_; };
+                                std::micro> const minExecutionTime() const { return this->executionDuration_; }
+  virtual std::chrono::duration<uint64_t, std::micro> const maxWaitTime() const { return this->waitDuration_; }
+  virtual std::chrono::duration<uint64_t, std::micro> const minWaitTime() const { return this->waitDuration_; }
   std::chrono::duration<uint64_t, std::micro> const &creationDuration() const { return creationDuration_; }
 
   std::chrono::duration<uint64_t, std::micro> const meanExecTimeCluster() const {
@@ -117,12 +120,12 @@ class CoreNode {
       std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        sum += it->second->getCore()->executionTime();
+        sum += it->second->core()->executionTime();
       }
       ret = sum / this->numberThreads();
     }
     return ret;
-  };
+  }
 
   std::chrono::duration<uint64_t, std::micro> const meanWaitTimeCluster() const {
     auto ret = this->waitTime();
@@ -130,12 +133,12 @@ class CoreNode {
       std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        sum += it->second->getCore()->waitTime();
+        sum += it->second->core()->waitTime();
       }
       ret = sum / this->numberThreads();
     }
     return ret;
-  };
+  }
 
   uint64_t stdvExecTimeCluster() const {
     auto ret = 0;
@@ -143,13 +146,13 @@ class CoreNode {
       auto mean = this->meanExecTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->getCore()->executionTime().count(), 2) - meanSquare;
+        ret += (uint64_t) std::pow(it->second->core()->executionTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
       ret = (uint64_t) std::sqrt(ret);
     }
     return ret;
-  };
+  }
 
   uint64_t stdvWaitTimeCluster() const {
     auto ret = 0;
@@ -157,20 +160,20 @@ class CoreNode {
       auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->getCore()->waitTime().count(), 2) - meanSquare;
+        ret += (uint64_t) std::pow(it->second->core()->waitTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
       ret = (uint64_t) std::sqrt(ret);
     }
     return ret;
-  };
+  }
 
   size_t numberActiveThreadInCluster() const {
     size_t ret = 0;
     if (this->isInCluster()) {
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += it->second->getCore()->isActive() ? 1 : 0;
+        ret += it->second->core()->isActive() ? 1 : 0;
       }
     } else {
       ret = this->isActive() ? 1 : 0;
@@ -193,8 +196,10 @@ class CoreNode {
     creationDuration_ = creationDuration;
   }
 
+  virtual void preRun() {}
   virtual void run() {}
-  virtual Node *getNode() = 0;
+  virtual void postRun() {}
+  virtual Node *node() = 0;
   virtual void copyWholeNode(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &insideNodesGraph) = 0;
   virtual void visit(AbstractPrinter *printer) = 0;
 
@@ -229,13 +234,13 @@ class CoreNode {
 
  protected:
   void addUniqueInsideNode(const std::shared_ptr<Node> &node) {
-    HLOG_SELF(0, "Add InsideNode " << node->getCore()->name() << "(" << node->getCore()->id() << ")")
-    if (insideNodes_->find(node->getCore()->id()) == insideNodes_->end()) {
-      node->getCore()->belongingNode(this);
-      node->getCore()->hasBeenRegistered(true);
-      insideNodes_->insert({node->getCore()->id(), node});
+    HLOG_SELF(0, "Add InsideNode " << node->core()->name() << "(" << node->core()->id() << ")")
+    if (insideNodes_->find(node->core()->id()) == insideNodes_->end()) {
+      node->core()->belongingNode(this);
+      node->core()->hasBeenRegistered(true);
+      insideNodes_->insert({node->core()->id(), node});
     }
-  };
+  }
 
   void incrementWaitDuration(std::chrono::duration<uint64_t, std::micro> const &wait) {
     this->waitDuration_ += wait;

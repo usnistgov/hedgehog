@@ -1,5 +1,6 @@
-//
-// Created by hobbsubuntu on 6/9/19.
+////
+//// Created by tjb3 on 6/9/19.
+////
 //
 
 #ifndef HEDGEHOG_ABSTRACT_CUDA_TASK_H

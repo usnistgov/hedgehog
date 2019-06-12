@@ -36,7 +36,7 @@ class CoreReceiver : public virtual CoreNode {
   virtual size_t queueSize() { return 0; }
   virtual size_t maxQueueSize() { return 0; }
 
-  virtual std::set<CoreReceiver<Input> *> getReceivers() = 0;
+  virtual std::set<CoreReceiver<Input> *> receivers() = 0;
 };
 
 #endif //HEDGEHOG_CORE_RECEIVER_H

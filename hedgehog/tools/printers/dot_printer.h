@@ -107,20 +107,20 @@ class DotPrinter : public AbstractPrinter {
     if (!node->isInside()) {
       outputFile_
           << "digraph " << node->id()
-          << " {\ngraph [label=\"" << node->name()
+          << " {\nlabel=\"" << node->name()
           << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
           << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
-          << "\",fontsize=25, penwidth=5, ranksep=0, labelloc=top, labeljust=left]\n";
+          << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left;\n";
     } else {
-      outputFile_ << "subgraph cluster" << node->id() << " {\ngraph [label=\"" << node->name()
-                  << "\",fontsize=25, penwidth=5]\n";
+      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name()
+                  << "\"; fontsize=25; penwidth=5;\n";
     }
     outputFile_.flush();
   }
 
   void printClusterHeader(std::string const &clusterId) final {
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
-      outputFile_ << "subgraph cluster" << clusterId << " {\n graph [label=\"\", penwidth=1, style=dotted ]\n";
+      outputFile_ << "subgraph cluster" << clusterId << " {\nlabel=\"\"; penwidth=1; style=dotted;\n";
       outputFile_ << "box" << clusterId << "[label=\"\", shape=egg];\n";
       outputFile_.flush();
     }
@@ -150,6 +150,45 @@ class DotPrinter : public AbstractPrinter {
       ss << "box" << clusterNode->clusterId() << " -> " << clusterNode->id();
       edges_.push_back(ss.str());
     }
+  }
+
+  void printExecutionPipelineHeader(std::string_view const &executionPipelineName,
+                                    std::string const &executionPipelineId,
+                                    std::string const &switchId) override {
+    outputFile_ << "subgraph cluster" << executionPipelineId << " {\n"
+                << "label=\"" << executionPipelineName
+                << "\"; penwidth=1; style=dotted; style=filled; fillcolor=gray80;\n "
+                << switchId << "[label=\"\", shape=triangle];\n";
+    outputFile_.flush();
+  }
+
+  void printExecutionPipelineFooter() override {
+    outputFile_ << "}\n";
+    outputFile_.flush();
+  }
+
+  void printEdgeSwitchGraphs(CoreNode *to,
+                             std::string const &idSwitch,
+                             std::string_view const &edgeType) override {
+    std::ostringstream
+        oss;
+
+    std::string
+        idDest,
+        headLabel;
+
+    if (to->isInCluster()) {
+      for (auto &dest: to->ids()) {
+
+        idDest = "box" + dest.second;
+        oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\""
+            //        << ",ltail=cluster" << source.second
+            << "];";
+      }
+    } else {
+      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << "];";
+    }
+    edges_.push_back(oss.str());
   }
 
   void printEdge(CoreNode const *from,
@@ -198,7 +237,8 @@ class DotPrinter : public AbstractPrinter {
                 << tailLabel << "];";
           }
         } else {
-          oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << headLabel << "];";
+          oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << headLabel
+              << "];";
         }
       }
       edges_.push_back(oss.str());
@@ -267,6 +307,7 @@ class DotPrinter : public AbstractPrinter {
         break;
       case NodeType::Sink:ss << "\",shape=point";
         break;
+      default:break;
     }
     ss << "];\n";
 

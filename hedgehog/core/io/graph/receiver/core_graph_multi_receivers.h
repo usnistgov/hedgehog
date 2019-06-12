@@ -26,7 +26,7 @@ class CoreGraphMultiReceivers
 
   bool receiversEmpty() final { return (static_cast<CoreGraphReceiver<GraphInputs> *>(this)->receiverEmpty() && ...); }
 
-  Node *getNode() override {
+  Node *node() override {
     HLOG_SELF(0, __PRETTY_FUNCTION__)
     exit(42);
   }

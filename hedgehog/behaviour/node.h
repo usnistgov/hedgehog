@@ -5,12 +5,14 @@
 #ifndef HEDGEHOG_NODE_H
 #define HEDGEHOG_NODE_H
 
+#include <memory>
 class CoreNode;
 
 class Node {
  public:
   virtual ~Node() = default;
-  virtual CoreNode *getCore() = 0;
+  virtual CoreNode *core() = 0;
+  virtual bool canTerminate() { return true; };
 };
 
 #endif //HEDGEHOG_NODE_H

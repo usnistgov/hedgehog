@@ -69,20 +69,19 @@ class CoreGraphReceiver : public virtual CoreReceiver<GraphInput> {
     return result;
   }
 
-  std::set<CoreReceiver<GraphInput> *> getReceivers() override {
+  std::set<CoreReceiver<GraphInput> *> receivers() override {
     std::set<CoreReceiver<GraphInput> *> receivers{};
     std::set<CoreReceiver<GraphInput> *> tempReceivers;
     for (CoreReceiver<GraphInput> *receiver : *(this->graphReceiverInputs_)) {
-      tempReceivers = receiver->getReceivers();
+      tempReceivers = receiver->receivers();
       receivers.insert(tempReceivers.begin(), tempReceivers.end());
     }
     return receivers;
   }
 
-  Node *getNode() override {
-    HLOG_SELF(0, "Internal error CoreGraphReceiver getNode")
+  Node *node() override {
+    HLOG_SELF(0, "Internal error CoreGraphReceiver node")
     exit(42);
-
   }
 };
 

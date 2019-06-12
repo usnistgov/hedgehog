@@ -10,7 +10,7 @@
 #include "../../behaviour/execute.h"
 #include "../../behaviour/threadable.h"
 #include "../../core/node/core_node.h"
-#include "../../core/node/core_task.h"
+#include "../../core/defaults/default_task_core.h"
 
 template<class TaskOutput, class ...TaskInputs>
 class AbstractTask :
@@ -19,28 +19,29 @@ class AbstractTask :
     public virtual Node,
     public Execute<TaskInputs> ... {
  protected:
-  TaskCore<TaskOutput, TaskInputs...> *taskCore_ = nullptr;
+  CoreTask<TaskOutput, TaskInputs...> *taskCore_ = nullptr;
   using Execute<TaskInputs>::execute...;
 
  public:
   AbstractTask() {
-    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>("Task", 1, NodeType::Task, this, false);
+    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>("Task", 1, NodeType::Task, this, false);
   }
 
   explicit AbstractTask(std::string_view const &name, size_t numberThreads = 1, bool automaticStart = false) {
-    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>(name, numberThreads, NodeType::Task, this, automaticStart);
+    taskCore_ =
+        new DefaultTaskCore<TaskOutput, TaskInputs...>(name, numberThreads, NodeType::Task, this, automaticStart);
   }
 
   AbstractTask(std::string_view const name, size_t numberThreads, NodeType nodeType, bool automaticStart) {
-    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>(name, numberThreads, nodeType, this, automaticStart);
+    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>(name, numberThreads, nodeType, this, automaticStart);
   }
 
   explicit AbstractTask(AbstractTask<TaskOutput, TaskInputs ...> *rhs) {
-    taskCore_ = new TaskCore<TaskOutput, TaskInputs...>(rhs->name(),
-                                                        rhs->numberThreads(),
-                                                        rhs->nodeType(),
-                                                        this,
-                                                        rhs->automaticStart());
+    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>(rhs->name(),
+                                                               rhs->numberThreads(),
+                                                               rhs->nodeType(),
+                                                               this,
+                                                               rhs->automaticStart());
   }
 
   ~AbstractTask() override { delete taskCore_; }
@@ -50,12 +51,12 @@ class AbstractTask :
   bool automaticStart() { return this->taskCore_->automaticStart(); }
   NodeType nodeType() { return this->taskCore_->type(); }
 
-  CoreNode *getCore() final { return taskCore_; }
+  CoreNode *core() final { return taskCore_; }
 
   virtual std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> copy() { return nullptr; }
   virtual void initialize() {}
-  virtual bool canTerminate() {
-    return !dynamic_cast<TaskCore<TaskOutput, TaskInputs...> *>(this->getCore())->hasNotifierConnected();
+  bool canTerminate() override {
+    return !this->taskCore_->hasNotifierConnected();
   }
 
   virtual void shutdown() {}

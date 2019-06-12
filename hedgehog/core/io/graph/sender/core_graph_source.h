@@ -5,34 +5,34 @@
 #ifndef HEDGEHOG_CORE_GRAPH_SOURCE_H
 #define HEDGEHOG_CORE_GRAPH_SOURCE_H
 
-#include "../../task/sender/core_task_notifier.h"
+#include "../../queue/sender/core_queue_sender.h"
 #include "../../../../behaviour/node.h"
 
 template<class ...GraphInputs>
-class CoreGraphSource : public Node, public CoreTaskSender<GraphInputs> ... {
+class CoreGraphSource : public Node, public CoreQueueSender<GraphInputs> ... {
  public:
   CoreGraphSource() : CoreNode("Source", NodeType::Source, 1),
                       CoreNotifier("Source", NodeType::Source, 1),
-                      CoreTaskSender<GraphInputs>("Source", NodeType::Source, 1)... {
+                      CoreQueueSender<GraphInputs>("Source", NodeType::Source, 1)... {
     HLOG_SELF(0, "Creating CoreGraphSource")
   }
   ~CoreGraphSource() override {
     HLOG_SELF(0, "Destructing CoreGraphSource")
   }
 
-  CoreNode *getCore() override {
+  CoreNode *core() override {
     return this;
   }
 
-  Node *getNode() override {
-    return nullptr;
+  Node *node() override {
+    return this;
   }
 
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
     if (printer->hasNotBeenVisited(this)) {
       printer->printNodeInformation(this);
-      (CoreTaskSender<GraphInputs>::visit(printer), ...);
+      (CoreQueueSender<GraphInputs>::visit(printer), ...);
     }
   }
 
@@ -41,7 +41,7 @@ class CoreGraphSource : public Node, public CoreTaskSender<GraphInputs> ... {
 
   void addSlot(CoreSlot *slot) final {
     HLOG_SELF(0, "Add slot: " << slot->name() << "(" << slot->id() << ")")
-    (CoreTaskSender<GraphInputs>::addSlot(slot), ...);
+    (CoreQueueSender<GraphInputs>::addSlot(slot), ...);
   }
 
   void removeSlot([[maybe_unused]]CoreSlot *slot) final {
@@ -51,7 +51,7 @@ class CoreGraphSource : public Node, public CoreTaskSender<GraphInputs> ... {
   }
   void notifyAllTerminated() final {
     HLOG_SELF(2, "Notify all terminated")
-    (CoreTaskSender<GraphInputs>::notifyAllTerminated(), ...);
+    (CoreQueueSender<GraphInputs>::notifyAllTerminated(), ...);
   }
 
 };

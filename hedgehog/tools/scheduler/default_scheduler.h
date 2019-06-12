@@ -25,7 +25,7 @@ class DefaultScheduler : public AbstractScheduler {
   void spawnThreads(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &ptr) override {
     CoreNode *core = nullptr;
     for (auto &node : *(ptr.get())) {
-      core = node.second->getCore();
+      core = node.second->core();
       if (core->type() != NodeType::Graph) {
         threads_->emplace_back(&CoreNode::run, core);
       } else {

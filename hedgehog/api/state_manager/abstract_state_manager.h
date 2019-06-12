@@ -42,34 +42,4 @@ class AbstractStateManager : public AbstractTask<StateOutput, StateInputs...> {
 
 };
 
-template<class StateInput, class StateOutput, class ...StateInputs>
-class DefaultStateManagerExecute : public virtual AbstractStateManager<StateOutput, StateInputs...> {
- public:
-  void execute(std::shared_ptr<StateInput> input) final {
-    this->state()->lock();
-    std::static_pointer_cast<Execute<StateInput>>(this->state())->execute(input);
-    while (!this->state()->readyList()->empty()) {
-      this->addResult(this->state()->frontAndPop());
-    }
-    this->state()->unlock();
-  }
-};
-
-template<class StateOutput, class ...StateInputs>
-class DefaultStateManager
-    : public DefaultStateManagerExecute<StateInputs, StateOutput, StateInputs...> ... {
- public:
-  using DefaultStateManagerExecute<StateInputs, StateOutput, StateInputs...>::execute...;
-  explicit DefaultStateManager(std::shared_ptr<AbstractState<StateOutput, StateInputs...>> const &state,
-                               bool automaticStart = false)
-      : AbstractStateManager<StateOutput, StateInputs...>("DefaultStateManager", state, automaticStart) {}
-
-  DefaultStateManager(std::string_view const name,
-                      std::shared_ptr<AbstractState<StateOutput, StateInputs...>> const &state,
-                      bool automaticStart = false) : AbstractStateManager<StateOutput, StateInputs...>(name,
-                                                                                                       state,
-                                                                                                       automaticStart) {}
-
-};
-
 #endif //HEDGEHOG_ABSTRACT_STATE_MANAGER_H
