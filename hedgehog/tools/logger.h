@@ -11,8 +11,8 @@
 #define HLOG(level, msg) if (HLOG_LEVEL < level) {} else LOG(INFO) << msg;
 #define HLOG_SELF(level, msg) if (HLOG_LEVEL < level) {} else LOG(INFO) << this->name() << "(" << this->id() << "/" << (int)this->threadId() <<  "): " << msg;
 #define HLOG_NODE(level, node, msg) if (HLOG_LEVEL < level) {} else LOG(INFO) << node->name() << "(" << node->id()  << "/" << (int)this->threadId() <<  "): " << msg;
-
 #else
+#define HLOG_ENABLED 0
 #define HLOG(level, msg) {}
 #define HLOG_SELF(level, msg) {}
 #define HLOG_NODE(level, node, msg) {}

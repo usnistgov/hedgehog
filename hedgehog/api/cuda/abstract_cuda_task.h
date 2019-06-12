@@ -15,7 +15,7 @@
         else __checkCudaErrors(err, __FILE__, __LINE__)
 
 // These are the inline versions for all of the SDK helper functions
-inline void __checkCudaErrors(cudaError_t err, const char *file, const int line) {
+inline void __checkCudaErrors(cudaError_t err, [[maybe_unused]]const char *file, [[maybe_unused]]const int line) {
     if (cudaSuccess != err) {
         HLOG(0, "checkCudaErrors() API error = "
         << err
