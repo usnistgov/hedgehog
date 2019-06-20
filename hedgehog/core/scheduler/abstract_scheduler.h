@@ -14,7 +14,8 @@ class AbstractScheduler {
  public:
   AbstractScheduler() = default;
   virtual ~AbstractScheduler() = default;
-  virtual void spawnThreads(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &) = 0;
+  virtual std::unique_ptr<AbstractScheduler> create() const = 0; // Virtual constructor (creation)
+  virtual void spawnThreads(std::vector<std::shared_ptr<CoreNode>> &) = 0;
   virtual void joinAll() = 0;
 };
 

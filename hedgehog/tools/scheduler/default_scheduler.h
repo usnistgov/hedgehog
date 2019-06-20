@@ -13,32 +13,34 @@
 class DefaultScheduler : public AbstractScheduler {
  private:
   std::unique_ptr<std::vector<std::thread>> threads_ = nullptr;
-  std::unique_ptr<std::vector<CoreNode *>> innerGraphs_ = nullptr;
+  std::unique_ptr<std::vector<std::shared_ptr<CoreNode>>> innerGraphs_ = nullptr;
+
  public:
-  DefaultScheduler() {
-    this->threads_ = std::make_unique<std::vector<std::thread>>();
-    this->innerGraphs_ = std::make_unique<std::vector<CoreNode *>>();
+  std::unique_ptr<AbstractScheduler> create() const override {
+    return std::make_unique<DefaultScheduler>();
   }
 
+  DefaultScheduler() {
+    this->threads_ = std::make_unique<std::vector<std::thread>>();
+    this->innerGraphs_ = std::make_unique<std::vector<std::shared_ptr<CoreNode>>>();
+  }
   ~DefaultScheduler() override = default;
 
-  void spawnThreads(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &ptr) override {
-    CoreNode *core = nullptr;
-    for (auto &node : *(ptr.get())) {
-      core = node.second->core();
-      if (core->type() != NodeType::Graph) {
-        threads_->emplace_back(&CoreNode::run, core);
-      } else {
-        innerGraphs_->push_back(core);
-      }
+  void spawnThreads(std::vector<std::shared_ptr<CoreNode>> &insideCores) override {
+    for (auto &core : insideCores) {
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      mutex.lock();
+//      std::cout << "Spawning thread: " << core->id() << " " << core->name() << " gid: " << core->graphId() << std::endl;
+//      mutex.unlock();
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      if (core->type() != NodeType::Graph) { threads_->emplace_back(&CoreNode::run, core); }
+      else { innerGraphs_->push_back(core); }
     }
   }
 
   void joinAll() override {
     std::for_each(threads_->begin(), threads_->end(), [](std::thread &t) { t.join(); });
-    for (CoreNode *innerGraph : *(this->innerGraphs_)) {
-      innerGraph->joinThreads();
-    }
+    for (std::shared_ptr<CoreNode> &innerGraph : *(this->innerGraphs_)) { innerGraph->joinThreads(); }
   }
 
 };

@@ -32,23 +32,22 @@ class CoreNode {
       isInside_ = false,
       hasBeenRegistered_ = false,
       isInCluster_ = false,
-      isActive_ = true;
+      isActive_ = false;
 
   CoreNode *
       belongingNode_ = nullptr;
 
-  std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>>
+  std::shared_ptr<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>>
       insideNodes_ = nullptr;
 
-  uint8_t
+  int
       threadId_ = 0;
 
   size_t
       numberThreads_ = 1;
 
-  std::string
-      clusterId_ = {},
-      extraPrintingInformation_ = "";
+  CoreNode *
+      coreClusterNode_ = nullptr;
 
   std::chrono::duration<uint64_t, std::micro>
       creationDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(),
@@ -67,17 +66,22 @@ class CoreNode {
   CoreNode() = delete;
 
   CoreNode(std::string_view const &name, NodeType const type, size_t numberThreads)
-      : name_(name), type_(type), isActive_(true), clusterId_(this->id()) {
+      : name_(name), type_(type), isActive_(false), coreClusterNode_(this) {
     numberThreads_ = numberThreads == 0 ? 1 : numberThreads;
     HLOG_SELF(0,
               "Creating CoreNode with type: " << (int) type << ", name: " << name << " and number of Threads: "
                                               << this->numberThreads_)
-    this->insideNodes_ = std::make_shared<std::multimap<std::string, std::shared_ptr<Node>>>();
+    this->insideNodes_ = std::make_shared<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>>();
+    //////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "Creating node: " << this->name() << " / " << this->id() << std::endl;
+    //////////////////////////////////////////////////////////////////////////////////////
   }
 
   virtual ~CoreNode() {
     HLOG_SELF(0, "Destructing CoreNode")
   }
+
+  virtual std::shared_ptr<CoreNode> clone() = 0;  // Virtual constructor (copying)
 
   virtual std::string id() const {
     std::stringstream ss{};
@@ -86,24 +90,32 @@ class CoreNode {
   }
 
   virtual std::vector<std::pair<std::string, std::string>> ids() const {
-    return {{this->id(), this->clusterId()}};
+    return {{this->id(), this->coreClusterNode()->id()}};
   }
 
   std::string_view const &name() const { return name_; }
   NodeType type() const { return type_; }
   bool isInside() const { return isInside_; }
-  std::string const &clusterId() const { return clusterId_; }
-  uint8_t threadId() const { return threadId_; }
+  CoreNode *coreClusterNode() const { return coreClusterNode_; }
+  int threadId() const { return threadId_; }
   size_t numberThreads() const { return numberThreads_; }
   CoreNode *belongingNode() const { return belongingNode_; }
-  std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> const &insideNodes() const { return insideNodes_; }
-  std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &insideNodes() { return insideNodes_; }
+
+  std::shared_ptr<std::multimap<CoreNode *,
+                                std::shared_ptr<CoreNode>>> const &insideNodes() const { return insideNodes_; }
+  std::shared_ptr<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>> &insideNodes() { return insideNodes_; }
   std::chrono::duration<uint64_t, std::micro> const &executionTime() const { return executionDuration_; }
   std::chrono::duration<uint64_t, std::micro> const &waitTime() const { return waitDuration_; }
   bool isInCluster() const { return this->isInCluster_; }
   bool isActive() const { return isActive_; }
 
-  virtual size_t deviceId() { return this->belongingNode()->deviceId(); }
+  virtual int graphId() {
+    return this->belongingNode()->graphId();
+  }
+
+  virtual int deviceId() { return this->belongingNode()->deviceId(); }
+
+  virtual void deviceId(int deviceId) { this->belongingNode()->deviceId(deviceId); }
 
   std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const { return creationTimeStamp_; }
   virtual std::chrono::duration<uint64_t,
@@ -118,9 +130,9 @@ class CoreNode {
     auto ret = this->executionTime();
     if (this->isInCluster()) {
       std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
-      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
-           it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        sum += it->second->core()->executionTime();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        sum += it->second->executionTime();
       }
       ret = sum / this->numberThreads();
     }
@@ -131,9 +143,9 @@ class CoreNode {
     auto ret = this->waitTime();
     if (this->isInCluster()) {
       std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
-      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
-           it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        sum += it->second->core()->waitTime();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        sum += it->second->waitTime();
       }
       ret = sum / this->numberThreads();
     }
@@ -144,9 +156,9 @@ class CoreNode {
     auto ret = 0;
     if (this->isInCluster()) {
       auto mean = this->meanExecTimeCluster().count(), meanSquare = mean * mean;
-      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
-           it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->core()->executionTime().count(), 2) - meanSquare;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += (uint64_t) std::pow(it->second->executionTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
       ret = (uint64_t) std::sqrt(ret);
@@ -158,9 +170,9 @@ class CoreNode {
     auto ret = 0;
     if (this->isInCluster()) {
       auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
-      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
-           it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->core()->waitTime().count(), 2) - meanSquare;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += (uint64_t) std::pow(it->second->waitTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
       ret = (uint64_t) std::sqrt(ret);
@@ -171,9 +183,9 @@ class CoreNode {
   size_t numberActiveThreadInCluster() const {
     size_t ret = 0;
     if (this->isInCluster()) {
-      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->clusterId()).first;
-           it != this->belongingNode()->insideNodes()->equal_range(this->clusterId()).second; ++it) {
-        ret += it->second->core()->isActive() ? 1 : 0;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += it->second->isActive() ? 1 : 0;
       }
     } else {
       ret = this->isActive() ? 1 : 0;
@@ -181,16 +193,14 @@ class CoreNode {
     return ret;
   }
 
-
   bool hasBeenRegistered() const { return hasBeenRegistered_; }
   virtual void setInside() { this->isInside_ = true; }
   void setInCluster() { this->isInCluster_ = true; }
   void threadId(uint8_t threadId) { threadId_ = threadId; }
-  void clusterId(std::string const &clusterId) { clusterId_ = clusterId; }
+  void coreClusterNode(CoreNode *coreClusterNode) { coreClusterNode_ = coreClusterNode; }
   void numberThreads(size_t numberThreads) { numberThreads_ = numberThreads; }
   void belongingNode(CoreNode *belongingNode) { belongingNode_ = belongingNode; }
   void hasBeenRegistered(bool hasBeenRegistered) { hasBeenRegistered_ = hasBeenRegistered; }
-  void extraPrintingInformation(std::string const &extraInformation) { extraPrintingInformation_ = extraInformation; }
   void isActive(bool isActive) { isActive_ = isActive; }
   void creationDuration(std::chrono::duration<uint64_t, std::micro> const &creationDuration) {
     creationDuration_ = creationDuration;
@@ -200,15 +210,16 @@ class CoreNode {
   virtual void run() {}
   virtual void postRun() {}
   virtual Node *node() = 0;
-  virtual void copyWholeNode(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &insideNodesGraph) = 0;
+  virtual void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
+                                                                           std::shared_ptr<CoreNode>>> &insideNodesGraph) {};
   virtual void visit(AbstractPrinter *printer) = 0;
 
-  void removeInsideNode(std::string const &id) {
-    HLOG_SELF(0, "Remove inside node " << id << ")")
-    this->insideNodes()->erase(id);
+  void removeInsideNode(CoreNode *coreNode) {
+    HLOG_SELF(0, "Remove inside node " << coreNode->id() << ")")
+    this->insideNodes()->erase(coreNode);
   }
 
-  std::string const &extraPrintingInformation() const { return extraPrintingInformation_; }
+  std::string extraPrintingInformation() { return node()->extraPrintingInformation(); }
   std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp() const { return startExecutionTimeStamp_; }
 
   void startExecutionTimeStamp(std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp) {
@@ -229,16 +240,18 @@ class CoreNode {
     this->hasBeenRegistered_ = rhs->hasBeenRegistered();
     this->isInCluster_ = rhs->isInCluster();
     this->numberThreads_ = rhs->numberThreads();
-    this->clusterId_ = rhs->clusterId();
+    this->coreClusterNode(rhs->coreClusterNode());
   }
 
+  virtual void duplicateEdge(CoreNode *, std::map<CoreNode *, std::shared_ptr<CoreNode>> &) = 0;
+
  protected:
-  void addUniqueInsideNode(const std::shared_ptr<Node> &node) {
-    HLOG_SELF(0, "Add InsideNode " << node->core()->name() << "(" << node->core()->id() << ")")
-    if (insideNodes_->find(node->core()->id()) == insideNodes_->end()) {
-      node->core()->belongingNode(this);
-      node->core()->hasBeenRegistered(true);
-      insideNodes_->insert({node->core()->id(), node});
+  void addUniqueInsideNode(const std::shared_ptr<CoreNode> &coreNode) {
+    HLOG_SELF(0, "Add InsideNode " << coreNode->name() << "(" << coreNode->id() << ")")
+    if (insideNodes_->find(coreNode.get()) == insideNodes_->end()) {
+      coreNode->belongingNode(this);
+      coreNode->hasBeenRegistered(true);
+      insideNodes_->insert({coreNode.get(), coreNode});
     }
   }
 
@@ -250,7 +263,6 @@ class CoreNode {
     this->executionDuration_ += exec;
   }
 
- private:
   void isInside(bool isInside) { isInside_ = isInside; }
 };
 

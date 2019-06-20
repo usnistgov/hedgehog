@@ -33,12 +33,11 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
   std::unique_ptr<AbstractScheduler> scheduler_ = nullptr;
   std::shared_ptr<CoreGraphSource<GraphInputs...>> source_ = nullptr;
   std::shared_ptr<CoreGraphSink<GraphOutput>> sink_ = nullptr;
-  size_t graphId_ = 0;
-  size_t deviceId_ = 0;
+  int graphId_ = 0;
+  int deviceId_ = 0;
 
  public:
-  CoreGraph(Graph<GraphOutput, GraphInputs...> *graph, NodeType const type, std::string_view const &name)
-      :
+  CoreGraph(Graph<GraphOutput, GraphInputs...> *graph, NodeType const type, std::string_view const &name) :
       CoreNode(name, type, 1),
       CoreNotifier(name, type, 1),
       CoreSlot(name, type, 1),
@@ -56,43 +55,70 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     this->scheduler_ = std::make_unique<DefaultScheduler>();
     this->source_ = std::make_shared<CoreGraphSource<GraphInputs...>>();
     this->sink_ = std::make_shared<CoreGraphSink<GraphOutput>>();
-    this->registerNode(std::static_pointer_cast<Node>(this->sink_));
-    this->registerNode(std::static_pointer_cast<Node>(this->source_));
+    this->source_->belongingNode(this);
+    this->sink_->belongingNode(this);
   }
 
-  CoreGraph(CoreGraph<GraphOutput, GraphInputs...> const &graph) :
-      CoreNode(graph.name(), graph.type(), 1),
-      CoreNotifier(graph.name(), graph.type(), 1),
-      CoreSlot(graph.name(), graph.type(), 1),
-      CoreReceiver<GraphInputs>(graph.name(), graph.type(), 1)...,
-      CoreSender<GraphOutput>(graph
+  CoreGraph(CoreGraph<GraphOutput, GraphInputs...> const &rhs) :
+      CoreNode(rhs.name(), rhs.type(), 1),
+      CoreNotifier(rhs.name(), rhs.type(), 1),
+      CoreSlot(rhs.name(), rhs.type(), 1),
+      CoreReceiver<GraphInputs>(rhs.name(), rhs.type(), 1)...,
+      CoreSender<GraphOutput>(rhs
   .
-  name(), graph
+  name(), rhs
   .
   type(),
   1),
-  CoreGraphMultiReceivers<GraphInputs...>(graph
+  CoreGraphMultiReceivers<GraphInputs...>(rhs
   .
-  name(), graph
+  name(), rhs
   .
   type(),
   1){
 
+    this->inputsCoreNodes_ = std::make_unique<std::set<CoreMultiReceivers<GraphInputs...> *>>();
+    this->outputCoreNodes_ = std::make_unique<std::set<CoreSender < GraphOutput> *>>
+    ();
+    this->scheduler_ = rhs.scheduler_->create();
+    this->source_ = std::make_shared<CoreGraphSource<GraphInputs...>>();
+    this->sink_ = std::make_shared<CoreGraphSink<GraphOutput>>();
+
+    this->source_->belongingNode(this);
+    this->sink_->belongingNode(this);
+
+    duplicateInsideNodes(rhs);
+
+    this->hasBeenRegistered(true);
+    this->belongingNode(rhs.belongingNode());
+
+    this->graph_ = rhs.graph_;
   }
 
   ~CoreGraph() override {
     HLOG_SELF(0, "Destructing CoreGraph")
   }
 
+  std::shared_ptr<CoreNode> clone() override {
+    auto duplicateGraph = std::make_shared<CoreGraph<GraphOutput, GraphInputs...>>(*this);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "Cloning graph " << this->name() << " / " << this->id() << " into: " << duplicateGraph->name() << " / "
+//              << duplicateGraph->id() << std::endl;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    return duplicateGraph;
+  }
+
   Node *node() override { return graph_; }
 
-  size_t deviceId() override { return this->deviceId_; }
+  int deviceId() override { return this->deviceId_; }
+
+  int graphId() override { return this->graphId_; }
 
   std::chrono::duration<uint64_t, std::micro> const maxExecutionTime() const override {
     std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::min(), temp{};
-    CoreNode *core;
+    std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
-      core = it.second->core();
+      core = it.second;
       switch (core->type()) {
         case NodeType::Task:
         case NodeType::Graph:temp = core->maxExecutionTime();
@@ -106,9 +132,9 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   std::chrono::duration<uint64_t, std::micro> const minExecutionTime() const override {
     std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::max(), temp{};
-    CoreNode *core;
+    std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
-      core = it.second->core();
+      core = it.second;
       switch (core->type()) {
         case NodeType::Task:
         case NodeType::Graph:temp = core->minExecutionTime();
@@ -122,9 +148,9 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   std::chrono::duration<uint64_t, std::micro> const maxWaitTime() const override {
     std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::min(), temp{};
-    CoreNode *core;
+    std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
-      core = it.second->core();
+      core = it.second;
       switch (core->type()) {
         case NodeType::Task:
         case NodeType::Graph:temp = core->maxWaitTime();
@@ -138,9 +164,9 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   std::chrono::duration<uint64_t, std::micro> const minWaitTime() const override {
     std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::max(), temp{};
-    CoreNode *core;
+    std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
-      core = it.second->core();
+      core = it.second;
       switch (core->type()) {
         case NodeType::Task:
         case NodeType::Graph:temp = core->minWaitTime();
@@ -176,12 +202,12 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     static_assert(HedgehogTraits::contains_v<Output, Inputs>, "The given Receiver cannot be linked to this Sender");
 
     //Get the associated cores
-    auto coreSender = dynamic_cast<CoreSender <Output> *>(std::static_pointer_cast<Node>(from)->core());
+    auto coreSender = dynamic_cast<CoreSender <Output> *>(std::static_pointer_cast<Node>(from)->core().get());
     auto coreNotifier = dynamic_cast<CoreNotifier *>(coreSender);
-    auto coreSlot = dynamic_cast<CoreSlot *>(std::static_pointer_cast<Node>(to)->core());
-    auto coreReceiver = dynamic_cast<CoreReceiver<Output> *>(std::static_pointer_cast<Node>(to)->core());
+    auto coreSlot = dynamic_cast<CoreSlot *>(std::static_pointer_cast<Node>(to)->core().get());
+    auto coreReceiver = dynamic_cast<CoreReceiver<Output> *>(std::static_pointer_cast<Node>(to)->core().get());
 
-    if (from->core() == this || to->core() == this) {
+    if (from->core().get() == this || to->core().get() == this) {
       HLOG_SELF(0, "You can't connectMemoryManager the coreGraph to itself!")
       exit(42);
     }
@@ -217,8 +243,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       coreNotifier->addSlot(slot);
     }
 
-    this->registerNode(std::dynamic_pointer_cast<Node>(from));
-    this->registerNode(std::dynamic_pointer_cast<Node>(to));
+    this->registerNode(std::dynamic_pointer_cast<CoreNode>(from->core()));
+    this->registerNode(std::dynamic_pointer_cast<CoreNode>(to->core()));
   }
 
   void input(std::shared_ptr<MultiReceivers<GraphInputs...>> inputNode) {
@@ -227,7 +253,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       exit(42);
     }
 
-    auto inputCoreNode = dynamic_cast<CoreMultiReceivers<GraphInputs...> *>(inputNode->core());
+    auto inputCoreNode = dynamic_cast<CoreMultiReceivers<GraphInputs...> *>(inputNode->core().get());
     HLOG_SELF(0, "Set " << inputCoreNode->name() << "(" << inputCoreNode->id() << ") as input")
 
     if (inputCoreNode->hasBeenRegistered()) {
@@ -249,7 +275,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
         GraphInputs> *>(inputCoreNode)), ...);
     (static_cast<CoreReceiver<GraphInputs> *>(inputCoreNode)->addSender(static_cast<CoreSender <GraphInputs> *>(this->source_.get())), ...);
 
-    this->registerNode(std::static_pointer_cast<Node>(inputNode));
+    this->registerNode(std::static_pointer_cast<CoreNode>(inputNode->core()));
   }
 
   void output(std::shared_ptr<Sender<GraphOutput>> output) {
@@ -258,7 +284,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       exit(42);
     }
 
-    auto outputCoreNode = dynamic_cast<CoreSender <GraphOutput> *>(output->core());
+    auto outputCoreNode = dynamic_cast<CoreSender <GraphOutput> *>(output->core().get());
 
     HLOG_SELF(0, "Set " << outputCoreNode->name() << "(" << outputCoreNode->id() << ") as output")
 
@@ -279,7 +305,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     outputCoreNode->addSlot(this->sink_.get());
     outputCoreNode->addReceiver(this->sink_.get());
 
-    this->registerNode(std::static_pointer_cast<Node>(output));
+    this->registerNode(std::static_pointer_cast<CoreNode>(output->core()));
   }
 
   template<
@@ -295,10 +321,10 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     std::static_pointer_cast<CoreQueueSender<Input>>(this->source_)->sendAndNotify(data);
   }
 
-  size_t const &graphId() const { return graphId_; }
   void graphId(size_t graphId) { graphId_ = graphId; }
 
   void setInside() override {
+    assert(!this->isInside());
     HLOG_SELF(0, "Set the coreGraph inside")
     CoreNode::setInside();
 
@@ -320,8 +346,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
                     s->removeReceiver(this->sink_.get());
                   });
 
-    this->removeInsideNode(this->source_->id());
-    this->removeInsideNode(this->sink_->id());
+    this->removeInsideNode(this->source_.get());
+    this->removeInsideNode(this->sink_.get());
     this->source_ = nullptr;
     this->sink_ = nullptr;
   }
@@ -347,7 +373,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       exit(42);
     }
     this->startExecutionTimeStamp(std::chrono::high_resolution_clock::now());
-    copyInnerNodesAndLaunchThreads();
+    createInnerClustersAndLaunchThreads();
     auto finishCreationTime = std::chrono::high_resolution_clock::now();
     this->creationDuration(std::chrono::duration_cast<std::chrono::microseconds>(
         finishCreationTime - this->creationTimeStamp()));
@@ -390,9 +416,9 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     return result;
   }
 
-  void copyWholeNode([[maybe_unused]]std::shared_ptr<std::multimap<std::string,
-                                                                   std::shared_ptr<Node>>> &insideNodesGraph) override {
-    copyInnerNodesAndLaunchThreads();
+  void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
+                                                                   std::shared_ptr<CoreNode>>> &insideNodesGraph) override {
+    createInnerClustersAndLaunchThreads();
   }
 
   friend std::ostream &operator<<(std::ostream &os, CoreGraph const &core) {
@@ -407,38 +433,43 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
   std::unique_ptr<std::set<CoreSender < GraphOutput> *>> const &
   outputCoreNodes() const { return outputCoreNodes_; }
 
-  void printCluster(AbstractPrinter *printer, CoreNode const *node) {
-    printer->printClusterHeader(node->clusterId());
-    auto id = node->id();
-    for (std::multimap<std::string, std::shared_ptr<Node>>::iterator it = this->insideNodes()->equal_range(id).first;
-         it != this->insideNodes()->equal_range(id).second; ++it) {
-      printer->printClusterEdge(it->second->core());
-      it->second->core()->visit(printer);
+  void printCluster(AbstractPrinter *printer, std::shared_ptr<CoreNode> node) {
+    printer->printClusterHeader(node->coreClusterNode());
+    for (std::multimap<CoreNode *, std::shared_ptr<CoreNode>>::iterator
+             it = this->insideNodes()->equal_range(node.get()).first;
+         it != this->insideNodes()->equal_range(node.get()).second; ++it) {
+      printer->printClusterEdge(it->second.get());
+      it->second->visit(printer);
     }
     printer->printClusterFooter();
   }
 
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
-    //Test if the coreGraph has already been visited
+    // Test if the coreGraph has already been visited
     if (printer->hasNotBeenVisited(this)) {
 
-//      Print the header of the coreGraph
+      // Print the header of the coreGraph
       printer->printGraphHeader(this);
 
-      //      Print the coreGraph information
+      // Print the coreGraph information
       printer->printNodeInformation(this);
 
-      //      Visit all the insides node of the coreGraph
-      for (std::multimap<std::string, std::shared_ptr<Node>>::const_iterator it = this->insideNodes()->begin(),
+      if (this->source_ && this->sink_) {
+        this->source_->visit(printer);
+        this->sink_->visit(printer);
+      }
+
+      // Visit all the insides node of the coreGraph
+      for (std::multimap<CoreNode *, std::shared_ptr<CoreNode>>::const_iterator it = this->insideNodes()->begin(),
                end = this->insideNodes()->end(); it != end; it = this->insideNodes()->upper_bound(it->first)) {
         if (this->insideNodes()->count(it->first) == 1) {
-          it->second->core()->visit(printer);
+          it->second->visit(printer);
         } else {
-          this->printCluster(printer, it->second->core());
+          this->printCluster(printer, it->second);
         }
       }
-//      Print coreGraph footer
+      // Print coreGraph footer
       printer->printGraphFooter(this);
     }
   }
@@ -548,35 +579,149 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     this->scheduler_->joinAll();
   }
 
-  void copyInnerNodesAndLaunchThreads() {
-    HLOG_SELF(0, "Copy inside nodes")
-    std::vector<std::shared_ptr<Node>> copyNodes;
-
-    for (const std::pair<std::string, std::shared_ptr<Node>> &insideNodes : *(this->insideNodes().get())) {
-      copyNodes.push_back(insideNodes.second);
-    }
-
-    for (std::shared_ptr<Node> const &node : copyNodes) {
-      node->core()->copyWholeNode(this->insideNodes());
-    }
-
-
-    this->scheduler_->spawnThreads(this->insideNodes());
+  void deviceId(int deviceId) override {
+    this->deviceId_ = deviceId;
   }
-  std::shared_ptr<CoreGraphSource<GraphInputs...>> const &source() const {
-    return source_;
+
+  void createInnerClustersAndLaunchThreads() {
+
+    HLOG_SELF(0, "Cluster creation")
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "#################BEGIN CLUSTER CREATION " << this->id() << " ##############################" << std::endl;
+//    std::cout << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << std::endl;
+//    std::cout << " InsideNodes before cluster creation: " << std::endl;
+//    for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &originalNode : *(this->insideNodes())) {
+//      std::cout << originalNode.second->name() << " / "  << originalNode.second->id() << std::endl;
+//    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::vector<std::shared_ptr<CoreNode>> insideCoreNodes;
+    insideCoreNodes.reserve(this->insideNodes()->size());
+
+//    std::transform(
+//        this->insideNodes()->begin(),
+//        this->insideNodes()->end(),
+//        std::back_inserter(insideCoreNodes),
+//        [](auto coreNode) { return coreNode.second; });
+
+    for (auto coreNode : *(this->insideNodes())) { insideCoreNodes.push_back(coreNode.second); }
+
+    for (auto const &insideCoreNode : insideCoreNodes) { insideCoreNode->createCluster(this->insideNodes()); }
+
+//    insideCoreNodes.clear();
+
+
+//    std::cout << "#################END CLUSTER CREATION " << this->id() << " ##############################" << std::endl;
+
+    launchThreads();
   }
+
+  void launchThreads() {
+    HLOG_SELF(0, "Launching threads")
+    std::vector<std::shared_ptr<CoreNode>> insideCoreNodes;
+    insideCoreNodes.reserve(this->insideNodes()->size());
+
+//    std::transform(
+//        this->insideNodes()->begin(),
+//        this->insideNodes()->end(),
+//        std::back_inserter(insideCoreNodes),
+//        [](auto coreNode) { return coreNode.second; });
+
+    for (auto coreNode : *(this->insideNodes())) { insideCoreNodes.push_back(coreNode.second); }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << std::endl;
+//    std::cout << __PRETTY_FUNCTION__ << std::endl;
+//    std::cout << " After cluster creation: " << this->id() << " gid: " << this->graphId() << std::endl;
+//    for (std::shared_ptr<CoreNode> const &originalNode : insideCoreNodes) {
+//      std::cout << originalNode->name() << " / "  << originalNode->id() << std::endl;
+//    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    this->scheduler_->spawnThreads(insideCoreNodes);
+  }
+
+  std::shared_ptr<CoreGraphSource<GraphInputs...>> const &source() const { return source_; }
 
  private:
-
-  void registerNode(const std::shared_ptr<Node> &node) {
-    HLOG_SELF(0, "Register node " << node->core()->name() << "(" << node->core()->id() << ")")
-    if (!node->core()->hasBeenRegistered()) {
-      node->core()->setInside();
-      this->addUniqueInsideNode(node);
+  void registerNode(const std::shared_ptr<CoreNode> &coreNode) {
+    HLOG_SELF(0, "Register coreNode " << coreNode->name() << "(" << coreNode->id() << ")")
+    if (!coreNode->hasBeenRegistered()) {
+      coreNode->setInside();
+      this->addUniqueInsideNode(coreNode);
     }
   }
 
+  void duplicateInsideNodes(CoreGraph<GraphOutput, GraphInputs...> const &rhs) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << std::endl;
+//    std::cout << "Create EP Inside Nodes for: " << this->name() << ", " << this->id() << " from graph: " << rhs.name() << ", " << rhs.id() << std::endl;
+//    std::cout << "Begin of duplication: " << std::endl;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::multimap<CoreNode *, std::shared_ptr<CoreNode>> &originalInsideNodes = *(rhs.insideNodes());
+    std::map<CoreNode *, std::shared_ptr<CoreNode>>
+        correspondenceMap;
+
+    std::shared_ptr<CoreNode> duplicate;
+
+    // Create all the duplicates and link them to their original node
+    for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &originalNode : originalInsideNodes) {
+      duplicate = originalNode.second->clone();
+      duplicate->belongingNode(this);
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      std::cout
+//          << "\t" << "EP Duplicate Node: " << originalNode.second->name() << ", " << originalNode.second->id()
+//          << " into: " << duplicate->name() << ", " << duplicate->id() << std::endl;
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      correspondenceMap.insert({originalNode.second.get(), duplicate});
+    }
+
+    // Add the duplicate node into the insideNode structure
+    for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &originalNode : originalInsideNodes) {
+      CoreNode
+          *originalInsideNode = originalNode.second.get();
+
+      std::shared_ptr<CoreNode>
+          duplicateInsideNode = correspondenceMap.find(originalInsideNode)->second;
+
+      //Do the linkage
+      originalInsideNode->duplicateEdge(duplicateInsideNode.get(), correspondenceMap);
+
+      duplicateInsideNode->belongingNode(this);
+      this->insideNodes()->insert({duplicateInsideNode.get(), duplicateInsideNode});
+    }
+
+
+    //Set Input/Output Node
+    for (CoreMultiReceivers<GraphInputs...> *originalInputNode : *(rhs.inputsCoreNodes())) {
+//      std::cout << "Duplicate Input!" << std::endl;
+      auto temp = correspondenceMap.find(originalInputNode);
+//      if (temp != correspondenceMap.end()) {
+//        std::cout << "Found!!!!" << std::endl;
+      (static_cast<CoreGraphReceiver<GraphInputs> *>(this)->addGraphReceiverInput(dynamic_cast<CoreReceiver<GraphInputs> *>(temp->second.get())), ...);
+      this->inputsCoreNodes_->insert(dynamic_cast<CoreMultiReceivers<GraphInputs...> *>((temp->second).get()));
+//      } else {
+//        std::cout << "Not found!!!!" << std::endl;
+//      }
+    }
+    for (CoreSender <GraphOutput> *originalOutputNode : *(rhs.outputCoreNodes())) {
+//      std::cout << "Duplicate Output!" << std::endl;
+      auto temp = correspondenceMap.find(originalOutputNode);
+//      if (temp != correspondenceMap.end()) {
+//        std::cout << "Found!!!!" << std::endl;
+      this->outputCoreNodes_->insert(dynamic_cast<CoreSender <GraphOutput> *>((temp->second).get()));
+//      } else {
+//        std::cerr << "Not found!!!!" << std::endl;
+//      }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "End of duplication: " << std::endl;
+//    for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &duplicatNode : *(this->insideNodes())) {
+//      std::cout << "\t " << duplicatNode.second->name() << " / " << duplicatNode.second->id() << std::endl;
+//    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  }
 };
 
 #endif //HEDGEHOG_CORE_GRAPH_H

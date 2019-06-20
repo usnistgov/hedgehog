@@ -30,7 +30,18 @@ class CoreQueueSlot : public virtual CoreSlot {
 
   ~CoreQueueSlot() override {HLOG_SELF(0, "Destructing CoreQueueSlot")}
 
-  size_t numberInputNodes() const final { return this->notifiers()->size(); }
+  size_t numberInputNodes() const final {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    mutex.lock();
+//    std::cout << "Checking slot: " << this->id() << std::endl;
+//    for (CoreNotifier * notifier : *notifiers_) {
+//      std::cout << "--Checking inputNode: " << notifier;
+//    }
+//    std::cout << std::endl;
+//    mutex.unlock();
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    return this->notifiers()->size();
+  }
 
   void addNotifier(CoreNotifier *notifier) final {
     std::lock_guard<std::mutex> lc(*(this->slotMutex_));
@@ -67,7 +78,7 @@ class CoreQueueSlot : public virtual CoreSlot {
   }
 
   void copyInnerStructure(CoreQueueSlot *rhs) {
-    HLOG_SELF(0, "Duplicate CoreQueueSlot information from " << rhs->name() << "(" << rhs->id() << ")")
+    HLOG_SELF(0, "Copy Cluster CoreQueueSlot information from " << rhs->name() << "(" << rhs->id() << ")")
     this->slotMutex_ = rhs->slotMutex_;
     this->notifyConditionVariable_ = rhs->notifyConditionVariable_;
     this->notifiers_ = rhs->notifiers_;
@@ -75,7 +86,6 @@ class CoreQueueSlot : public virtual CoreSlot {
 
  private:
   std::shared_ptr<std::set<CoreNotifier *>> const &notifiers() const { return notifiers_; }
-
 };
 
 #endif //HEDGEHOG_CORE_QUEUE_SLOT_H

@@ -10,7 +10,7 @@
 #include "../../behaviour/execute.h"
 #include "../../behaviour/threadable.h"
 #include "../../core/node/core_node.h"
-#include "../../core/defaults/default_task_core.h"
+#include "../../core/defaults/core_default_task.h"
 
 template<class TaskOutput, class ...TaskInputs>
 class AbstractTask :
@@ -19,39 +19,47 @@ class AbstractTask :
     public virtual Node,
     public Execute<TaskInputs> ... {
  protected:
-  CoreTask<TaskOutput, TaskInputs...> *taskCore_ = nullptr;
+  std::shared_ptr<CoreTask<TaskOutput, TaskInputs...>> taskCore_ = nullptr;
   using Execute<TaskInputs>::execute...;
 
  public:
   AbstractTask() {
-    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>("Task", 1, NodeType::Task, this, false);
+    taskCore_ = std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>("Task", 1, NodeType::Task, this, false);
   }
 
   explicit AbstractTask(std::string_view const &name, size_t numberThreads = 1, bool automaticStart = false) {
     taskCore_ =
-        new DefaultTaskCore<TaskOutput, TaskInputs...>(name, numberThreads, NodeType::Task, this, automaticStart);
+        std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(name,
+                                                                     numberThreads,
+                                                                     NodeType::Task,
+                                                                     this,
+                                                                     automaticStart);
   }
 
   AbstractTask(std::string_view const name, size_t numberThreads, NodeType nodeType, bool automaticStart) {
-    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>(name, numberThreads, nodeType, this, automaticStart);
+    taskCore_ = std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(name,
+                                                                             numberThreads,
+                                                                             nodeType,
+                                                                             this,
+                                                                             automaticStart);
   }
 
   explicit AbstractTask(AbstractTask<TaskOutput, TaskInputs ...> *rhs) {
-    taskCore_ = new DefaultTaskCore<TaskOutput, TaskInputs...>(rhs->name(),
-                                                               rhs->numberThreads(),
-                                                               rhs->nodeType(),
-                                                               this,
-                                                               rhs->automaticStart());
+    taskCore_ = std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(rhs->name(),
+                                                                             rhs->numberThreads(),
+                                                                             rhs->nodeType(),
+                                                                             this,
+                                                                             rhs->automaticStart());
   }
 
-  ~AbstractTask() override { delete taskCore_; }
+  ~AbstractTask() override = default;
 
   std::string_view name() { return this->taskCore_->name(); }
   size_t numberThreads() { return this->taskCore_->numberThreads(); }
   bool automaticStart() { return this->taskCore_->automaticStart(); }
   NodeType nodeType() { return this->taskCore_->type(); }
 
-  CoreNode *core() final { return taskCore_; }
+  std::shared_ptr<CoreNode> core() final { return taskCore_; }
 
   virtual std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> copy() { return nullptr; }
   virtual void initialize() {}
@@ -64,6 +72,7 @@ class AbstractTask :
   template<class Input, typename std::enable_if_t<HedgehogTraits::contains_v<Input, TaskInputs...>>>
   void pushData(std::shared_ptr<Input> &data) { this->taskCore_->pushData(data); }
   void addResult(std::shared_ptr<TaskOutput> output) { this->taskCore_->sendAndNotify(output); }
+
 };
 
 #endif //HEDGEHOG_TASK_H

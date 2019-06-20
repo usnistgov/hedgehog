@@ -73,7 +73,7 @@ class CoreQueueReceiver : public virtual CoreReceiver<CoreInput> {
   }
 
   void copyInnerStructure(CoreQueueReceiver<CoreInput> *rhs) {
-    HLOG_SELF(0, "Duplicate CoreQueueReceiver information from " << rhs->name() << "(" << rhs->id() << ")")
+    HLOG_SELF(0, "Copy Cluster CoreQueueReceiver information from " << rhs->name() << "(" << rhs->id() << ")")
     this->queue_ = rhs->queue_;
     this->senders_ = rhs->senders_;
   }

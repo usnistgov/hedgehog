@@ -6,7 +6,7 @@
 #define HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H
 
 #include "../graph.h"
-#include "../../core/defaults/default_execution_pipeline.h"
+#include "../../core/defaults/core_default_execution_pipeline.h"
 
 template<class GraphOutput, class ...GraphInputs>
 class AbstractExecutionPipeline
@@ -15,7 +15,7 @@ class AbstractExecutionPipeline
   std::shared_ptr<Graph<GraphOutput, GraphInputs...>>
       graph_ = nullptr;
 
-  DefaultExecutionPipeline<GraphOutput, GraphInputs...> *
+  std::shared_ptr<CoreDefaultExecutionPipeline<GraphOutput, GraphInputs...>>
       coreExecutionPipeline_ = nullptr;
 
  public:
@@ -24,12 +24,12 @@ class AbstractExecutionPipeline
 
   AbstractExecutionPipeline(std::shared_ptr<Graph<GraphOutput, GraphInputs...>> graph,
                             size_t const &numberGraphDuplications,
-                            std::vector<int> const &deviceIds, bool automaticStart = false)
+                            std::vector<int> const deviceIds, bool automaticStart = false)
       : graph_(graph),
-        coreExecutionPipeline_(new DefaultExecutionPipeline<GraphOutput, GraphInputs...>(
+        coreExecutionPipeline_(std::make_shared<CoreDefaultExecutionPipeline<GraphOutput, GraphInputs...>>(
             "AbstractExecutionPipeline",
             this,
-            graph,
+            std::dynamic_pointer_cast<CoreGraph<GraphOutput, GraphInputs...>>(graph->core()),
             numberGraphDuplications,
             deviceIds, automaticStart)) {}
 
@@ -39,24 +39,20 @@ class AbstractExecutionPipeline
                             std::vector<int> const &deviceIds,
                             bool automaticStart = false)
       : graph_(graph),
-        coreExecutionPipeline_(new DefaultExecutionPipeline<GraphOutput, GraphInputs...>(
+        coreExecutionPipeline_(std::make_shared<CoreDefaultExecutionPipeline<GraphOutput, GraphInputs...>>(
             name,
             this,
-            graph,
+            std::dynamic_pointer_cast<CoreGraph<GraphOutput, GraphInputs...>>(graph->core()),
             numberGraphDuplications,
             deviceIds,
             automaticStart)
         ) {}
 
-  ~AbstractExecutionPipeline() override {
-    delete this->coreExecutionPipeline_;
-  };
+  ~AbstractExecutionPipeline() override = default;
 
-  bool canTerminate() override {
-    return !this->coreExecutionPipeline_->hasNotifierConnected();
-  }
+  bool canTerminate() override { return !this->coreExecutionPipeline_->hasNotifierConnected(); }
 
-  CoreNode *core() override { return this->coreExecutionPipeline_; }
+  std::shared_ptr<CoreNode> core() override { return this->coreExecutionPipeline_; }
 
 };
 

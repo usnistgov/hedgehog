@@ -57,5 +57,9 @@ class DefaultStateManager
       AbstractStateManager<StateOutput, StateInputs...>(name, state, automaticStart),
       DefaultStateManagerExecute<StateInputs, StateOutput, StateInputs...>(name, state, automaticStart)... {}
 
+  std::shared_ptr<AbstractTask<StateOutput, StateInputs...>> copy() final {
+    return std::make_shared<DefaultStateManager<StateOutput, StateInputs...>>(this->state(), this->automaticStart());
+  }
+
 };
 #endif //HEDGEHOG_DEFAULT_STATE_MANAGER_H

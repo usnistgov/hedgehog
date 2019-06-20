@@ -7,7 +7,7 @@
 
 #include "../../queue/receiver/core_queue_multi_receivers.h"
 template<class GraphOutput>
-class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput>, public Node {
+class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput> {
 
  public:
   CoreGraphSink() : CoreNode("Sink", NodeType::Sink, 1),
@@ -21,8 +21,6 @@ class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput>, public Node {
     HLOG_SELF(0, "Destructing CoreGraphSink")
   }
 
-  void copyWholeNode([[maybe_unused]]std::shared_ptr<std::multimap<std::string,
-                                                                   std::shared_ptr<Node>>> &insideNodesGraph) final {}
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
     if (printer->hasNotBeenVisited(this)) {
@@ -31,7 +29,12 @@ class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput>, public Node {
   }
 
   Node *node() override {
-    return this;
+    HLOG_SELF(0, __PRETTY_FUNCTION__)
+    exit(42);
+  }
+
+  std::shared_ptr<CoreNode> clone() override {
+    return std::make_shared<CoreGraphSink<GraphOutput>>();
   }
 
   void waitForNotification() override {
@@ -46,9 +49,13 @@ class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput>, public Node {
     HLOG_SELF(2, "Notification received")
   }
 
-  CoreNode *core() override {
-    return this;
+  void duplicateEdge([[maybe_unused]]CoreNode *duplicateNode,
+                     [[maybe_unused]]std::map<CoreNode *,
+                                              std::shared_ptr<CoreNode>> &correspondenceMap) override {
+    HLOG_SELF(0, __PRETTY_FUNCTION__)
+    exit(42);
   }
+
 };
 
 #endif //HEDGEHOG_CORE_GRAPH_SINK_H

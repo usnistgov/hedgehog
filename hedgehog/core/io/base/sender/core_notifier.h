@@ -8,11 +8,14 @@
 #include <memory>
 #include <set>
 #include <algorithm>
+#include <ostream>
 
 #include "../receiver/core_slot.h"
 
 class CoreNotifier : public virtual CoreNode {
  public:
+  CoreNotifier() = delete;
+
   CoreNotifier(std::string_view const &name, NodeType const type, size_t const numberThreads) : CoreNode(name,
                                                                                                          type,
                                                                                                          numberThreads) {
@@ -21,6 +24,11 @@ class CoreNotifier : public virtual CoreNode {
 
   ~CoreNotifier() override {
     HLOG_SELF(0, "Destructing CoreNotifier")
+  }
+
+  friend std::ostream &operator<<(std::ostream &os, CoreNotifier const &notifier) {
+    os << "Notifier: " << notifier.id() << " " << notifier.name();
+    return os;
   }
 
  public:

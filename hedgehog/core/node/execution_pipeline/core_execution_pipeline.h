@@ -23,37 +23,36 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
   size_t
       numberGraphs_ = 0;
 
-  CoreGraph<GraphOutput, GraphInputs...> *
-      baseCoreGraph_ = nullptr;
-
   std::vector<std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>>>
       epGraphs_ = {};
 
   std::vector<int> deviceIds_ = {};
 
-  CoreSwitch<GraphInputs...> *
-      coreSwitch_ = nullptr;
+  std::shared_ptr<CoreSwitch<GraphInputs...>>
+      coreSwitch_;
 
   CoreExecutionPipeline() = delete;
   CoreExecutionPipeline(std::string_view const &name,
                         AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline,
-                        std::shared_ptr<Graph<GraphOutput, GraphInputs...>> baseGraph,
+                        std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> coreBaseGraph,
                         size_t numberGraphs,
                         std::vector<int> const &deviceIds,
                         bool automaticStart)
       : CoreTask<GraphOutput, GraphInputs...>(name, 1, NodeType::ExecutionPipeline, nullptr, automaticStart),
         executionPipeline_(executionPipeline),
         numberGraphs_(numberGraphs),
-        baseCoreGraph_(dynamic_cast<CoreGraph<GraphOutput, GraphInputs...> *>(baseGraph->core())),
         deviceIds_(deviceIds),
-        coreSwitch_(new CoreSwitch<GraphInputs...>("switch", NodeType::Switch, 1)) {
+        coreSwitch_(std::make_shared<CoreSwitch<GraphInputs...>>("switch", NodeType::Switch, 1)) {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!Begin creation EP!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (this->numberGraphs_ == 0) { this->numberGraphs_ = 1; }
-    if (this->baseCoreGraph_->isInside() || this->isInside()) {
+
+    if (coreBaseGraph->isInside() || this->isInside()) {
       HLOG_SELF(0, "You can't play with an inner Graph!")
       exit(42);
     }
-
     if (numberGraphs_ != deviceIds.size()) {
       std::ostringstream oss;
       oss
@@ -66,31 +65,34 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
       HLOG_SELF(0, "ERROR: CoreExecutionPipeline " << __PRETTY_FUNCTION__ << " " << oss.str())
       exit(42);
     }
+    epGraphs_.reserve(this->numberGraphs_);
 
-    baseCoreGraph_->setInside();
-    baseCoreGraph_->graphId(0);
+    coreBaseGraph->graphId(0);
+    connectGraphToEP(coreBaseGraph);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "SWITCH: " << std::endl;
+//    std::cout << "\t" << *(this->coreSwitch_) << std::endl;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    epGraphs_.reserve(this->numberGraphs_ - 1);
-
-    this->addUniqueInsideNode(baseGraph);
-
-    // TODO: Create copies and loop
-    connectGraphToEP(this->baseCoreGraph_);
-
+    this->duplicateGraphs();
   }
 
-  virtual ~CoreExecutionPipeline() {
-    delete coreSwitch_;
-  };
+  virtual ~CoreExecutionPipeline() = default;
 
   Node *node() override { return this->executionPipeline_; }
 
+  std::vector<int> const &deviceIds() const {
+    return deviceIds_;
+  }
+
+  size_t numberGraphs() const {
+    return numberGraphs_;
+  }
+
   std::set<CoreSender<GraphOutput> *> getSenders() override {
     std::set<CoreSender<GraphOutput> *>
-        res;
-
-    std::set<CoreSender<GraphOutput> *> senders = this->baseCoreGraph_->getSenders();
-    mergeSenders(res, senders);
+        res = {},
+        senders = {};
 
     for (auto epGraph : this->epGraphs_) {
       senders.clear();
@@ -101,30 +103,25 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     return res;
   }
 
-  void addReceiver(CoreReceiver<GraphOutput> *receiver) override {
-    connectGraphsOutputToReceiver(baseCoreGraph_, receiver);
+  std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> baseCoreGraph() {
+    return this->epGraphs_.empty() ? nullptr : this->epGraphs_[0];
+  }
 
-    for (auto epGraph : this->epGraphs_) {
-      connectGraphsOutputToReceiver(epGraph.get(), receiver);
-    }
+  void addReceiver(CoreReceiver<GraphOutput> *receiver) override {
+    for (auto epGraph : this->epGraphs_) { connectGraphsOutputToReceiver(epGraph.get(), receiver); }
   }
 
   void addSlot(CoreSlot *slot) override {
-    this->baseCoreGraph_->addSlot(slot);
-
-    for (auto graph : this->epGraphs_) {
-      graph->addSlot(slot);
-    }
+    for (auto graph : this->epGraphs_) { graph->addSlot(slot); }
   }
 
   void visit(AbstractPrinter *printer) override {
     if (printer->hasNotBeenVisited(this)) {
       printer->printExecutionPipelineHeader(this->name(), CoreNode::id(), this->id());
-      (this->printEdgeSwitchGraphs<GraphInputs>(printer, this->baseCoreGraph_), ...);
       for (auto graph: epGraphs_) {
         (this->printEdgeSwitchGraphs<GraphInputs>(printer, graph.get()), ...);
+        graph->visit(printer);
       }
-      this->baseCoreGraph_->visit(printer);
       printer->printExecutionPipelineFooter();
     }
   }
@@ -137,28 +134,48 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     return "switch" + CoreNode::id();
   }
 
-  size_t deviceId() override {
+  int deviceId() override {
     HLOG_SELF(0, "ERROR: DeviceId called for an execution pipeline!: " << __PRETTY_FUNCTION__)
     exit(42);
   }
 
-  void copyWholeNode(std::shared_ptr<std::multimap<std::string, std::shared_ptr<Node>>> &insideNodesGraph) override {
-    insideNodesGraph->insert(std::begin(*(this->insideNodes())), std::end(*(this->insideNodes())));
-    this->baseCoreGraph_->copyInnerNodesAndLaunchThreads();
-    for (auto epGraph : this->epGraphs_) {
-      epGraph->copyInnerNodesAndLaunchThreads();
+  void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
+                                                                   std::shared_ptr<CoreNode>>> &insideNodesGraph) override {
+    for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> epGraph : this->epGraphs_) {
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      using namespace std::chrono_literals;
+//      std::this_thread::sleep_for(2s);
+//      std::cout << "Spawning threads: " << epGraph->id() << " gid: " << epGraph->graphId() << std::endl;
+//      for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &duplicatNode : *(epGraph->insideNodes())) {
+//        std::cout << "\t " << duplicatNode.second->name() << " / " << duplicatNode.second->id() << std::endl;
+//      }
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      epGraph->createInnerClustersAndLaunchThreads();
     }
   }
 
+
  private:
+  void duplicateGraphs() {
+    for (size_t numberGraph = 1; numberGraph < this->numberGraphs(); ++numberGraph) {
+      auto graphDuplicate =
+          std::dynamic_pointer_cast<CoreGraph<GraphOutput, GraphInputs...>>(this->baseCoreGraph()->clone());
+      graphDuplicate->graphId(numberGraph);
+      graphDuplicate->deviceId(this->deviceIds_[numberGraph]);
+      connectGraphToEP(graphDuplicate);
+    }
+  }
 
   template<class GraphInput>
-  void addEdge(CoreGraph<GraphOutput, GraphInputs...> *graph) {
-    auto coreSender = static_cast<CoreSender<GraphInput> *>(this->coreSwitch_);
-    auto coreNotifier = static_cast<CoreNotifier *>(coreSender);
+  void addEdgeSwitchGraph(std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> &graph) {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "Connect switch " <<this->coreSwitch_->id() << " to graph " << graph->id() << std::endl;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    auto coreSender = std::static_pointer_cast<CoreSender<GraphInput>>(this->coreSwitch_);
+    auto coreNotifier = std::static_pointer_cast<CoreNotifier>(coreSender);
 
-    auto coreSlot = static_cast<CoreSlot *>(graph);
-    auto coreReceiver = static_cast<CoreReceiver<GraphInput> *>(graph);
+    auto coreSlot = std::static_pointer_cast<CoreSlot>(graph);
+    auto coreReceiver = std::static_pointer_cast<CoreReceiver<GraphInput>>(graph);
 
     for (auto r : coreReceiver->receivers()) {
       coreSender->addReceiver(r);
@@ -174,14 +191,12 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     }
   }
 
-  void connectGraphToEP(CoreGraph<GraphOutput, GraphInputs...> *graph) {
-    (addEdge<GraphInputs>(graph), ...);
-  }
-
-  template<class GraphInput>
-  void connectSwitchSender(CoreSwitchSender<GraphInput> *sender, CoreReceiver<GraphInput> *receiver) {
-    receiver->addSender(sender);
-    dynamic_cast<CoreMultiReceivers<GraphInputs...> *>(receiver)->addNotifier(sender);
+  void connectGraphToEP(std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> &coreGraph) {
+    coreGraph->setInside();
+    coreGraph->belongingNode(this);
+    coreGraph->hasBeenRegistered(true);
+    (addEdgeSwitchGraph<GraphInputs>(coreGraph), ...);
+    this->epGraphs_.push_back(coreGraph);
   }
 
   void connectGraphsOutputToReceiver(CoreGraph<GraphOutput, GraphInputs...> *graph,

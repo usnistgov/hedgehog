@@ -31,6 +31,9 @@ class CoreQueueMultiReceivers
 
   bool receiversEmpty() final {
     HLOG_SELF(2, "Test all receivers empty")
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     return (static_cast<CoreReceiver<NodeInputs> *>(this)->receiverEmpty() && ...);
   }
 
@@ -43,7 +46,7 @@ class CoreQueueMultiReceivers
   };
 
   void copyInnerStructure(CoreQueueMultiReceivers<NodeInputs...> *rhs) {
-    HLOG_SELF(0, "Duplicate information from " << rhs->name() << "(" << rhs->id() << ")")
+    HLOG_SELF(0, "Copy Cluster information from " << rhs->name() << "(" << rhs->id() << ")")
     (CoreQueueReceiver < NodeInputs > ::copyInnerStructure(rhs),...);
     CoreQueueSlot::copyInnerStructure(rhs);
   }

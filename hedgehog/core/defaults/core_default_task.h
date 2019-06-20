@@ -2,8 +2,8 @@
 // Created by anb22 on 6/10/19.
 //
 
-#ifndef HEDGEHOG_DEFAULT_TASK_CORE_H
-#define HEDGEHOG_DEFAULT_TASK_CORE_H
+#ifndef HEDGEHOG_CORE_DEFAULT_TASK_H
+#define HEDGEHOG_CORE_DEFAULT_TASK_H
 
 #include "../node/core_task.h"
 
@@ -41,37 +41,63 @@ class DefaultCoreTaskExecute : public virtual CoreTask<TaskOutput, TaskInputs...
 #endif //__clang//
 
 template<class TaskOutput, class ...TaskInputs>
-class DefaultTaskCore
+class CoreDefaultTask
     : public DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...> ... {
  public:
   using DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...>::callExecute...;
 
-  DefaultTaskCore(std::string_view const &name,
+  CoreDefaultTask(std::string_view const &name,
                   size_t const numberThreads,
                   NodeType const type,
                   AbstractTask<TaskOutput, TaskInputs...> *task,
                   bool automaticStart)
-      : CoreNode(name, type, numberThreads),
-        CoreNotifier(name, type, numberThreads),
-        CoreQueueSender<TaskOutput>(name, type, numberThreads),
-        CoreSlot(name, type, numberThreads),
-        CoreReceiver<TaskInputs>(name, type, numberThreads)...,
-      CoreTask<TaskOutput, TaskInputs...>(name,
-                                          numberThreads,
-                                          type,
-                                          task,
-                                          automaticStart),
+      :
+
+      CoreNode(name, type, numberThreads),
+      CoreNotifier(name, type, numberThreads),
+      CoreQueueNotifier(name, type, numberThreads),
+      CoreQueueSender<TaskOutput>(name, type, numberThreads),
+      CoreSlot(name, type, numberThreads),
+      CoreReceiver<TaskInputs>(name, type, numberThreads)...,
+      CoreTask<TaskOutput, TaskInputs...>(name, numberThreads, type, task, automaticStart),
       DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...>(name, numberThreads, type, task, automaticStart)
-  ...{}
+  ...
+  {}
+
+  virtual ~CoreDefaultTask() = default;
+
+//  CoreDefaultTask(CoreDefaultTask<TaskOutput, TaskInputs...> const &  rhs ) :
+//  CoreNode(rhs.name(), rhs.type(), rhs.numberThreads()),
+//  CoreNotifier(rhs.name(), rhs.type(), rhs.numberThreads()),
+//  CoreQueueNotifier(rhs.name(), rhs.type(), rhs.numberThreads()),
+//  CoreQueueSender<TaskOutput>(rhs.name(), rhs.type(), rhs.numberThreads()),
+//  CoreSlot(rhs.name(), rhs.type(), rhs.numberThreads()),
+//  CoreReceiver<TaskInputs>(rhs.name(), rhs.type(), rhs.numberThreads())...,
+//  CoreTask<TaskOutput, TaskInputs...>(rhs.name(), rhs.numberThreads(), rhs.type(), rhs.task(), rhs.automaticStart()),
+//    DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...>(rhs.name(), rhs.numberThreads(), rhs.type(), rhs.task(), rhs.automaticStart())...{
+//    HLOG_SELF(0,
+//              "Copy construction information from " << rhs.name() << "(" << rhs.id() << ") << and task " << rhs.name() << "("
+//                                            << rhs.id() << ")")
+//
+//
+//    this->isInside(true);
+//    if(rhs.isInCluster()){this->setInCluster();}
+//    this->numberThreads(rhs.numberThreads());
+//
+//  }
+
+  std::shared_ptr<CoreNode> clone() override {
+    return this->createCopyFromThis()->core();
+//    return std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(*this);
+  }
+
+  void preRun() override { this->task()->initialize(); }
 
   void postRun() override {
+    this->isActive(false);
     this->task()->shutdown();
     this->notifyAllTerminated();
   }
-
-  void preRun() override {
-    this->task()->initialize();
-  }
 };
 
-#endif //HEDGEHOG_DEFAULT_TASK_CORE_H
+#endif //HEDGEHOG_CORE_DEFAULT_TASK_H

@@ -38,7 +38,6 @@ class AbstractStateManager : public AbstractTask<StateOutput, StateInputs...> {
   std::shared_ptr<AbstractState<StateOutput, StateInputs...>> const &state() const {
     return state_;
   }
-  std::shared_ptr<AbstractTask<StateOutput, StateInputs...>> copy() final { return nullptr; }
 
 };
 

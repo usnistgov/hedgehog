@@ -46,6 +46,10 @@ class CoreGraphReceiver : public virtual CoreReceiver<GraphInput> {
   void receive(std::shared_ptr<GraphInput> ptr) final {
     HLOG_SELF(2, "Receive data")
     for (CoreReceiver<GraphInput> *inputNode: *(this->graphReceiverInputs_)) {
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      std::cout << "Sending data to " << inputNode->id() << std::endl;
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
       inputNode->receive(ptr);
     }
   }

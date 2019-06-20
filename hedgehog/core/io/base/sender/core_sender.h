@@ -26,6 +26,11 @@ class CoreSender : public virtual CoreNotifier {
   virtual void removeReceiver(CoreReceiver<Output> *) = 0;
   virtual void sendAndNotify(std::shared_ptr<Output>) = 0;
   virtual std::set<CoreSender<Output> *> getSenders() = 0;
+
+  void duplicateEdge(CoreNode *duplicateNode,
+                     std::map<CoreNode *, std::shared_ptr<CoreNode>> &correspondenceMap) override {
+    for (auto sender : this->getSenders()) { sender->duplicateEdge(duplicateNode, correspondenceMap); }
+  }
 };
 
 #endif //HEDGEHOG_CORE_SENDER_H

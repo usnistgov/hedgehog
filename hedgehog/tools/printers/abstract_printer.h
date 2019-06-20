@@ -24,7 +24,7 @@ class AbstractPrinter {
                          size_t const &queueSize,
                          size_t const &maxQueueSize) = 0;
 
-  virtual void printClusterHeader(std::string const &id) = 0;
+  virtual void printClusterHeader(CoreNode const *clusterNode) = 0;
   virtual void printClusterFooter() = 0;
   virtual void printClusterEdge(CoreNode const *clusterNode) = 0;
 

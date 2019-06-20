@@ -2,7 +2,7 @@
 
 /// @file Version.h
 /// @author Alexandre Bardakoff - Timothy Blattner
-/// @date 06/11/2019
+/// @date 06/20/2019
 /// @brief Hedgehog version
 
 namespace hh {

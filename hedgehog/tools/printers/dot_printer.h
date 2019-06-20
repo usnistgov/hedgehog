@@ -92,7 +92,7 @@ class DotPrinter : public AbstractPrinter {
         outputFile_ << getNodeInformation(node);
       }
     } else {
-      if (node->type() != NodeType::Graph && node->id() == node->clusterId()) {
+      if (node->type() != NodeType::Graph && node->id() == node->coreClusterNode()->id()) {
         outputFile_ << getNodeInformation(node);
       }
     }
@@ -107,21 +107,21 @@ class DotPrinter : public AbstractPrinter {
     if (!node->isInside()) {
       outputFile_
           << "digraph " << node->id()
-          << " {\nlabel=\"" << node->name()
+          << " {\nlabel=\"" << node->name() << " " << node->id()
           << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
           << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
           << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left;\n";
     } else {
-      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name()
+      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name() << " " << node->id()
                   << "\"; fontsize=25; penwidth=5;\n";
     }
     outputFile_.flush();
   }
 
-  void printClusterHeader(std::string const &clusterId) final {
+  void printClusterHeader(CoreNode const *clusterNode) final {
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
-      outputFile_ << "subgraph cluster" << clusterId << " {\nlabel=\"\"; penwidth=1; style=dotted;\n";
-      outputFile_ << "box" << clusterId << "[label=\"\", shape=egg];\n";
+      outputFile_ << "subgraph cluster" << clusterNode->id() << " {\nlabel=\"\"; penwidth=1; style=dotted;\n";
+      outputFile_ << "box" << clusterNode->id() << "[label=\"\", shape=egg];\n";
       outputFile_.flush();
     }
   }
@@ -147,7 +147,7 @@ class DotPrinter : public AbstractPrinter {
   void printClusterEdge(CoreNode const *clusterNode) final {
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
       std::stringstream ss;
-      ss << "box" << clusterNode->clusterId() << " -> " << clusterNode->id();
+      ss << "box" << clusterNode->coreClusterNode()->id() << " -> " << clusterNode->id();
       edges_.push_back(ss.str());
     }
   }
@@ -177,16 +177,18 @@ class DotPrinter : public AbstractPrinter {
         idDest,
         headLabel;
 
-    if (to->isInCluster()) {
-      for (auto &dest: to->ids()) {
+    if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
+      if (to->isInCluster()) {
+        for (auto &dest: to->ids()) {
 
-        idDest = "box" + dest.second;
-        oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\""
-            //        << ",ltail=cluster" << source.second
-            << "];";
+          idDest = "box" + dest.second;
+          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\"" << "];";
+        }
+      } else {
+        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << "];";
       }
-    } else {
-      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << "];";
+    } else if (to->id() == to->coreClusterNode()->id()) {
+      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"];";
     }
     edges_.push_back(oss.str());
   }
@@ -242,7 +244,7 @@ class DotPrinter : public AbstractPrinter {
         }
       }
       edges_.push_back(oss.str());
-    } else if (from->id() == from->clusterId() && to->id() == to->clusterId()) {
+    } else if (from->id() == from->coreClusterNode()->id() && to->id() == to->coreClusterNode()->id()) {
       oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"];";
       edges_.push_back(oss.str());
     }
@@ -252,7 +254,8 @@ class DotPrinter : public AbstractPrinter {
   std::string getNodeInformation(CoreNode *node) {
     std::stringstream ss;
 
-    ss << node->id() << " [label=\"" << node->name();
+    ss << node->id() << " [label=\"" << node->name() << " " << node->id() << " \\(" << node->threadId() << ", "
+       << node->graphId() << "\\)";
 
     switch (node->type()) {
       case NodeType::Graph:ss << "\"";
@@ -266,7 +269,12 @@ class DotPrinter : public AbstractPrinter {
         }
         if (debugOptions_ == DebugOptions::DEBUG) {
           ss << "\\nActive input connection: " << dynamic_cast<CoreSlot *>(node)->numberInputNodes();
-          ss << "\\nActive threads: " << dynamic_cast<CoreSlot *>(node)->numberActiveThreadInCluster();
+          if (this->structureOptions_ == StructureOptions::ALLTHREADING
+              || this->structureOptions_ == StructureOptions::ALL) {
+            ss << "\\nThread Active?: " << std::boolalpha << dynamic_cast<CoreSlot *>(node)->isActive();
+          } else {
+            ss << "\\nActive threads: " << dynamic_cast<CoreSlot *>(node)->numberActiveThreadInCluster();
+          }
         }
         if (this->structureOptions_ == StructureOptions::ALLTHREADING
             || this->structureOptions_ == StructureOptions::ALL) {
@@ -277,6 +285,9 @@ class DotPrinter : public AbstractPrinter {
              << this->durationPrinter(node->stdvWaitTimeCluster());
           ss << "\\nExecution Time: " << this->durationPrinter(node->meanExecTimeCluster().count()) << " +- "
              << this->durationPrinter(node->stdvExecTimeCluster());
+        }
+        if (node->extraPrintingInformation() != "") {
+          ss << "\\nExtra Information: " << node->extraPrintingInformation();
         }
         ss << "\"";
         ss << ",shape=circle";

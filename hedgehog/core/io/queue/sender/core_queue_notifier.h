@@ -27,10 +27,16 @@ class CoreQueueNotifier : public virtual CoreNotifier {
 
   void addSlot(CoreSlot *slot) override {
     HLOG_SELF(0, "Add Slot " << slot->name() << "(" << slot->id() << ")")
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "notifier.addSlot : " << this->name() << " " << this->id()  << "(" << this << ")" <<  " -> " << slot->name() << " "  << slot->id() << std::endl;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     this->slots()->insert(slot);
   }
   void removeSlot(CoreSlot *slot) override {
     HLOG_SELF(0, "Remove Slot " << slot->name() << "(" << slot->id() << ")")
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "notifier.removeSlot : " << this->name() << " " << this->id() << "(" << this << ")" << " -/> " << slot->name() << " "  << slot->id() << std::endl;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     this->slots_->erase(slot);
   }
 
@@ -43,7 +49,7 @@ class CoreQueueNotifier : public virtual CoreNotifier {
     std::for_each(this->slots()->begin(), this->slots()->end(), [](CoreSlot *s) { s->wakeUp(); });
   }
   void copyInnerStructure(CoreQueueNotifier *rhs) {
-    HLOG_SELF(0, "Duplicate CoreQueueNotifier information from " << rhs->name() << "(" << rhs->id() << ")")
+    HLOG_SELF(0, "Copy Cluster CoreQueueNotifier information from " << rhs->name() << "(" << rhs->id() << ")")
     for (CoreSlot *slot : *(rhs->slots_)) {
       slot->addNotifier(this);
     }

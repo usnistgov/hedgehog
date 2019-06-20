@@ -11,7 +11,8 @@ class CoreNode;
 class Node {
  public:
   virtual ~Node() = default;
-  virtual CoreNode *core() = 0;
+  virtual std::shared_ptr<CoreNode> core() = 0;
+  virtual std::string extraPrintingInformation() const { return ""; }
   virtual bool canTerminate() { return true; };
 };
 

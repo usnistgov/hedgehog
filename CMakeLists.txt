@@ -61,7 +61,7 @@ if (LOG)
     link_libraries(${GLOG_LIBRARIES})
     message(STATUS "GLOG imported")
     add_definitions(-DHLOG_ENABLED)
-    add_definitions(-DHLOG_LEVEL=0)
+    add_definitions(-DHLOG_LEVEL=4)
 endif (LOG)
 
 if (RUN_GTEST)
@@ -119,7 +119,7 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -137,6 +137,11 @@ if (BUILD_MAIN)
         string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
         message("Try to find Filesystem library in " ${FS_LIB_PATH})
         link_directories(${FS_LIB_PATH})
+
+
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
+
+
         if (APPLE)
             link_libraries(c++fs)
         else (APPLE)
@@ -201,17 +206,18 @@ if (BUILD_MAIN)
             hedgehog/core/node/execution_pipeline/core_switch_sender.h
             hedgehog/core/node/execution_pipeline/core_switch.h
 
-            hedgehog/core/behaviour/core_execute.h hedgehog/core/defaults/default_task_core.h hedgehog/api/state_manager/default_state_manager.h hedgehog/core/node/execution_pipeline/core_execution_pipeline.h hedgehog/core/defaults/default_execution_pipeline.h)
+            hedgehog/core/behaviour/core_execute.h hedgehog/core/defaults/core_default_task.h hedgehog/api/state_manager/default_state_manager.h hedgehog/core/node/execution_pipeline/core_execution_pipeline.h hedgehog/core/defaults/core_default_execution_pipeline.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)
         message(STATUS "CUDA enabled")
-        cuda_add_executable(main
-                main.cpp ${HEDGEHOG_SRC})
-        target_compile_definitions(main PUBLIC -DHH_USE_CUDA)
-    else ()
-        add_executable(main
-                main.cpp ${HEDGEHOG_SRC})
+        cuda_add_executable(mainCuda main_cuda.cc ${HEDGEHOG_SRC})
+        target_compile_definitions(mainCuda PUBLIC -DHH_USE_CUDA)
     endif ()
-
+    add_executable(mainSmall main_small_example.cc ${HEDGEHOG_SRC})
+    add_executable(main main_big_example.cc ${HEDGEHOG_SRC})
+    add_executable(mainEP main_ep.cc ${HEDGEHOG_SRC})
+    add_executable(mainmm main_mm_example.cc ${HEDGEHOG_SRC})
+    add_executable(maincycle main_cycle.cc ${HEDGEHOG_SRC})
+    add_executable(mainEPComposition main_ep_composition.cc ${HEDGEHOG_SRC})
 endif (BUILD_MAIN)

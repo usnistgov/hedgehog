@@ -1,4 +1,4 @@
-////
+/*////
 //// Created by hobbsubuntu on 6/9/19.
 ////
 //
@@ -101,4 +101,4 @@
 //
 //#endif //HH_USE_CUDA
 //
-//#endif //HEDGEHOG_ABSTRACT_CUDA_TASK_H
+//#endif //HEDGEHOG_ABSTRACT_CUDA_TASK_H*/

@@ -26,23 +26,21 @@ class Graph :
     public virtual Node {
   static_assert(HedgehogTraits::isUnique<GraphInputs...>, "A Graph can't accept multiple inputs with the same type.");
  private:
-  CoreGraph<GraphOutput, GraphInputs...> *graphCore_ = nullptr;
-//  std::set<std::shared_ptr<Node>> insideNodes_ = {};
+  std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graphCore_ = nullptr;
+  std::set<std::shared_ptr<Node>> insideNodes_ = {};
 
  public:
   Graph() {
-    graphCore_ = new CoreGraph<GraphOutput, GraphInputs...>(this, NodeType::Graph, "Graph");
+    graphCore_ = std::make_shared<CoreGraph<GraphOutput, GraphInputs...>>(this, NodeType::Graph, "Graph");
   }
 
   explicit Graph(std::string_view const &name) {
-    graphCore_ = new CoreGraph<GraphOutput, GraphInputs...>(this, NodeType::Graph, name);
+    graphCore_ = std::make_shared<CoreGraph<GraphOutput, GraphInputs...>>(this, NodeType::Graph, name);
   }
 
-  ~Graph() override {
-    delete graphCore_;
-  };
+  ~Graph() override = default;
 
-  CoreNode *core() final { return this->graphCore_; }
+  std::shared_ptr<CoreNode> core() final { return this->graphCore_; }
   std::string_view const &name() { return this->core()->name(); }
 
   template<
@@ -55,7 +53,7 @@ class Graph :
   >
   void input(std::shared_ptr<UserDefinedMultiReceiver> input) {
     assert(input != nullptr);
-//    this->insideNodes_.insert(input);
+    this->insideNodes_.insert(input);
     this->graphCore_->input(std::dynamic_pointer_cast<MultiReceivers<GraphInputs...>>(input));
   }
 
@@ -69,7 +67,7 @@ class Graph :
   >
   void output(std::shared_ptr<UserDefinedSender> output) {
     assert(output != nullptr);
-//    this->insideNodes_.insert(output);
+    this->insideNodes_.insert(output);
     this->graphCore_->output(std::static_pointer_cast<Sender<GraphOutput>>(output));
   }
 
@@ -77,11 +75,7 @@ class Graph :
       class UserDefinedSender, class UserDefinedMultiReceiver,
       class Output = typename UserDefinedSender::output_t,
       class Inputs = typename UserDefinedMultiReceiver::inputs_t,
-      class IsSender = typename std::enable_if<
-          std::is_base_of_v<
-              Sender<Output>, UserDefinedSender
-          >
-      >::type,
+      class IsSender = typename std::enable_if<std::is_base_of_v<Sender<Output>, UserDefinedSender>>::type,
       class IsMultiReceivers = typename std::enable_if<
           std::is_base_of_v<
               typename Helper::HelperMultiReceiversType<Inputs>::type, UserDefinedMultiReceiver
@@ -92,8 +86,8 @@ class Graph :
     static_assert(HedgehogTraits::contains_v<Output, Inputs>,
                   "The given io cannot be linked to this io: No common types.");
 
-//    this->insideNodes_.insert(from);
-//    this->insideNodes_.insert(to);
+    this->insideNodes_.insert(from);
+    this->insideNodes_.insert(to);
     this->graphCore_->addEdge(std::static_pointer_cast<Sender<Output>>(from),
                               std::static_pointer_cast<typename Helper::HelperMultiReceiversType<Inputs>::type>(to));
   }
@@ -111,6 +105,9 @@ class Graph :
   }
 
   void finishPushingData() {
+//    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    std::cout << "Finished pushing Data! " << std::endl;
+//    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     this->graphCore_->finishPushingData();
   }
 
@@ -126,7 +123,7 @@ class Graph :
                      ColorScheme colorScheme = ColorScheme::NONE,
                      StructureOptions structureOptions = StructureOptions::NONE,
                      DebugOptions debugOption = DebugOptions::NONE) {
-    auto core = this->core();
+    auto core = this->core().get();
     DotPrinter printer(std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core);
     core->visit(&printer);
   }

@@ -9,23 +9,18 @@
 #include "../../../../behaviour/node.h"
 
 template<class ...GraphInputs>
-class CoreGraphSource : public Node, public CoreQueueSender<GraphInputs> ... {
+class CoreGraphSource : public CoreQueueSender<GraphInputs> ... {
  public:
-  CoreGraphSource() : CoreNode("Source", NodeType::Source, 1),
-                      CoreNotifier("Source", NodeType::Source, 1),
-                      CoreQueueSender<GraphInputs>("Source", NodeType::Source, 1)... {
+  CoreGraphSource() :
+      CoreNode("Source", NodeType::Source, 1),
+      CoreNotifier("Source", NodeType::Source, 1),
+      CoreQueueNotifier("Source", NodeType::Source, 1),
+      CoreQueueSender<GraphInputs>("Source", NodeType::Source, 1)... {
     HLOG_SELF(0, "Creating CoreGraphSource")
   }
+
   ~CoreGraphSource() override {
     HLOG_SELF(0, "Destructing CoreGraphSource")
-  }
-
-  CoreNode *core() override {
-    return this;
-  }
-
-  Node *node() override {
-    return this;
   }
 
   void visit(AbstractPrinter *printer) override {
@@ -35,9 +30,6 @@ class CoreGraphSource : public Node, public CoreQueueSender<GraphInputs> ... {
       (CoreQueueSender<GraphInputs>::visit(printer), ...);
     }
   }
-
-  void copyWholeNode([[maybe_unused]]std::shared_ptr<std::multimap<std::string,
-                                                                   std::shared_ptr<Node>>> &insideNodesGraph) final {}
 
   void addSlot(CoreSlot *slot) final {
     HLOG_SELF(0, "Add slot: " << slot->name() << "(" << slot->id() << ")")
@@ -49,11 +41,24 @@ class CoreGraphSource : public Node, public CoreQueueSender<GraphInputs> ... {
     HLOG_SELF(0, __PRETTY_FUNCTION__)
     exit(42);
   }
+
   void notifyAllTerminated() final {
     HLOG_SELF(2, "Notify all terminated")
     (CoreQueueSender<GraphInputs>::notifyAllTerminated(), ...);
   }
+  std::shared_ptr<CoreNode> clone() override {
+    return std::make_shared<CoreGraphSource<GraphInputs...>>();
+  }
 
+  Node *node() override {
+    HLOG_SELF(0, __PRETTY_FUNCTION__)
+    exit(42);
+  }
+
+  void duplicateEdge(CoreNode *duplicateNode,
+                     std::map<CoreNode *, std::shared_ptr<CoreNode>> &correspondenceMap) override {
+    (CoreQueueSender<GraphInputs>::duplicateEdge(duplicateNode, correspondenceMap), ...);
+  }
 };
 
 #endif //HEDGEHOG_CORE_GRAPH_SOURCE_H
