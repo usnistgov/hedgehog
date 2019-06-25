@@ -38,7 +38,7 @@ option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
 option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
 option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
-
+add_definitions(-DHH_USE_CUDA)
 set(LOG OFF)
 set(BUILD_DOXYGEN OFF)
 set(RUN_GTEST OFF)
@@ -119,7 +119,8 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -156,14 +157,9 @@ if (BUILD_MAIN)
 
             hedgehog/api/graph.h
             hedgehog/api/task/abstract_task.h
-            hedgehog/api/task/abstract_managed_memory_receiver_task.h
             hedgehog/api/state_manager/abstract_state_manager.h
             hedgehog/api/state_manager/abstract_state.h
             hedgehog/api/execution_pipeline/abstract_execution_pipeline.h
-            hedgehog/api/memory_manager/abstract_cuda_allocator.h
-            hedgehog/api/memory_manager/abstract_release_rule.h
-            hedgehog/api/memory_manager/static_memory_manager.h
-            hedgehog/api/memory_manager/dynamic_memory_manager.h
             hedgehog/api/cuda/abstract_cuda_task.h
 
             hedgehog/behaviour/execute.h
@@ -171,9 +167,6 @@ if (BUILD_MAIN)
             hedgehog/behaviour/node.h
             hedgehog/behaviour/io/sender.h
             hedgehog/behaviour/io/multi_receivers.h
-            hedgehog/behaviour/memory_manager/managed_memory.h
-            hedgehog/behaviour/memory_manager/abstract_allocator.h
-            hedgehog/behaviour/memory_manager/abstract_memory_manager.h
 
             hedgehog/core/node/core_node.h
             hedgehog/core/node/core_task.h
@@ -200,24 +193,35 @@ if (BUILD_MAIN)
             hedgehog/tools/printers/abstract_printer.h
             hedgehog/tools/printers/dot_printer.h
             hedgehog/tools/scheduler/default_scheduler.h
-            hedgehog/tools/data_structure/pool.h
 
             hedgehog/behaviour/switch_rule.h
             hedgehog/core/node/execution_pipeline/core_switch_sender.h
             hedgehog/core/node/execution_pipeline/core_switch.h
 
-            hedgehog/core/behaviour/core_execute.h hedgehog/core/defaults/core_default_task.h hedgehog/api/state_manager/default_state_manager.h hedgehog/core/node/execution_pipeline/core_execution_pipeline.h hedgehog/core/defaults/core_default_execution_pipeline.h)
+            hedgehog/core/behaviour/core_execute.h
+            hedgehog/core/defaults/core_default_task.h
+            hedgehog/api/state_manager/default_state_manager.h
+            hedgehog/core/node/execution_pipeline/core_execution_pipeline.h
+            hedgehog/core/defaults/core_default_execution_pipeline.h
+
+            hedgehog/behaviour/memory_manager/abstract_memory_manager.h
+            hedgehog/api/memory_manager/memory_data.h
+            hedgehog/behaviour/memory_manager/pool.h
+            hedgehog/api/memory_manager/abstract_static_memory_manager.h
+            hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h hedgehog/api/memory_manager/abstract_cuda_memory_manager.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)
         message(STATUS "CUDA enabled")
         cuda_add_executable(mainCuda main_cuda.cc ${HEDGEHOG_SRC})
         target_compile_definitions(mainCuda PUBLIC -DHH_USE_CUDA)
+
+        cuda_add_executable(mainmm main_mm_example.cc ${HEDGEHOG_SRC})
+        target_compile_definitions(mainmm PUBLIC -DHH_USE_CUDA)
     endif ()
     add_executable(mainSmall main_small_example.cc ${HEDGEHOG_SRC})
     add_executable(main main_big_example.cc ${HEDGEHOG_SRC})
     add_executable(mainEP main_ep.cc ${HEDGEHOG_SRC})
-    add_executable(mainmm main_mm_example.cc ${HEDGEHOG_SRC})
     add_executable(maincycle main_cycle.cc ${HEDGEHOG_SRC})
     add_executable(mainEPComposition main_ep_composition.cc ${HEDGEHOG_SRC})
 endif (BUILD_MAIN)

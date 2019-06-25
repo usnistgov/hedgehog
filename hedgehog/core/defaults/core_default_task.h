@@ -52,7 +52,6 @@ class CoreDefaultTask
                   AbstractTask<TaskOutput, TaskInputs...> *task,
                   bool automaticStart)
       :
-
       CoreNode(name, type, numberThreads),
       CoreNotifier(name, type, numberThreads),
       CoreQueueNotifier(name, type, numberThreads),
@@ -61,37 +60,21 @@ class CoreDefaultTask
       CoreReceiver<TaskInputs>(name, type, numberThreads)...,
       CoreTask<TaskOutput, TaskInputs...>(name, numberThreads, type, task, automaticStart),
       DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...>(name, numberThreads, type, task, automaticStart)
-  ...
-  {}
+  ...{}
 
   virtual ~CoreDefaultTask() = default;
 
-//  CoreDefaultTask(CoreDefaultTask<TaskOutput, TaskInputs...> const &  rhs ) :
-//  CoreNode(rhs.name(), rhs.type(), rhs.numberThreads()),
-//  CoreNotifier(rhs.name(), rhs.type(), rhs.numberThreads()),
-//  CoreQueueNotifier(rhs.name(), rhs.type(), rhs.numberThreads()),
-//  CoreQueueSender<TaskOutput>(rhs.name(), rhs.type(), rhs.numberThreads()),
-//  CoreSlot(rhs.name(), rhs.type(), rhs.numberThreads()),
-//  CoreReceiver<TaskInputs>(rhs.name(), rhs.type(), rhs.numberThreads())...,
-//  CoreTask<TaskOutput, TaskInputs...>(rhs.name(), rhs.numberThreads(), rhs.type(), rhs.task(), rhs.automaticStart()),
-//    DefaultCoreTaskExecute<TaskInputs, TaskOutput, TaskInputs...>(rhs.name(), rhs.numberThreads(), rhs.type(), rhs.task(), rhs.automaticStart())...{
-//    HLOG_SELF(0,
-//              "Copy construction information from " << rhs.name() << "(" << rhs.id() << ") << and task " << rhs.name() << "("
-//                                            << rhs.id() << ")")
-//
-//
-//    this->isInside(true);
-//    if(rhs.isInCluster()){this->setInCluster();}
-//    this->numberThreads(rhs.numberThreads());
-//
-//  }
-
   std::shared_ptr<CoreNode> clone() override {
     return this->createCopyFromThis()->core();
-//    return std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(*this);
   }
 
-  void preRun() override { this->task()->initialize(); }
+  void preRun() override {
+    HLOG_SELF(0, "Initialize Memory manager for the task " << this->name() << " / " << this->id())
+    if (this->task()->memoryManager() != nullptr) {
+      this->task()->memoryManager()->initialize();
+    }
+    this->task()->initialize();
+  }
 
   void postRun() override {
     this->isActive(false);

@@ -76,7 +76,8 @@ class CoreQueueSender : public CoreSender<NodeOutput>, public virtual CoreQueueN
                            receiver,
                            HedgehogTraits::type_name<NodeOutput>(),
                            receiver->queueSize(),
-                           receiver->maxQueueSize());
+                           receiver->maxQueueSize(),
+                           HedgehogTraits::is_managed_memory_v<NodeOutput>);
       }
     }
   }

@@ -107,13 +107,13 @@ class DotPrinter : public AbstractPrinter {
     if (!node->isInside()) {
       outputFile_
           << "digraph " << node->id()
-          << " {\nlabel=\"" << node->name() << " " << node->id()
+          << " {\nlabel=\"" << node->name() //<< " " << node->id()
           << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
           << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
-          << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left;\n";
+          << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left; \n";
     } else {
-      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name() << " " << node->id()
-                  << "\"; fontsize=25; penwidth=5;\n";
+      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name() //<< " " << node->id()
+                  << "\"; fontsize=25; penwidth=5; fillcolor=white;\n";
     }
     outputFile_.flush();
   }
@@ -169,26 +169,31 @@ class DotPrinter : public AbstractPrinter {
 
   void printEdgeSwitchGraphs(CoreNode *to,
                              std::string const &idSwitch,
-                             std::string_view const &edgeType) override {
+                             std::string_view const &edgeType, bool isMemoryManaged) override {
     std::ostringstream
         oss;
 
     std::string
         idDest,
-        headLabel;
+        headLabel,
+        penWidth = ",penwidth=1";
+
+    if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
       if (to->isInCluster()) {
         for (auto &dest: to->ids()) {
 
           idDest = "box" + dest.second;
-          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\"" << "];";
+          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\""
+              << penWidth << "];";
         }
       } else {
-        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << "];";
+        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\""
+            << penWidth << "];";
       }
     } else if (to->id() == to->coreClusterNode()->id()) {
-      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"];";
+      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << penWidth << "];";
     }
     edges_.push_back(oss.str());
   }
@@ -197,7 +202,8 @@ class DotPrinter : public AbstractPrinter {
                  CoreNode const *to,
                  std::string_view const &edgeType,
                  size_t const &queueSize,
-                 size_t const &maxQueueSize) final {
+                 size_t const &maxQueueSize,
+                 bool isMemoryManaged) final {
     std::ostringstream
         oss;
 
@@ -205,7 +211,10 @@ class DotPrinter : public AbstractPrinter {
         headLabel,
         tailLabel,
         idDest,
-        queueStr;
+        queueStr,
+        penWidth = ",penwidth=1";
+
+    if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
     if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
       oss << " " << queueSize << " (" << maxQueueSize << ")";
@@ -223,10 +232,12 @@ class DotPrinter : public AbstractPrinter {
               idDest = "box" + dest.second;
               oss << source.first << " -> " << idDest << "[label=\"" << edgeType << queueStr << "\"" << headLabel
                   << tailLabel
+                  << penWidth
                   << "];";
             }
           } else {
             oss << source.first << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << headLabel
+                << penWidth
                 << "];";
           }
         }
@@ -236,16 +247,17 @@ class DotPrinter : public AbstractPrinter {
             tailLabel = ",lhead=cluster" + dest.second;
             idDest = "box" + dest.second;
             oss << from->id() << " -> " << idDest << "[label=\"" << edgeType << queueStr << "\"" << headLabel
-                << tailLabel << "];";
+                << tailLabel << penWidth << "];";
           }
         } else {
           oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << headLabel
+              << penWidth
               << "];";
         }
       }
       edges_.push_back(oss.str());
     } else if (from->id() == from->coreClusterNode()->id() && to->id() == to->coreClusterNode()->id()) {
-      oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"];";
+      oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << penWidth << "\"];";
       edges_.push_back(oss.str());
     }
   }
@@ -254,8 +266,9 @@ class DotPrinter : public AbstractPrinter {
   std::string getNodeInformation(CoreNode *node) {
     std::stringstream ss;
 
-    ss << node->id() << " [label=\"" << node->name() << " " << node->id() << " \\(" << node->threadId() << ", "
-       << node->graphId() << "\\)";
+    ss << node->id() << " [label=\"" << node->name()
+      //<< " " << node->id() << " \\(" << node->threadId() << ", " << node->graphId() << "\\)"
+        ;
 
     switch (node->type()) {
       case NodeType::Graph:ss << "\"";

@@ -7,6 +7,9 @@
 
 #include <type_traits>
 
+template<class T>
+class MemoryData;
+
 namespace HedgehogTraits {
 // Check if all parameters in a parameters pack are unique
 template<typename...>
@@ -16,6 +19,16 @@ template<typename T, typename... Rest>
 inline constexpr auto isUnique<T, Rest...> = std::bool_constant<
     (!std::is_same_v<T, Rest> && ...) && isUnique<Rest...>
 >{};
+
+// Test correctness f type given to a memory manager
+template<class POSSIBLEMAMANGEDMEMORY>
+struct IsManagedMemory {
+  constexpr static bool const value = std::is_base_of_v<MemoryData<POSSIBLEMAMANGEDMEMORY>, POSSIBLEMAMANGEDMEMORY>
+      && std::is_default_constructible_v<POSSIBLEMAMANGEDMEMORY>;
+};
+
+template<class POSSIBLEMAMANGEDMEMORY>
+inline constexpr bool is_managed_memory_v = IsManagedMemory<POSSIBLEMAMANGEDMEMORY>::value;
 
 // Check if a template T is in Template pack Ts
 template<typename T, typename... Ts>

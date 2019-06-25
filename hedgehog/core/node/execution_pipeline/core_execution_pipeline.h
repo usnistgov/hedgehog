@@ -43,10 +43,6 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
         numberGraphs_(numberGraphs),
         deviceIds_(deviceIds),
         coreSwitch_(std::make_shared<CoreSwitch<GraphInputs...>>("switch", NodeType::Switch, 1)) {
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!Begin creation EP!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     if (this->numberGraphs_ == 0) { this->numberGraphs_ = 1; }
 
     if (coreBaseGraph->isInside() || this->isInside()) {
@@ -69,10 +65,6 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
     coreBaseGraph->graphId(0);
     connectGraphToEP(coreBaseGraph);
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "SWITCH: " << std::endl;
-//    std::cout << "\t" << *(this->coreSwitch_) << std::endl;
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     this->duplicateGraphs();
   }
@@ -142,14 +134,6 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
   void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
                                                                    std::shared_ptr<CoreNode>>> &insideNodesGraph) override {
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> epGraph : this->epGraphs_) {
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//      using namespace std::chrono_literals;
-//      std::this_thread::sleep_for(2s);
-//      std::cout << "Spawning threads: " << epGraph->id() << " gid: " << epGraph->graphId() << std::endl;
-//      for (std::pair<CoreNode *const, std::shared_ptr<CoreNode>> const &duplicatNode : *(epGraph->insideNodes())) {
-//        std::cout << "\t " << duplicatNode.second->name() << " / " << duplicatNode.second->id() << std::endl;
-//      }
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       epGraph->createInnerClustersAndLaunchThreads();
     }
   }
@@ -168,9 +152,6 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   template<class GraphInput>
   void addEdgeSwitchGraph(std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> &graph) {
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "Connect switch " <<this->coreSwitch_->id() << " to graph " << graph->id() << std::endl;
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     auto coreSender = std::static_pointer_cast<CoreSender<GraphInput>>(this->coreSwitch_);
     auto coreNotifier = std::static_pointer_cast<CoreNotifier>(coreSender);
 
@@ -218,7 +199,8 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     for (CoreNode *graphInputNode : *(graph->inputsCoreNodes())) {
       printer->printEdgeSwitchGraphs(graphInputNode,
                                      this->id(),
-                                     HedgehogTraits::type_name<GraphInput>());
+                                     HedgehogTraits::type_name<GraphInput>(),
+                                     HedgehogTraits::is_managed_memory_v<GraphInput>);
     }
   }
 };

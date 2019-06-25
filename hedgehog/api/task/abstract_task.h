@@ -9,6 +9,7 @@
 #include "../../behaviour/io/sender.h"
 #include "../../behaviour/execute.h"
 #include "../../behaviour/threadable.h"
+#include "../../behaviour/memory_manager/abstract_memory_manager.h"
 #include "../../core/node/core_node.h"
 #include "../../core/defaults/core_default_task.h"
 
@@ -20,6 +21,8 @@ class AbstractTask :
     public Execute<TaskInputs> ... {
  protected:
   std::shared_ptr<CoreTask<TaskOutput, TaskInputs...>> taskCore_ = nullptr;
+  std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm_ = nullptr;
+
   using Execute<TaskInputs>::execute...;
 
  public:
@@ -27,7 +30,25 @@ class AbstractTask :
     taskCore_ = std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>("Task", 1, NodeType::Task, this, false);
   }
 
-  explicit AbstractTask(std::string_view const &name, size_t numberThreads = 1, bool automaticStart = false) {
+  explicit AbstractTask(std::string_view const &name) {
+    taskCore_ =
+        std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(name,
+                                                                     1,
+                                                                     NodeType::Task,
+                                                                     this,
+                                                                     false);
+  }
+
+  explicit AbstractTask(std::string_view const &name, size_t numberThreads) {
+    taskCore_ =
+        std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(name,
+                                                                     numberThreads,
+                                                                     NodeType::Task,
+                                                                     this,
+                                                                     false);
+  }
+
+  explicit AbstractTask(std::string_view const &name, size_t numberThreads, bool automaticStart) {
     taskCore_ =
         std::make_shared<CoreDefaultTask<TaskOutput, TaskInputs...>>(name,
                                                                      numberThreads,
@@ -54,24 +75,39 @@ class AbstractTask :
 
   ~AbstractTask() override = default;
 
+  template<class Input, typename std::enable_if_t<HedgehogTraits::contains_v<Input, TaskInputs...>>>
+  void pushData(std::shared_ptr<Input> &data) { this->taskCore_->pushData(data); }
+  void addResult(std::shared_ptr<TaskOutput> output) { this->taskCore_->sendAndNotify(output); }
+
   std::string_view name() { return this->taskCore_->name(); }
   size_t numberThreads() { return this->taskCore_->numberThreads(); }
   bool automaticStart() { return this->taskCore_->automaticStart(); }
   NodeType nodeType() { return this->taskCore_->type(); }
-
+  int deviceId() { return this->taskCore_->deviceId(); }
   std::shared_ptr<CoreNode> core() final { return taskCore_; }
+  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &memoryManager() const {
+    return mm_;
+  }
 
   virtual std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> copy() { return nullptr; }
   virtual void initialize() {}
-  bool canTerminate() override {
-    return !this->taskCore_->hasNotifierConnected();
+
+  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) {
+    mm_ = mm;
   }
 
-  virtual void shutdown() {}
+  std::shared_ptr<TaskOutput> getManagedMemory() {
+    if (mm_ == nullptr) {
+      std::cerr
+          << "To get managed memory, you need first to connect a memory manager to the task via \"connectMemoryManager()\""
+          << std::endl;
+      exit(42);
+    }
+    return mm_->getData();
+  }
 
-  template<class Input, typename std::enable_if_t<HedgehogTraits::contains_v<Input, TaskInputs...>>>
-  void pushData(std::shared_ptr<Input> &data) { this->taskCore_->pushData(data); }
-  void addResult(std::shared_ptr<TaskOutput> output) { this->taskCore_->sendAndNotify(output); }
+  bool canTerminate() override { return !this->taskCore_->hasNotifierConnected(); }
+  virtual void shutdown() {}
 
 };
 

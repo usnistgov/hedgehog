@@ -30,10 +30,6 @@ class CoreDefaultExecutionPipelineExecute : public virtual CoreExecutionPipeline
   void callExecute([[maybe_unused]]std::shared_ptr<GraphInput> data) override {
     for (auto graph : this->epGraphs_) {
       if (this->callSendToGraph<GraphInput>(data, graph->graphId())) {
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        std::cout << "Sending data to graph " << graph->id() << " -- " << graph->graphId() << std::endl;
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         std::static_pointer_cast<CoreGraphReceiver<GraphInput>>(graph)->receive(data);
         graph->wakeUp();
       }

@@ -6,6 +6,7 @@
 #define HEDGEHOG_CORE_TASK_H
 
 #include <variant>
+#include <string_view>
 
 #include "../../tools/traits.h"
 #include "../io/queue/receiver/core_queue_multi_receivers.h"
@@ -43,9 +44,6 @@ class CoreTask
   CoreQueueMultiReceivers<TaskInputs...>(name, type, numberThreads), task_(task),
   automaticStart_(automaticStart) {
     HLOG_SELF(0, "Creating CoreTask with task: " << task << " type: " << (int) type << " and name: " << name)
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "->->Constructing Task " << this->name() << " / " << this->id() << " with the AbstractTask: "  << this->task() << std::endl;
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   }
 
   ~CoreTask() override {
@@ -55,45 +53,39 @@ class CoreTask
 
   bool automaticStart() const { return automaticStart_; }
 
-  Node *node() override {
-    return task_;
-  }
+  Node *node() override { return task_; }
 
   AbstractTask<TaskOutput, TaskInputs...> *task() const {
     return task_;
   }
 
-
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
     if (printer->hasNotBeenVisited(this)) {
       printer->printNodeInformation(this);
-      CoreQueueSender < TaskOutput > ::visit(printer);
+      CoreQueueSender<TaskOutput>::visit(printer);
     }
   }
 
   void copyInnerStructure(CoreTask<TaskOutput, TaskInputs...> *rhs) {
     HLOG_SELF(0, "Copy cluster CoreTask information from " << rhs->name() << "(" << rhs->id() << ")")
     CoreQueueMultiReceivers < TaskInputs...>::copyInnerStructure(rhs);
-    CoreQueueSender < TaskOutput > ::copyInnerStructure(rhs);
+    CoreQueueSender<TaskOutput>::copyInnerStructure(rhs);
     CoreNode::copyInnerStructure(rhs);
   }
 
   void createCluster(std::shared_ptr<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>> &insideNodesGraph) override {
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << std::endl;
-//    std::cout << __PRETTY_FUNCTION__ << std::endl;
-//    std::cout << "Creating cluster for: " << this->name() << " / " << this->id() << std::endl;
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    auto mm = this->task()->memoryManager();
     if (this->numberThreads() > 1) { this->setInCluster(); }
-
-//    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "copy whole node: " << this->id() << " gid: " << this->graphId() << std::endl;
-//    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     for (size_t threadId = 1; threadId < this->numberThreads(); threadId++) {
       auto taskCopy = createCopyFromThis();
+      if (mm) {
+        HLOG_SELF(1, "Copy the MM pointer " << mm
+                                            << " from: " << this->name() << " / " << this->id()
+                                            << " to: " << taskCopy->core()->name() << " / " << taskCopy->core()->id())
+        taskCopy->connectMemoryManager(mm);
+      }
       auto coreCopy = std::dynamic_pointer_cast<CoreTask<TaskOutput, TaskInputs...>>(taskCopy->core());
       coreCopy->threadId(threadId);
       coreCopy->coreClusterNode(this);
@@ -113,6 +105,7 @@ class CoreTask
     this->isActive(true);
 
     this->preRun();
+
     if (this->automaticStart()) {
       start = std::chrono::high_resolution_clock::now();
       (static_cast<CoreExecute<TaskInputs> *>(this)->callExecute(nullptr), ...);
@@ -131,14 +124,7 @@ class CoreTask
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    mutex.lock();
-//    std::cout << "|||||||||||||||||||||||||| Task: " << this->name() << " / " << this->id() << " is dying." << std::endl;
-//    mutex.unlock();
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     this->postRun();
-
     this->wakeUp();
   }
 
@@ -146,14 +132,6 @@ class CoreTask
     if (lock) {
       this->lockUniqueMutex();
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    mutex.lock();
-//    std::cout
-//    << this->name() << " id:" << this->id() << " gid:" << this->graphId()
-//    << " canTerminate: " << std::boolalpha << this->node()->canTerminate()
-//    << " receiversEmpty: " << this->receiversEmpty() << std::endl;
-//    mutex.unlock();
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     bool result = this->node()->canTerminate() && this->receiversEmpty();
     HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
     if (lock) {
@@ -201,17 +179,14 @@ class CoreTask
 
   std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> createCopyFromThis() {
     HLOG_SELF(0, "Copy Whole Task")
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "->->Create a copy of task : " << this->name() << " / " << this->id() << " with as AbstractTask: " << this->task() << std::endl;
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> sharedAbstractTaskCopy = this->task()->copy();
     if (sharedAbstractTaskCopy == nullptr) {
       HLOG_SELF(0,
-                "A copy for the queue " << this->name()
-                                        << " has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.")
-      std::cerr << "A copy for the queue " << this->name()
-                << " has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object."
+                "A copy for the task \"" << this->name()
+                                         << "\" has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.")
+      std::cerr << "A copy for the task \"" << this->name()
+                << "\" has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object."
                 << std::endl;
       exit(42);
     }
@@ -221,12 +196,12 @@ class CoreTask
     auto coreCopy = std::dynamic_pointer_cast<CoreTask<TaskOutput, TaskInputs...>>(sharedAbstractTaskCopy->core());
 
     if (coreCopy == nullptr) {
-      HLOG_SELF(0,
-                "A copy for the queue " << this->name()
-                                        << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized queue constructor.")
-      std::cerr << "A copy for the queue " << this->name()
-                << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the  AbstractTask constructor in your specialized queue constructor."
-                << std::endl;
+      std::ostringstream oss;
+      oss << "A copy for the queue " << this->name()
+          << " has been invoked but the AbstractTask constructor has not been called. To fix this error, call the "
+             "AbstractTask constructor in your specialized queue constructor.";
+      HLOG_SELF(0, oss.str())
+      std::cerr << oss.str() << std::endl;
       exit(42);
     }
 
@@ -237,16 +212,23 @@ class CoreTask
     if (this->isInCluster()) { coreCopy->setInCluster(); }
     coreCopy->numberThreads(this->numberThreads());
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "New copy in cluster made: " << std::endl;
-//    std::cout << "\t\tCore: " << coreCopy->name() << " / " << coreCopy->id() << std::endl;
-//    std::cout << "->->Copy Created : " << coreCopy->name() << " / " << coreCopy->id() << " with as AbstractTask: " << coreCopy->task() << std::endl;
-//
-//    std::cout << "->->sharedAbstractTaskCopy: " << sharedAbstractTaskCopy << std::endl;
-//    std::cout << "->->sharedAbstractTaskCopy->core(): " << sharedAbstractTaskCopy->core() << std::endl;
-//    std::cout << "->->sharedAbstractTaskCopy->name(): " << sharedAbstractTaskCopy->name() << std::endl;
-//    std::cout << "->->sharedAbstractTaskCopy->copy(): " << sharedAbstractTaskCopy->copy() << std::endl;
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (this->task()->memoryManager()) {
+      auto copyMemoryManager = this->task()->memoryManager()->copy();
+      if (!copyMemoryManager) {
+        std::ostringstream oss;
+        oss << "An execution pipeline has been created with a graph that hold a task named \""
+            << this->name()
+            << "\" connected to a memory manager. Or the memory manager does not have a compliant copy method. "
+               "Please implement it.";
+        HLOG_SELF(0, oss.str())
+        std::cerr << oss.str() << std::endl;
+        exit(42);
+      }
+      HLOG_SELF(0, "Copy the MM " << this->task()->memoryManager() << " to: " << copyMemoryManager
+                                  << " and set it to the task: " << coreCopy->name() << " / " << coreCopy->id())
+      sharedAbstractTaskCopy->connectMemoryManager(copyMemoryManager);
+    }
+
     return sharedAbstractTaskCopy;
   }
 

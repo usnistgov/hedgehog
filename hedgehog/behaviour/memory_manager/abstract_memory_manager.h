@@ -1,63 +1,69 @@
 //
-// Created by anb22 on 5/24/19.
+// Created by anb22 on 6/21/19.
 //
 
 #ifndef HEDGEHOG_ABSTRACT_MEMORY_MANAGER_H
 #define HEDGEHOG_ABSTRACT_MEMORY_MANAGER_H
 
-#include <deque>
 #include <memory>
+#include <mutex>
 #include <condition_variable>
 
-#include "abstract_allocator.h"
-#include "../../api/memory_manager/abstract_release_rule.h"
+#include "../../tools/traits.h"
 #include "../../tools/logger.h"
-#include "../../tools/data_structure/pool.h"
+#include "../../api/memory_manager/memory_data.h"
+#include "pool.h"
 
-template<class Data>
+template<class MANAGEDDATA>
 class AbstractMemoryManager {
  private:
-  std::unique_ptr<Pool<Data>>
-      pool_;
-
-  std::unique_ptr<AbstractAllocator<Data>>
-      allocator_;
-
-  std::unique_ptr<std::condition_variable>
-      conditionVariable_;
+  size_t poolSize_ = 0;
+  int deviceId_ = 0;
+  std::unique_ptr<Pool<MANAGEDDATA>> pool_ = {};
+  bool initialized_ = false;
 
  public:
   AbstractMemoryManager() = delete;
-  template<
-      class UserDefinedAllocator,
-      class IsAllocator = typename std::enable_if<
-          std::is_base_of_v<AbstractAllocator<Data>, UserDefinedAllocator>
-      >::type
-  >
-  AbstractMemoryManager(size_t poolSize, std::unique_ptr<UserDefinedAllocator> allocator)
-      : conditionVariable_(std::make_unique<std::condition_variable>()) {
-    this->pool_ = std::make_unique<Pool<Data>>(poolSize, this);
-    this->allocator_ =
-        std::unique_ptr<AbstractAllocator<Data>>{
-            static_cast<AbstractAllocator<Data> *>(std::move(allocator).release())};
-    this->allocator_->initialize();
-  }
+  explicit AbstractMemoryManager(size_t const &poolSize)
+      : poolSize_(poolSize),
+        deviceId_(0),
+        pool_(std::make_unique<Pool<MANAGEDDATA>>()) {
+    static_assert(
+        HedgehogTraits::is_managed_memory_v<MANAGEDDATA>,
+        "The type given to the memory manager should inherit \"MemoryData\", and be default constructible!");
+  };
 
-  virtual ~AbstractMemoryManager() {
-    HLOG(4, "AbstractMemoryManager Destruction")
-    for (std::shared_ptr<ManagedMemory<Data>> mem : this->pool()->queue()) {
-      HLOG(4, "AbstractMemoryManager Deallocating: " << mem)
-      this->allocator()->deallocate(mem->data());
+  virtual ~AbstractMemoryManager() = default;
+  virtual std::shared_ptr<AbstractMemoryManager<MANAGEDDATA>> copy() = 0;
+
+  void deviceId(int deviceId) { deviceId_ = deviceId; }
+
+  std::shared_ptr<MANAGEDDATA> getData() {
+    std::shared_ptr<MANAGEDDATA> managedMemory;
+    HLOG(4, "StaticMemoryManager memory pool size = " << this->pool()->queue().size())
+    managedMemory = this->pool()->pop_front();
+    HLOG(4,
+         "StaticMemoryManager After waiting: received: " << managedMemory << " pSize: " << (int) (this->pool()->size()))
+    return managedMemory;
+  };
+
+  void releaseData(std::shared_ptr<MemoryData<MANAGEDDATA>> managedMemory) {
+    managedMemory->lock();
+    if (this->canRecycle(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory))) {
+      managedMemory->recycle();
+      this->pool_->push_back(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory));
     }
-  }
+    managedMemory->unlock();
+  };
 
-  virtual std::shared_ptr<ManagedMemory<Data>> getMemory(std::unique_ptr<AbstractReleaseRule<Data>>, size_t) = 0;
-  virtual void release(std::shared_ptr<ManagedMemory<Data>>) = 0;
+  virtual bool canRecycle(std::shared_ptr<MANAGEDDATA> const &) = 0;
+  virtual void initialize() {};
 
  protected:
-  std::unique_ptr<Pool<Data>> const &pool() const { return pool_; }
-  std::unique_ptr<AbstractAllocator<Data>> const &allocator() const { return allocator_; }
-  std::unique_ptr<std::condition_variable> const &conditionVariable() const { return conditionVariable_; }
+  std::unique_ptr<Pool<MANAGEDDATA>> const &pool() const { return pool_; }
+  size_t poolSize() const { return poolSize_; }
+  int deviceId() const { return deviceId_; }
+  bool isInitialized() const { return initialized_; }
+  void setInitialized() { initialized_ = true; }
 };
-
 #endif //HEDGEHOG_ABSTRACT_MEMORY_MANAGER_H

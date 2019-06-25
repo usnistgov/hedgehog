@@ -4,18 +4,19 @@
 
 #include "hedgehog/hedgehog.h"
 
-std::vector<int> vDeviceIds = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+int numberDuplicate = 1;
+std::vector<int> vDeviceIds(numberDuplicate, 0);
 
 class IITask : public AbstractTask<int, int> {
  public:
-  IITask() : AbstractTask("IITask", 10, false) {}
+  IITask() : AbstractTask("IITask", numberDuplicate, false) {}
   void execute(std::shared_ptr<int> ptr) override { addResult(ptr); }
   std::shared_ptr<AbstractTask<int, int>> copy() override { return std::make_shared<IITask>(); }
 };
 
 class IIEP : public AbstractExecutionPipeline<int, int> {
  public:
-  IIEP(std::shared_ptr<Graph<int, int>> const &graph) : AbstractExecutionPipeline(graph, 10, vDeviceIds) {}
+  IIEP(std::shared_ptr<Graph<int, int>> const &graph) : AbstractExecutionPipeline(graph, numberDuplicate, vDeviceIds) {}
   bool sendToGraph([[maybe_unused]]std::shared_ptr<int> &data, [[maybe_unused]]size_t const &graphId) override {
     return true;
   }
@@ -33,11 +34,12 @@ std::shared_ptr<Graph<int, int>> innerGraph() {
 
 std::shared_ptr<Graph<int, int>> wrapperGraph(const std::shared_ptr<Graph<int, int>> &innerGraph) {
   auto g = std::make_shared<Graph<int, int>>();
+  auto ep = std::make_shared<IIEP>(innerGraph);
   auto t1 = task(), t2 = task();
 
   g->input(t1);
-  g->addEdge(t1, innerGraph);
-  g->addEdge(innerGraph, t2);
+  g->addEdge(t1, ep);
+  g->addEdge(ep, t2);
   g->output(t2);
 
   return g;
@@ -50,12 +52,12 @@ int main() {
 
   size_t count = 0;
 
-  for (int i = 0; i < 9; ++i) { tempGraph = wrapperGraph(tempGraph); }
+  for (int i = 0; i < numberDuplicate - 1; ++i) { tempGraph = wrapperGraph(tempGraph); }
 
   graph = wrapperGraph(tempGraph);
   graph->executeGraph();
 
-  for (int i = 0; i < 10; ++i) { graph->pushData(std::make_shared<int>(i)); }
+  for (int i = 0; i < numberDuplicate; ++i) { graph->pushData(std::make_shared<int>(i)); }
 
   graph->finishPushingData();
 
