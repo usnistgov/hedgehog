@@ -11,8 +11,7 @@
 #include "../task/abstract_task.h"
 
 #ifndef checkCudaErrors
-#define checkCudaErrors(err) if (!HLOG_ENABLED) {} \
-        else __checkCudaErrors(err, __FILE__, __LINE__)
+#define checkCudaErrors(err) __checkCudaErrors(err, __FILE__, __LINE__)
 
 // These are the inline versions for all of the SDK helper functions
 inline void __checkCudaErrors(cudaError_t err, [[maybe_unused]]const char *file, [[maybe_unused]]const int line) {
@@ -20,7 +19,7 @@ inline void __checkCudaErrors(cudaError_t err, [[maybe_unused]]const char *file,
     HLOG(0, "checkCudaErrors() API error = "
         << err
         << "\"" << cudaGetErrorString(err) << " \" from "
-        << file << ":" << line);
+        << file << ":" << line)
     cudaDeviceReset();
     exit(42);
   }
@@ -56,9 +55,9 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
 
     checkCudaErrors(cudaGetDeviceCount(&numGpus));
 
-//        assert(cudaDeviceId_ < numGpus);
+    assert(this->deviceId() < numGpus);
 
-    checkCudaErrors(cudaSetDevice(this->core()->deviceId()));
+    checkCudaErrors(cudaSetDevice(this->deviceId()));
     checkCudaErrors(cudaStreamCreate(&stream_));
 
     if (enablePeerAccess_) {

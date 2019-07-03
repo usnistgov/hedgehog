@@ -15,6 +15,7 @@
 #include "abstract_printer.h"
 
 enum class ColorScheme { NONE, EXECUTION, WAIT };
+enum class BackgroundColor { PASTEL, PAIRED, ACCENT, SET };
 enum class StructureOptions { NONE, ALLTHREADING, QUEUE, ALL };
 enum class DebugOptions { NONE, DEBUG };
 
@@ -107,27 +108,33 @@ class DotPrinter : public AbstractPrinter {
     if (!node->isInside()) {
       outputFile_
           << "digraph " << node->id()
-          << " {\nlabel=\"" << node->name() //<< " " << node->id()
-          << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
+          << " {\nlabel=\"" << node->name();
+      if (debugOptions_ == DebugOptions::DEBUG) {
+        outputFile_ << " " << node->id();
+      }
+      outputFile_ << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
           << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
           << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left; \n";
     } else {
-      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name() //<< " " << node->id()
-                  << "\"; fontsize=25; penwidth=5; fillcolor=white;\n";
+      outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name();
+      if (debugOptions_ == DebugOptions::DEBUG) {
+        outputFile_ << " " << node->id();
+      }
+      outputFile_ << "\"; fontsize=25; penwidth=5; fillcolor=white;\n";
     }
     outputFile_.flush();
   }
 
   void printClusterHeader(CoreNode const *clusterNode) final {
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
-      outputFile_ << "subgraph cluster" << clusterNode->id() << " {\nlabel=\"\"; penwidth=1; style=dotted;\n";
+      outputFile_ << "subgraph cluster" << clusterNode->id()
+                  << " {\nlabel=\"\"; penwidth=3; style=filled; fillcolor=\"#4e78cf63\"; color=\"#4e78cf\";\n";
       outputFile_ << "box" << clusterNode->id() << "[label=\"\", shape=egg];\n";
       outputFile_.flush();
     }
   }
 
   void printClusterFooter() final {
-
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
       outputFile_ << "}\n";
       outputFile_.flush();
@@ -152,13 +159,15 @@ class DotPrinter : public AbstractPrinter {
     }
   }
 
-  void printExecutionPipelineHeader(std::string_view const &executionPipelineName,
-                                    std::string const &executionPipelineId,
-                                    std::string const &switchId) override {
-    outputFile_ << "subgraph cluster" << executionPipelineId << " {\n"
-                << "label=\"" << executionPipelineName
-                << "\"; penwidth=1; style=dotted; style=filled; fillcolor=gray80;\n "
-                << switchId << "[label=\"\", shape=triangle];\n";
+  void printExecutionPipelineHeader(CoreNode *epNode, CoreNode *switchNode) override {
+    outputFile_ << "subgraph cluster" << epNode->id() << " {\n"
+                << "label=\"" << epNode->name();
+    if (debugOptions_ == DebugOptions::DEBUG) {
+      outputFile_ << " " << epNode->id() << " / " << switchNode->id();
+    }
+    outputFile_ << "\"; penwidth=1; style=dotted; style=filled; fillcolor=gray80;\n "
+                << switchNode->id() << "[label=\"\", shape=triangle];\n";
+
     outputFile_.flush();
   }
 
@@ -266,9 +275,10 @@ class DotPrinter : public AbstractPrinter {
   std::string getNodeInformation(CoreNode *node) {
     std::stringstream ss;
 
-    ss << node->id() << " [label=\"" << node->name()
-      //<< " " << node->id() << " \\(" << node->threadId() << ", " << node->graphId() << "\\)"
-        ;
+    ss << node->id() << " [label=\"" << node->name();
+    if (debugOptions_ == DebugOptions::DEBUG) {
+      ss << " " << node->id() << " \\(" << node->threadId() << ", " << node->graphId() << "\\)";
+    }
 
     switch (node->type()) {
       case NodeType::Graph:ss << "\"";
@@ -374,6 +384,21 @@ class DotPrinter : public AbstractPrinter {
       oss << duration << "us";
     }
     return oss.str();
+  }
+
+  std::string colorBackgroundValue(BackgroundColor const &background) {
+    std::string ret;
+    switch (background) {
+      case BackgroundColor::PASTEL:ret = "pastel18";
+        break;
+      case BackgroundColor::PAIRED:ret = "paired8";
+        break;
+      case BackgroundColor::ACCENT:ret = "accent8";
+        break;
+      case BackgroundColor::SET:ret = "set18";
+        break;
+    }
+    return ret;
   }
 };
 

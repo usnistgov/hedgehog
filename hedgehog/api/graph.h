@@ -100,16 +100,9 @@ class Graph :
       class Input,
       class = std::enable_if_t<HedgehogTraits::Contains<Input, GraphInputs...>::value>
   >
-  void pushData(std::shared_ptr<Input> data) {
-    this->graphCore_->broadcastAndNotifyToAllInputs(data);
-  }
+  void pushData(std::shared_ptr<Input> data) { this->graphCore_->broadcastAndNotifyToAllInputs(data); }
 
-  void finishPushingData() {
-//    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "Finished pushing Data! " << std::endl;
-//    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    this->graphCore_->finishPushingData();
-  }
+  void finishPushingData() { this->graphCore_->finishPushingData(); }
 
   std::shared_ptr<GraphOutput> getBlockingResult() {
     return this->graphCore_->getBlockingResult();

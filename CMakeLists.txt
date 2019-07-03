@@ -38,10 +38,9 @@ option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
 option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
 option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
-add_definitions(-DHH_USE_CUDA)
 set(LOG OFF)
 set(BUILD_DOXYGEN OFF)
-set(RUN_GTEST OFF)
+set(RUN_GTEST ON)
 set(BUILD_MAIN ON)
 
 # Cuda
@@ -61,7 +60,7 @@ if (LOG)
     link_libraries(${GLOG_LIBRARIES})
     message(STATUS "GLOG imported")
     add_definitions(-DHLOG_ENABLED)
-    add_definitions(-DHLOG_LEVEL=4)
+    add_definitions(-DHLOG_LEVEL=1)
 endif (LOG)
 
 if (RUN_GTEST)
@@ -97,7 +96,6 @@ if (BUILD_DOXYGEN)
     find_package(Doxygen REQUIRED)
     message(STATUS "Doxygen found")
     if (DOXYGEN_FOUND)
-        add_definitions(-DPROFILE)
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doxygen/hedgehog.cfg ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
         add_custom_target(doc ALL
                 ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
@@ -119,8 +117,9 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
+        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fprofile-arcs -ftest-coverage --coverage")
+        #                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -208,20 +207,15 @@ if (BUILD_MAIN)
             hedgehog/api/memory_manager/memory_data.h
             hedgehog/behaviour/memory_manager/pool.h
             hedgehog/api/memory_manager/abstract_static_memory_manager.h
-            hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h hedgehog/api/memory_manager/abstract_cuda_memory_manager.h)
+            hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h
+            hedgehog/api/memory_manager/abstract_cuda_memory_manager.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)
         message(STATUS "CUDA enabled")
-        cuda_add_executable(mainCuda main_cuda.cc ${HEDGEHOG_SRC})
-        target_compile_definitions(mainCuda PUBLIC -DHH_USE_CUDA)
-
-        cuda_add_executable(mainmm main_mm_example.cc ${HEDGEHOG_SRC})
-        target_compile_definitions(mainmm PUBLIC -DHH_USE_CUDA)
+        cuda_add_executable(main_cuda main.cc ${HEDGEHOG_SRC})
+        target_compile_definitions(main_cuda PUBLIC -DHH_USE_CUDA)
     endif ()
-    add_executable(mainSmall main_small_example.cc ${HEDGEHOG_SRC})
-    add_executable(main main_big_example.cc ${HEDGEHOG_SRC})
-    add_executable(mainEP main_ep.cc ${HEDGEHOG_SRC})
-    add_executable(maincycle main_cycle.cc ${HEDGEHOG_SRC})
-    add_executable(mainEPComposition main_ep_composition.cc ${HEDGEHOG_SRC})
+
+    add_executable(main main.cc ${HEDGEHOG_SRC})
 endif (BUILD_MAIN)

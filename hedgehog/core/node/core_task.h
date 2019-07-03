@@ -29,7 +29,7 @@ class CoreTask
   AbstractTask<TaskOutput, TaskInputs...> *task_ = nullptr;
   bool automaticStart_ = false;
   //Store all AbstractTask clones
-  std::vector<std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>>> clusterAbstractTask_;
+  std::vector<std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>>> clusterAbstractTask_ = {};
 
  public:
   CoreTask(std::string_view const &name,
@@ -52,12 +52,8 @@ class CoreTask
   }
 
   bool automaticStart() const { return automaticStart_; }
-
   Node *node() override { return task_; }
-
-  AbstractTask<TaskOutput, TaskInputs...> *task() const {
-    return task_;
-  }
+  AbstractTask<TaskOutput, TaskInputs...> *task() const { return task_; }
 
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
@@ -96,14 +92,12 @@ class CoreTask
   }
 
   void run() override {
+    HLOG_SELF(2, "Run")
     std::chrono::time_point<std::chrono::high_resolution_clock>
         start,
         finish;
 
-    HLOG_SELF(2, "Run")
-
     this->isActive(true);
-
     this->preRun();
 
     if (this->automaticStart()) {
@@ -115,28 +109,27 @@ class CoreTask
 
     while (!this->callCanTerminate(true)) {
       start = std::chrono::high_resolution_clock::now();
-      this->waitForNotification();
+      bool canTerminate = this->waitForNotification();
       finish = std::chrono::high_resolution_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+      if (canTerminate) { break; }
       start = std::chrono::high_resolution_clock::now();
       (this->operateReceivers<TaskInputs>(), ...);
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+
     }
 
     this->postRun();
     this->wakeUp();
   }
 
-  bool callCanTerminate(bool lock) {
-    if (lock) {
-      this->lockUniqueMutex();
-    }
-    bool result = this->node()->canTerminate() && this->receiversEmpty();
+  virtual bool callCanTerminate(bool lock) {
+    bool result;
+    if (lock) { this->lockUniqueMutex(); }
+    result = this->node()->canTerminate();
     HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
-    if (lock) {
-      this->unlockUniqueMutex();
-    }
+    if (lock) { this->unlockUniqueMutex(); }
     return result;
   };
 
@@ -160,7 +153,7 @@ class CoreTask
     }
   }
 
-  void waitForNotification() override {
+  bool waitForNotification() override {
     std::unique_lock<std::mutex> lock(*(this->slotMutex()));
     HLOG_SELF(2, "Wait for notification")
     this->notifyConditionVariable()->wait(lock,
@@ -175,6 +168,8 @@ class CoreTask
                                             return !receiversEmpty || callCanTerminate;
                                           });
     HLOG_SELF(2, "Notification received")
+
+    return callCanTerminate(false);
   }
 
   std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> createCopyFromThis() {
@@ -228,7 +223,6 @@ class CoreTask
                                   << " and set it to the task: " << coreCopy->name() << " / " << coreCopy->id())
       sharedAbstractTaskCopy->connectMemoryManager(copyMemoryManager);
     }
-
     return sharedAbstractTaskCopy;
   }
 

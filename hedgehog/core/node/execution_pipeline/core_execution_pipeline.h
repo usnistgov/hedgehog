@@ -16,21 +16,22 @@ class AbstractExecutionPipeline;
 
 template<class GraphOutput, class ...GraphInputs>
 class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
- public:
+ private:
   AbstractExecutionPipeline<GraphOutput, GraphInputs...> *
       executionPipeline_ = nullptr;
 
   size_t
       numberGraphs_ = 0;
 
+  std::vector<int> deviceIds_ = {};
+
+ protected:
+  std::shared_ptr<CoreSwitch<GraphInputs...>>
+      coreSwitch_;
   std::vector<std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>>>
       epGraphs_ = {};
 
-  std::vector<int> deviceIds_ = {};
-
-  std::shared_ptr<CoreSwitch<GraphInputs...>>
-      coreSwitch_;
-
+ public:
   CoreExecutionPipeline() = delete;
   CoreExecutionPipeline(std::string_view const &name,
                         AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline,
@@ -85,13 +86,11 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     std::set<CoreSender<GraphOutput> *>
         res = {},
         senders = {};
-
     for (auto epGraph : this->epGraphs_) {
       senders.clear();
       senders = epGraph->getSenders();
       mergeSenders(res, senders);
     }
-
     return res;
   }
 
@@ -100,7 +99,12 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
   }
 
   void addReceiver(CoreReceiver<GraphOutput> *receiver) override {
-    for (auto epGraph : this->epGraphs_) { connectGraphsOutputToReceiver(epGraph.get(), receiver); }
+    for (CoreReceiver<GraphOutput> *r : receiver->receivers()) {
+      this->destinations()->insert(dynamic_cast<CoreQueueReceiver<GraphOutput> *>(r));
+    }
+    for (auto epGraph : this->epGraphs_) {
+      connectGraphsOutputToReceiver(epGraph.get(), receiver);
+    }
   }
 
   void addSlot(CoreSlot *slot) override {
@@ -109,7 +113,7 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   void visit(AbstractPrinter *printer) override {
     if (printer->hasNotBeenVisited(this)) {
-      printer->printExecutionPipelineHeader(this->name(), CoreNode::id(), this->id());
+      printer->printExecutionPipelineHeader(this, coreSwitch_.get());
       for (auto graph: epGraphs_) {
         (this->printEdgeSwitchGraphs<GraphInputs>(printer, graph.get()), ...);
         graph->visit(printer);
@@ -123,7 +127,7 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
   }
 
   std::string id() const override {
-    return "switch" + CoreNode::id();
+    return this->coreSwitch_->id();
   }
 
   int deviceId() override {
@@ -137,7 +141,6 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
       epGraph->createInnerClustersAndLaunchThreads();
     }
   }
-
 
  private:
   void duplicateGraphs() {
@@ -203,6 +206,19 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
                                      HedgehogTraits::is_managed_memory_v<GraphInput>);
     }
   }
+
+ protected:
+  bool callCanTerminate(bool lock) override {
+    bool result;
+
+    if (lock) { this->lockUniqueMutex(); }
+    result = !this->hasNotifierConnected() && this->receiversEmpty();
+    HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
+    if (lock) { this->unlockUniqueMutex(); }
+
+    return result;
+  };
+
 };
 
 #endif //HEDGEHOG_CORE_EXECUTION_PIPELINE_H

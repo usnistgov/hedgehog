@@ -6,17 +6,38 @@
 #define HEDGEHOG_TESTGTEST_H
 
 #include <gtest/gtest.h>
-#include "testGraph.h"
+#include "graphs/big_example/test_big_example.h"
+#include "graphs/cuda/test_cuda.h"
+#include "graphs/cycle/test_cycle.h"
+#include "graphs/ep/test_ep.h"
+#include "graphs/ep_composition/test_ep_composition.h"
+#include "graphs/memory_manager/test_mm_example.h"
+#include "graphs/small_example/test_small_example.h"
 
-TEST(TEST_FEATURE_COLLECTION, TEST_GLOBAL_FC) {
-  ASSERT_NO_FATAL_FAILURE(creationGraph());
+TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH) {
+  ASSERT_NO_FATAL_FAILURE(testSmallGraph());
+  ASSERT_NO_FATAL_FAILURE(testBigExample());
+}
+
+TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_CUDA) {
+#ifdef HH_USE_CUDA
+  ASSERT_NO_FATAL_FAILURE(testCUDA());
+  ASSERT_NO_FATAL_FAILURE(testMemoryManagers());
+#endif //HH_USE_CUDA
+}
+
+TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_EP) {
+  ASSERT_NO_FATAL_FAILURE(testEP());
+  ASSERT_NO_FATAL_FAILURE(testEPComposition());
+}
+
+TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_CYCLES) {
+  ASSERT_NO_FATAL_FAILURE(testCycles());
 }
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
-
   int ret = RUN_ALL_TESTS();
-
   return ret;
 }
 

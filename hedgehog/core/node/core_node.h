@@ -23,7 +23,7 @@ enum struct NodeType { Graph, Task, StateManager, Sink, Source, ExecutionPipelin
 class CoreNode {
  private:
   std::string_view
-      name_ = nullptr;
+      name_ = "";
 
   NodeType const
       type_;
@@ -54,9 +54,7 @@ class CoreNode {
       executionDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(),
       waitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero();
 
-  std::chrono::time_point<
-      std::chrono::high_resolution_clock
-  > const
+  std::chrono::time_point<std::chrono::high_resolution_clock> const
       creationTimeStamp_ = std::chrono::high_resolution_clock::now();
 
   std::chrono::time_point<std::chrono::high_resolution_clock>
@@ -72,9 +70,6 @@ class CoreNode {
               "Creating CoreNode with type: " << (int) type << ", name: " << name << " and number of Threads: "
                                               << this->numberThreads_)
     this->insideNodes_ = std::make_shared<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>>();
-    //////////////////////////////////////////////////////////////////////////////////////
-//    std::cout << "Creating node: " << this->name() << " / " << this->id() << std::endl;
-    //////////////////////////////////////////////////////////////////////////////////////
   }
 
   virtual ~CoreNode() {
@@ -104,17 +99,14 @@ class CoreNode {
   std::shared_ptr<std::multimap<CoreNode *,
                                 std::shared_ptr<CoreNode>>> const &insideNodes() const { return insideNodes_; }
   std::shared_ptr<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>> &insideNodes() { return insideNodes_; }
+
   std::chrono::duration<uint64_t, std::micro> const &executionTime() const { return executionDuration_; }
   std::chrono::duration<uint64_t, std::micro> const &waitTime() const { return waitDuration_; }
   bool isInCluster() const { return this->isInCluster_; }
   bool isActive() const { return isActive_; }
 
-  virtual int graphId() {
-    return this->belongingNode()->graphId();
-  }
-
+  virtual int graphId() { return this->belongingNode()->graphId(); }
   virtual int deviceId() { return this->belongingNode()->deviceId(); }
-
   virtual void deviceId(int deviceId) { this->belongingNode()->deviceId(deviceId); }
 
   std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const { return creationTimeStamp_; }
@@ -138,7 +130,6 @@ class CoreNode {
     }
     return ret;
   }
-
   std::chrono::duration<uint64_t, std::micro> const meanWaitTimeCluster() const {
     auto ret = this->waitTime();
     if (this->isInCluster()) {
@@ -151,7 +142,6 @@ class CoreNode {
     }
     return ret;
   }
-
   uint64_t stdvExecTimeCluster() const {
     auto ret = 0;
     if (this->isInCluster()) {
@@ -165,7 +155,6 @@ class CoreNode {
     }
     return ret;
   }
-
   uint64_t stdvWaitTimeCluster() const {
     auto ret = 0;
     if (this->isInCluster()) {
@@ -179,7 +168,6 @@ class CoreNode {
     }
     return ret;
   }
-
   size_t numberActiveThreadInCluster() const {
     size_t ret = 0;
     if (this->isInCluster()) {
@@ -209,6 +197,7 @@ class CoreNode {
   virtual void preRun() {}
   virtual void run() {}
   virtual void postRun() {}
+
   virtual Node *node() = 0;
   virtual void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
                                                                            std::shared_ptr<CoreNode>>> &insideNodesGraph) {};
@@ -219,7 +208,7 @@ class CoreNode {
     this->insideNodes()->erase(coreNode);
   }
 
-  std::string extraPrintingInformation() { return node()->extraPrintingInformation(); }
+  virtual std::string extraPrintingInformation() { return node()->extraPrintingInformation(); }
   std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp() const { return startExecutionTimeStamp_; }
 
   void startExecutionTimeStamp(std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp) {

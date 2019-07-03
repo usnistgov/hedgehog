@@ -39,9 +39,7 @@ class AbstractState : public Execute<StateInputs> ... {
     return elem;
   }
 
-  void lock() {
-    stateMutex_->lock();
-  }
+  void lock() { stateMutex_->lock(); }
 
   void unlock() {
     stateMutex_->unlock();

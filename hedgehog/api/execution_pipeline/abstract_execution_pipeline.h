@@ -50,10 +50,11 @@ class AbstractExecutionPipeline
 
   ~AbstractExecutionPipeline() override = default;
 
-  bool canTerminate() override { return !this->coreExecutionPipeline_->hasNotifierConnected(); }
-
   std::shared_ptr<CoreNode> core() override { return this->coreExecutionPipeline_; }
 
+  std::shared_ptr<Graph<GraphOutput, GraphInputs...>> const &graph() const {
+    return graph_;
+  }
 };
 
 #endif //HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H

@@ -29,7 +29,11 @@ class CoreSender : public virtual CoreNotifier {
 
   void duplicateEdge(CoreNode *duplicateNode,
                      std::map<CoreNode *, std::shared_ptr<CoreNode>> &correspondenceMap) override {
-    for (auto sender : this->getSenders()) { sender->duplicateEdge(duplicateNode, correspondenceMap); }
+    std::cout << "***" << this->name() << " / " << this->id() << "is not a real sender, going inside of it: "
+              << std::endl;
+    for (auto sender : this->getSenders()) {
+      sender->duplicateEdge(duplicateNode, correspondenceMap);
+    }
   }
 };
 

@@ -28,12 +28,14 @@ class DefaultScheduler : public AbstractScheduler {
 
   void spawnThreads(std::vector<std::shared_ptr<CoreNode>> &insideCores) override {
     for (auto &core : insideCores) {
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//      mutex.lock();
-//      std::cout << "Spawning thread: " << core->id() << " " << core->name() << " gid: " << core->graphId() << std::endl;
-//      mutex.unlock();
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      if (core->type() != NodeType::Graph) { threads_->emplace_back(&CoreNode::run, core); }
+      if (core->type() != NodeType::Graph) {
+        try {
+          threads_->emplace_back(&CoreNode::run, core);
+        } catch (const std::system_error &e) {
+          std::cout << "Caught system_error with code " << e.code() << ": " << e.what() << '\n';
+          exit(42);
+        }
+      }
       else { innerGraphs_->push_back(core); }
     }
   }

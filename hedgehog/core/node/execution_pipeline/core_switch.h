@@ -20,9 +20,7 @@ class CoreSwitch : public CoreSwitchSender<GraphInputs> ... {
 
   CoreSwitch(CoreSwitch<GraphInputs...> const &rhs) : CoreSwitch(rhs.name(), rhs.type(), rhs.numberThreads()) {}
 
-  std::shared_ptr<CoreNode> clone() override {
-    return std::make_shared<CoreSwitch<GraphInputs...>>(*this);
-  }
+  std::shared_ptr<CoreNode> clone() override { return std::make_shared<CoreSwitch<GraphInputs...>>(*this); }
 
   Node *node() override {
     HLOG_SELF(0, __PRETTY_FUNCTION__)
@@ -40,18 +38,21 @@ class CoreSwitch : public CoreSwitchSender<GraphInputs> ... {
   }
 
  public:
+  std::string extraPrintingInformation() override {
+    std::ostringstream oss;
+    oss << "Switch Info: " << std::endl;
+    (printSenderInfo<GraphInputs>(oss), ...);
+    return oss.str();
+  }
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  friend std::ostream &operator<<(std::ostream &os, CoreSwitch const &aSwitch){
-//    std::cout << "switch : " << aSwitch.id() << ", " << aSwitch.name() << " is connected to: "<< std::endl;
-//
-//    CoreSwitch const* ptrASwitch = &aSwitch;
-//    CoreSwitch * rawptrASwitch = const_cast<CoreSwitch*>(ptrASwitch);
-//    (dynamic_cast<CoreSwitchSender<GraphInputs> *>(rawptrASwitch)->toPrint(os), ...);
-//    return os;
-//  }
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+ private:
+  template<class GraphInput>
+  void printSenderInfo(std::ostringstream &oss) {
+    oss << typeid(GraphInput).name() << std::endl;
+    for (auto slot : *(static_cast<CoreQueueSender<GraphInput> *>(this)->slots())) {
+      oss << "\t" << slot->id() << " / " << slot->name() << std::endl;
+    }
+  }
 };
 
 #endif //HEDGEHOG_CORE_SWITCH_H

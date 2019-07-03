@@ -30,18 +30,7 @@ class CoreQueueSlot : public virtual CoreSlot {
 
   ~CoreQueueSlot() override {HLOG_SELF(0, "Destructing CoreQueueSlot")}
 
-  size_t numberInputNodes() const final {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    mutex.lock();
-//    std::cout << "Checking slot: " << this->id() << std::endl;
-//    for (CoreNotifier * notifier : *notifiers_) {
-//      std::cout << "--Checking inputNode: " << notifier;
-//    }
-//    std::cout << std::endl;
-//    mutex.unlock();
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    return this->notifiers()->size();
-  }
+  size_t numberInputNodes() const final { return this->notifiers()->size(); }
 
   void addNotifier(CoreNotifier *notifier) final {
     std::lock_guard<std::mutex> lc(*(this->slotMutex_));

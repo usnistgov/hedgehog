@@ -37,7 +37,7 @@ class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput> {
     return std::make_shared<CoreGraphSink<GraphOutput>>();
   }
 
-  void waitForNotification() override {
+  bool waitForNotification() override {
     std::unique_lock<std::mutex> lock(*(this->slotMutex()));
 
     HLOG_SELF(2, "Wait for the notification")
@@ -47,6 +47,8 @@ class CoreGraphSink : public CoreQueueMultiReceivers<GraphOutput> {
                                             return !this->receiversEmpty() || this->numberInputNodes() == 0;
                                           });
     HLOG_SELF(2, "Notification received")
+
+    return true;
   }
 
   void duplicateEdge([[maybe_unused]]CoreNode *duplicateNode,

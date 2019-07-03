@@ -85,16 +85,12 @@ class AbstractTask :
   NodeType nodeType() { return this->taskCore_->type(); }
   int deviceId() { return this->taskCore_->deviceId(); }
   std::shared_ptr<CoreNode> core() final { return taskCore_; }
-  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &memoryManager() const {
-    return mm_;
-  }
+  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &memoryManager() const { return mm_; }
 
   virtual std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> copy() { return nullptr; }
   virtual void initialize() {}
 
-  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) {
-    mm_ = mm;
-  }
+  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) { mm_ = mm; }
 
   std::shared_ptr<TaskOutput> getManagedMemory() {
     if (mm_ == nullptr) {
@@ -106,7 +102,7 @@ class AbstractTask :
     return mm_->getData();
   }
 
-  bool canTerminate() override { return !this->taskCore_->hasNotifierConnected(); }
+  bool canTerminate() override { return !this->taskCore_->hasNotifierConnected() && this->taskCore_->receiversEmpty(); }
   virtual void shutdown() {}
 
 };

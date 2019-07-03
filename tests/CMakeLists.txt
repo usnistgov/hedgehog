@@ -30,10 +30,47 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
-add_definitions(-DPROFILE)
-
 set(TEST_SRC
-        testAll.cc)
+        testAll.cc
+        graphs/big_example/types/a.h
+        graphs/big_example/types/b.h
+        graphs/big_example/types/c.h
+        graphs/big_example/tasks/input_task.h
+        graphs/big_example/tasks/input_task_2.h
+        graphs/big_example/tasks/output_task.h
+        graphs/big_example/tasks/output_task_2.h
+        graphs/big_example/tasks/task_bda.h
+        graphs/big_example/tasks/task_ic.h
+        graphs/big_example/states/test_state.h
+        graphs/big_example/ep/inner_ep.h
+        graphs/cycle/states/my_state.h
+        graphs/cycle/tasks/my_task.h
+        graphs/cycle/tasks/my_task_2.h
+        graphs/ep/ep/if_to_iep.h
+        graphs/ep/tasks/if_to_i.h
+        graphs/ep/tasks/if_to_i_ep_in.h
+        graphs/ep/tasks/epif_to_i.h
+        graphs/ep_composition/tasks/ii_task.h
+        graphs/ep_composition/ep/iiep.h
+        graphs/memory_manager/data/matrix_data.h
+        graphs/memory_manager/data/dynamic_matrix_data.h
+        graphs/memory_manager/memory_manager/static_mm.h
+        graphs/memory_manager/memory_manager/dynamic_mm.h
+        graphs/memory_manager/memory_manager/cuda_mm.h
+        graphs/memory_manager/task/my_cuda_task.h
+        graphs/memory_manager/task/my_static_task.h
+        graphs/memory_manager/task/my_dynamic_task.h
+        graphs/memory_manager/task/output_md_task.h
+        graphs/memory_manager/ep/iiep_mm.h
+        graphs/small_example/tasks/ito_f.h
+        )
 
-add_executable(runAllTests ${TEST_SRC})
+
+if (CUDA_FOUND)
+    cuda_add_executable(runAllTests ${TEST_SRC})
+    target_compile_definitions(runAllTests PUBLIC -DHH_USE_CUDA)
+else (CUDA_FOUND)
+    add_executable(runAllTests ${TEST_SRC})
+endif ()
+
 target_link_libraries(runAllTests gtest gtest_main)

@@ -36,11 +36,12 @@ class CoreGraphSource : public CoreQueueSender<GraphInputs> ... {
     (CoreQueueSender<GraphInputs>::addSlot(slot), ...);
   }
 
-  void removeSlot([[maybe_unused]]CoreSlot *slot) final {
-    HLOG_SELF(0, "[[Should not be called]]Remove slot: " << slot->name() << "(" << slot->id() << ")")
-    HLOG_SELF(0, __PRETTY_FUNCTION__)
-    exit(42);
-  }
+  //Test remove
+//  void removeSlot([[maybe_unused]]CoreSlot *slot) final {
+//    HLOG_SELF(0, "[[Should not be called]]Remove slot: " << slot->name() << "(" << slot->id() << ")")
+//    HLOG_SELF(0, __PRETTY_FUNCTION__)
+//    exit(42);
+//  }
 
   void notifyAllTerminated() final {
     HLOG_SELF(2, "Notify all terminated")

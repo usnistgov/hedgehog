@@ -91,8 +91,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
       CoreQueueSender<GraphOutput>(rhs.name(), NodeType::ExecutionPipeline, 1),
       CoreSlot(rhs.name(), NodeType::ExecutionPipeline, 1),
       CoreReceiver<GraphInputs>(rhs.name(), NodeType::ExecutionPipeline, 1)...,
-      CoreExecutionPipeline<GraphOutput, GraphInputs...>(
-      rhs
+      CoreExecutionPipeline<GraphOutput, GraphInputs...>(rhs
   .
   name(), rhs
   .
@@ -104,8 +103,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
   .
   automaticStart()
   ),
-  CoreDefaultExecutionPipelineExecute<GraphInputs, GraphOutput, GraphInputs...>(
-      rhs
+  CoreDefaultExecutionPipelineExecute<GraphInputs, GraphOutput, GraphInputs...>(rhs
   .
   name(), rhs
   .
@@ -116,8 +114,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
   deviceIds(), rhs
   .
   automaticStart()
-  )...
-  {
+  )...{
   }
 
   virtual ~CoreDefaultExecutionPipeline() = default;
@@ -131,18 +128,36 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
     );
   }
 
+  bool waitForNotification() override {
+    std::unique_lock<std::mutex> lock(*(this->slotMutex()));
+
+    HLOG_SELF(2, "Wait for notification")
+    this->notifyConditionVariable()->wait(lock,
+                                          [this]() {
+                                            bool receiversEmpty = this->receiversEmpty();
+                                            bool callCanTerminate = this->callCanTerminate(false);
+                                            HLOG_SELF(2,
+                                                      "Check for notification: " << std::boolalpha
+                                                                                 << (bool) (!receiversEmpty) << "||"
+                                                                                 << std::boolalpha
+                                                                                 << (bool) callCanTerminate)
+                                            return !receiversEmpty || callCanTerminate;
+                                          });
+    HLOG_SELF(2, "Notification received")
+    return this->callCanTerminate(false);
+  }
+
+
   void postRun() override {
     this->isActive(false);
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graph : this->epGraphs_) {
       (removeSwitchReceiver<GraphInputs>(graph.get()), ...);
-      (graph->removeNotifier(static_cast<CoreQueueSender<GraphInputs> *>(this->coreSwitch_.get())), ...);
     }
     this->coreSwitch_->notifyAllTerminated();
 
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graph : this->epGraphs_) {
       graph->waitForTermination();
     }
-
   }
 
  private:
@@ -150,7 +165,6 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
   void removeSwitchReceiver(CoreGraphReceiver<GraphInput> *coreGraphReceiver) {
     for (auto r : coreGraphReceiver->receivers()) {
       static_cast<CoreQueueSender<GraphInput> *>(this->coreSwitch_.get())->removeReceiver(r);
-
     }
     coreGraphReceiver->removeSender(static_cast<CoreQueueSender<GraphInput> *>(this->coreSwitch_.get()));
   }

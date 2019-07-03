@@ -27,7 +27,7 @@ class CoreSlot : public virtual CoreNode {
   virtual bool hasNotifierConnected() = 0;
   virtual size_t numberInputNodes() const = 0;
   virtual void wakeUp() = 0;
-  virtual void waitForNotification() = 0;
+  virtual bool waitForNotification() = 0;
   virtual std::set<CoreSlot *> getSlots() = 0;
 };
 
