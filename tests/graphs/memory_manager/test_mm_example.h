@@ -64,7 +64,7 @@ void testMemoryManagers() {
     ++count;
     result->returnToMemoryManager();
   }
-
+  ASSERT_EQ(count, 1000);
   outerGraph->waitForTermination();
 #endif //HH_USE_CUDA
 }

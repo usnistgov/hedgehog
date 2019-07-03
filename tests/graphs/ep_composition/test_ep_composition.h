@@ -37,7 +37,7 @@ void testEPComposition() {
   for (int i = 0; i < 100; ++i) { graph->pushData(std::make_shared<int>(i)); }
   graph->finishPushingData();
   while (graph->getBlockingResult()) { count++; }
-
+  ASSERT_EQ(count, 25600);
   graph->waitForTermination();
 }
 

@@ -38,5 +38,6 @@ void testEP() {
   outterGraph->finishPushingData();
 
   while (auto data = outterGraph->getBlockingResult()) { ++count; }
+  ASSERT_EQ(count, 300);
   outterGraph->waitForTermination();
 }

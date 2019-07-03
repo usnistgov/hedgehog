@@ -60,7 +60,10 @@ void testBigExample() {
   }
 
   graph.finishPushingData();
+
   while (std::shared_ptr<A> result = graph.getBlockingResult()) { count++; }
+
+  ASSERT_EQ(count, 192);
   graph.waitForTermination();
 }
 

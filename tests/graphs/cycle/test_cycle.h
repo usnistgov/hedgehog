@@ -26,6 +26,7 @@ void testCycles() {
   myGraph->finishPushingData();
 
   while (std::shared_ptr<float> graphOutput = myGraph->getBlockingResult()) { count++; }
+  ASSERT_EQ(count, 1200);
 
   myGraph->waitForTermination();
 }

@@ -2,14 +2,20 @@
 
 void testSmallGraph() {
   Graph<float, int, double, char> g("GraphOutput");
-  auto queue = std::make_shared<IToF>();
-  g.input(queue);
-  g.output(queue);
+  auto t = std::make_shared<IToF>();
+  size_t count = 0;
+
+  g.input(t);
+  g.output(t);
 
   g.executeGraph();
 
   for (uint64_t i = 0; i < 100; ++i) { g.pushData(std::make_shared<int>(i)); }
 
   g.finishPushingData();
+
+  while ((g.getBlockingResult())) { ++count; }
+
+  ASSERT_EQ(count, 0);
   g.waitForTermination();
 }

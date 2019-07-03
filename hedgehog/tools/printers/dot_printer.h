@@ -226,7 +226,7 @@ class DotPrinter : public AbstractPrinter {
     if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
     if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
-      oss << " " << queueSize << " (" << maxQueueSize << ")";
+      oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
       queueStr = oss.str();
       oss.str(std::string());
     }
@@ -266,7 +266,7 @@ class DotPrinter : public AbstractPrinter {
       }
       edges_.push_back(oss.str());
     } else if (from->id() == from->coreClusterNode()->id() && to->id() == to->coreClusterNode()->id()) {
-      oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << penWidth << "\"];";
+      oss << from->id() << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << penWidth << "];";
       edges_.push_back(oss.str());
     }
   }
