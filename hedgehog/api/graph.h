@@ -45,11 +45,12 @@ class Graph :
 
   template<
       class UserDefinedMultiReceiver,
+      class InputsMR = typename UserDefinedMultiReceiver::inputs_t,
+      class InputsG = typename MultiReceivers<GraphInputs...>::inputs_t,
       class isMultiReceiver = typename std::enable_if<
-          std::is_base_of_v<
-              MultiReceivers<GraphInputs...>, UserDefinedMultiReceiver
-          >
-      >::type
+          std::is_base_of_v<typename Helper::HelperMultiReceiversType<InputsMR>::type, UserDefinedMultiReceiver>
+      >::type,
+      class isInputCompatible = std::enable_if<HedgehogTraits::is_included_v<InputsMR, InputsG>>
   >
   void input(std::shared_ptr<UserDefinedMultiReceiver> input) {
     assert(input != nullptr);
