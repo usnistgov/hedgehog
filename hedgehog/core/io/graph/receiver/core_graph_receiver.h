@@ -44,9 +44,18 @@ class CoreGraphReceiver : public virtual CoreReceiver<GraphInput> {
   }
 
   void receive(std::shared_ptr<GraphInput> ptr) final {
+    /////////////////////////////////////
+//    std::ostringstream oss;
+//	oss << this->id() << "," << this->name() << ", " << ptr;
+//	oss << ":" << std::endl << "\t";
+//	oss << std::endl;
+//	printUnderMutex(oss.str());
+	//////////////////////////////////////////
     HLOG_SELF(2, "Receive data")
     for (CoreReceiver<GraphInput> *inputNode: *(this->graphReceiverInputs_)) {
+
       inputNode->receive(ptr);
+
     }
   }
 

@@ -178,14 +178,24 @@ class DotPrinter : public AbstractPrinter {
 
   void printEdgeSwitchGraphs(CoreNode *to,
                              std::string const &idSwitch,
-                             std::string_view const &edgeType, bool isMemoryManaged) override {
+                             std::string_view const &edgeType,
+							 size_t const &queueSize,
+							 size_t const &maxQueueSize,
+                             bool isMemoryManaged) override {
     std::ostringstream
         oss;
 
     std::string
         idDest,
         headLabel,
-        penWidth = ",penwidth=1";
+        penWidth = ",penwidth=1",
+        queueStr;
+
+	if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
+	  oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
+	  queueStr = oss.str();
+	  oss.str("");
+	}
 
     if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
@@ -194,15 +204,15 @@ class DotPrinter : public AbstractPrinter {
         for (auto &dest: to->ids()) {
 
           idDest = "box" + dest.second;
-          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << "\""
+          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << queueStr<< "\""
               << penWidth << "];";
         }
       } else {
-        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\""
+        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << queueStr<< "\""
             << penWidth << "];";
       }
     } else if (to->id() == to->coreClusterNode()->id()) {
-      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << "\"" << penWidth << "];";
+      oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\"" << penWidth << "];";
     }
     edges_.push_back(oss.str());
   }
@@ -226,10 +236,11 @@ class DotPrinter : public AbstractPrinter {
     if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
     if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
-      oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
-      queueStr = oss.str();
-      oss.str(std::string());
-    }
+	  oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
+	  queueStr = oss.str();
+	  oss.str("");
+	}
+
 
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
       if (from->isInCluster()) {

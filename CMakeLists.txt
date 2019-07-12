@@ -117,9 +117,8 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fprofile-arcs -ftest-coverage --coverage")
-        #                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address")
+#                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")

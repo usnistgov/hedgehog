@@ -66,18 +66,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       CoreNotifier(rhs.name(), rhs.type(), 1),
       CoreSlot(rhs.name(), rhs.type(), 1),
       CoreReceiver<GraphInputs>(rhs.name(), rhs.type(), 1)...,
-      CoreSender<GraphOutput>(rhs
-  .
-  name(), rhs
-  .
-  type(),
-  1),
-  CoreGraphMultiReceivers<GraphInputs...>(rhs
-  .
-  name(), rhs
-  .
-  type(),
-  1){
+      CoreSender<GraphOutput>(rhs.name(), rhs.type(),1),CoreGraphMultiReceivers<GraphInputs...>(rhs.name(), rhs.type(),1){
     this->inputsCoreNodes_ = std::make_unique<std::set<CoreMultiReceivers<GraphInputs...> *>>();
     this->outputCoreNodes_ = std::make_unique<std::set<CoreSender < GraphOutput> *>>
     ();
@@ -662,7 +651,6 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
       this->registerNode(std::static_pointer_cast<CoreNode>(shOutputCoreNode));
     }
-
   }
 };
 

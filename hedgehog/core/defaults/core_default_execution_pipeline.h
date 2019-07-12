@@ -27,11 +27,13 @@ class CoreDefaultExecutionPipelineExecute : public virtual CoreExecutionPipeline
                                                          numberGraphs,
                                                          deviceIds,
                                                          automaticStart) {}
+
   void callExecute([[maybe_unused]]std::shared_ptr<GraphInput> data) override {
     for (auto graph : this->epGraphs_) {
       if (this->callSendToGraph<GraphInput>(data, graph->graphId())) {
         std::static_pointer_cast<CoreGraphReceiver<GraphInput>>(graph)->receive(data);
         graph->wakeUp();
+
       }
     }
   }
@@ -91,30 +93,8 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
       CoreQueueSender<GraphOutput>(rhs.name(), NodeType::ExecutionPipeline, 1),
       CoreSlot(rhs.name(), NodeType::ExecutionPipeline, 1),
       CoreReceiver<GraphInputs>(rhs.name(), NodeType::ExecutionPipeline, 1)...,
-      CoreExecutionPipeline<GraphOutput, GraphInputs...>(rhs
-  .
-  name(), rhs
-  .
-  executionPipeline(), baseGraph, rhs
-  .
-  numberGraphs(), rhs
-  .
-  deviceIds(), rhs
-  .
-  automaticStart()
-  ),
-  CoreDefaultExecutionPipelineExecute<GraphInputs, GraphOutput, GraphInputs...>(rhs
-  .
-  name(), rhs
-  .
-  executionPipeline(), baseGraph, rhs
-  .
-  numberGraphs(), rhs
-  .
-  deviceIds(), rhs
-  .
-  automaticStart()
-  )...{
+      CoreExecutionPipeline<GraphOutput, GraphInputs...>(rhs.name(), rhs.executionPipeline(), baseGraph, rhs.numberGraphs(), rhs.deviceIds(), rhs.automaticStart()),
+	  CoreDefaultExecutionPipelineExecute<GraphInputs, GraphOutput, GraphInputs...>(rhs.name(), rhs.executionPipeline(), baseGraph, rhs.numberGraphs(), rhs.deviceIds(), rhs.automaticStart())...{
   }
 
   virtual ~CoreDefaultExecutionPipeline() = default;
@@ -149,7 +129,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
 
 
   void postRun() override {
-    this->isActive(false);
+	this->isActive(false);
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graph : this->epGraphs_) {
       (removeSwitchReceiver<GraphInputs>(graph.get()), ...);
     }

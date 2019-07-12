@@ -109,7 +109,7 @@ class CoreTask
 
     while (!this->callCanTerminate(true)) {
       start = std::chrono::high_resolution_clock::now();
-      bool canTerminate = this->waitForNotification();
+      volatile bool canTerminate = this->waitForNotification();
       finish = std::chrono::high_resolution_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
       if (canTerminate) { break; }
@@ -168,6 +168,7 @@ class CoreTask
                                             return !receiversEmpty || callCanTerminate;
                                           });
     HLOG_SELF(2, "Notification received")
+	assert(lock.owns_lock());
 
     return callCanTerminate(false);
   }
@@ -225,7 +226,6 @@ class CoreTask
     }
     return sharedAbstractTaskCopy;
   }
-
 };
 
 #endif //HEDGEHOG_CORE_TASK_H

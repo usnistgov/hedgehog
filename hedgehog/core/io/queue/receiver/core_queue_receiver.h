@@ -23,15 +23,11 @@ class CoreQueueReceiver : public virtual CoreReceiver<CoreInput> {
     senders_ = std::make_shared<std::set<CoreSender<CoreInput> *>>();
   }
 
-  ~CoreQueueReceiver() override {
-    HLOG_SELF(0, "Destructing CoreQueueReceiver")
-  }
+  ~CoreQueueReceiver() override { HLOG_SELF(0, "Destructing CoreQueueReceiver") }
 
   virtual CoreQueueSlot *queueSlot() = 0;
 
-  std::shared_ptr<std::set<CoreSender<CoreInput> *>> const &senders() const {
-    return senders_;
-  }
+  std::shared_ptr<std::set<CoreSender<CoreInput> *>> const &senders() const { return senders_; }
 
   //Virtual
   size_t queueSize() override { return this->queue_->size(); }
@@ -49,9 +45,11 @@ class CoreQueueReceiver : public virtual CoreReceiver<CoreInput> {
   }
 
   void receive(std::shared_ptr<CoreInput> data) final {
+    this->queueSlot()->lockUniqueMutex();
     this->queue_->push(data);
     HLOG_SELF(2, "Receives data new queue Size " << this->queueSize())
     if (this->queueSize() > this->maxQueueSize_) { this->maxQueueSize_ = this->queueSize(); }
+	this->queueSlot()->unlockUniqueMutex();
   }
 
   bool receiverEmpty() final {
@@ -64,12 +62,11 @@ class CoreQueueReceiver : public virtual CoreReceiver<CoreInput> {
   }
 
   std::shared_ptr<CoreInput> popFront() {
-    HLOG_SELF(2, "Pop & front from queue")
-    assert(!queue_->empty());
-    auto element = queue_->front();
-    assert(element != nullptr);
-    queue_->pop();
-    return element;
+	  HLOG_SELF(2, "Pop & front from queue")
+	  auto element = queue_->front();
+	  assert(element != nullptr);
+	  queue_->pop();
+	  return element;
   }
 
   void copyInnerStructure(CoreQueueReceiver<CoreInput> *rhs) {
@@ -77,6 +74,5 @@ class CoreQueueReceiver : public virtual CoreReceiver<CoreInput> {
     this->queue_ = rhs->queue_;
     this->senders_ = rhs->senders_;
   }
-
 };
 #endif //HEDGEHOG_CORE_QUEUE_RECEIVER_H

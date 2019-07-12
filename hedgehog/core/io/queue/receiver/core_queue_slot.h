@@ -73,7 +73,7 @@ class CoreQueueSlot : public virtual CoreSlot {
     this->notifiers_ = rhs->notifiers_;
   }
 
- private:
+ protected:
   std::shared_ptr<std::set<CoreNotifier *>> const &notifiers() const { return notifiers_; }
 };
 

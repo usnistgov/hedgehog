@@ -198,11 +198,15 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   template<class GraphInput>
   void printEdgeSwitchGraphs(AbstractPrinter *printer, CoreGraph<GraphOutput, GraphInputs...> *graph) {
-
+	CoreQueueReceiver<GraphInput>* coreQueueReceiver = nullptr;
     for (CoreNode *graphInputNode : *(graph->inputsCoreNodes())) {
-      printer->printEdgeSwitchGraphs(graphInputNode,
+      coreQueueReceiver = dynamic_cast<CoreQueueReceiver<GraphInput>*>(graphInputNode);
+
+	  printer->printEdgeSwitchGraphs(coreQueueReceiver,
                                      this->id(),
                                      HedgehogTraits::type_name<GraphInput>(),
+									 coreQueueReceiver->queueSize(),
+									 coreQueueReceiver->maxQueueSize(),
                                      HedgehogTraits::is_managed_memory_v<GraphInput>);
     }
   }

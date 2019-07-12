@@ -28,16 +28,14 @@ class AbstractPrinter {
   virtual void printClusterHeader(CoreNode const *clusterNode) = 0;
   virtual void printClusterFooter() = 0;
   virtual void printClusterEdge(CoreNode const *clusterNode) = 0;
-
-//  virtual void printExecutionPipelineHeader(std::string_view const &executionPipelineName,
-//                                            std::string const &id,
-//                                            std::string const &switchId) = 0;
-
   virtual void printExecutionPipelineHeader(CoreNode *epNode, CoreNode *switchNode) = 0;
   virtual void printExecutionPipelineFooter() = 0;
   virtual void printEdgeSwitchGraphs(CoreNode *from,
                                      std::string const &idSwitch,
-                                     std::string_view const &edgeType, bool isMemoryManaged) = 0;
+                                     std::string_view const &edgeType,
+									 size_t const &queueSize,
+									 size_t const &maxQueueSize,
+                                     bool isMemoryManaged) = 0;
 
   virtual bool hasNotBeenVisited(CoreNode const *node) = 0;
 };

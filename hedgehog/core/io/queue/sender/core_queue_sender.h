@@ -48,12 +48,8 @@ class CoreQueueSender : public CoreSender<NodeOutput>, public virtual CoreQueueN
 
   void sendAndNotify(std::shared_ptr<NodeOutput> ptr) final {
     for (CoreQueueReceiver<NodeOutput> *receiver : *(this->destinations_)) {
-      receiver->queueSlot()->lockUniqueMutex();
-
       HLOG_SELF(2, "Send data to " << receiver->name() << "(" << receiver->id() << ")")
       receiver->receive(ptr);
-      receiver->queueSlot()->unlockUniqueMutex();
-
       HLOG_SELF(2, "Wake up " << receiver->name() << "(" << receiver->id() << ")")
       receiver->queueSlot()->wakeUp();
     }
@@ -61,9 +57,9 @@ class CoreQueueSender : public CoreSender<NodeOutput>, public virtual CoreQueueN
 
   void visit(AbstractPrinter *printer) override {
     HLOG_SELF(1, "Visit")
-    for (CoreReceiver<NodeOutput> *receiver : *(this->destinations())) {
+    for (CoreQueueReceiver<NodeOutput> *receiver : *(this->destinations())) {
       if (receiver->type() != NodeType::Switch || receiver->type() != NodeType::ExecutionPipeline) {
-        printer->printEdge(this,
+		printer->printEdge(this,
                            receiver,
                            HedgehogTraits::type_name<NodeOutput>(),
                            receiver->queueSize(),

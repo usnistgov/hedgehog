@@ -5,7 +5,7 @@
 #ifndef HEDGEHOG_INNER_EP_H
 #define HEDGEHOG_INNER_EP_H
 
-#include "../../../hedgehog/hedgehog.h"
+#include "../../../../hedgehog/hedgehog.h"
 #include "../types/a.h"
 
 class InnerEP : public AbstractExecutionPipeline<int, double, A> {
