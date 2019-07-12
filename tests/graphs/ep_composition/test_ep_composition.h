@@ -26,20 +26,20 @@ std::shared_ptr<Graph<int, int>> wrapperGraph(const std::shared_ptr<Graph<int, i
 
 void testEPComposition() {
   for(int r = 0; r < 100; ++r) {
-	std::shared_ptr<Graph<int, int>>
-		graph = nullptr,
-		tempGraph = innerGraph();
+    std::shared_ptr<Graph<int, int>>
+        graph = nullptr,
+        tempGraph = innerGraph();
 
-	size_t count = 0;
-	for (int i = 0; i < 3; ++i) { tempGraph = wrapperGraph(tempGraph); }
-	graph = wrapperGraph(tempGraph);
-	graph->executeGraph();
+    size_t count = 0;
+    for (int i = 0; i < 3; ++i) { tempGraph = wrapperGraph(tempGraph); }
+    graph = wrapperGraph(tempGraph);
+    graph->executeGraph();
 
-	for (int i = 0; i < 100; ++i) { graph->pushData(std::make_shared<int>(i)); }
-	graph->finishPushingData();
-	while (graph->getBlockingResult()) { count++; }
-	ASSERT_EQ(count, 25600);
-	graph->waitForTermination();
+    for (int i = 0; i < 100; ++i) { graph->pushData(std::make_shared<int>(i)); }
+    graph->finishPushingData();
+    while (graph->getBlockingResult()) { count++; }
+    ASSERT_EQ(count, 25600);
+    graph->waitForTermination();
   }
 }
 
