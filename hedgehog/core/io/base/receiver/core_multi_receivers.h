@@ -9,6 +9,8 @@
 #include "core_slot.h"
 #include "../../../node/core_node.h"
 
+template <class Input> class CoreQueueSender;
+
 template<class ...Inputs>
 class CoreMultiReceivers :
     public virtual CoreSlot, public virtual CoreReceiver<Inputs> ... {
@@ -28,6 +30,18 @@ class CoreMultiReceivers :
   }
 
   virtual bool receiversEmpty() = 0;
+
+  void removeForAllSenders(CoreNode* coreNode) override{
+	(this->removeForAllSendersConditional<Inputs>(coreNode), ...);
+  }
+
+ private:
+  template <class Input>
+  void removeForAllSendersConditional(CoreNode* coreNode){
+    if(auto temp = dynamic_cast<CoreQueueSender<Input>*>(coreNode)){
+      static_cast<CoreReceiver<Input>*>(this)->removeSender(temp);
+    }
+  }
 
 };
 

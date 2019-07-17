@@ -53,6 +53,12 @@ class CoreSwitch : public CoreSwitchSender<GraphInputs> ... {
       oss << "\t" << slot->id() << " / " << slot->name() << std::endl;
     }
   }
+
+ private:
+  std::set<CoreSlot *> getSlots() override{
+	HLOG_SELF(0, "Shouldn't be called: " << __PRETTY_FUNCTION__)
+	exit(42);
+  }
 };
 
 #endif //HEDGEHOG_CORE_SWITCH_H

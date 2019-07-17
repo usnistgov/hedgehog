@@ -20,6 +20,8 @@
 
 enum struct NodeType { Graph, Task, StateManager, Sink, Source, ExecutionPipeline, Switch };
 
+class CoreSlot;
+
 class CoreNode {
  private:
   std::string_view
@@ -109,11 +111,12 @@ class CoreNode {
   virtual int deviceId() { return this->belongingNode()->deviceId(); }
   virtual void deviceId(int deviceId) { this->belongingNode()->deviceId(deviceId); }
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const { return creationTimeStamp_; }
-  virtual std::chrono::duration<uint64_t,
-                                std::micro> const maxExecutionTime() const { return this->executionDuration_; }
-  virtual std::chrono::duration<uint64_t,
-                                std::micro> const minExecutionTime() const { return this->executionDuration_; }
+  std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const {
+    return creationTimeStamp_; }
+  virtual std::chrono::duration<uint64_t, std::micro> const maxExecutionTime() const {
+    return this->executionDuration_; }
+  virtual std::chrono::duration<uint64_t, std::micro> const minExecutionTime() const {
+    return this->executionDuration_; }
   virtual std::chrono::duration<uint64_t, std::micro> const maxWaitTime() const { return this->waitDuration_; }
   virtual std::chrono::duration<uint64_t, std::micro> const minWaitTime() const { return this->waitDuration_; }
   std::chrono::duration<uint64_t, std::micro> const &creationDuration() const { return creationDuration_; }
@@ -203,6 +206,8 @@ class CoreNode {
                                                                            std::shared_ptr<CoreNode>>> &insideNodesGraph) {};
   virtual void visit(AbstractPrinter *printer) = 0;
 
+  virtual std::set<CoreSlot *> getSlots() = 0;
+
   void removeInsideNode(CoreNode *coreNode) {
     HLOG_SELF(0, "Remove inside node " << coreNode->id() << ")")
     this->insideNodes()->erase(coreNode);
@@ -233,6 +238,10 @@ class CoreNode {
   }
 
   virtual void duplicateEdge(CoreNode *, std::map<CoreNode *, std::shared_ptr<CoreNode>> &) = 0;
+
+  virtual void removeForAllSenders(CoreNode*) {
+    std::cerr << "Nope" << std::endl;
+  };
 
  protected:
   void addUniqueInsideNode(const std::shared_ptr<CoreNode> &coreNode) {

@@ -50,12 +50,12 @@ class Graph :
       class isMultiReceiver = typename std::enable_if<
           std::is_base_of_v<typename Helper::HelperMultiReceiversType<InputsMR>::type, UserDefinedMultiReceiver>
       >::type,
-      class isInputCompatible = std::enable_if<HedgehogTraits::is_included_v<InputsMR, InputsG>>
-  >
+      class isInputCompatible = std::enable_if<HedgehogTraits::is_included_v<InputsMR, InputsG>>>
   void input(std::shared_ptr<UserDefinedMultiReceiver> input) {
     assert(input != nullptr);
     this->insideNodes_.insert(input);
-    this->graphCore_->input(std::dynamic_pointer_cast<MultiReceivers<GraphInputs...>>(input));
+    auto test = std::dynamic_pointer_cast<typename Helper::HelperMultiReceiversType<InputsMR>::type>(input);
+    this->graphCore_->input(test);
   }
 
   template<
