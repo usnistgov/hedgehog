@@ -7,16 +7,11 @@
 
 #include <tuple>
 
-//template<class Output, class ...Inputs>
-//class AbstractTask;
-////template<class Output, class ...Inputs>
-////class Rule;
 template<class ...Inputs>
-class MultiReceivers;
+	class MultiReceivers;
+
 template<class Output>
-class Sender;
-////template<class ...Inputs>
-////class Bookkeeper;
+	class Sender;
 
 struct Helper {
   template<class Inputs>
@@ -34,47 +29,6 @@ struct Helper {
   struct HelperCoreMultiReceiversType<std::tuple<Inputs...>> {
     using type = CoreMultiReceivers<Inputs...>;
   };
-
-//  template<class T>
-//  struct HelperMultiConsumerType;
-
-//  template<class...I>
-//  struct HelperMultiConsumerType<std::tuple<I...> > {
-//    using type = MultiReceivers<I...>;
-//  };
-
-//  template<class T>
-//  struct HelperBookkeeperType;
-//
-//  template<class...I>
-//  struct HelperBookkeeperType<std::tuple<I...> > {
-//    using type = Bookkeeper<I...>;
-//  };
-
-//  template<class O, class I>
-//  struct HelperRuleType;
-//
-//  template<class O, class...I>
-//  struct HelperRuleType<O, std::tuple<I...> > {
-//    using type = Rule<O, I...>;
-//  };
-
-//  template<class O, class ...I>
-//  struct HelperTaskType;
-//
-//  template<class O, class ...I>
-//  struct HelperTaskType<O, std::tuple<I...>> {
-//    using type = AbstractTask<O, I...>;
-//  };
-//
-//  template<class O, class ...I>
-//  struct HelperGraphType;
-//
-//  template<class O, class ...I>
-//  struct HelperGraphType<O, std::tuple<I...>> {
-//    using type = Graph<O, I...>;
-//  };
-
 };
 
 #endif //HEDGEHOG_HELPER_H

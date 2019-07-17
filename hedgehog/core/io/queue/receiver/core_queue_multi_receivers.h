@@ -34,18 +34,27 @@ class CoreQueueMultiReceivers
     return (static_cast<CoreReceiver<NodeInputs> *>(this)->receiverEmpty() && ...);
   }
 
-  std::set<CoreSlot *> getSlots() final {
-    return {this};
-  }
+  std::set<CoreSlot *> getSlots() final { return {this}; }
 
-  CoreQueueSlot *queueSlot() final {
-    return this;
-  };
+  CoreQueueSlot *queueSlot() final { return this; };
 
   void copyInnerStructure(CoreQueueMultiReceivers<NodeInputs...> *rhs) {
     HLOG_SELF(0, "Copy Cluster information from " << rhs->name() << "(" << rhs->id() << ")")
     (CoreQueueReceiver < NodeInputs > ::copyInnerStructure(rhs),...);
     CoreQueueSlot::copyInnerStructure(rhs);
+  }
+
+  void removeForAllSenders(CoreNode *coreNode) override {
+    std::cerr << "OK" <<std::endl;
+	(this->removeForAllSendersConditional<NodeInputs>(coreNode),...);
+  }
+
+ private:
+  template <class Input>
+  void removeForAllSendersConditional(CoreNode* coreNode){
+	if(auto temp = dynamic_cast<CoreQueueSender<Input>*>(coreNode)){
+	  static_cast<CoreQueueReceiver<Input>*>(this)->removeSender(temp);
+	}
   }
 
 };

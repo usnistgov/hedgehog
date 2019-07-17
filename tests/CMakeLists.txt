@@ -63,7 +63,7 @@ set(TEST_SRC
         graphs/memory_manager/task/output_md_task.h
         graphs/memory_manager/ep/iiep_mm.h
         graphs/small_example/tasks/ito_f.h
-        )
+        graphs/partial_input/task/task_ii_partial_input.h graphs/partial_input/task/task_fi_partial_input.h graphs/partial_input/ep/iifep_partial_input.h graphs/partial_input/test_partial_input.h)
 
 
 if (CUDA_FOUND)

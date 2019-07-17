@@ -13,6 +13,7 @@
 #include "graphs/ep_composition/test_ep_composition.h"
 #include "graphs/memory_manager/test_mm_example.h"
 #include "graphs/small_example/test_small_example.h"
+#include "graphs/partial_input/test_partial_input.h"
 
 TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH) {
   ASSERT_NO_FATAL_FAILURE(testSmallGraph());
@@ -36,6 +37,11 @@ TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_EP_COMPO) {
 
 TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_CYCLES) {
   ASSERT_NO_FATAL_FAILURE(testCycles());
+}
+
+TEST(TEST_GRAPH, TEST_GLOBAL_PARTIAL_INPUT) {
+  ASSERT_NO_FATAL_FAILURE(testSimplePartialInput());
+  ASSERT_NO_FATAL_FAILURE(testPartialInputEP());
 }
 
 int main(int argc, char **argv) {

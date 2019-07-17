@@ -201,15 +201,17 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 	CoreQueueReceiver<GraphInput>* coreQueueReceiver = nullptr;
     for (CoreNode *graphInputNode : *(graph->inputsCoreNodes())) {
       coreQueueReceiver = dynamic_cast<CoreQueueReceiver<GraphInput>*>(graphInputNode);
-
-	  printer->printEdgeSwitchGraphs(coreQueueReceiver,
-                                     this->id(),
-                                     HedgehogTraits::type_name<GraphInput>(),
-									 coreQueueReceiver->queueSize(),
-									 coreQueueReceiver->maxQueueSize(),
-                                     HedgehogTraits::is_managed_memory_v<GraphInput>);
+      if(coreQueueReceiver) {
+		printer->printEdgeSwitchGraphs(coreQueueReceiver,
+									   this->id(),
+									   HedgehogTraits::type_name<GraphInput>(),
+									   coreQueueReceiver->queueSize(),
+									   coreQueueReceiver->maxQueueSize(),
+									   HedgehogTraits::is_managed_memory_v<GraphInput>);
+	  }
     }
   }
+
 
  protected:
   bool callCanTerminate(bool lock) override {
