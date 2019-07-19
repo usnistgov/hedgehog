@@ -69,9 +69,7 @@ class CoreQueueSender : public CoreSender<NodeOutput>, public virtual CoreQueueN
 	}
   }
 
-  std::set<CoreSender<NodeOutput> *> getSenders() override {
-	return {this};
-  }
+  std::set<CoreSender<NodeOutput> *> getSenders() override { return {this}; }
 
   void copyInnerStructure(CoreQueueSender<NodeOutput> *rhs) {
 	HLOG_SELF(0, "Copy Cluster CoreQueueSender information from " << rhs->name() << "(" << rhs->id() << ")")

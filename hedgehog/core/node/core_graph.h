@@ -629,15 +629,30 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
   void addReceiversToSource(CoreMultiReceivers<InputNodeTypes...> *inputCoreNode) {
 	//Set Slot/Notifiers
 	this->source_->addSlot(inputCoreNode);
-	(inputCoreNode->addNotifier(std::static_pointer_cast<CoreQueueSender<InputNodeTypes>>(this->source_).get()), ...);
+//	(inputCoreNode->addNotifier(std::static_pointer_cast<CoreQueueSender<InputNodeTypes>>(this->source_).get()), ...);
+	(this->addSourceNotifierInputCoreNode<InputNodeTypes, InputNodeTypes...>(inputCoreNode), ...);
 	(this->addReceiverToSource<InputNodeTypes>(dynamic_cast<CoreReceiver<InputNodeTypes> *>(inputCoreNode)), ...);
+  }
+
+  template<class InputNodeType, class ...InputNodeTypes>
+  void addSourceNotifierInputCoreNode(CoreMultiReceivers<InputNodeTypes...> *inputCoreNode){
+    if(auto compatibleSourceType = std::dynamic_pointer_cast<CoreQueueSender<InputNodeType>>(this->source_)){
+	  inputCoreNode->addNotifier(compatibleSourceType.get());
+	  compatibleSourceType->addReceiver(inputCoreNode);
+    }
   }
 
   template<class InputNodeType>
   void addReceiverToSource(CoreReceiver<InputNodeType> *inputCoreNode) {
-	std::static_pointer_cast<CoreQueueSender<InputNodeType>>(this->source_)->addReceiver(inputCoreNode);
-	inputCoreNode->addSender(static_cast<CoreSender<InputNodeType> *>(this->source_.get()));
-	dynamic_cast<CoreGraphReceiver<InputNodeType> *>(this)->addGraphReceiverInput(inputCoreNode);
+    if(inputCoreNode) {
+//	  std::static_pointer_cast<CoreQueueSender<InputNodeType>>(this->source_)->addReceiver(inputCoreNode);
+//	inputCoreNode->addSender(static_cast<CoreSender<InputNodeType> *>(this->source_.get()));
+	  if (auto compatibleSource = dynamic_cast<CoreSender<InputNodeType> *>(this->source_.get())) {
+		inputCoreNode->addSender(compatibleSource);
+		dynamic_cast<CoreGraphReceiver<InputNodeType> *>(this)->addGraphReceiverInput(inputCoreNode);
+	  }
+//	  	dynamic_cast<CoreGraphReceiver<InputNodeType> *>(this)->addGraphReceiverInput(inputCoreNode);
+	}
   }
 
   template<class InputNodeType>

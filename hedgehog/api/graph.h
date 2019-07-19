@@ -55,6 +55,7 @@ class Graph :
     assert(input != nullptr);
     this->insideNodes_.insert(input);
     auto test = std::dynamic_pointer_cast<typename Helper::HelperMultiReceiversType<InputsMR>::type>(input);
+    if(test== nullptr) {std::cout << "big problem " << input << std::endl;}
     this->graphCore_->input(test);
   }
 
