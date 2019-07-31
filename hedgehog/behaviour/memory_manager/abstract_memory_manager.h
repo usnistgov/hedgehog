@@ -11,6 +11,7 @@
 
 #include "../../tools/traits.h"
 #include "../../tools/logger.h"
+#include "../../tools/nvtx_profiler.h"
 #include "../../api/memory_manager/memory_data.h"
 #include "pool.h"
 
@@ -21,6 +22,8 @@ class AbstractMemoryManager {
   int deviceId_ = 0;
   std::unique_ptr<Pool<MANAGEDDATA>> pool_ = {};
   bool initialized_ = false;
+
+  std::shared_ptr<NvtxProfiler> profiler_ = nullptr;
 
  public:
   AbstractMemoryManager() = delete;
@@ -38,18 +41,23 @@ class AbstractMemoryManager {
 
   void deviceId(int deviceId) { deviceId_ = deviceId; }
 
+  void profiler(std::shared_ptr<NvtxProfiler> profiler) { this->profiler_ = profiler; }
+
   std::shared_ptr<MANAGEDDATA> getData() {
+    this->profiler_->startRangeWaitingForMemory();
     std::shared_ptr<MANAGEDDATA> managedMemory;
     HLOG(4, "StaticMemoryManager memory pool size = " << this->pool()->queue().size())
     managedMemory = this->pool()->pop_front();
     HLOG(4,
          "StaticMemoryManager After waiting: received: " << managedMemory << " pSize: " << (int) (this->pool()->size()))
+    this->profiler_->endRangeWaitingForMem();
     return managedMemory;
   };
 
   void releaseData(std::shared_ptr<MemoryData<MANAGEDDATA>> managedMemory) {
     managedMemory->lock();
     if (this->canRecycle(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory))) {
+      this->profiler_->addReleaseMarker();
       managedMemory->recycle();
       this->pool_->push_back(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory));
     }

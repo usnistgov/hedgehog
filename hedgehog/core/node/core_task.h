@@ -8,6 +8,7 @@
 #include <variant>
 #include <string_view>
 
+
 #include "../../tools/traits.h"
 #include "../io/queue/receiver/core_queue_multi_receivers.h"
 #include "../io/queue/sender/core_queue_sender.h"
@@ -15,6 +16,7 @@
 #include "../../behaviour/execute.h"
 
 #include "../../tools/logger.h"
+#include "../../tools/nvtx_profiler.h"
 #include "../behaviour/core_execute.h"
 
 template<class TaskOutput, class ...TaskInputs>
@@ -31,6 +33,8 @@ class CoreTask
   //Store all AbstractTask clones
   std::vector<std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>>> clusterAbstractTask_ = {};
 
+  std::shared_ptr<NvtxProfiler> nvtxProfiler_ = nullptr;
+
  public:
   CoreTask(std::string_view const &name,
            size_t const numberThreads,
@@ -44,6 +48,7 @@ class CoreTask
   CoreQueueMultiReceivers<TaskInputs...>(name, type, numberThreads), task_(task),
   automaticStart_(automaticStart) {
     HLOG_SELF(0, "Creating CoreTask with task: " << task << " type: " << (int) type << " and name: " << name)
+    nvtxProfiler_ = std::make_shared<NvtxProfiler>(this->name());
   }
 
   ~CoreTask() override {
@@ -98,6 +103,8 @@ class CoreTask
         finish;
 
     this->isActive(true);
+    this->nvtxProfiler()->initialize(this->threadId());
+
     this->preRun();
 
     if (this->automaticStart()) {
@@ -154,6 +161,7 @@ class CoreTask
   }
 
   bool waitForNotification() override {
+    this->nvtxProfiler()->startRangeWaiting(this->totalQueueSize());
     std::unique_lock<std::mutex> lock(*(this->slotMutex()));
     HLOG_SELF(2, "Wait for notification")
     this->notifyConditionVariable()->wait(lock,
@@ -170,6 +178,7 @@ class CoreTask
     HLOG_SELF(2, "Notification received")
 	assert(lock.owns_lock());
 
+    this->nvtxProfiler()->endRangeWaiting();
     return callCanTerminate(false);
   }
 
@@ -225,6 +234,10 @@ class CoreTask
       sharedAbstractTaskCopy->connectMemoryManager(copyMemoryManager);
     }
     return sharedAbstractTaskCopy;
+  }
+
+  std::shared_ptr<NvtxProfiler> nvtxProfiler() {
+    return nvtxProfiler_;
   }
 };
 
