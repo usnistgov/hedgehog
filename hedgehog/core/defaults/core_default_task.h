@@ -33,7 +33,9 @@ class DefaultCoreTaskExecute : public virtual CoreTask<TaskOutput, TaskInputs...
 
   void callExecute(std::shared_ptr<TaskInput> data) final {
     HLOG_SELF(2, "Call execute")
+    this->nvtxProfiler()->startRangeExecuting();
     static_cast<Execute<TaskInput> *>(this->task())->execute(data);
+    this->nvtxProfiler()->endRangeExecuting();
   }
 };
 #if defined (__clang__)
@@ -69,16 +71,22 @@ class CoreDefaultTask
   }
 
   void preRun() override {
+    this->nvtxProfiler()->startRangeInitializing();
+
     HLOG_SELF(0, "Initialize Memory manager for the task " << this->name() << " / " << this->id())
     if (this->task()->memoryManager() != nullptr) {
       this->task()->memoryManager()->initialize();
     }
+
     this->task()->initialize();
+    this->nvtxProfiler()->endRangeInitializing();
   }
 
   void postRun() override {
     this->isActive(false);
+    this->nvtxProfiler()->startRangeShuttingDown();
     this->task()->shutdown();
+    this->nvtxProfiler()->endRangeShuttingDown();
     this->notifyAllTerminated();
   }
 };

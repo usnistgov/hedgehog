@@ -130,6 +130,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
 
   void postRun() override {
 	this->isActive(false);
+    this->nvtxProfiler()->startRangeShuttingDown();
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graph : this->epGraphs_) {
       (removeSwitchReceiver<GraphInputs>(graph.get()), ...);
     }
@@ -138,6 +139,7 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> graph : this->epGraphs_) {
       graph->waitForTermination();
     }
+    this->nvtxProfiler()->endRangeShuttingDown();
   }
 
  private:

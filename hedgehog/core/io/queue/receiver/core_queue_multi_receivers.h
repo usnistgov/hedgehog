@@ -34,6 +34,11 @@ class CoreQueueMultiReceivers
     return (static_cast<CoreReceiver<NodeInputs> *>(this)->receiverEmpty() && ...);
   }
 
+  size_t totalQueueSize() final {
+    return (static_cast<CoreReceiver<NodeInputs> *>(this)->queueSize() + ...);
+  }
+
+
   std::set<CoreSlot *> getSlots() final { return {this}; }
 
   CoreQueueSlot *queueSlot() final { return this; };

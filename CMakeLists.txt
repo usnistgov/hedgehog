@@ -38,6 +38,9 @@ option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
 option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
 option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
+
 set(LOG OFF)
 set(BUILD_DOXYGEN OFF)
 set(RUN_GTEST ON)
@@ -45,6 +48,10 @@ set(BUILD_MAIN ON)
 
 # Cuda
 find_package(CUDA QUIET)
+
+# NVTX
+find_package(NVTX QUIET)
+
 
 if (CUDA_FOUND)
     message(STATUS "CUDA found")
@@ -54,7 +61,6 @@ endif (CUDA_FOUND)
 
 # Targets
 if (LOG)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
     find_package(GLOG REQUIRED)
     include_directories(${GLOG_INCLUDE_DIRS})
     link_libraries(${GLOG_LIBRARIES})
@@ -117,8 +123,8 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-#                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
+                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+                        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -191,7 +197,7 @@ if (BUILD_MAIN)
             hedgehog/tools/printers/abstract_printer.h
             hedgehog/tools/printers/dot_printer.h
             hedgehog/tools/scheduler/default_scheduler.h
-
+            hedgehog/tools/nvtx_profiler.h
             hedgehog/behaviour/switch_rule.h
             hedgehog/core/node/execution_pipeline/core_switch_sender.h
             hedgehog/core/node/execution_pipeline/core_switch.h
@@ -209,6 +215,8 @@ if (BUILD_MAIN)
             hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h
             hedgehog/api/memory_manager/abstract_cuda_memory_manager.h)
 
+
+
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)
         message(STATUS "CUDA enabled")
@@ -217,4 +225,10 @@ if (BUILD_MAIN)
     endif ()
 
     add_executable(main main.cc ${HEDGEHOG_SRC})
+    if (NVTX_FOUND)
+        message(STATUS "NVTX Enabled")
+        target_compile_definitions(main PUBLIC -DHH_USE_NVTX)
+        target_include_directories(main PUBLIC ${NVTX_INCLUDE_DIR})
+        target_link_libraries(main ${NVTX_LIBRARIES})
+    endif()
 endif (BUILD_MAIN)

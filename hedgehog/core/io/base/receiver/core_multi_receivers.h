@@ -31,6 +31,8 @@ class CoreMultiReceivers :
 
   virtual bool receiversEmpty() = 0;
 
+  virtual size_t totalQueueSize() { return 0; }
+
   void removeForAllSenders(CoreNode* coreNode) override{
 	(this->removeForAllSendersConditional<Inputs>(coreNode), ...);
   }
