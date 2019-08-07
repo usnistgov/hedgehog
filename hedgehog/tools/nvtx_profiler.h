@@ -77,7 +77,8 @@ class NvtxProfiler {
     executeAttrib_ = createEventAttribute(NVTX_COLOR_EXECUTING);
 
     waitAttrib_ = createEventAttribute(NVTX_COLOR_WAITING);
-    waitAttrib_->payloadType = NVTX_PAYLOAD_TYPE_INT64;
+    waitAttrib_->payloadType = NVTX_PAYLOAD_TYPE_UNSIGNED_INT64;
+
     waitAttrib_->payload.ullValue = 0;
 
     waitForMemAttrib_ = createEventAttribute(NVTX_COLOR_WAITING_FOR_MEM);
@@ -169,7 +170,7 @@ class NvtxProfiler {
    * This event shows the current queue size in the payload within the attribute.
    * @param queueSize the queue size
    */
-  void startRangeWaiting([[maybe_unused]]uint64_t queueSize) {
+  void startRangeWaiting([[maybe_unused]]uint64_t const &queueSize) {
 #ifdef HH_USE_NVTX
     waitAttrib_->payload.ullValue = queueSize;
     waitRangeId_ = nvtxDomainRangeStartEx(taskDomain_, waitAttrib_);

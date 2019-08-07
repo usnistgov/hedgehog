@@ -57,10 +57,12 @@ if (CUDA_FOUND)
     message(STATUS "CUDA found")
     set(CUDA_PROPAGATE_HOST_FLAGS OFF)
     set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
+    add_definitions(-DHH_USE_CUDA)
 endif (CUDA_FOUND)
 
 # Targets
 if (LOG)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
     find_package(GLOG REQUIRED)
     include_directories(${GLOG_INCLUDE_DIRS})
     link_libraries(${GLOG_LIBRARIES})
@@ -124,7 +126,7 @@ if (BUILD_MAIN)
 
     if (NOT MSVC)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-                        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
+                #                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -213,9 +215,7 @@ if (BUILD_MAIN)
             hedgehog/behaviour/memory_manager/pool.h
             hedgehog/api/memory_manager/abstract_static_memory_manager.h
             hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h
-            hedgehog/api/memory_manager/abstract_cuda_memory_manager.h)
-
-
+            )
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)

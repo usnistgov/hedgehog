@@ -68,21 +68,10 @@ class CoreDefaultExecutionPipeline : public CoreDefaultExecutionPipelineExecute<
       CoreQueueSender<GraphOutput>(name, NodeType::ExecutionPipeline, 1),
       CoreSlot(name, NodeType::ExecutionPipeline, 1),
       CoreReceiver<GraphInputs>(name, NodeType::ExecutionPipeline, 1)...,
-      CoreExecutionPipeline<GraphOutput,
-                            GraphInputs...>(name,
-                                            executionPipeline,
-                                            coreBaseGraph,
-                                            numberGraphs,
-                                            deviceIds,
-                                            automaticStart),
-      CoreDefaultExecutionPipelineExecute<GraphInputs,
-                                          GraphOutput,
-                                          GraphInputs...>(name,
-                                                          executionPipeline,
-                                                          coreBaseGraph,
-                                                          numberGraphs,
-                                                          deviceIds,
-                                                          automaticStart)
+      CoreExecutionPipeline<GraphOutput, GraphInputs...>(
+      name, executionPipeline, coreBaseGraph, numberGraphs, deviceIds, automaticStart),
+      CoreDefaultExecutionPipelineExecute<GraphInputs, GraphOutput, GraphInputs...>(
+      name, executionPipeline, coreBaseGraph, numberGraphs, deviceIds, automaticStart)
   ... {}
 
   CoreDefaultExecutionPipeline(CoreDefaultExecutionPipeline<GraphOutput, GraphInputs...> const &rhs,

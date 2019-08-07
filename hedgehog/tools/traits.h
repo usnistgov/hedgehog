@@ -51,8 +51,7 @@ struct _is_included_<T1, T2, std::integer_sequence<std::size_t, Is...> > {
 };
 
 template<class T1, class T2>
-struct is_included : _is_included_<T1, T2, std::make_integer_sequence<std::size_t, std::tuple_size<T1>::value> > {
-};
+struct is_included : _is_included_<T1, T2, std::make_integer_sequence<std::size_t, std::tuple_size<T1>::value> > {};
 
 template<class T1, class T2>
 inline constexpr bool is_included_v = is_included<T1, T2>::value;

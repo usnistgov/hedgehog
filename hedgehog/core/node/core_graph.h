@@ -291,6 +291,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 	std::static_pointer_cast<CoreQueueSender<Input>>(this->source_)->sendAndNotify(data);
   }
 
+
   void graphId(size_t graphId) { graphId_ = graphId; }
 
   void setInside() override {
@@ -535,7 +536,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
   }
 
   void deviceId(int deviceId) override {
-	this->deviceId_ = deviceId;
+    this->deviceId_ = deviceId;
   }
 
   void createInnerClustersAndLaunchThreads() {

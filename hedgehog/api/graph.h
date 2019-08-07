@@ -122,6 +122,10 @@ class Graph :
     DotPrinter printer(std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core);
     core->visit(&printer);
   }
+
+  void deviceId(int deviceId) {
+    this->graphCore_->deviceId(deviceId);
+  }
 };
 
 #endif //HEDGEHOG_GRAPH_H

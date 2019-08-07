@@ -7,7 +7,9 @@
 #define HEDGEHOG_ABSTRACT_CUDA_TASK_H
 #ifdef HH_USE_CUDA
 #include <unordered_set>
-#include <cuda_runtime.h>
+#include <cublas_v2.h>
+#include <cublas_api.h>
+#include <cuda_runtime_api.h>
 #include "../task/abstract_task.h"
 
 #ifndef checkCudaErrors
@@ -16,14 +18,25 @@
 // These are the inline versions for all of the SDK helper functions
 inline void __checkCudaErrors(cudaError_t err, [[maybe_unused]]const char *file, [[maybe_unused]]const int line) {
   if (cudaSuccess != err) {
-    HLOG(0, "checkCudaErrors() API error = "
-        << err
-        << "\"" << cudaGetErrorString(err) << " \" from "
-        << file << ":" << line)
+    std::cerr << "checkCudaErrors() Cuda error = "
+              << err
+              << "\"" << cudaGetErrorString(err) << " \" from "
+              << file << ":" << line << std::endl;
     cudaDeviceReset();
-    exit(42);
+    exit(43);
   }
 }
+// These are the inline versions for all of the SDK helper functions
+inline void __checkCudaErrors(cublasStatus_t err, const char *file, const int line) {
+  if (CUBLAS_STATUS_SUCCESS != err) {
+    std::cerr << "checkCudaErrors() Status Error = "
+              << err << " from "
+              << file << ":" << line << std::endl;
+    cudaDeviceReset();
+    exit(44);
+  }
+}
+
 #endif
 
 template<class TaskOutput, class ... TaskInputs>
@@ -46,24 +59,17 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
       : AbstractTask<TaskOutput, TaskInputs...>(name, 1, automaticStart),
         enablePeerAccess_(enablePeerAccess) {}
 
-  void setDeviceId(int deviceId) {
-    this->core()->deviceId(deviceId);
-  }
-
   void initialize() final {
     int numGpus = 0;
-
+    int canAccess = 0;
     checkCudaErrors(cudaGetDeviceCount(&numGpus));
-
     assert(this->deviceId() < numGpus);
-
     checkCudaErrors(cudaSetDevice(this->deviceId()));
     checkCudaErrors(cudaStreamCreate(&stream_));
 
     if (enablePeerAccess_) {
       for (int i = 0; i < numGpus; ++i) {
         if (i != this->deviceId()) {
-          int canAccess = 0;
           checkCudaErrors(cudaDeviceCanAccessPeer(&canAccess, this->deviceId(), i));
           if (canAccess) {
             cudaDeviceEnablePeerAccess(i, 0);
@@ -84,17 +90,9 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
   virtual void initializeCuda() {}
   virtual void shutdownCuda() {}
 
-  bool enablePeerAccess() const {
-    return enablePeerAccess_;
-  }
-
-  cudaStream_t stream() const {
-    return stream_;
-  }
-
-  bool hasPeerAccess(int peerDeviceId) {
-    return peerDeviceIds_.find(peerDeviceId) != peerDeviceIds_.end();
-  }
+  bool enablePeerAccess() const { return enablePeerAccess_; }
+  cudaStream_t stream() const { return stream_; }
+  bool hasPeerAccess(int peerDeviceId) { return peerDeviceIds_.find(peerDeviceId) != peerDeviceIds_.end(); }
 
 };
 

@@ -14,11 +14,9 @@ class MatrixData : public MemoryData<MatrixData<T>> {
       matrixSize_ = 1024 * 1024;
 
  public:
-  MatrixData() {}
-  void data(T *data) {
-    data_ = data;
-  }
-  size_t matrixSize() const { return matrixSize_; }
+  MatrixData() = default;
+  void data(T *data) { data_ = data; }
+  [[nodiscard]] size_t matrixSize() const { return matrixSize_; }
   virtual ~MatrixData() { delete[] data_; }
   void recycle() override { std::fill_n(data_, matrixSize_, 0); }
 };

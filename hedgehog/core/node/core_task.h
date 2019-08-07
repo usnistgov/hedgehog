@@ -104,7 +104,6 @@ class CoreTask
 
     this->isActive(true);
     this->nvtxProfiler()->initialize(this->threadId());
-
     this->preRun();
 
     if (this->automaticStart()) {
@@ -113,7 +112,6 @@ class CoreTask
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
     }
-
     while (!this->callCanTerminate(true)) {
       start = std::chrono::high_resolution_clock::now();
       volatile bool canTerminate = this->waitForNotification();
@@ -124,7 +122,6 @@ class CoreTask
       (this->operateReceivers<TaskInputs>(), ...);
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
-
     }
 
     this->postRun();

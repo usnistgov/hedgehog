@@ -95,7 +95,8 @@ class AbstractTask :
   std::shared_ptr<TaskOutput> getManagedMemory() {
     if (mm_ == nullptr) {
       std::cerr
-          << "To get managed memory, you need first to connect a memory manager to the task via \"connectMemoryManager()\""
+          << "For the task:\"" << this->name()
+          << "\"To get managed memory, you need first to connect a memory manager to the task via \"connectMemoryManager()\""
           << std::endl;
       exit(42);
     }

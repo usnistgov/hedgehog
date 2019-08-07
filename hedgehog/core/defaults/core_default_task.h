@@ -74,11 +74,14 @@ class CoreDefaultTask
     this->nvtxProfiler()->startRangeInitializing();
 
     HLOG_SELF(0, "Initialize Memory manager for the task " << this->name() << " / " << this->id())
+    this->task()->initialize();
+
     if (this->task()->memoryManager() != nullptr) {
+      this->task()->memoryManager()->profiler(this->nvtxProfiler());
+      this->task()->memoryManager()->deviceId(this->deviceId());
       this->task()->memoryManager()->initialize();
     }
 
-    this->task()->initialize();
     this->nvtxProfiler()->endRangeInitializing();
   }
 

@@ -13,7 +13,7 @@ class AbstractStaticMemoryManager : public AbstractMemoryManager<MANAGEDDATA> {
   AbstractStaticMemoryManager() = delete;
   explicit AbstractStaticMemoryManager(size_t const &poolSize) : AbstractMemoryManager<MANAGEDDATA>(poolSize) {}
 
-  virtual void allocate(std::shared_ptr<MANAGEDDATA> &) = 0;
+  virtual void allocate(std::shared_ptr<MANAGEDDATA>) = 0;
 
   virtual void initializeStaticMemoryManager() {}
 

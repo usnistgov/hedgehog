@@ -44,13 +44,11 @@ class DefaultStateManager
   using DefaultStateManagerExecute<StateInputs, StateOutput, StateInputs...>::execute...;
 
   explicit DefaultStateManager(std::shared_ptr<AbstractState<StateOutput, StateInputs...>> const &state,
-                               bool automaticStart = false)
-      :
+                               bool automaticStart = false) :
       AbstractStateManager<StateOutput, StateInputs...>("DefaultStateManager", state, automaticStart),
       DefaultStateManagerExecute<StateInputs, StateOutput, StateInputs...>("DefaultStateManager",
                                                                            state,
                                                                            automaticStart)... {}
-
   DefaultStateManager(std::string_view const name,
                       std::shared_ptr<AbstractState<StateOutput, StateInputs...>> const &state,
                       bool automaticStart = false) :

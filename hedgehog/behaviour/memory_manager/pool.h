@@ -25,7 +25,6 @@ class Pool {
   void initialize(size_t poolSize) {
 //    std::cout << "--> Initialize Pool" << std::endl;
     poolSize_ = poolSize == 0 ? 1 : poolSize;
-    poolSize_ = poolSize;
     queue_ = std::deque<std::shared_ptr<MANAGEDDATA>>(poolSize);
     std::for_each(
         queue_.begin(), queue_.end(),
