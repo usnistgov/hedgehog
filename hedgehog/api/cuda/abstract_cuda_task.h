@@ -83,7 +83,6 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
         }
       }
     }
-
     this->initializeCuda();
   }
 

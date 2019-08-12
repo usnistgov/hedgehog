@@ -65,6 +65,7 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     epGraphs_.reserve(this->numberGraphs_);
 
     coreBaseGraph->graphId(0);
+    coreBaseGraph->deviceId(this->deviceIds_[0]);
     connectGraphToEP(coreBaseGraph);
 
     this->duplicateGraphs();
