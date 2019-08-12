@@ -70,19 +70,24 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
     if (enablePeerAccess_) {
       for (int i = 0; i < numGpus; ++i) {
         if (i != this->deviceId()) {
-          auto ret = cudaDeviceCanAccessPeer(&canAccess, this->deviceId(), i);
-
-          if (ret != cudaErrorPeerAccessAlreadyEnabled) {
-            checkCudaErrors(ret);
-          }
+          checkCudaErrors(cudaDeviceCanAccessPeer(&canAccess, this->deviceId(), i));
 
           if (canAccess) {
-            cudaDeviceEnablePeerAccess(i, 0);
+            auto ret = cudaDeviceEnablePeerAccess(i, 0);
+            if (ret != cudaErrorPeerAccessAlreadyEnabled) {
+              checkCudaErrors(ret);
+            }
             peerDeviceIds_.insert(i);
           }
         }
       }
     }
+
+    auto ret = cudaGetLastError();
+    if (ret != cudaErrorPeerAccessAlreadyEnabled) {
+      checkCudaErrors(ret);
+    }
+
     this->initializeCuda();
   }
 
