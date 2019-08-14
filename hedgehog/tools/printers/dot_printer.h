@@ -113,8 +113,8 @@ class DotPrinter : public AbstractPrinter {
         outputFile_ << " " << node->id();
       }
       outputFile_ << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
-          << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
-          << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left; \n";
+                  << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
+                  << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left; \n";
     } else {
       outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name();
       if (debugOptions_ == DebugOptions::DEBUG) {
@@ -179,8 +179,8 @@ class DotPrinter : public AbstractPrinter {
   void printEdgeSwitchGraphs(CoreNode *to,
                              std::string const &idSwitch,
                              std::string_view const &edgeType,
-							 size_t const &queueSize,
-							 size_t const &maxQueueSize,
+                             size_t const &queueSize,
+                             size_t const &maxQueueSize,
                              bool isMemoryManaged) override {
     std::ostringstream
         oss;
@@ -191,11 +191,11 @@ class DotPrinter : public AbstractPrinter {
         penWidth = ",penwidth=1",
         queueStr;
 
-	if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
-	  oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
-	  queueStr = oss.str();
-	  oss.str("");
-	}
+    if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
+      oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
+      queueStr = oss.str();
+      oss.str("");
+    }
 
     if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
@@ -204,11 +204,11 @@ class DotPrinter : public AbstractPrinter {
         for (auto &dest: to->ids()) {
 
           idDest = "box" + dest.second;
-          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << queueStr<< "\""
+          oss << idSwitch << " -> " << idDest << "[label=\"" << edgeType << queueStr << "\""
               << penWidth << "];";
         }
       } else {
-        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << queueStr<< "\""
+        oss << idSwitch << " -> " << to->id() << "[label=\"" << edgeType << queueStr << "\""
             << penWidth << "];";
       }
     } else if (to->id() == to->coreClusterNode()->id()) {
@@ -236,11 +236,10 @@ class DotPrinter : public AbstractPrinter {
     if (isMemoryManaged) { penWidth = ",penwidth=3"; }
 
     if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
-	  oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
-	  queueStr = oss.str();
-	  oss.str("");
-	}
-
+      oss << " QS:" << queueSize << " MQS:" << maxQueueSize;
+      queueStr = oss.str();
+      oss.str("");
+    }
 
     if (this->structureOptions_ == StructureOptions::ALLTHREADING || this->structureOptions_ == StructureOptions::ALL) {
       if (from->isInCluster()) {
@@ -315,10 +314,20 @@ class DotPrinter : public AbstractPrinter {
           ss << "\\nWait Time: " << this->durationPrinter(node->waitTime().count());
           ss << "\\nExecution Time: " << this->durationPrinter(node->executionTime().count());
         } else {
-          ss << "\\nWait Time: " << this->durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
-             << this->durationPrinter(node->stdvWaitTimeCluster());
-          ss << "\\nExecution Time: " << this->durationPrinter(node->meanExecTimeCluster().count()) << " +- "
-             << this->durationPrinter(node->stdvExecTimeCluster());
+          auto minmaxWait = node->minmaxWaitTimeCluster();
+          auto minmaxExec = node->minmaxExecTimeCluster();
+          ss
+              << "\\nWait Time: \\n"
+              << "  Min: " << this->durationPrinter(minmaxWait.first) << "\\n"
+              << "  Avg: " << this->durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
+              << this->durationPrinter(node->stdvWaitTimeCluster()) << "\\n"
+              << "  Max: " << this->durationPrinter(minmaxWait.second) << "\\n";
+          ss
+              << "\\nExecution Time: \\n"
+              << "  Min: " << this->durationPrinter(minmaxExec.first) << "\\n"
+              << "  Avg: " << this->durationPrinter(node->meanExecTimeCluster().count()) << " +- "
+              << this->durationPrinter(node->stdvExecTimeCluster()) << "\\n"
+              << "  Max: " << this->durationPrinter(minmaxExec.second) << "\\n";
         }
         if (node->extraPrintingInformation() != "") {
           ss << "\\nExtra Information: " << node->extraPrintingInformation();
@@ -326,9 +335,10 @@ class DotPrinter : public AbstractPrinter {
         ss << "\"";
         ss << ",shape=circle";
         switch (this->colorScheme_) {
-          case ColorScheme::EXECUTION:ss << ",color=" << this->getExecRGB(node->executionTime().count());
+          case ColorScheme::EXECUTION:
+            ss << ",color=" << this->getExecRGB(node->executionTime().count()) << ", penwidth=3";
             break;
-          case ColorScheme::WAIT:ss << ",color=" << this->getWaitRGB(node->waitTime().count());
+          case ColorScheme::WAIT:ss << ",color=" << this->getWaitRGB(node->waitTime().count()) << ", penwidth=3";
             break;
           default:break;
         }
@@ -343,9 +353,10 @@ class DotPrinter : public AbstractPrinter {
         ss << "\"";
         ss << ",shape=diamond";
         switch (this->colorScheme_) {
-          case ColorScheme::EXECUTION:ss << ",color=" << this->getExecRGB(node->executionTime().count());
+          case ColorScheme::EXECUTION:
+            ss << ",color=" << this->getExecRGB(node->executionTime().count()) << ", penwidth=3";
             break;
-          case ColorScheme::WAIT:ss << ",color=" << this->getWaitRGB(node->waitTime().count());
+          case ColorScheme::WAIT:ss << ",color=" << this->getWaitRGB(node->waitTime().count()) << ", penwidth=3";
             break;
           default:break;
         }

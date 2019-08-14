@@ -30,6 +30,10 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
+find_package(Hedgehog REQUIRED)
+
 set(TEST_SRC
         testAll.cc
         graphs/big_example/types/a.h
@@ -69,8 +73,12 @@ set(TEST_SRC
 if (CUDA_FOUND)
     cuda_add_executable(runAllTests ${TEST_SRC})
     target_compile_definitions(runAllTests PUBLIC -DHH_USE_CUDA)
+    target_link_libraries(runAllTests ${Hedgehog_LIBRARIES})
+    target_include_directories(runAllTests PUBLIC ${Hedgehog_INCLUDE_DIR})
 else (CUDA_FOUND)
     add_executable(runAllTests ${TEST_SRC})
+    target_link_libraries(runAllTests ${Hedgehog_LIBRARIES})
+    target_include_directories(runAllTests PUBLIC ${Hedgehog_INCLUDE_DIR})
 endif ()
 
 target_link_libraries(runAllTests gtest gtest_main)

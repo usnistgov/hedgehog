@@ -171,6 +171,41 @@ class CoreNode {
     }
     return ret;
   }
+
+  std::pair<uint64_t, uint64_t> minmaxWaitTimeCluster() const {
+    uint64_t min = std::numeric_limits<uint64_t>::max();
+    uint64_t max = 0;
+    uint64_t val = 0;
+    if (this->isInCluster()) {
+      auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        val = it->second->waitTime().count();
+        if (val < min) { min = val; }
+        if (val > max) { max = val; }
+      }
+    }
+    return {min, max};
+  }
+
+  std::pair<uint64_t, uint64_t> minmaxExecTimeCluster() const {
+    uint64_t min = std::numeric_limits<uint64_t>::max();
+    uint64_t max = 0;
+    uint64_t val = 0;
+    if (this->isInCluster()) {
+      auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        val = it->second->executionTime().count();
+        if (val < min) { min = val; }
+        if (val > max) { max = val; }
+      }
+    }
+    return {min, max};
+  }
+
+
+
   size_t numberActiveThreadInCluster() const {
     size_t ret = 0;
     if (this->isInCluster()) {
