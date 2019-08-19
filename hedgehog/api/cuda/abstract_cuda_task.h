@@ -28,6 +28,7 @@ inline void __checkCudaErrors(cudaError_t err, [[maybe_unused]]const char *file,
 }
 // These are the inline versions for all of the SDK helper functions
 inline void __checkCudaErrors(cublasStatus_t err, const char *file, const int line) {
+
   if (CUBLAS_STATUS_SUCCESS != err) {
     std::cerr << "checkCudaErrors() Status Error = "
               << err << " from "
