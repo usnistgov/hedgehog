@@ -100,7 +100,14 @@ class AbstractTask :
           << std::endl;
       exit(42);
     }
-    return mm_->getData();
+
+    auto start = std::chrono::high_resolution_clock::now();
+    auto data = mm_->getData();
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    this->core()->incrementWaitForMemoryDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+
+    return data;
   }
 
   bool canTerminate() override { return !this->taskCore_->hasNotifierConnected() && this->taskCore_->receiversEmpty(); }

@@ -316,18 +316,41 @@ class DotPrinter : public AbstractPrinter {
         } else {
           auto minmaxWait = node->minmaxWaitTimeCluster();
           auto minmaxExec = node->minmaxExecTimeCluster();
-          ss
-              << "\\nWait Time: \\n"
-              << "  Min: " << this->durationPrinter(minmaxWait.first) << "\\n"
-              << "  Avg: " << this->durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
-              << this->durationPrinter(node->stdvWaitTimeCluster()) << "\\n"
-              << "  Max: " << this->durationPrinter(minmaxWait.second) << "\\n";
-          ss
-              << "\\nExecution Time: \\n"
+          auto minmaxMemoryWait = node->minmaxMemoryWaitTimeCluster();
+
+          ss << "\\nWait Time: ";
+          if (node->numberThreads() > 1) {
+            ss << "\\n"
+                << "  Min: " << this->durationPrinter(minmaxWait.first) << "\\n"
+                << "  Avg: " << this->durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
+                << this->durationPrinter(node->stdvWaitTimeCluster()) << "\\n"
+                << "  Max: " << this->durationPrinter(minmaxWait.second) << "\\n\\n";
+          } else {
+            ss << this->durationPrinter(node->meanWaitTimeCluster().count()) << "\\n";
+          }
+
+          ss << "Execution Time: ";
+          if (node->numberThreads() > 1) {
+            ss << "\\n"
               << "  Min: " << this->durationPrinter(minmaxExec.first) << "\\n"
               << "  Avg: " << this->durationPrinter(node->meanExecTimeCluster().count()) << " +- "
               << this->durationPrinter(node->stdvExecTimeCluster()) << "\\n"
-              << "  Max: " << this->durationPrinter(minmaxExec.second) << "\\n";
+              << "  Max: " << this->durationPrinter(minmaxExec.second) << "\\n\\n";
+          } else {
+            ss << this->durationPrinter(node->meanExecTimeCluster().count()) << "\\n";
+          }
+          if (node->meanMemoryWaitTimeCluster().count() > 0) {
+            ss << "Memory Wait Time: ";
+            if (node->numberThreads() > 1) {
+              ss << "\\n"
+                  << "  Min: " << this->durationPrinter(minmaxMemoryWait.first) << "\\n"
+                  << "  Avg: " << this->durationPrinter(node->meanMemoryWaitTimeCluster().count()) << " +-"
+                  << this->durationPrinter(node->stdvMemoryWaitTimeCluster()) << "\\n"
+                  << "  Max: " << this->durationPrinter(minmaxMemoryWait.second) << "\\n\\n";
+            } else {
+              ss << this->durationPrinter(node->meanMemoryWaitTimeCluster().count()) << "\\n";
+            }
+          }
         }
         if (node->extraPrintingInformation() != "") {
           ss << "\\nExtra Information: " << node->extraPrintingInformation();
@@ -371,7 +394,8 @@ class DotPrinter : public AbstractPrinter {
   }
 
   std::string getRGBFromRange(uint64_t const &val, uint64_t const &min, uint64_t const &range) {
-    uint64_t posRedToBlue = (val - min) * 255 / range;
+
+    uint64_t posRedToBlue = (std::abs((int64_t)val - (int64_t)min)) * 255 / range;
     posRedToBlue = posRedToBlue > 255 ? 255 : posRedToBlue;
     std::stringstream ss;
     ss << "\"#"
@@ -379,6 +403,7 @@ class DotPrinter : public AbstractPrinter {
        << "00"
        << std::setfill('0') << std::setw(2) << std::hex << 255 - posRedToBlue
        << "\"";
+
     HLOG(0, "PRINT RGB RANGE " << val << " " << min << " " << range << " " << posRedToBlue)
     return ss.str();
   }
@@ -422,6 +447,7 @@ class DotPrinter : public AbstractPrinter {
     }
     return ret;
   }
+
 };
 
 #endif //HEDGEHOG_DOT_PRINTER_H

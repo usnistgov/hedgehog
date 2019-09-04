@@ -48,16 +48,16 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
   cudaStream_t stream_;
 
  public:
-  AbstractCUDATask()
-      : AbstractTask<TaskOutput, TaskInputs...>("CudaTask", 1, false),
+  AbstractCUDATask(size_t numberThreads = 1)
+      : AbstractTask<TaskOutput, TaskInputs...>("CudaTask", numberThreads, false),
         enablePeerAccess_(true) {}
 
-  AbstractCUDATask(std::string_view const &name)
-      : AbstractTask<TaskOutput, TaskInputs...>(name, 1, false),
+  AbstractCUDATask(std::string_view const &name, size_t numberThreads = 1)
+      : AbstractTask<TaskOutput, TaskInputs...>(name, numberThreads, false),
         enablePeerAccess_(true) {}
 
-  AbstractCUDATask(std::string_view const &name, bool automaticStart, bool enablePeerAccess)
-      : AbstractTask<TaskOutput, TaskInputs...>(name, 1, automaticStart),
+  AbstractCUDATask(std::string_view const &name, size_t numberThreads, bool automaticStart, bool enablePeerAccess)
+      : AbstractTask<TaskOutput, TaskInputs...>(name, numberThreads, automaticStart),
         enablePeerAccess_(enablePeerAccess) {}
 
   void initialize() final {

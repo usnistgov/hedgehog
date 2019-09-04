@@ -54,7 +54,8 @@ class CoreNode {
   std::chrono::duration<uint64_t, std::micro>
       creationDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(),
       executionDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(),
-      waitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero();
+      waitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(),
+      memoryWaitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero();
 
   std::chrono::time_point<std::chrono::high_resolution_clock> const
       creationTimeStamp_ = std::chrono::high_resolution_clock::now();
@@ -104,6 +105,7 @@ class CoreNode {
 
   std::chrono::duration<uint64_t, std::micro> const &executionTime() const { return executionDuration_; }
   std::chrono::duration<uint64_t, std::micro> const &waitTime() const { return waitDuration_; }
+  std::chrono::duration<uint64_t, std::micro> const &memoryWaitTime() const { return memoryWaitDuration_; }
   bool isInCluster() const { return this->isInCluster_; }
   bool isActive() const { return isActive_; }
 
@@ -145,6 +147,20 @@ class CoreNode {
     }
     return ret;
   }
+  std::chrono::duration<uint64_t, std::micro> const meanMemoryWaitTimeCluster() const {
+    auto ret = this->memoryWaitTime();
+    if (this->isInCluster()) {
+      std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        sum += it->second->memoryWaitTime();
+      }
+      ret = sum / this->numberThreads();
+    }
+    return ret;
+  }
+
+
   uint64_t stdvExecTimeCluster() const {
     auto ret = 0;
     if (this->isInCluster()) {
@@ -172,6 +188,20 @@ class CoreNode {
     return ret;
   }
 
+  uint64_t stdvMemoryWaitTimeCluster() const {
+   auto ret = 0;
+    if (this->isInCluster()) {
+      auto mean = this->meanMemoryWaitTimeCluster().count(), meanSquare = mean * mean;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += (uint64_t) std::pow(it->second->memoryWaitTime().count(), 2) - meanSquare;
+      }
+      ret /= this->numberThreads();
+      ret = (uint64_t) std::sqrt(ret);
+    }
+   return ret;
+  }
+
   std::pair<uint64_t, uint64_t> minmaxWaitTimeCluster() const {
     uint64_t min = std::numeric_limits<uint64_t>::max();
     uint64_t max = 0;
@@ -184,6 +214,30 @@ class CoreNode {
         if (val < min) { min = val; }
         if (val > max) { max = val; }
       }
+    }
+    else {
+      min = this->meanWaitTimeCluster().count();
+      max = min;
+    }
+    return {min, max};
+  }
+
+  std::pair<uint64_t, uint64_t> minmaxMemoryWaitTimeCluster() const {
+    uint64_t min = std::numeric_limits<uint64_t>::max();
+    uint64_t max = 0;
+    uint64_t val = 0;
+    if (this->isInCluster()) {
+      auto mean = this->meanMemoryWaitTimeCluster().count(), meanSquare = mean * mean;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        val = it->second->memoryWaitTime().count();
+        if (val < min) { min = val; }
+        if (val > max) { max = val; }
+      }
+    }
+    else {
+      min = this->meanMemoryWaitTimeCluster().count();
+      max = min;
     }
     return {min, max};
   }
@@ -200,7 +254,11 @@ class CoreNode {
         if (val < min) { min = val; }
         if (val > max) { max = val; }
       }
+    } else {
+      min = this->meanExecTimeCluster().count();
+      max = min;
     }
+
     return {min, max};
   }
 
@@ -278,6 +336,10 @@ class CoreNode {
     std::cerr << "Nope" << std::endl;
   };
 
+  void incrementWaitForMemoryDuration(std::chrono::duration<uint64_t, std::micro> const &memoryWait) {
+    this->memoryWaitDuration_ += memoryWait;
+  }
+
  protected:
   void addUniqueInsideNode(const std::shared_ptr<CoreNode> &coreNode) {
     HLOG_SELF(0, "Add InsideNode " << coreNode->name() << "(" << coreNode->id() << ")")
@@ -295,6 +357,7 @@ class CoreNode {
   void incrementExecutionDuration(std::chrono::duration<uint64_t, std::micro> const &exec) {
     this->executionDuration_ += exec;
   }
+
 
   void isInside(bool isInside) { isInside_ = isInside; }
 };
