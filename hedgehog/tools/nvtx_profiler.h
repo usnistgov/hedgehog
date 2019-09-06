@@ -107,9 +107,9 @@ class NvtxProfiler {
     initializeName_ = prefixName + ":Initializing";
     executeName_ = prefixName + ":Executing";
     waitName_ = prefixName + ":Waiting";
-    waitForMemName_ = prefixName + ":Waiting for memory";
-    releaseMemName_ = prefixName + ":Releasing memory";
-    shutdownName_ = prefixName + ":Shutting down";
+    waitForMemName_ = prefixName + ":MemWait";
+    releaseMemName_ = prefixName + ":Release";
+    shutdownName_ = prefixName + ":Shutdown";
 
     initializeString_ = nvtxDomainRegisterStringA(taskDomain_, initializeName_.data());
     executeString_ = nvtxDomainRegisterStringA(taskDomain_, executeName_.data());

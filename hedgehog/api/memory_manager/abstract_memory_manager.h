@@ -9,11 +9,11 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "../../tools/traits.h"
-#include "../../tools/logger.h"
-#include "../../tools/nvtx_profiler.h"
-#include "../../api/memory_manager/memory_data.h"
-#include "pool.h"
+#include "hedgehog/tools/traits.h"
+#include "hedgehog/tools/logger.h"
+#include "hedgehog/tools/nvtx_profiler.h"
+#include "memory_data.h"
+#include "hedgehog/behaviour/memory_manager/pool.h"
 
 template<class MANAGEDDATA>
 class AbstractMemoryManager {
@@ -65,7 +65,21 @@ class AbstractMemoryManager {
   };
 
   virtual bool canRecycle(std::shared_ptr<MANAGEDDATA> const &) = 0;
-  virtual void initialize() {};
+
+  virtual void initialize() {
+    if constexpr (std::is_base_of<MemoryData<MANAGEDDATA>,MANAGEDDATA>::value)
+    {
+      if (!this->isInitialized()) {
+        this->setInitialized();
+        this->pool()->initialize(this->poolSize());
+        std::for_each(
+            this->pool()->begin(), this->pool()->end(),
+            [this](std::shared_ptr<MANAGEDDATA> &emptyShared) { emptyShared->memoryManager(this); }
+        );
+      }
+    }
+  };
+
 
  protected:
   std::unique_ptr<Pool<MANAGEDDATA>> const &pool() const { return pool_; }

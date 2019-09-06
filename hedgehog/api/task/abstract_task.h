@@ -9,7 +9,7 @@
 #include "../../behaviour/io/sender.h"
 #include "../../behaviour/execute.h"
 #include "../../behaviour/threadable.h"
-#include "../../behaviour/memory_manager/abstract_memory_manager.h"
+#include "hedgehog/api/memory_manager/abstract_memory_manager.h"
 #include "../../core/node/core_node.h"
 #include "../../core/defaults/core_default_task.h"
 

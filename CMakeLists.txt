@@ -210,11 +210,10 @@ if (BUILD_MAIN)
             hedgehog/core/node/execution_pipeline/core_execution_pipeline.h
             hedgehog/core/defaults/core_default_execution_pipeline.h
 
-            hedgehog/behaviour/memory_manager/abstract_memory_manager.h
+            hedgehog/api/memory_manager/abstract_memory_manager.h
             hedgehog/api/memory_manager/memory_data.h
             hedgehog/behaviour/memory_manager/pool.h
             hedgehog/api/memory_manager/abstract_static_memory_manager.h
-            hedgehog/api/memory_manager/abstract_dynamic_memory_manager.h
             )
 
     # Set main executable to be moved to a specific target

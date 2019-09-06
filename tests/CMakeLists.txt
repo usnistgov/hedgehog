@@ -59,7 +59,7 @@ set(TEST_SRC
         graphs/memory_manager/data/matrix_data.h
         graphs/memory_manager/data/dynamic_matrix_data.h
         graphs/memory_manager/memory_manager/static_mm.h
-        graphs/memory_manager/memory_manager/dynamic_mm.h
+        graphs/memory_manager/memory_manager/mm.h
         graphs/memory_manager/memory_manager/cuda_mm.h
         graphs/memory_manager/task/my_cuda_task.h
         graphs/memory_manager/task/my_static_task.h

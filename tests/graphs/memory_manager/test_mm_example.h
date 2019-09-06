@@ -2,7 +2,7 @@
 #include "data/dynamic_matrix_data.h"
 #include "tests/graphs/memory_manager/ep/iiep_mm.h"
 #include "memory_manager/cuda_mm.h"
-#include "memory_manager/dynamic_mm.h"
+#include "tests/graphs/memory_manager/memory_manager/mm.h"
 #include "memory_manager/static_mm.h"
 #include "tests/graphs/memory_manager/task/output_md_task.h"
 #include "task/my_static_task.h"
@@ -23,7 +23,7 @@ void testMemoryManagers() {
   std::shared_ptr<MyCUDATask> cudaTask = nullptr;
   std::shared_ptr<CudaMM<int>> cudaMM = nullptr;
   std::shared_ptr<MyDynamicTask> dynamicTask = nullptr;
-  std::shared_ptr<DynamicMM<int>> dynMM = nullptr;
+  std::shared_ptr<MM<int>> dynMM = nullptr;
   std::shared_ptr<OutputMDTask> outputTask = nullptr;
   std::shared_ptr<MatrixData<int>> result = nullptr;
   size_t count = 0;
@@ -44,7 +44,7 @@ void testMemoryManagers() {
   insideGraph->addEdge(cudaTask, outputTask);
 
   dynamicTask = std::make_shared<MyDynamicTask>();
-  dynMM = std::make_shared<DynamicMM<int>>(2);
+  dynMM = std::make_shared<MM<int>>(2);
   dynamicTask->connectMemoryManager(std::static_pointer_cast<AbstractMemoryManager<DynamicMatrixData<int>>>(dynMM));
   insideGraph->input(dynamicTask);
   insideGraph->addEdge(dynamicTask, outputTask);

@@ -5,7 +5,7 @@
 #ifndef HEDGEHOG_ABSTRACT_STATIC_MEMORY_MANAGER_H
 #define HEDGEHOG_ABSTRACT_STATIC_MEMORY_MANAGER_H
 
-#include "../../behaviour/memory_manager/abstract_memory_manager.h"
+#include "abstract_memory_manager.h"
 
 template<class MANAGEDDATA>
 class AbstractStaticMemoryManager : public AbstractMemoryManager<MANAGEDDATA> {

@@ -4,10 +4,11 @@
 
 #include "hedgehog/hedgehog.h"
 
-class IToF : public AbstractTask<float, int, double, char> {
+class IToF : public AbstractTask<int, int, double, char> {
  public:
   void execute([[maybe_unused]]std::shared_ptr<int> ptr) override {
     std::cout << "Executing int" << std::endl;
+    addResult(ptr);
   }
   void execute([[maybe_unused]]std::shared_ptr<double> ptr) override {}
   void execute([[maybe_unused]]std::shared_ptr<char> ptr) override {}
@@ -16,12 +17,14 @@ class IToF : public AbstractTask<float, int, double, char> {
 
 void testSmallGraph() {
   for(int r = 0; r < 1; ++r) {
-    Graph<float, int, double, char> g("GraphOutput");
+    Graph<int, int, double, char> g("GraphOutput");
     auto t = std::make_shared<IToF>();
+    auto t2 = std::make_shared<IToF>();
     size_t count = 0;
 
     g.input(t);
-    g.output(t);
+    g.addEdge(t, t2);
+    g.output(t2);
 
     g.executeGraph();
 
