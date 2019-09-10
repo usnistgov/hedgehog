@@ -9,7 +9,7 @@
 #include "../../behaviour/io/sender.h"
 #include "../../behaviour/execute.h"
 #include "../../behaviour/threadable.h"
-#include "hedgehog/api/memory_manager/abstract_memory_manager.h"
+#include "../memory_manager/abstract_memory_manager.h"
 #include "../../core/node/core_node.h"
 #include "../../core/defaults/core_default_task.h"
 
@@ -102,7 +102,9 @@ class AbstractTask :
     }
 
     auto start = std::chrono::high_resolution_clock::now();
+    this->taskCore_->nvtxProfiler()->startRangeWaitingForMemory();
     auto data = mm_->getData();
+    this->taskCore_->nvtxProfiler()->endRangeWaitingForMem();
     auto finish = std::chrono::high_resolution_clock::now();
 
     this->core()->incrementWaitForMemoryDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));

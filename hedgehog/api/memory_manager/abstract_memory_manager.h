@@ -9,11 +9,11 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "hedgehog/tools/traits.h"
-#include "hedgehog/tools/logger.h"
-#include "hedgehog/tools/nvtx_profiler.h"
+#include "../../tools/traits.h"
+#include "../..//tools/logger.h"
+#include "../..//tools/nvtx_profiler.h"
 #include "memory_data.h"
-#include "hedgehog/behaviour/memory_manager/pool.h"
+#include "../../behaviour/memory_manager/pool.h"
 
 template<class MANAGEDDATA>
 class AbstractMemoryManager {
@@ -44,13 +44,12 @@ class AbstractMemoryManager {
   void profiler(std::shared_ptr<NvtxProfiler> profiler) { this->profiler_ = profiler; }
 
   std::shared_ptr<MANAGEDDATA> getData() {
-    this->profiler_->startRangeWaitingForMemory();
+
     std::shared_ptr<MANAGEDDATA> managedMemory;
     HLOG(4, "StaticMemoryManager memory pool size = " << this->pool()->queue().size())
     managedMemory = this->pool()->pop_front();
     HLOG(4,
          "StaticMemoryManager After waiting: received: " << managedMemory << " pSize: " << (int) (this->pool()->size()))
-    this->profiler_->endRangeWaitingForMem();
     return managedMemory;
   };
 

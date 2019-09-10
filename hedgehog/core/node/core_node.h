@@ -207,7 +207,8 @@ class CoreNode {
     uint64_t max = 0;
     uint64_t val = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
+//      auto mean = this->meanWaitTimeCluster().count();
+//      TODO: Remove? , meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         val = it->second->waitTime().count();
@@ -227,7 +228,8 @@ class CoreNode {
     uint64_t max = 0;
     uint64_t val = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanMemoryWaitTimeCluster().count(), meanSquare = mean * mean;
+//      TODO: Remove?  auto mean = this->meanMemoryWaitTimeCluster().count();
+//          , meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         val = it->second->memoryWaitTime().count();
@@ -247,7 +249,7 @@ class CoreNode {
     uint64_t max = 0;
     uint64_t val = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
+//     TODO: Remove? auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         val = it->second->executionTime().count();

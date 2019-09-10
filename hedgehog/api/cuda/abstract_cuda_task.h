@@ -7,8 +7,7 @@
 #define HEDGEHOG_ABSTRACT_CUDA_TASK_H
 #ifdef HH_USE_CUDA
 #include <unordered_set>
-#include <cublas_v2.h>
-#include <cublas_api.h>
+#include <cublas.h>
 #include <cuda_runtime.h>
 #include "../task/abstract_task.h"
 
