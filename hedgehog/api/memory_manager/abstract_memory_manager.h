@@ -25,6 +25,8 @@ class AbstractMemoryManager {
 
   std::shared_ptr<NvtxProfiler> profiler_ = nullptr;
 
+ protected:
+  std::mutex initializeMutex_ = {};
  public:
   AbstractMemoryManager() = delete;
   explicit AbstractMemoryManager(size_t const &poolSize)
@@ -66,6 +68,7 @@ class AbstractMemoryManager {
   virtual bool canRecycle(std::shared_ptr<MANAGEDDATA> const &) = 0;
 
   virtual void initialize() {
+    std::lock_guard<std::mutex> lk(initializeMutex_);
     if constexpr (std::is_base_of<MemoryData<MANAGEDDATA>,MANAGEDDATA>::value)
     {
       if (!this->isInitialized()) {

@@ -17,6 +17,7 @@ class AbstractStaticMemoryManager : public AbstractMemoryManager<MANAGEDDATA> {
 
  private:
   void initialize() final {
+    std::lock_guard<std::mutex> lk(this->initializeMutex_);
     if (!this->isInitialized()) {
       this->setInitialized();
       this->pool()->initialize(this->poolSize());
