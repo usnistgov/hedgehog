@@ -29,6 +29,6 @@ void testTemplates() {
 int main(){
 //  testTemplates<Data<size_t>, Data<int>>();
 //  testTemplates<Data<size_t>, Data<int, float>>();
-  testTemplates<Data<size_t>, Data<int, size_t >>();
-  testTemplates<Data<size_t>, Data<size_t>>();
+  testTemplates<Data<size_t, float>, Data<int, size_t >>();
+  testTemplates<Data<>, Data<size_t>>();
 }

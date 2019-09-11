@@ -49,7 +49,7 @@ struct _is_included_;
 
 template<class T1, class T2, std::size_t... Is>
 struct _is_included_<T1, T2, std::integer_sequence<std::size_t, Is...> > {
-  static bool const value = std::conjunction_v<Contains<typename std::tuple_element<Is, T1>::type, T2>...>;
+  static bool const value = std::disjunction_v<Contains<typename std::tuple_element<Is, T1>::type, T2>...>;
 };
 
 template<class T1, class T2>
