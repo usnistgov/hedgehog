@@ -14,7 +14,6 @@ template<class MANAGEDMEMORY>
 class MemoryData : public std::enable_shared_from_this<MemoryData<MANAGEDMEMORY>> {
  private:
   AbstractMemoryManager<MANAGEDMEMORY> *memoryManager_ = nullptr;
-  std::mutex mutexMemData_ = {};
  public:
   MemoryData() = default;
   virtual ~MemoryData() = default;
@@ -22,13 +21,10 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<MANAGEDMEMORY>
   AbstractMemoryManager<MANAGEDMEMORY> *memoryManager() const { return memoryManager_; }
   void memoryManager(AbstractMemoryManager<MANAGEDMEMORY> *memoryManager) { memoryManager_ = memoryManager; }
 
-  void returnToMemoryManager() {
-    this->memoryManager_->releaseData(this->shared_from_this());
-  }
+  void returnToMemoryManager() { this->memoryManager_->releaseData(this->shared_from_this()); }
 
   virtual void recycle() {};
-  void lock() { mutexMemData_.lock(); }
-  void unlock() { mutexMemData_.unlock(); }
+  virtual void used() {};
 };
 
 #endif //HEDGEHOG_MEMORY_DATA_H

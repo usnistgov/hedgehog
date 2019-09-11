@@ -26,7 +26,7 @@ class AbstractMemoryManager {
   std::shared_ptr<NvtxProfiler> profiler_ = nullptr;
 
  protected:
-  std::mutex initializeMutex_ = {};
+  std::mutex memoryManagerMutex_ = {};
  public:
   AbstractMemoryManager() = delete;
   explicit AbstractMemoryManager(size_t const &poolSize)
@@ -46,7 +46,6 @@ class AbstractMemoryManager {
   void profiler(std::shared_ptr<NvtxProfiler> profiler) { this->profiler_ = profiler; }
 
   std::shared_ptr<MANAGEDDATA> getData() {
-
     std::shared_ptr<MANAGEDDATA> managedMemory;
     HLOG(4, "StaticMemoryManager memory pool size = " << this->pool()->queue().size())
     managedMemory = this->pool()->pop_front();
@@ -56,19 +55,19 @@ class AbstractMemoryManager {
   };
 
   void releaseData(std::shared_ptr<MemoryData<MANAGEDDATA>> managedMemory) {
-    managedMemory->lock();
+    std::lock_guard<std::mutex> lk(memoryManagerMutex_);
+    managedMemory->used();
     if (this->canRecycle(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory))) {
       this->profiler_->addReleaseMarker();
       managedMemory->recycle();
       this->pool_->push_back(std::dynamic_pointer_cast<MANAGEDDATA>(managedMemory));
     }
-    managedMemory->unlock();
   };
 
   virtual bool canRecycle(std::shared_ptr<MANAGEDDATA> const &) = 0;
 
   virtual void initialize() {
-    std::lock_guard<std::mutex> lk(initializeMutex_);
+    std::lock_guard<std::mutex> lk(memoryManagerMutex_);
     if constexpr (std::is_base_of<MemoryData<MANAGEDDATA>,MANAGEDDATA>::value)
     {
       if (!this->isInitialized()) {

@@ -46,6 +46,10 @@ class Pool {
     std::lock_guard<std::mutex> lock(mutex_);
     this->queue_.push_back(data);
     assert(this->queue_.size() <= poolSize_);
+    if (this->queue_.size() > poolSize_) {
+      std::cerr << "Big Problem." << std::endl;
+      exit(42);
+    }
     conditionVariable_->notify_one();
   }
 
