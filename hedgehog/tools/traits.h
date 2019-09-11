@@ -6,6 +6,8 @@
 #define HEDGEHOG_TRAITS_H
 
 #include <type_traits>
+#include <utility>
+#include <string_view>
 
 template<class T>
 class MemoryData;

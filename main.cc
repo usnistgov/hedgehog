@@ -2,43 +2,33 @@
 //// Created by anb22 on 6/20/19.
 ////
 
-#include "hedgehog/hedgehog.h"
+#include "hedgehog/tools/traits.h"
+#include "hedgehog/tools/helper.h"
 
-class IToF : public AbstractTask<int, int, double, char> {
+#include <iostream>
+#include <iomanip>
+
+template<class ...T>
+class Data {
  public:
-  void execute([[maybe_unused]]std::shared_ptr<int> ptr) override {
-    std::cout << "Executing int" << std::endl;
-    addResult(ptr);
-  }
-  void execute([[maybe_unused]]std::shared_ptr<double> ptr) override {}
-  void execute([[maybe_unused]]std::shared_ptr<char> ptr) override {}
+  using inputs_t = std::tuple<T...>;
 };
 
+template<
+    class D1,
+    class D2,
+    class D1_t = typename D1::inputs_t,
+    class D2_t = typename D2::inputs_t,
+    class isInputCompatible = std::enable_if_t<HedgehogTraits::is_included_v<D1_t, D2_t>>>
+void testTemplates() {
+  std::cout << std::setw(160) << __PRETTY_FUNCTION__ << ": \t" << HedgehogTraits::is_included_v<D1_t, D2_t>
+            << std::endl;
 
-void testSmallGraph() {
-  for(int r = 0; r < 1; ++r) {
-    Graph<int, int, double, char> g("GraphOutput");
-    auto t = std::make_shared<IToF>();
-    auto t2 = std::make_shared<IToF>();
-    size_t count = 0;
-
-    g.input(t);
-    g.addEdge(t, t2);
-    g.output(t2);
-
-    g.executeGraph();
-
-    for (uint64_t i = 0; i < 100; ++i) { g.pushData(std::make_shared<int>(i)); }
-
-    g.finishPushingData();
-
-    while ((g.getBlockingResult())) { ++count; }
-
-    g.waitForTermination();
-  }
 }
 
 int main(){
-  testSmallGraph();
-  return 0;
+//  testTemplates<Data<size_t>, Data<int>>();
+//  testTemplates<Data<size_t>, Data<int, float>>();
+  testTemplates<Data<size_t>, Data<int, size_t >>();
+  testTemplates<Data<size_t>, Data<size_t>>();
 }

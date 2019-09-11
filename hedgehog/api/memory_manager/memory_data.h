@@ -7,8 +7,8 @@
 
 #include <memory>
 
-template<class MANAGEDMEMORY>
-class AbstractMemoryManager;
+//template< class MANAGEDDATA, typename = typename std::enable_if_t<HedgehogTraits::is_managed_memory_v<MANAGEDDATA>>>
+//class AbstractMemoryManager;
 
 template<class MANAGEDMEMORY>
 class MemoryData : public std::enable_shared_from_this<MemoryData<MANAGEDMEMORY>> {

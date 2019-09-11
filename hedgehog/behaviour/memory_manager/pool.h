@@ -23,19 +23,16 @@ class Pool {
   virtual ~Pool() = default;
 
   void initialize(size_t poolSize) {
-//    std::cout << "--> Initialize Pool" << std::endl;
     poolSize_ = poolSize == 0 ? 1 : poolSize;
     queue_ = std::deque<std::shared_ptr<MANAGEDDATA>>(poolSize);
     std::for_each(
         queue_.begin(), queue_.end(),
         [](std::shared_ptr<MANAGEDDATA> &emptyShared) {
           emptyShared = std::make_shared<MANAGEDDATA>();
-//          std::cout << " Create " <<  emptyShared << " in pool " << this << " ." << std::endl;
         }
     );
   }
 
-//  std::mutex &mutex() const { return mutex_; }
   std::deque<std::shared_ptr<MANAGEDDATA>> const &queue() const { return queue_; }
   typename std::deque<std::shared_ptr<MANAGEDDATA>>::iterator begin() { return this->queue_.begin(); }
   typename std::deque<std::shared_ptr<MANAGEDDATA>>::iterator end() { return this->queue_.end(); }
@@ -46,10 +43,6 @@ class Pool {
     std::lock_guard<std::mutex> lock(mutex_);
     this->queue_.push_back(data);
     assert(this->queue_.size() <= poolSize_);
-    if (this->queue_.size() > poolSize_) {
-      std::cerr << "Big Problem." << std::endl;
-      exit(42);
-    }
     conditionVariable_->notify_one();
   }
 

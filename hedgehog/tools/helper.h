@@ -7,6 +7,8 @@
 
 #include <tuple>
 
+#include "../core/io/base/receiver/core_multi_receivers.h"
+
 template<class ...Inputs>
 	class MultiReceivers;
 

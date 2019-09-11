@@ -160,16 +160,16 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 	  class UserDefinedSender, class UserDefinedMultiReceiver,
 	  class Output = typename UserDefinedSender::output_t,
 	  class Inputs = typename UserDefinedMultiReceiver::inputs_t,
-	  class IsSender = typename std::enable_if<
+      class IsSender = typename std::enable_if_t<
 		  std::is_base_of_v<
 			  Sender<Output>, UserDefinedSender
 		  >
-	  >::type,
-	  class IsMultiReceiver = typename std::enable_if<
+      >,
+      class IsMultiReceiver = typename std::enable_if_t<
 		  std::is_base_of_v<
 			  typename Helper::HelperMultiReceiversType<Inputs>::type, UserDefinedMultiReceiver
 		  >
-	  >::type
+      >
   >
   void addEdge(std::shared_ptr<UserDefinedSender> from, std::shared_ptr<UserDefinedMultiReceiver> to) {
 	assert(from != nullptr && to != nullptr);
@@ -221,10 +221,10 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 	  class UserDefinedMultiReceiver,
 	  class InputsMR = typename UserDefinedMultiReceiver::inputs_t,
 	  class InputsG = typename MultiReceivers<GraphInputs...>::inputs_t,
-	  class isMultiReceiver = typename std::enable_if<
+      class isMultiReceiver = typename std::enable_if_t<
 		  std::is_base_of_v<typename Helper::HelperMultiReceiversType<InputsMR>::type, UserDefinedMultiReceiver>
-	  >::type,
-	  class isInputCompatible = std::enable_if<HedgehogTraits::is_included_v<InputsMR, InputsG>>>
+      >,
+      class isInputCompatible = typename std::enable_if_t<HedgehogTraits::is_included_v<InputsMR, InputsG>>>
   void input(std::shared_ptr<UserDefinedMultiReceiver> inputNode) {
 	if (this->isInside()) {
 	  HLOG_SELF(0, "You can't play with an inner coreGraph!")
@@ -280,7 +280,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   template<
 	  class Input,
-	  class = std::enable_if_t<HedgehogTraits::Contains<Input, GraphInputs...>::value>
+      class = typename std::enable_if_t<HedgehogTraits::Contains<Input, GraphInputs...>::value>
   >
   void broadcastAndNotifyToAllInputs(std::shared_ptr<Input> &data) {
 	HLOG_SELF(2, "Broadcast data and notify all coreGraph's inputs")

@@ -47,10 +47,10 @@ class Graph :
       class UserDefinedMultiReceiver,
       class InputsMR = typename UserDefinedMultiReceiver::inputs_t,
       class InputsG = typename MultiReceivers<GraphInputs...>::inputs_t,
-      class isMultiReceiver = typename std::enable_if<
+      class isMultiReceiver = typename std::enable_if_t<
           std::is_base_of_v<typename Helper::HelperMultiReceiversType<InputsMR>::type, UserDefinedMultiReceiver>
-      >::type,
-      class isInputCompatible = std::enable_if<HedgehogTraits::is_included_v<InputsMR, InputsG>>>
+      >,
+      class isInputCompatible = typename std::enable_if_t<HedgehogTraits::is_included_v<InputsMR, InputsG>>>
   void input(std::shared_ptr<UserDefinedMultiReceiver> input) {
     assert(input != nullptr);
     this->insideNodes_.insert(input);
@@ -61,11 +61,11 @@ class Graph :
 
   template<
       class UserDefinedSender,
-      class IsSender = typename std::enable_if<
+      class IsSender = typename std::enable_if_t<
           std::is_base_of_v<
               Sender<GraphOutput>, UserDefinedSender
           >
-      >::type
+      >
   >
   void output(std::shared_ptr<UserDefinedSender> output) {
     assert(output != nullptr);
@@ -77,12 +77,12 @@ class Graph :
       class UserDefinedSender, class UserDefinedMultiReceiver,
       class Output = typename UserDefinedSender::output_t,
       class Inputs = typename UserDefinedMultiReceiver::inputs_t,
-      class IsSender = typename std::enable_if<std::is_base_of_v<Sender<Output>, UserDefinedSender>>::type,
-      class IsMultiReceivers = typename std::enable_if<
+      class IsSender = typename std::enable_if_t<std::is_base_of_v<Sender<Output>, UserDefinedSender>>,
+      class IsMultiReceivers = typename std::enable_if_t<
           std::is_base_of_v<
               typename Helper::HelperMultiReceiversType<Inputs>::type, UserDefinedMultiReceiver
           >
-      >::type
+      >
   >
   void addEdge(std::shared_ptr<UserDefinedSender> from, std::shared_ptr<UserDefinedMultiReceiver> to) {
     static_assert(HedgehogTraits::contains_v<Output, Inputs>,
@@ -100,7 +100,7 @@ class Graph :
 
   template<
       class Input,
-      class = std::enable_if_t<HedgehogTraits::Contains<Input, GraphInputs...>::value>
+      class = typename std::enable_if_t<HedgehogTraits::Contains<Input, GraphInputs...>::value>
   >
   void pushData(std::shared_ptr<Input> data) { this->graphCore_->broadcastAndNotifyToAllInputs(data); }
 

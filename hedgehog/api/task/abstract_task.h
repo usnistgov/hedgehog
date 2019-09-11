@@ -19,7 +19,7 @@ class AbstractTask :
     public Sender<TaskOutput>,
     public virtual Node,
     public Execute<TaskInputs> ... {
- protected:
+
   std::shared_ptr<CoreTask<TaskOutput, TaskInputs...>> taskCore_ = nullptr;
   std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm_ = nullptr;
 
@@ -85,12 +85,18 @@ class AbstractTask :
   NodeType nodeType() { return this->taskCore_->type(); }
   int deviceId() { return this->taskCore_->deviceId(); }
   std::shared_ptr<CoreNode> core() final { return taskCore_; }
+
   std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &memoryManager() const { return mm_; }
 
   virtual std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> copy() { return nullptr; }
   virtual void initialize() {}
 
-  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) { mm_ = mm; }
+  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) {
+    static_assert(
+        HedgehogTraits::is_managed_memory_v<TaskOutput>,
+        "The type given to the memory manager should inherit \"MemoryData\", and be default constructible!");
+    mm_ = mm;
+  }
 
   std::shared_ptr<TaskOutput> getManagedMemory() {
     if (mm_ == nullptr) {

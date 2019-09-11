@@ -8,7 +8,6 @@
 #include <variant>
 #include <string_view>
 
-
 #include "../../tools/traits.h"
 #include "../io/queue/receiver/core_queue_multi_receivers.h"
 #include "../io/queue/sender/core_queue_sender.h"
@@ -18,6 +17,8 @@
 #include "../../tools/logger.h"
 #include "../../tools/nvtx_profiler.h"
 #include "../behaviour/core_execute.h"
+
+#include "../../api/memory_manager/abstract_memory_manager.h"
 
 template<class TaskOutput, class ...TaskInputs>
 class AbstractTask;
@@ -81,12 +82,7 @@ class CoreTask
 
     for (size_t threadId = 1; threadId < this->numberThreads(); threadId++) {
       auto taskCopy = createCopyFromThis();
-      if (mm) {
-        HLOG_SELF(1, "Copy the MM pointer " << mm
-                                            << " from: " << this->name() << " / " << this->id()
-                                            << " to: " << taskCopy->core()->name() << " / " << taskCopy->core()->id())
-        taskCopy->connectMemoryManager(mm);
-      }
+      duplicateMemoryManager(mm, taskCopy);
       auto coreCopy = std::dynamic_pointer_cast<CoreTask<TaskOutput, TaskInputs...>>(taskCopy->core());
       coreCopy->threadId(threadId);
       coreCopy->coreClusterNode(this);
@@ -173,7 +169,7 @@ class CoreTask
                                             return !receiversEmpty || callCanTerminate;
                                           });
     HLOG_SELF(2, "Notification received")
-	assert(lock.owns_lock());
+    assert(lock.owns_lock());
 
     this->nvtxProfiler()->endRangeWaiting();
     return callCanTerminate(false);
@@ -184,12 +180,11 @@ class CoreTask
 
     std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> sharedAbstractTaskCopy = this->task()->copy();
     if (sharedAbstractTaskCopy == nullptr) {
-      HLOG_SELF(0,
-                "A copy for the task \"" << this->name()
-                                         << "\" has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.")
-      std::cerr << "A copy for the task \"" << this->name()
-                << "\" has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object."
-                << std::endl;
+      std::ostringstream oss;
+      oss << "A copy for the task \"" << this->name()
+          << "\" has been invoked but return nullptr. To fix this error, overload the AbstractTask::copy function and return a valid object.";
+      HLOG_SELF(0, oss.str())
+      std::cerr << oss.str() << std::endl;
       exit(42);
     }
 
@@ -228,7 +223,7 @@ class CoreTask
       }
       HLOG_SELF(0, "Copy the MM " << this->task()->memoryManager() << " to: " << copyMemoryManager
                                   << " and set it to the task: " << coreCopy->name() << " / " << coreCopy->id())
-      sharedAbstractTaskCopy->connectMemoryManager(copyMemoryManager);
+      duplicateMemoryManager(copyMemoryManager, sharedAbstractTaskCopy);
     }
     return sharedAbstractTaskCopy;
   }
@@ -236,6 +231,30 @@ class CoreTask
   std::shared_ptr<NvtxProfiler> nvtxProfiler() {
     return nvtxProfiler_;
   }
+
+ private:
+  void duplicateMemoryManager([[maybe_unused]]std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &mm,
+                              std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> taskCopy) {
+    if constexpr (HedgehogTraits::is_managed_memory_v<TaskOutput>) {
+      if (mm) {
+        HLOG_SELF(1, "Copy the MM pointer " << mm
+                                            << " from: " << this->name() << " / " << this->id()
+                                            << " to: " << taskCopy->core()->name() << " / " << taskCopy->core()->id())
+        taskCopy->connectMemoryManager(mm);
+      }
+    }
+  }
+
+//  template <typename = std::enable_if_t<HedgehogTraits::is_managed_memory_v<TaskOutput>>>
+//  void duplicateMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> const & mm, std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> taskCopy){
+//    if (mm) {
+//      HLOG_SELF(1, "Copy the MM pointer " << mm
+//                                          << " from: " << this->name() << " / " << this->id()
+//                                          << " to: " << taskCopy->core()->name() << " / " << taskCopy->core()->id())
+//      taskCopy->connectMemoryManager(mm);
+//    }
+//  }
+
 };
 
 #endif //HEDGEHOG_CORE_TASK_H
