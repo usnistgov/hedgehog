@@ -313,6 +313,7 @@ class DotPrinter : public AbstractPrinter {
             || this->structureOptions_ == StructureOptions::ALL) {
           ss << "\\nWait Time: " << this->durationPrinter(node->waitTime().count());
           ss << "\\nExecution Time: " << this->durationPrinter(node->executionTime().count());
+          ss << "\\nMemory Wait Time: " << this->durationPrinter(node->memoryWaitTime().count());
         } else {
           auto minmaxWait = node->minmaxWaitTimeCluster();
           auto minmaxExec = node->minmaxExecTimeCluster();
