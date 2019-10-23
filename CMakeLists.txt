@@ -14,17 +14,17 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # Create version.h file in api folder
 string(TIMESTAMP DATE "%m/%d/%Y")
 file(WRITE hedgehog/version.h "#include <string> \n\n")
-file(APPEND hedgehog/version.h "/// @file Version.h\n")
+file(APPEND hedgehog/version.h "/// @file version.h\n")
 file(APPEND hedgehog/version.h "/// @author Alexandre Bardakoff - Timothy Blattner\n")
 file(APPEND hedgehog/version.h "/// @date ${DATE}\n")
 file(APPEND hedgehog/version.h "/// @brief Hedgehog version\n\n")
 file(APPEND hedgehog/version.h "namespace hh{\n")
 file(APPEND hedgehog/version.h "/// \\namespace hh hedgehog namespace\n\n")
 file(APPEND hedgehog/version.h "// hedgehog version number\n")
-file(APPEND hedgehog/version.h "\tconst int MAJOR_VERSION = ${PROJECT_VERSION_MAJOR};\n")
-file(APPEND hedgehog/version.h "\tconst int MINOR_VERSION = ${PROJECT_VERSION_MINOR};\n")
-file(APPEND hedgehog/version.h "\tconst int PATCH_VERSION = ${PROJECT_VERSION_PATCH};\n")
-file(APPEND hedgehog/version.h "\tconst std::string FULL_VERSION = \"${PROJECT_VERSION}\"; // NOLINT\n")
+file(APPEND hedgehog/version.h "\tconst int MAJOR_VERSION = ${PROJECT_VERSION_MAJOR}; ///< Hedgehog major version\n")
+file(APPEND hedgehog/version.h "\tconst int MINOR_VERSION = ${PROJECT_VERSION_MINOR}; ///< Hedgehog minor version\n")
+file(APPEND hedgehog/version.h "\tconst int PATCH_VERSION = ${PROJECT_VERSION_PATCH}; ///< Hedgehog patch version\n")
+file(APPEND hedgehog/version.h "\tconst std::string FULL_VERSION = \"${PROJECT_VERSION}\"; ///< Hedgehog full version\n")
 file(APPEND hedgehog/version.h "}\n")
 
 
@@ -48,17 +48,15 @@ set(BUILD_MAIN ON)
 
 # Cuda
 find_package(CUDA QUIET)
-
-# NVTX
-find_package(NVTX QUIET)
-
-
 if (CUDA_FOUND)
     message(STATUS "CUDA found")
     set(CUDA_PROPAGATE_HOST_FLAGS OFF)
     set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
     add_definitions(-DHH_USE_CUDA)
 endif (CUDA_FOUND)
+
+# NVTX
+find_package(NVTX QUIET)
 
 # Targets
 if (LOG)
@@ -100,6 +98,7 @@ if (RUN_GTEST)
     message(STATUS "GTEST downloaded and imported")
 endif (RUN_GTEST)
 
+
 if (BUILD_DOXYGEN)
     find_package(Doxygen REQUIRED)
     message(STATUS "Doxygen found")
@@ -126,7 +125,6 @@ if (BUILD_MAIN)
 
     if (NOT MSVC)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-                #                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -145,9 +143,7 @@ if (BUILD_MAIN)
         message("Try to find Filesystem library in " ${FS_LIB_PATH})
         link_directories(${FS_LIB_PATH})
 
-
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
-
 
         if (APPLE)
             link_libraries(c++fs)
@@ -162,17 +158,15 @@ if (BUILD_MAIN)
             hedgehog/hedgehog.h
 
             hedgehog/api/graph.h
-            hedgehog/api/task/abstract_task.h
-            hedgehog/api/state_manager/abstract_state_manager.h
+            hedgehog/api/abstract_task.h
             hedgehog/api/state_manager/abstract_state.h
-            hedgehog/api/execution_pipeline/abstract_execution_pipeline.h
-            hedgehog/api/cuda/abstract_cuda_task.h
+            hedgehog/api/abstract_execution_pipeline.h
+            hedgehog/api/abstract_cuda_task.h
 
-            hedgehog/behaviour/execute.h
-            hedgehog/behaviour/threadable.h
-            hedgehog/behaviour/node.h
-            hedgehog/behaviour/io/sender.h
-            hedgehog/behaviour/io/multi_receivers.h
+            hedgehog/behavior/execute.h
+            hedgehog/behavior/node.h
+            hedgehog/behavior/io/sender.h
+            hedgehog/behavior/io/multi_receivers.h
 
             hedgehog/core/node/core_node.h
             hedgehog/core/node/core_task.h
@@ -191,30 +185,28 @@ if (BUILD_MAIN)
             hedgehog/core/io/graph/receiver/core_graph_receiver.h
             hedgehog/core/io/graph/receiver/core_graph_sink.h
             hedgehog/core/io/graph/sender/core_graph_source.h
-            hedgehog/core/scheduler/abstract_scheduler.h
+            hedgehog/api/scheduler/abstract_scheduler.h
 
             hedgehog/tools/helper.h
             hedgehog/tools/traits.h
-            hedgehog/tools/graph_signal_handler.h
-            hedgehog/tools/printers/abstract_printer.h
-            hedgehog/tools/printers/dot_printer.h
-            hedgehog/tools/scheduler/default_scheduler.h
+            hedgehog/api/tools/graph_signal_handler.h
+            hedgehog/api/printer/abstract_printer.h
+            hedgehog/api/printer/dot_printer.h
+            hedgehog/api/scheduler/default_scheduler.h
             hedgehog/tools/nvtx_profiler.h
-            hedgehog/behaviour/switch_rule.h
-            hedgehog/core/node/execution_pipeline/core_switch_sender.h
+            hedgehog/behavior/switch_rule.h
             hedgehog/core/node/execution_pipeline/core_switch.h
 
-            hedgehog/core/behaviour/core_execute.h
+            hedgehog/core/behavior/core_execute.h
             hedgehog/core/defaults/core_default_task.h
-            hedgehog/api/state_manager/default_state_manager.h
+            hedgehog/api/state_manager/state_manager.h
             hedgehog/core/node/execution_pipeline/core_execution_pipeline.h
             hedgehog/core/defaults/core_default_execution_pipeline.h
 
             hedgehog/api/memory_manager/abstract_memory_manager.h
             hedgehog/api/memory_manager/memory_data.h
-            hedgehog/behaviour/memory_manager/pool.h
-            hedgehog/api/memory_manager/abstract_static_memory_manager.h
-            )
+            hedgehog/behavior/memory_manager/pool.h
+            hedgehog/api/memory_manager/static_memory_manager.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)

@@ -2,22 +2,28 @@
 // Created by anb22 on 2/25/19.
 //
 
-#ifndef HEDGEHOG_TESTGTEST_H
-#define HEDGEHOG_TESTGTEST_H
+#ifndef HEDGEHOG_TESTS_TESTGTEST_H
+#define HEDGEHOG_TESTS_TESTGTEST_H
 
 #include <gtest/gtest.h>
-#include "graphs/big_example/test_big_example.h"
-#include "graphs/cuda/test_cuda.h"
-#include "graphs/cycle/test_cycle.h"
-#include "graphs/ep/test_ep.h"
-#include "graphs/ep_composition/test_ep_composition.h"
-#include "graphs/memory_manager/test_mm_example.h"
-#include "graphs/small_example/test_small_example.h"
-#include "graphs/partial_input/test_partial_input.h"
+
+#include "tests/test_memory_manager.h"
+#include "tests/test_small_graph.h"
+#include "tests/test_complex_graph.h"
+#include "tests/test_execution_pipeline.h"
+#include "tests/test_execution_pipeline_composition.h"
+#include "tests/test_cycles.h"
+#include "tests/test_simple_partial_input.h"
+
+#ifdef HH_USE_CUDA
+#include "tests/test_cuda.h"
+#include "tests/test_link.h"
+#include "tests/test_link2.h"
+#endif
 
 TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH) {
   ASSERT_NO_FATAL_FAILURE(testSmallGraph());
-  ASSERT_NO_FATAL_FAILURE(testBigExample());
+  ASSERT_NO_FATAL_FAILURE(testComplexGraph());
 }
 
 TEST(TEST_GRAPH, TEST_GLOBAL_GRAPH_CUDA) {
@@ -44,10 +50,17 @@ TEST(TEST_GRAPH, TEST_GLOBAL_PARTIAL_INPUT) {
   ASSERT_NO_FATAL_FAILURE(testPartialInputEP());
 }
 
+TEST(TEST_GRAPH, TEST_LINK) {
+#ifdef HH_USE_CUDA
+  ASSERT_NO_FATAL_FAILURE(testLink());
+  ASSERT_NO_FATAL_FAILURE(testLink2());
+#endif //HH_USE_CUDA
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   int ret = RUN_ALL_TESTS();
   return ret;
 }
 
-#endif //HEDGEHOG_TESTGTEST_H
+#endif //HEDGEHOG_TESTS_TESTGTEST_H

@@ -12,60 +12,94 @@
 
 #include "../../base/receiver/core_slot.h"
 
+/// @brief Hedgehog core namespace
+namespace hh::core {
+
+/// @brief Slot of CoreQueueMultiReceiver, receiving from CoreQueueNotifier
 class CoreQueueSlot : public virtual CoreSlot {
  private:
-  std::shared_ptr<std::mutex> slotMutex_ = nullptr;
-  std::shared_ptr<std::condition_variable> notifyConditionVariable_ = nullptr;
-  std::shared_ptr<std::set<CoreNotifier *>> notifiers_ = nullptr;
+  std::shared_ptr<std::mutex> slotMutex_ = nullptr; ///< Mutex locking the CoreQueueMultiReceiver
+  std::shared_ptr<std::condition_variable> notifyConditionVariable_ = nullptr; ///< Condition Variable linked to the
+  ///< CoreQueueSlot::slotMutex_
+  std::shared_ptr<std::set<CoreNotifier *>> notifiers_ = nullptr; ///< Set of notifiers linked to this CoreQueueSlot
 
  public:
-  CoreQueueSlot(std::string_view const &name, NodeType const type, size_t const numberThreads) : CoreSlot(name,
-                                                                                                          type,
-                                                                                                          numberThreads) {
+
+  /// @brief CoreQueueSlot constructor
+  /// @param name Node's name
+  /// @param type Node's type
+  /// @param numberThreads Node's number of thread
+  CoreQueueSlot(std::string_view const &name, NodeType const type, size_t const numberThreads) :
+      CoreSlot(name, type, numberThreads) {
     HLOG_SELF(0, "Creating CoreQueueSlot with type: " << (int) type << " and name: " << name)
     notifiers_ = std::make_shared<std::set<CoreNotifier *>>();
     slotMutex_ = std::make_shared<std::mutex>();
     notifyConditionVariable_ = std::make_shared<std::condition_variable>();
   }
 
+  /// @brief CoreQueueSlot destructor
   ~CoreQueueSlot() override {HLOG_SELF(0, "Destructing CoreQueueSlot")}
 
-  size_t numberInputNodes() const final { return this->notifiers()->size(); }
+  /// @brief Condition variable accessor
+  /// @return Condition variable
+  [[nodiscard]] std::shared_ptr<std::condition_variable> const &notifyConditionVariable() const {
+    return notifyConditionVariable_;
+  }
 
+  /// @brief Mutex accessor
+  /// @return mutex
+  [[nodiscard]] std::shared_ptr<std::mutex> const &slotMutex() const { return slotMutex_; }
+
+  /// @brief Number of CoreNotifier linked accessor
+  /// @attention Not thread safe
+  /// @return Number of CoreNotifier linked
+  [[nodiscard]] size_t numberInputNodes() const final { return this->notifiers()->size(); }
+
+  /// @brief Add a notifier to set of CoreNotifier
+  /// @attention Thread safe
+  /// @param notifier CoreNotifier to add
   void addNotifier(CoreNotifier *notifier) final {
     std::lock_guard<std::mutex> lc(*(this->slotMutex_));
     this->notifiers()->insert(notifier);
   }
+
+  /// @brief Remove a notifier from set of CoreNotifier
+  /// @attention Thread safe
+  /// @param notifier CoreNotifier to remove
   void removeNotifier(CoreNotifier *notifier) final {
     std::lock_guard<std::mutex> lc(*(this->slotMutex_));
     this->notifiers()->erase(notifier);
   }
+
+  /// @brief Test if CoreNotifier are linked to this CoreQueueSlot
+  /// @attention Not thread safe
+  /// @return True if CoreNotifier are linked to this CoreQueueSlot, else False
   bool hasNotifierConnected() final {
     HLOG_SELF(2,
               "Test has notifier connected " << "(" << std::boolalpha << (bool) (this->numberInputNodes() != 0) << ")")
     return this->numberInputNodes() != 0;
   }
 
+  /// @brief Wake up and notify a node connected to the condition variable CoreQueueSlot::notifyConditionVariable_
   void wakeUp() final {
     HLOG_SELF(2, "Wake up and notify one")
     this->notifyConditionVariable()->notify_one();
   }
 
-  std::shared_ptr<std::condition_variable> const &notifyConditionVariable() const { return notifyConditionVariable_; }
-
+  /// @brief Lock the mutex
   void lockUniqueMutex() {
     HLOG_SELF(2, "Lock unique mutex " << this->slotMutex_.get())
     slotMutex_->lock();
   }
+
+  /// @brief Unlock the mutex
   void unlockUniqueMutex() {
     HLOG_SELF(2, "Unlock unique mutex " << this->slotMutex_.get())
     slotMutex_->unlock();
   }
 
-  std::shared_ptr<std::mutex> const &slotMutex() const {
-    return slotMutex_;
-  }
-
+  /// @brief Copy the inner structure of the receiver (mutex, condition variable and set of notifiers)
+  /// @param rhs CoreQueueSlot to copy to this
   void copyInnerStructure(CoreQueueSlot *rhs) {
     HLOG_SELF(0, "Copy Cluster CoreQueueSlot information from " << rhs->name() << "(" << rhs->id() << ")")
     this->slotMutex_ = rhs->slotMutex_;
@@ -74,7 +108,10 @@ class CoreQueueSlot : public virtual CoreSlot {
   }
 
  protected:
-  std::shared_ptr<std::set<CoreNotifier *>> const &notifiers() const { return notifiers_; }
+  /// @brief Protected accessor to the set of notifiers connected to the CoreQueueSlot
+  /// @return Set of notifiers connected to the CoreQueueSlot
+  [[nodiscard]] std::shared_ptr<std::set<CoreNotifier *>> const &notifiers() const { return notifiers_; }
 };
 
+}
 #endif //HEDGEHOG_CORE_QUEUE_SLOT_H

@@ -9,47 +9,77 @@
 #include <queue>
 #include <shared_mutex>
 
-#include "../../behaviour/execute.h"
+#include "../../behavior/execute.h"
+#include "../../tools/traits.h"
 
+/// @brief Hedgehog main namespace
+namespace hh {
+
+/// @brief State Interface for managing computation, need a corresponding AbstractStateManager to be embedded in a
+/// Hedgehog Graph
+/// @details An AbstractState is a tool used by Hedgehog when data synchronization is needed. When overloaded,
+/// data structures that are added to the class can manage the state of computation.
+/// AbstractState owns a mutex to guarantee safety, because it can be shared among multiple AbstractStateManager.
+///
+/// The default order of execution is:
+///     -# The DefaultStateManager will acquire a data,
+///     -# The DefaultStateManager will lock the AbstractState (with AbstractState::stateMutex_),
+///     -# The DefaultStateManager will send the data to the possessed AbstractState,
+///     -# The compatible Execute::execute is called with the data,
+///     -# During the call of Execute::execute, if the method AbstractState::push is invoked the "result data" is
+/// stored in a ready list AbstractState::readyList_,
+///     -# When the Execute::execute has returned, the waiting list is emptied as output of the
+/// AbstractStateManager,
+///     -# The DefaultStateManager will unlock the AbstractState (with AbstractState::stateMutex_).
+///
+/// @par Virtual functions
+/// Execute::execute (one for each of StateInputs)
+///
+/// @attention An AbstractState can be only owned by a compatible AbstractStateManager, i.e. they have the same
+/// StateOutput and the same StateInputs.
+/// @tparam StateOutput State output type
+/// @tparam StateInputs State input types
 template<class StateOutput, class ...StateInputs>
-class AbstractState : public Execute<StateInputs> ... {
+class AbstractState : public behavior::Execute<StateInputs> ... {
+  static_assert(traits::isUnique<StateInputs...>, "A Task can't accept multiple inputs with the same type.");
+  static_assert(sizeof... (StateInputs) >= 1, "A state need to have one output type and at least one output type.");
  private:
-  mutable std::unique_ptr<std::shared_mutex> stateMutex_ = nullptr;
-  std::unique_ptr<std::queue<std::shared_ptr<StateOutput>>> readyList_ = nullptr;
+  mutable std::unique_ptr<std::shared_mutex> stateMutex_ = nullptr; ///< State Mutex
+  std::unique_ptr<std::queue<std::shared_ptr<StateOutput>>> readyList_ = nullptr; ///< State Ready list
 
  public:
+  /// @brief Default constructor, initialize the mutex (AbstractState::stateMutex_) and the ready list
+  /// (AbstractState::readyList_)
   AbstractState() {
     stateMutex_ = std::make_unique<std::shared_mutex>();
     readyList_ = std::make_unique<std::queue<std::shared_ptr<StateOutput>>>();
   }
 
+  /// @brief Default destructor
   virtual ~AbstractState() = default;
 
-  std::unique_ptr<std::queue<std::shared_ptr<StateOutput>>> const &readyList() const {
-    return readyList_;
-  }
+  /// @brief Ready list accessor
+  /// @return Ready list
+  std::unique_ptr<std::queue<std::shared_ptr<StateOutput>>> const &readyList() const { return readyList_; }
 
-  void push(std::shared_ptr<StateOutput> const &elem) {
-    readyList_->push(elem);
-  }
+  /// @brief Add an element to the ready list
+  /// @param elem Element to add
+  void push(std::shared_ptr<StateOutput> const &elem) { readyList_->push(elem); }
 
+  /// @brief Used by AbstractStateManager to get the ready list's front element
+  /// @return The ready list's front element
   std::shared_ptr<StateOutput> frontAndPop() {
     std::shared_ptr<StateOutput> elem = readyList_->front();
     readyList_->pop();
     return elem;
   }
 
+  /// @brief Lock the state
   void lock() { stateMutex_->lock(); }
 
-  void unlock() {
-    stateMutex_->unlock();
-  }
-
- protected:
-  void outputReady(std::shared_ptr<StateOutput> const &readyOutput) {
-    std::shared_lock lock(readyList_);
-    readyList_->insert(readyOutput);
-  }
+  /// @brief Unlock the state
+  void unlock() { stateMutex_->unlock(); }
 };
 
+}
 #endif //HEDGEHOG_ABSTRACT_STATE_H

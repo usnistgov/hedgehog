@@ -11,28 +11,49 @@
 #include "../core_task.h"
 #include "../../../api/graph.h"
 
+/// @brief Hedgehog main namespace
+namespace hh {
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/// @brief AbstractExecutionPipeline
+/// @tparam GraphOutput Graph output type
+/// @tparam GraphInputs Graph input types
 template<class GraphOutput, class ...GraphInputs>
 class AbstractExecutionPipeline;
+#endif //DOXYGEN_SHOULD_SKIP_THIS
 
+/// @brief Hedgehog core namespace
+namespace core {
+
+/// @brief Execution Pipeline core
+/// @details Duplicate and hold the copies of the graph given at construction. Associate also the device ids and the
+///  graph ids to the copies. The graph and the copies are plug to the execution pipeline's switch, that will divert the
+/// data coming to the execution pipeline to the different graphs.
+/// @tparam GraphOutput Graph's output type
+/// @tparam GraphInputs Graph's input types
 template<class GraphOutput, class ...GraphInputs>
 class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
  private:
-  AbstractExecutionPipeline<GraphOutput, GraphInputs...> *
-      executionPipeline_ = nullptr;
-
-  size_t
-      numberGraphs_ = 0;
-
-  std::vector<int> deviceIds_ = {};
+  AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline_ = nullptr; ///< User's execution pipeline
+  size_t numberGraphs_ = 0; ///< Total number of graphs in the execution pipeline
+  std::vector<int> deviceIds_ = {}; ///< Device id's value to set to the different graphs into the execution pipeline
 
  protected:
-  std::shared_ptr<CoreSwitch<GraphInputs...>>
-      coreSwitch_;
-  std::vector<std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>>>
-      epGraphs_ = {};
+  std::shared_ptr<CoreSwitch<GraphInputs...>> coreSwitch_; ///< Switch use to divert the data to the graphs
+  std::vector<std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>>> epGraphs_ = {}; ///< Core Copies of the graphs
+  ///< (actual memory is stored here)
 
  public:
+  /// @brief Deleted Default constructor
   CoreExecutionPipeline() = delete;
+
+  /// @brief The core execution pipeline constructor
+  /// @param name Execution pipeline name
+  /// @param executionPipeline User's execution pipeline
+  /// @param coreBaseGraph Base graph to duplicate
+  /// @param numberGraphs Number of graphs in the execution pipeline
+  /// @param deviceIds Device ids to set to the different graphs
+  /// @param automaticStart True if the graphs have to run automatically, else False
   CoreExecutionPipeline(std::string_view const &name,
                         AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline,
                         std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> coreBaseGraph,
@@ -43,24 +64,27 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
         executionPipeline_(executionPipeline),
         numberGraphs_(numberGraphs),
         deviceIds_(deviceIds),
-        coreSwitch_(std::make_shared<CoreSwitch<GraphInputs...>>("switch", NodeType::Switch, 1)) {
+        coreSwitch_(std::make_shared<CoreSwitch<GraphInputs...>>()) {
     if (this->numberGraphs_ == 0) { this->numberGraphs_ = 1; }
 
     if (coreBaseGraph->isInside() || this->isInside()) {
-      HLOG_SELF(0, "You can't play with an inner Graph!")
-      exit(42);
+      std::ostringstream oss;
+      oss << "You can not modify a graph that is connected inside another graph: " << __FUNCTION__;
+      HLOG_SELF(0, oss.str())
+      throw (std::runtime_error(oss.str()));
     }
     if (numberGraphs_ != deviceIds.size()) {
       std::ostringstream oss;
       oss
-          << "The number of device Id do not correspond to the number of coreGraph duplication you ask for the execution pipeline \""
+          << "The number of device Ids do not correspond to the number of coreGraph duplications you sent to the "
+             "execution pipeline \""
           << name
-          << "\". Even if you do not associate the gr+aphs duplicates to a specific device, please set the deviceIds correctly."
+          << "\". Even if you do not associate the graphs duplicates to a specific device, please set the deviceIds "
+             "to the map to the number of duplicates specified."
           << std::endl;
 
-      std::cerr << oss.str();
-      HLOG_SELF(0, "ERROR: CoreExecutionPipeline " << __PRETTY_FUNCTION__ << " " << oss.str())
-      exit(42);
+      HLOG_SELF(0, oss.str())
+      throw (std::runtime_error(oss.str()));
     }
     epGraphs_.reserve(this->numberGraphs_);
 
@@ -71,19 +95,46 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     this->duplicateGraphs();
   }
 
+  /// @brief Default destructor
   virtual ~CoreExecutionPipeline() = default;
 
-  Node *node() override { return this->executionPipeline_; }
+  /// @brief Return the user's node
+  /// @return User's node: CoreExecutionPipeline::executionPipeline_
+  [[nodiscard]] behavior::Node *node() override { return this->executionPipeline_; }
 
-  std::vector<int> const &deviceIds() const {
-    return deviceIds_;
+  /// @brief Device ids accessor
+  /// @return Device ids
+  [[nodiscard]] std::vector<int> const &deviceIds() const { return deviceIds_; }
+
+  /// @brief Number of execution pipeline's graphs accessor
+  /// @return Number of execution pipeline's graphs
+  [[nodiscard]] size_t numberGraphs() const { return numberGraphs_; }
+
+  /// @brief Execution pipeline id, i.e switch id accessor
+  /// @return Execution pipeline id, i.e switch id
+  [[nodiscard]] std::string id() const override { return this->coreSwitch_->id(); }
+
+  /// @brief User execution pipeline accessor
+  /// @return User execution pipeline
+  AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline() const {
+    return executionPipeline_;
   }
 
-  size_t numberGraphs() const {
-    return numberGraphs_;
+  /// @brief Get a device id, not possible for an execution pipeline, throw an error in every case
+  /// @exception std::runtime_error An execution pipeline does not have a device id
+  /// @return Nothing, throw an error
+  int deviceId() override {
+    std::ostringstream oss;
+    oss << "Internal error, an execution pipeline has not device id: " << __FUNCTION__;
+    HLOG_SELF(0, oss.str())
+    throw (std::runtime_error(oss.str()));
   }
 
-  std::set<CoreSender<GraphOutput> *> getSenders() override {
+  /// @brief Execution pipeline's senders accessor
+  /// @details Gather senders from all execution pipeline's graphs
+  /// @return A set composed by execution pipeline's senders
+  std::set<CoreSender<GraphOutput> *>
+  getSenders() override {
     std::set<CoreSender<GraphOutput> *>
         res = {},
         senders = {};
@@ -95,23 +146,39 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     return res;
   }
 
+  /// @brief Return the core of the base graph
+  /// @return Base graph's core
   std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> baseCoreGraph() {
     return this->epGraphs_.empty() ? nullptr : this->epGraphs_[0];
   }
 
+  /// @brief Add a receiver to the execution pipeline, to all inside graphs
+  /// @param receiver Receiver to add to the execution pipeline
   void addReceiver(CoreReceiver<GraphOutput> *receiver) override {
     for (CoreReceiver<GraphOutput> *r : receiver->receivers()) {
-      this->destinations()->insert(dynamic_cast<CoreQueueReceiver<GraphOutput> *>(r));
+      if (auto coreQueueReceiver = dynamic_cast<CoreQueueReceiver<GraphOutput> *>(r)) {
+        this->destinations()->insert(coreQueueReceiver);
+      } else {
+        std::ostringstream oss;
+        oss << "Internal error, a receiver added to an execution pipeline is not a coreQueueReceiver : "
+            << __FUNCTION__;
+        HLOG_SELF(0, oss.str())
+        throw (std::runtime_error(oss.str()));
+      }
     }
     for (auto epGraph : this->epGraphs_) {
       connectGraphsOutputToReceiver(epGraph.get(), receiver);
     }
   }
 
+  /// @brief Add a slot to a execution pipeline, i.e. to all inside graphs
+  /// @param slot CoreSlot to add to all execution pipeline
   void addSlot(CoreSlot *slot) override {
     for (auto graph : this->epGraphs_) { graph->addSlot(slot); }
   }
 
+  /// @brief Special visit method for an execution pipeline, visit also all inside graphs
+  /// @param printer Printer visitor to print the CoreExecutionPipeline
   void visit(AbstractPrinter *printer) override {
     if (printer->hasNotBeenVisited(this)) {
       printer->printExecutionPipelineHeader(this, coreSwitch_.get());
@@ -123,27 +190,73 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     }
   }
 
-  AbstractExecutionPipeline<GraphOutput, GraphInputs...> *executionPipeline() const {
-    return executionPipeline_;
-  }
-
-  std::string id() const override {
-    return this->coreSwitch_->id();
-  }
-
-  int deviceId() override {
-    HLOG_SELF(0, "ERROR: DeviceId called for an execution pipeline!: " << __PRETTY_FUNCTION__)
-    exit(42);
-  }
-
+  /// @brief Create inner graphs clusters and launch the threads
   void createCluster([[maybe_unused]]std::shared_ptr<std::multimap<CoreNode *,
-                                                                   std::shared_ptr<CoreNode>>> &insideNodesGraph) override {
+                                                                   std::shared_ptr<CoreNode>>> &) override {
     for (std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> epGraph : this->epGraphs_) {
       epGraph->createInnerClustersAndLaunchThreads();
     }
   }
 
+  /// @brief Return the maximum execution time of all inside graphs
+  /// @return Maximum execution time of all inside graphs
+  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> maxExecutionTime() const override {
+    std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::min();
+    for (auto graph: epGraphs_) {
+      std::chrono::duration<uint64_t, std::micro> temp = graph->maxExecutionTime();
+      if (temp > ret) ret = temp;
+    }
+    return ret;
+  }
+
+  /// @brief Return the minimum execution time of all inside graphs
+  /// @return Minimum execution time of all inside graphs
+  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> minExecutionTime() const override {
+    std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::max();
+    for (auto graph: epGraphs_) {
+      std::chrono::duration<uint64_t, std::micro> temp = graph->minExecutionTime();
+      if (temp < ret) ret = temp;
+    }
+    return ret;
+  }
+
+  /// @brief Return the maximum wait time of all inside graphs
+  /// @return Maximum wait time of all inside graphs
+  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> maxWaitTime() const override {
+    std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::min();
+    for (auto graph: epGraphs_) {
+      std::chrono::duration<uint64_t, std::micro> temp = graph->maxWaitTime();
+      if (temp > ret) ret = temp;
+    }
+    return ret;
+  }
+
+  /// @brief Return the minimum wait time of all inside graphs
+  /// @return Minimum wait time of all inside graphs
+  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> minWaitTime() const override {
+    std::chrono::duration<uint64_t, std::micro> ret = std::chrono::duration<uint64_t, std::micro>::max();
+    for (auto graph: epGraphs_) {
+      std::chrono::duration<uint64_t, std::micro> temp = graph->minWaitTime();
+      if (temp < ret) ret = temp;
+    }
+    return ret;
+  }
+
+ protected:
+  /// @brief Can terminate for the ep, specialised to not call user's defined one
+  /// @param lock Node's mutex
+  /// @return True if the node is terminated, else False
+  bool callCanTerminate(bool lock) override {
+    bool result;
+    if (lock) { this->lockUniqueMutex(); }
+    result = !this->hasNotifierConnected() && this->receiversEmpty();
+    HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
+    if (lock) { this->unlockUniqueMutex(); }
+    return result;
+  };
+
  private:
+  /// @brief Duplicate the graphs and link it to the switch
   void duplicateGraphs() {
     for (size_t numberGraph = 1; numberGraph < this->numberGraphs(); ++numberGraph) {
       auto graphDuplicate =
@@ -154,28 +267,26 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     }
   }
 
+  /// @brief Add data and notification link between switch and one inside graph
+  /// @tparam GraphInput Graph input type
+  /// @param graph graph to link
   template<class GraphInput>
   void addEdgeSwitchGraph(std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> &graph) {
     auto coreSender = std::static_pointer_cast<CoreSender<GraphInput>>(this->coreSwitch_);
     auto coreNotifier = std::static_pointer_cast<CoreNotifier>(coreSender);
-
     auto coreSlot = std::static_pointer_cast<CoreSlot>(graph);
     auto coreReceiver = std::static_pointer_cast<CoreReceiver<GraphInput>>(graph);
 
-    for (auto r : coreReceiver->receivers()) {
-      coreSender->addReceiver(r);
-    }
-
+    for (auto r : coreReceiver->receivers()) { coreSender->addReceiver(r); }
     for (auto s : coreSender->getSenders()) {
       coreReceiver->addSender(s);
       coreSlot->addNotifier(s);
     }
-
-    for (CoreSlot *slot : coreSlot->getSlots()) {
-      coreNotifier->addSlot(slot);
-    }
+    for (CoreSlot *slot : coreSlot->getSlots()) { coreNotifier->addSlot(slot); }
   }
 
+  /// @brief Connect a graph to the switch and register it
+  /// @param coreGraph Graph to connect to the execution pipeline
   void connectGraphToEP(std::shared_ptr<CoreGraph<GraphOutput, GraphInputs...>> &coreGraph) {
     coreGraph->setInside();
     coreGraph->belongingNode(this);
@@ -184,48 +295,41 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
     this->epGraphs_.push_back(coreGraph);
   }
 
+  /// @brief Connect a CoreReceiver to all output of a graph
+  /// @param graph CoreGraph to be connected
+  /// @param coreReceiver Receiver to connect
   void connectGraphsOutputToReceiver(CoreGraph<GraphOutput, GraphInputs...> *graph,
                                      CoreReceiver<GraphOutput> *coreReceiver) {
-    for (CoreReceiver<GraphOutput> *receiver : coreReceiver->receivers()) {
-      graph->addReceiver(receiver);
-    }
+    for (CoreReceiver<GraphOutput> *receiver : coreReceiver->receivers()) { graph->addReceiver(receiver); }
   }
 
-  void mergeSenders(std::set<CoreSender<GraphOutput> *> &superSet, std::set<CoreSender<GraphOutput> *> &graphSenders) {
-    for (CoreSender<GraphOutput> *sender : graphSenders) {
-      superSet.insert(sender);
-    }
+  /// @brief Add the graph's senders to the super set
+  /// @param superSet Set where to merge the graph's sender
+  /// @param graphSenders Senders to add to the set
+  void mergeSenders(std::set<CoreSender<GraphOutput> *
+  > &superSet, std::set<CoreSender<GraphOutput> *> &graphSenders) {
+    for (CoreSender<GraphOutput> *sender : graphSenders) { superSet.insert(sender); }
   }
 
+  /// @brief Print an edge for GraphInput input from the switch to all graph's input node
+  /// @tparam GraphInput Edge Graph input type to print
+  /// @param printer Printer object to visit the execution pipeline and print the edge
+  /// @param graph Graph to take the node's from
   template<class GraphInput>
   void printEdgeSwitchGraphs(AbstractPrinter *printer, CoreGraph<GraphOutput, GraphInputs...> *graph) {
-	CoreQueueReceiver<GraphInput>* coreQueueReceiver = nullptr;
     for (CoreNode *graphInputNode : *(graph->inputsCoreNodes())) {
-      coreQueueReceiver = dynamic_cast<CoreQueueReceiver<GraphInput>*>(graphInputNode);
-      if(coreQueueReceiver) {
-		printer->printEdgeSwitchGraphs(coreQueueReceiver,
-									   this->id(),
-									   HedgehogTraits::type_name<GraphInput>(),
-									   coreQueueReceiver->queueSize(),
-									   coreQueueReceiver->maxQueueSize(),
-									   HedgehogTraits::is_managed_memory_v<GraphInput>);
-	  }
+      if (auto *coreQueueReceiver = dynamic_cast<CoreQueueReceiver<GraphInput> *>(graphInputNode)) {
+        printer->printEdgeSwitchGraphs(coreQueueReceiver,
+                                       this->id(),
+                                       traits::type_name<GraphInput>(),
+                                       coreQueueReceiver->queueSize(),
+                                       coreQueueReceiver->maxQueueSize(),
+                                       traits::is_managed_memory_v<GraphInput>);
+      }
     }
   }
-
-
- protected:
-  bool callCanTerminate(bool lock) override {
-    bool result;
-
-    if (lock) { this->lockUniqueMutex(); }
-    result = !this->hasNotifierConnected() && this->receiversEmpty();
-    HLOG_SELF(2, "callCanTerminate: " << std::boolalpha << result)
-    if (lock) { this->unlockUniqueMutex(); }
-
-    return result;
-  };
-
 };
 
+}
+}
 #endif //HEDGEHOG_CORE_EXECUTION_PIPELINE_H

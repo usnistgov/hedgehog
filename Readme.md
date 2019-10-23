@@ -23,7 +23,7 @@ CMAKE_INSTALL_PREFIX - Where to install Hedgehog (and documentation)
 
 LOG - Enable log with GLOG
 
-BUILD_DOXYGEN - Creates doxygen documentation
+BUILD_DOXYGEN - Creates doxygen documentation ('make doc' to generate)
 
 RUN_GTEST - Compiles and runs google unit tests for Hedgehog ('make run-test' to re-run)
 
@@ -49,6 +49,10 @@ Alexandre Bardakoff
 Timothy Blattner
 
 Walid Keyrouz
+
+Bruno Bachelet
+
+Loïc Yon
 
 Mary Brady
 

@@ -30,55 +30,103 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+add_definitions(-D_GLIBCXX_ASSERTIONS)
 
-find_package(Hedgehog REQUIRED)
+# Add Compile flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+if (NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+    #                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
+endif (NOT MSVC)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(CMAKE_COMPILER_IS_CLANGXX 1)
+    set(use-libclang ON)
+endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
+endif (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+
+# Set specific flags for filesystem [experimental] library
+if (CMAKE_COMPILER_IS_CLANGXX)
+    string(REGEX REPLACE bin.* "" CLANG_FOLDER ${CMAKE_CXX_COMPILER})
+    string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
+    message("Try to find Filesystem library in " ${FS_LIB_PATH})
+    link_directories(${FS_LIB_PATH})
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
+
+    if (APPLE)
+        link_libraries(c++fs)
+    else (APPLE)
+        link_libraries(stdc++fs)
+    endif (APPLE)
+elseif (NOT MSVC)
+    link_libraries(stdc++fs)
+endif (CMAKE_COMPILER_IS_CLANGXX)
 
 set(TEST_SRC
+        ${HEDGEHOG_TESTS_SRC}
         testAll.cc
-        graphs/big_example/types/a.h
-        graphs/big_example/types/b.h
-        graphs/big_example/types/c.h
-        graphs/big_example/tasks/input_task.h
-        graphs/big_example/tasks/input_task_2.h
-        graphs/big_example/tasks/output_task.h
-        graphs/big_example/tasks/output_task_2.h
-        graphs/big_example/tasks/task_bda.h
-        graphs/big_example/tasks/task_ic.h
-        graphs/big_example/states/test_state.h
-        graphs/big_example/ep/inner_ep.h
-        graphs/cycle/states/my_state.h
-        graphs/cycle/tasks/my_task.h
-        graphs/cycle/tasks/my_task_2.h
-        graphs/ep/ep/if_to_iep.h
-        graphs/ep/tasks/if_to_i.h
-        graphs/ep/tasks/if_to_i_ep_in.h
-        graphs/ep/tasks/epif_to_i.h
-        graphs/ep_composition/tasks/ii_task.h
-        graphs/ep_composition/ep/iiep.h
-        graphs/memory_manager/data/matrix_data.h
-        graphs/memory_manager/data/dynamic_matrix_data.h
-        graphs/memory_manager/memory_manager/static_mm.h
-        graphs/memory_manager/memory_manager/mm.h
-        graphs/memory_manager/memory_manager/cuda_mm.h
-        graphs/memory_manager/task/my_cuda_task.h
-        graphs/memory_manager/task/my_static_task.h
-        graphs/memory_manager/task/my_dynamic_task.h
-        graphs/memory_manager/task/output_md_task.h
-        graphs/memory_manager/ep/iiep_mm.h
-        graphs/small_example/tasks/ito_f.h
-        graphs/partial_input/task/task_ii_partial_input.h graphs/partial_input/task/task_fi_partial_input.h graphs/partial_input/ep/iifep_partial_input.h graphs/partial_input/test_partial_input.h)
-
+        tests/test_memory_manager.h
+        tests/test_small_graph.h
+        tests/test_complex_graph.h
+        tests/test_cuda.h
+        tests/test_execution_pipeline.h
+        tests/test_execution_pipeline_composition.h
+        tests/test_cycles.h
+        tests/test_simple_partial_input.h
+        data_structures/tasks/int_double_char_to_float.h
+        data_structures/tasks/int_float_to_double.h
+        data_structures/tasks/int_float_to_int.h
+        data_structures/tasks/int_double_float.h
+        data_structures/tasks/int_to_int.h
+        data_structures/execution_pipelines/execution_pipeline_int_double_to_int.h
+        data_structures/states/state_int_float_to_int.h
+        data_structures/cuda_tasks/cuda_copy_in_gpu.h
+        data_structures/cuda_tasks/cuda_copy_out_gpu.h
+        data_structures/cuda_tasks/cuda_product_task.h
+        data_structures/datas/cuda_matrix_block_data.h
+        data_structures/datas/data_type.h
+        data_structures/datas/matrix_block_data.h
+        data_structures/datas/matrix_data.h
+        utils/cuda_utils.h
+        data_structures/states/cuda_input_block_state.h
+        data_structures/states/output_state.h
+        data_structures/states/partial_computation_state.h
+        data_structures/state_managers/partial_computation_state_manager.h
+        data_structures/tasks/addition_task.h
+        data_structures/tasks/matrix_column_traversal_task.h
+        data_structures/tasks/matrix_row_traversal_task.h
+        data_structures/tasks/float_to_int_cycle.h
+        data_structures/execution_pipelines/execution_pipeline_int_to_int.h
+        data_structures/execution_pipelines/execution_pipeline_int_to_static_memory_managed_int.h
+        data_structures/datas/static_memory_manage_data.h
+        data_structures/datas/dynamic_memory_manage_data.h
+        data_structures/memory_managers/dynamic_memory_manager.h
+        data_structures/tasks/int_to_static_memory_managed_int.h
+        data_structures/tasks/int_to_dynamic_memory_managed_int.h
+        data_structures/cuda_tasks/cuda_int_to_memory_managed_int.h
+        data_structures/tasks/static_memory_managed_int_dynamic_memory_managed_int_to_static_memory_managed_int.h
+        data_structures/cuda_tasks/cuda_link_example.cpp
+        data_structures/cuda_tasks/cuda_link_example.h
+        tests/test_link.cpp
+        tests/test_link.h
+        tests/test_link2.cpp
+        tests/test_link2.h
+        data_structures/cuda_tasks/cuda_link2_example.cpp
+        data_structures/cuda_tasks/cuda_link2_example.h)
 
 if (CUDA_FOUND)
     cuda_add_executable(runAllTests ${TEST_SRC})
     target_compile_definitions(runAllTests PUBLIC -DHH_USE_CUDA)
-    target_link_libraries(runAllTests ${Hedgehog_LIBRARIES})
-    target_include_directories(runAllTests PUBLIC ${Hedgehog_INCLUDE_DIR})
+    target_link_libraries(runAllTests ${CUDA_LIBRARIES})
+    target_include_directories(runAllTests PUBLIC ${CUDA_INCLUDE_DIR} cuda)
+    CUDA_ADD_CUBLAS_TO_TARGET(runAllTests)
 else (CUDA_FOUND)
     add_executable(runAllTests ${TEST_SRC})
-    target_link_libraries(runAllTests ${Hedgehog_LIBRARIES})
-    target_include_directories(runAllTests PUBLIC ${Hedgehog_INCLUDE_DIR})
 endif ()
 
 target_link_libraries(runAllTests gtest gtest_main)

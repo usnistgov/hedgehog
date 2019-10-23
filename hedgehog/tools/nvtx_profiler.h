@@ -10,9 +10,11 @@
 #endif
 
 #include <string_view>
-#include <string.h>
+#include <cstring>
 #include <iostream>
 
+/// @brief Hedgehog main namespace
+namespace hh {
 #define NVTX_COLOR_INITIALIZING    0xFF123456
 #define NVTX_COLOR_EXECUTING       0xFF72ff68
 #define NVTX_COLOR_WAITING         0xFFff7f83
@@ -20,39 +22,58 @@
 #define NVTX_COLOR_RELEASE_MEM     0xFF7fbdff
 #define NVTX_COLOR_SHUTTING_DOWN   0xFF654321
 
+/// @brief A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task graph
+/// @details
+/// Hedgehog uses the NVTX API and NVIDIA Nsight Systems to visualize the execution of a graph of tasks.
+///
+/// The current profiling mode is to have one NVTX domain per task.
+///
+/// In this mode, a task uses the single domain to visualize when the task is initializing, executing, waiting for memory,
+/// waiting for data, releasing memory, and shutting down. This has the effect of visualizing all tasks and their
+/// threads to identify precisely what that task is doing at any moment in time. This is useful for
+/// visualizing the interaction between tasks and identify bottlenecks.
+///
+/// Depending on the version of the Nsight Systems tool, there may be limitations to the number of NVTX domains. If
+/// your graph is extremely large, it is recommended to get the latest version of the NVIDIA Nsight Systems tool.
+///
+/// @note To enable NVTX profiling you must add the USE_NVTX directive.
+/// @note Add 'FindNVTX.cmake' to your project to assist in finding the necessary includes and libraries for use with
+/// NVTX
 class NvtxProfiler {
  private:
 #ifdef HH_USE_NVTX
-  std::string_view initializeName_{};
-  std::string_view executeName_{};
-  std::string_view waitName_{};
-  std::string_view waitForMemName_{};
-  std::string_view releaseMemName_{};
-  std::string_view shutdownName_{};
+  std::string_view initializeName_{}; ///< Name for the initialization attribute
+  std::string_view executeName_{}; ///< Name for the execute attribute
+  std::string_view waitName_{}; ///< Name for the wait attribute
+  std::string_view waitForMemName_{}; ///< Name for the wait for memory attribute
+  std::string_view releaseMemName_{}; ///< Name for the release memory attribute
+  std::string_view shutdownName_{}; ///< Name for the shutdown attribute
 
-  nvtxDomainHandle_t taskDomain_;
+  nvtxDomainHandle_t taskDomain_; ///< The domain for the task
 
-  nvtxStringHandle_t initializeString_{};
-  nvtxStringHandle_t executeString_{};
-  nvtxStringHandle_t waitString_{};
-  nvtxStringHandle_t waitForMemString_{};
-  nvtxStringHandle_t releaseMemString_{};
-  nvtxStringHandle_t shutdownString_{};
+  nvtxStringHandle_t initializeString_{}; ///< Cache'd string used within the initialize attribute
+  nvtxStringHandle_t executeString_{}; ///< Cache'd string used within the execute attribute
+  nvtxStringHandle_t waitString_{}; ///< Cache'd string used within the wait attribute
+  nvtxStringHandle_t waitForMemString_{}; ///< Cache'd string used within the wait for memory attribute
+  nvtxStringHandle_t releaseMemString_{}; ///< Cache'd string used within the release memory attribute
+  nvtxStringHandle_t shutdownString_{}; ///< Cache'd string used within the shutdown attribute
 
-  nvtxEventAttributes_t *initializeAttrib_;
-  nvtxEventAttributes_t *executeAttrib_;
-  nvtxEventAttributes_t *waitAttrib_;
-  nvtxEventAttributes_t *waitForMemAttrib_;
-  nvtxEventAttributes_t *releaseMemAttrib_;
-  nvtxEventAttributes_t *shutdownAttrib_;
+  nvtxEventAttributes_t *initializeAttrib_; ///< The initialize attribute
+  nvtxEventAttributes_t *executeAttrib_; ///< The execute attribute
+  nvtxEventAttributes_t *waitAttrib_; ///< The wait attribute
+  nvtxEventAttributes_t *waitForMemAttrib_; ///< The wait for memory attribute
+  nvtxEventAttributes_t *releaseMemAttrib_; ///< The release memory attribute
+  nvtxEventAttributes_t *shutdownAttrib_; ///< The shutdown attribute
 
-  nvtxRangeId_t initializeRangeId_ = 0;
-  nvtxRangeId_t executeRangeId_ = 0;
-  nvtxRangeId_t waitRangeId_ = 0;
-  nvtxRangeId_t waitForMemRangeId_ = 0;
-  nvtxRangeId_t shutdownRangeId_ = 0;
+  nvtxRangeId_t initializeRangeId_ = 0; ///< Range identifier for initialize
+  nvtxRangeId_t executeRangeId_ = 0; ///< Range identifier for execute
+  nvtxRangeId_t waitRangeId_ = 0; ///< Range identifier for wait (for data)
+  nvtxRangeId_t waitForMemRangeId_ = 0; ///< Range identifier for wait for memory
+  nvtxRangeId_t shutdownRangeId_ = 0; ///< Range identifier for shutdown
 
 
+  /// @brief Creates an event attribute with a specified color
+  /// @param color the color shown in the timeline view
   nvtxEventAttributes_t *createEventAttribute(uint32_t color) {
     nvtxEventAttributes_t *event = new nvtxEventAttributes_t;
     bzero(event, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
@@ -66,11 +87,16 @@ class NvtxProfiler {
 
  public:
 
+  /// @brief Deleted default constructor
   NvtxProfiler() = delete;
 
-  NvtxProfiler(std::string_view const &taskName [[maybe_unused]])
-  {
+
 #ifdef HH_USE_NVTX
+  /// @brief Constructs the NvtxProfiler with the name of the task
+  /// @details Each NvtxProfiler will hold profiling information for each task. It will profile all stages of the task's
+  /// life cycle: initialize, execution, waiting for data, waiting for memory, releasing memory, and shutting down.
+  /// @param taskName the name of the task
+  explicit NvtxProfiler(std::string_view const & taskName) {
     taskDomain_ = nvtxDomainCreateA(taskName.data());
 
     initializeAttrib_ = createEventAttribute(NVTX_COLOR_INITIALIZING);
@@ -84,24 +110,34 @@ class NvtxProfiler {
     waitForMemAttrib_ = createEventAttribute(NVTX_COLOR_WAITING_FOR_MEM);
     releaseMemAttrib_ = createEventAttribute(NVTX_COLOR_RELEASE_MEM);
     shutdownAttrib_ = createEventAttribute(NVTX_COLOR_SHUTTING_DOWN);
-#endif
   }
+#else //HH_USE_NVTX
+  /// @brief Constructs the NvtxProfiler with the name of the task
+  /// @details Each NvtxProfiler will hold profiling information for each task. It will profile all stages of the task's
+  /// life cycle: initialize, execution, waiting for data, waiting for memory, releasing memory, and shutting down.
+  explicit NvtxProfiler(std::string_view const &) {}
+#endif //HH_USE_NVTX
 
-  ~NvtxProfiler() {
 #ifdef HH_USE_NVTX
+  /// @brief Destructor, deletes all attributes allocated
+  ~NvtxProfiler() {
     delete initializeAttrib_;
     delete executeAttrib_;
     delete waitAttrib_;
     delete waitForMemAttrib_;
     delete releaseMemAttrib_;
     delete shutdownAttrib_;
-
     nvtxDomainDestroy(taskDomain_);
-#endif
   }
+#else //HH_USE_NVTX
+  /// @brief Destructor, deletes all attributes allocated
+  ~NvtxProfiler() = default;
+#endif //HH_USE_NVTX
 
-  void initialize([[maybe_unused]]int threadId)
-  {
+  /// Initializes the NvtxProfiler, and adds the threadId that is associated with the task.
+  /// @details Initialization of the NvtxProfiler creates and cache's the string names of the various event attributes
+  /// @param threadId the thread identifier
+  void initialize([[maybe_unused]]int threadId) {
 #ifdef HH_USE_NVTX
     std::string prefixName(std::to_string(threadId));
     initializeName_ = prefixName + ":Initializing";
@@ -138,38 +174,30 @@ class NvtxProfiler {
 #endif
   }
 
-  /**
-   * Adds a release marker into the timeline to show when the task released memory.
-   */
+  /// @brief Adds a release marker into the timeline to show when the task released memory.
   void addReleaseMarker() {
 #ifdef HH_USE_NVTX
     nvtxDomainMarkEx(taskDomain_, releaseMemAttrib_);
 #endif
   }
 
-  /**
-   * Starts tracking intialization in the timeline to show when the task has started its initialization phase.
-   */
+   /// @brief Starts tracking intialization in the timeline to show when the task has started its initialization phase.
   void startRangeInitializing() {
 #ifdef HH_USE_NVTX
     initializeRangeId_ = nvtxDomainRangeStartEx(taskDomain_, initializeAttrib_);
 #endif
   }
 
-  /**
-   * Starts tracking execution in the timeline to show when the task has started executing on data.
-   */
+  /// @brief Starts tracking execution in the timeline to show when the task has started executing on data.
   void startRangeExecuting() {
 #ifdef HH_USE_NVTX
     executeRangeId_ = nvtxDomainRangeStartEx(taskDomain_, executeAttrib_);
 #endif
   }
 
-  /**
-   * Starts tracking execution in the timeline to show when the task has started waiting for data.
-   * This event shows the current queue size in the payload within the attribute.
-   * @param queueSize the queue size
-   */
+  /// @brief Starts tracking execution in the timeline to show when the task has started waiting for data.
+  /// @details This event shows the current queue size in the payload within the attribute.
+  /// @param queueSize the queue size
   void startRangeWaiting([[maybe_unused]]uint64_t const &queueSize) {
 #ifdef HH_USE_NVTX
     waitAttrib_->payload.ullValue = queueSize;
@@ -177,80 +205,65 @@ class NvtxProfiler {
 #endif
   }
 
-  /**
-   * Starts tracking waiting for memory in the timeline to show when the task has started waiting for memory from a memory manager.
-   */
+  /// @brief Starts tracking waiting for memory in the timeline to show when the task has started waiting for memory
+  /// from a memory manager.
   void startRangeWaitingForMemory() {
 #ifdef HH_USE_NVTX
     waitForMemRangeId_ = nvtxDomainRangeStartEx(taskDomain_, waitForMemAttrib_);
 #endif
   }
 
-  /**
-   * Starts tracking shutdown in the timeline to show when the task has started its shutdown phase.
-   */
+  /// @brief Starts tracking shutdown in the timeline to show when the task has started its shutdown phase.
   void startRangeShuttingDown() {
 #ifdef HH_USE_NVTX
     shutdownRangeId_ = nvtxDomainRangeStartEx(taskDomain_, shutdownAttrib_);
 #endif
   }
 
-  /**
-   * Ends tracking the initialization phase for a task
-   */
+  /// @brief Ends tracking the initialization phase for a task
   void endRangeInitializing() {
 #ifdef HH_USE_NVTX
     nvtxDomainRangeEnd(taskDomain_, initializeRangeId_);
 #endif
   }
 
-  /**
-   * Ends tracking the execute for a task
-   */
+  /// @brief Ends tracking the execute for a task
   void endRangeExecuting() {
 #ifdef HH_USE_NVTX
     nvtxDomainRangeEnd(taskDomain_, executeRangeId_);
 #endif
   }
 
-  /**
-   * Ends tracking the waiting for data for a task
-   */
+  /// @brief Ends tracking the waiting for data for a task
   void endRangeWaiting() {
 #ifdef HH_USE_NVTX
     nvtxDomainRangeEnd(taskDomain_, waitRangeId_);
 #endif
   }
 
-  /**
-   * Ends tracking the waiting for memory from a memory edge.
-   */
+  /// @brief Ends tracking the waiting for memory from a memory edge.
   void endRangeWaitingForMem() {
 #ifdef HH_USE_NVTX
     nvtxDomainRangeEnd(taskDomain_, waitForMemRangeId_);
 #endif
   }
 
-  /**
-   * Ends tracking the shutdown phase for a task
-   */
+  /// @brief Ends tracking the shutdown phase for a task
   void endRangeShuttingDown() {
 #ifdef HH_USE_NVTX
     nvtxDomainRangeEnd(taskDomain_, shutdownRangeId_);
 #endif
   }
 #ifdef HH_USE_NVTX
-  /**
-   * Gets the task domain.
-   * @return the task domain
-   */
+
+
+  /// Gets the task domain.
+  /// @return the task domain
   nvtxDomainHandle_t taskDomain() const {
     return taskDomain_;
   }
 #endif
 
-
 };
-
-
+}
 #endif //HEDGEHOG_NVTX_PROFILER_H
