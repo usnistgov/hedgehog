@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(hedgehog VERSION 0.0.1 LANGUAGES CXX)
+project(hedgehog VERSION 1.0.0 LANGUAGES CXX)
 
 # Ensure C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -41,10 +41,10 @@ option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
 
-set(LOG OFF)
-set(BUILD_DOXYGEN OFF)
-set(RUN_GTEST ON)
-set(BUILD_MAIN ON)
+#set(LOG OFF)
+#set(BUILD_DOXYGEN OFF)
+#set(RUN_GTEST ON)
+#set(BUILD_MAIN ON)
 
 # Cuda
 find_package(CUDA QUIET)
