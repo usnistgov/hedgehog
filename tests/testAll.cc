@@ -1,6 +1,4 @@
-//
-// Created by anb22 on 2/25/19.
-//
+
 
 #ifndef HEDGEHOG_TESTS_TESTGTEST_H
 #define HEDGEHOG_TESTS_TESTGTEST_H

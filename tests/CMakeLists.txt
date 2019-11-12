@@ -36,8 +36,7 @@ add_definitions(-D_GLIBCXX_ASSERTIONS)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 if (NOT MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
-    #                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread -fsanitize=address -fsanitize-address-use-after-scope")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -pedantic -pthread")
 endif (NOT MSVC)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -129,4 +128,9 @@ else (CUDA_FOUND)
     add_executable(runAllTests ${TEST_SRC})
 endif ()
 
-target_link_libraries(runAllTests gtest gtest_main)
+target_include_directories(runAllTests PUBLIC ${GTEST_INCLUDE_DIRS})
+target_link_directories(runAllTests PUBLIC ${GTEST_LIBRARY_PATH})
+target_link_libraries(runAllTests gtest)
+
+
+add_dependencies(runAllTests googletest)

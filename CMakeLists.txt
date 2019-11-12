@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
-project(hedgehog VERSION 1.0.0 LANGUAGES CXX)
+project(hedgehog VERSION 1.0.2 LANGUAGES CXX)
+
+include(ExternalProject)
 
 # Ensure C++17
 set(CMAKE_CXX_STANDARD 17)
@@ -35,16 +37,11 @@ install(DIRECTORY hedgehog
 # Set targets
 option(LOG "Activate logging with GLOG" OFF)
 option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
-option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" OFF)
+option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" ON)
 option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
-
-#set(LOG OFF)
-#set(BUILD_DOXYGEN OFF)
-#set(RUN_GTEST ON)
-#set(BUILD_MAIN ON)
 
 # Cuda
 find_package(CUDA QUIET)
@@ -70,32 +67,25 @@ if (LOG)
 endif (LOG)
 
 if (RUN_GTEST)
-    # Download and unpack googletest at configure time
-    configure_file(tests/CMakeLists.txt.gtest googletest-download/CMakeLists.txt)
-    execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download)
-    execute_process(COMMAND ${CMAKE_COMMAND} --build .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download)
+    ExternalProject_Add(googletest
+            GIT_REPOSITORY "https://github.com/google/googletest.git"
+            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps -DINSTALL_GMOCK:BOOL=OFF -DINSTALL_GTEST:BOOL=OFF -DBUILD_GMOCK:BOOL=OFF -DBUILD_GTEST:BOOL=OFF"
+            UPDATE_COMMAND ""
+            INSTALL_COMMAND ""
+            )
+
+    ExternalProject_Get_Property(googletest source_dir)
+    ExternalProject_Get_Property(googletest binary_dir)
+
+    set(GTEST_INCLUDE_DIRS ${source_dir}/googletest/include)
+    set(GTEST_LIBRARY_PATH ${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+    set(GTEST_LIBRARY gtest)
 
     # Prevent GoogleTest from overriding our compiler/linker options
     # when building with Visual Studio
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    # Add googletest directly to our build. This adds
-    # the following targets: gtest, gtest_main, gmock
-    # and gmock_main
-    add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
-            ${CMAKE_BINARY_DIR}/googletest-build)
-
-    # The gtest/gmock targets carry header search path
-    # dependencies automatically when using CMake 2.8.11 or
-    # later. Otherwise we have to add them here ourselves.
-    if (CMAKE_VERSION VERSION_LESS 2.8.11)
-        include_directories("${gtest_SOURCE_DIR}/include")
-    endif ()
-    #	enable_testing()
     add_subdirectory(tests)
-    message(STATUS "GTEST downloaded and imported")
 endif (RUN_GTEST)
 
 
