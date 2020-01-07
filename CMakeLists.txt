@@ -78,8 +78,8 @@ if (RUN_GTEST)
     ExternalProject_Get_Property(googletest binary_dir)
 
     set(GTEST_INCLUDE_DIRS ${source_dir}/googletest/include)
-    set(GTEST_LIBRARY_PATH ${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-    set(GTEST_LIBRARY gtest)
+    set(GTEST_LIBRARY ${binary_dir}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+    message(STATUS "Binrary dir for gtest = ${binary_dir}")
 
     # Prevent GoogleTest from overriding our compiler/linker options
     # when building with Visual Studio

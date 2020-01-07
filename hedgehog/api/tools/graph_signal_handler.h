@@ -41,6 +41,10 @@ class GraphSignalHandler {
   static bool
       signalHandled_; ///< Flag to indicate if a signal has been fired or not
 
+  static ColorScheme colorScheme; ///<< The color scheme to use for graph dot file
+  static StructureOptions structureOptions; ///<< The structure options to use for graph dot file
+  static DebugOptions debugOptions; ///<< The debug options to use for graph dot file
+
  public:
   /// @brief Function that handles signals.
   /// @details Use TaskGraphSignalHandler::registerSignal to signal to this function
@@ -58,7 +62,7 @@ class GraphSignalHandler {
       signalHandled_ = true;
       std::cout << "signal caught: " << signum << ": (" << signalString << ")" << std::endl;
       graphInstance_->createDotFile(
-          signalString + "-graph-output.dot", ColorScheme::EXECUTION, StructureOptions::ALL, DebugOptions::DEBUG);
+          signalString + "-graph-output.dot", colorScheme, structureOptions, debugOptions);
     }
   }
 
@@ -83,6 +87,25 @@ class GraphSignalHandler {
       std::atexit(GraphSignalHandler<GraphOutput, GraphInputs ...>::atExit);
     }
   }
+
+  /// @brief Sets the color scheme for dot file generation
+  /// @param scheme the color scheme
+  static void setColorScheme(ColorScheme scheme) {
+    colorScheme = scheme;
+  }
+
+  /// @brief Sets the structure options for dot file generation
+  /// @param options the structure options
+  static void setStructureOptions(StructureOptions options) {
+    structureOptions = options;
+  }
+
+  /// @brief Sets the debug options for dot file generation
+  /// @param options the debug options
+  static void setDebugOptions(DebugOptions options) {
+    debugOptions = options;
+  }
+
 };
 
 template<class GraphOutput, class ... GraphInputs>
@@ -92,5 +115,18 @@ bool GraphSignalHandler<GraphOutput, GraphInputs...>
 template<class GraphOutput, class ... GraphInputs>
 Graph<GraphOutput, GraphInputs...> *GraphSignalHandler<GraphOutput, GraphInputs...>
     ::graphInstance_ = nullptr; ///< Set default value at nullptr
+
+template<class GraphOutput, class ... GraphInputs>
+ColorScheme GraphSignalHandler<GraphOutput, GraphInputs...>
+    ::colorScheme = ColorScheme::EXECUTION; ///< Sets the default color scheme
+
+template<class GraphOutput, class ... GraphInputs>
+StructureOptions GraphSignalHandler<GraphOutput, GraphInputs...>
+    ::structureOptions = StructureOptions::ALL; ///< Sets the default structure options
+
+template<class GraphOutput, class ... GraphInputs>
+DebugOptions GraphSignalHandler<GraphOutput, GraphInputs...>
+    ::debugOptions = DebugOptions::DEBUG; ///< Sets the default debug options
+
 }
 #endif //HEDGEHOG_GRAPH_SIGNAL_HANDLER_H

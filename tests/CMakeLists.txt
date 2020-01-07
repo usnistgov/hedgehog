@@ -129,8 +129,7 @@ else (CUDA_FOUND)
 endif ()
 
 target_include_directories(runAllTests PUBLIC ${GTEST_INCLUDE_DIRS})
-target_link_directories(runAllTests PUBLIC ${GTEST_LIBRARY_PATH})
-target_link_libraries(runAllTests gtest)
+target_link_libraries(runAllTests ${GTEST_LIBRARY})
 
 
 add_dependencies(runAllTests googletest)
