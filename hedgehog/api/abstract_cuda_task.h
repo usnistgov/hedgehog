@@ -42,7 +42,6 @@ inline void __checkCudaErrors(cudaError_t err, const char *file, const int line)
               << err
               << "\"" << cudaGetErrorString(err) << " \" from "
               << file << ":" << line << std::endl;
-    cudaDeviceReset();
     exit(43);
   }
 }
@@ -57,7 +56,6 @@ inline void __checkCudaErrors(cublasStatus_t status, const char *file, const int
     std::cerr << "checkCudaErrors() Status Error = "
               << status << " from "
               << file << ":" << line << std::endl;
-    cudaDeviceReset();
     exit(44);
   }
 }
