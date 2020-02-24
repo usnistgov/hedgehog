@@ -1,7 +1,0 @@
-<map id="hh::core::CoreGraph::duplicateInputNodes" name="hh::core::CoreGraph::duplicateInputNodes">
-<area shape="rect" id="node2" href="$d0/d11/a00842.html#aae20c9232a695a7b4525c9b12ea0ec66" title="Register a CoreReceiver from an input node. " alt="" coords="203,5,465,47"/>
-<area shape="rect" id="node3" href="$df/d2a/a00874.html#a1fcada50193752b42cf7f238e96369c0" title="Add a receiver to the graph, i.e, add a receiver to all output nodes. " alt="" coords="264,71,404,112"/>
-<area shape="rect" id="node6" href="$d0/d11/a00842.html#a68dd816f11d7cfcfd7d667ea11d43fdf" title="Add a CoreSender to the graph. " alt="" coords="238,136,430,177"/>
-<area shape="rect" id="node4" href="$d5/d69/a00878.html#a0e7bf1c195b9ef5d9d7b93ab4c6f8f94" title="Node name accessor. " alt="" coords="523,41,659,83"/>
-<area shape="rect" id="node5" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="513,107,668,134"/>
-</map>

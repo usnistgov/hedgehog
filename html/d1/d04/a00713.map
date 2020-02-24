@@ -1,8 +1,0 @@
-<map id="hh::Graph&lt; GraphOutput, GraphInputs &gt;" name="hh::Graph&lt; GraphOutput, GraphInputs &gt;">
-<area shape="rect" id="node7" href="$df/d96/a00714.html" title="{hh::Graph\&lt; GraphOutput,\l GraphInputs... \&gt;\n|&#45; graphCore_\l&#45; insideNodes_\l|+ Graph()\l+ Graph()\l+ Graph()\l+ ~Graph()\l+ core()\l+ name()\l+ deviceId()\l+ input()\l+ output()\l+ addEdge()\l+ executeGraph()\l+ pushData()\l+ finishPushingData()\l+ getBlockingResult()\l+ waitForTermination()\l+ createDotFile()\l}" alt="" coords="33,847,203,1173"/>
-<area shape="rect" id="node2" href="$d6/d17/a00778.html" title="{hh::behavior::MultiReceivers\l\&lt; GraphInputs... \&gt;\n||}" alt="" coords="24,316,212,408"/>
-<area shape="rect" id="node3" href="$d3/daf/a00790.html" title="Node Behavior definition. " alt="" coords="79,5,259,112"/>
-<area shape="rect" id="node4" href="$d6/d17/a00778.html" title="MultiReceivers Behavior definition, node has a list of input types. " alt="" coords="75,161,263,253"/>
-<area shape="rect" id="node5" href="$da/d96/a00782.html" title="{hh::behavior::Sender\l\&lt; GraphOutput \&gt;\n||}" alt="" coords="236,316,379,408"/>
-<area shape="rect" id="node6" href="$da/d96/a00782.html" title="Sender Behavior definition, node has an output type. " alt="" coords="339,161,481,253"/>
-</map>

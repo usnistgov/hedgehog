@@ -1,4 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d8/d38/a00926.html" title="hh::traits::_is_included\l_\&lt; T1, T2, std::make_integer\l_sequence\&lt; std::size_t, std\l::tuple_size\&lt; T1 \&gt;::value \&gt; \&gt;" alt="" coords="5,5,196,76"/>
-<area shape="rect" id="node2" href="$d0/df0/a00934.html" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2..." alt="" coords="244,20,391,61"/>
-</map>

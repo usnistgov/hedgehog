@@ -1,8 +1,0 @@
-<map id="hh::Graph&lt; GraphOutput, GraphInputs &gt;" name="hh::Graph&lt; GraphOutput, GraphInputs &gt;">
-<area shape="rect" id="node2" href="$d6/d17/a00778.html" title="{hh::behavior::MultiReceivers\l\&lt; GraphInputs... \&gt;\n||}" alt="" coords="52,351,240,443"/>
-<area shape="rect" id="node3" href="$d3/daf/a00790.html" title="Node Behavior definition. " alt="" coords="107,5,287,112"/>
-<area shape="rect" id="node4" href="$d6/d17/a00778.html" title="MultiReceivers Behavior definition, node has a list of input types. " alt="" coords="103,175,291,267"/>
-<area shape="rect" id="node5" href="$da/d96/a00782.html" title="{hh::behavior::Sender\l\&lt; GraphOutput \&gt;\n||}" alt="" coords="264,351,407,443"/>
-<area shape="rect" id="node6" href="$da/d96/a00782.html" title="Sender Behavior definition, node has an output type. " alt="" coords="367,175,510,267"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="713,182,812,259"/>
-</map>

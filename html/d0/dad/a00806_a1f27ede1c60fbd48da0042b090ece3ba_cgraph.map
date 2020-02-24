@@ -1,6 +1,0 @@
-<map id="hh::core::CoreDefaultExecutionPipeline::waitForNotification" name="hh::core::CoreDefaultExecutionPipeline::waitForNotification">
-<area shape="rect" id="node2" href="$dc/d41/a00862.html#a291c61a08be904f2b43a77dd66f2b7f8" title="Mutex accessor. " alt="" coords="280,5,447,47"/>
-<area shape="rect" id="node3" href="$dc/d41/a00862.html#a3a2fff98b86931ec99b561be324169d2" title="Condition variable accessor. " alt="" coords="280,71,447,112"/>
-<area shape="rect" id="node4" href="$d6/d2f/a00854.html#a544c2402b17e67e46c161900c7b87668" title="Test emptiness of all receivers. " alt="" coords="278,137,449,193"/>
-<area shape="rect" id="node5" href="$d2/dab/a00886.html#ab6f3c165745ea5aa8a006bc9396690ab" title="Can terminate for the ep, specialised to not call user&#39;s defined one. " alt="" coords="259,217,468,273"/>
-</map>

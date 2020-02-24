@@ -1,5 +1,0 @@
-<map id="hh::Graph::createDotFile" name="hh::Graph::createDotFile">
-<area shape="rect" id="node2" href="$d0/d7e/a00770.html#aa7609d5d8ae08d50d82bbb51a93d6189" title="Function that handles signals. " alt="" coords="219,5,379,47"/>
-<area shape="rect" id="node3" href="$d0/d7e/a00770.html#a068463a39f268ed00266214e6e7b249d" title="Create a dot file at exit if the instance still exist. " alt="" coords="219,71,379,112"/>
-<area shape="rect" id="node4" href="$d0/d7e/a00770.html#a605bab42cdf1211360017bdb668416ac" title="Registers a signal for handling. (default SIGTERM) " alt="" coords="427,71,587,112"/>
-</map>

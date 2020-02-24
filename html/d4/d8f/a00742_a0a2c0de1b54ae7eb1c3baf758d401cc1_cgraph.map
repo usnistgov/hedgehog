@@ -1,6 +1,0 @@
-<map id="hh::DotPrinter::printEdgeSwitchGraphs" name="hh::DotPrinter::printEdgeSwitchGraphs">
-<area shape="rect" id="node2" href="$d5/d69/a00878.html#a820e38cb1c4453488b45866b488f5ab7" title="In cluster property accessor. " alt="" coords="233,5,369,47"/>
-<area shape="rect" id="node3" href="$d5/d69/a00878.html#a65405a594fcd840491c05e240ea2c92f" title="Input node ids [nodeId, nodeIdCluster] accessor. " alt="" coords="220,71,381,98"/>
-<area shape="rect" id="node4" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="223,122,378,149"/>
-<area shape="rect" id="node5" href="$d5/d69/a00878.html#a7dbb304ad7f405c9ea257ba9779b63be" title="Main cluster core node link to this node accessor. " alt="" coords="233,173,369,215"/>
-</map>

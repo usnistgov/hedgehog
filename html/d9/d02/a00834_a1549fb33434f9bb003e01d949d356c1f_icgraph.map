@@ -1,7 +1,0 @@
-<map id="hh::core::CoreSender::getSenders" name="hh::core::CoreSender::getSenders">
-<area shape="rect" id="node2" href="$d9/d02/a00834.html#a88ebba68909b336bd0e68e2f014ab50b" title="CoreSender destructor. " alt="" coords="203,5,401,47"/>
-<area shape="rect" id="node3" href="$d9/d02/a00834.html#a1e35ff37bb31d8f13a760605d4fd7103" title="Duplicate all the edges from this to it&#39;s copy duplicateNode. " alt="" coords="200,71,404,112"/>
-<area shape="rect" id="node4" href="$df/d2a/a00874.html#aadc8bd15557f2e0e396a95c5e56324bf" title="Set a node as output for the graph. " alt="" coords="232,136,372,177"/>
-<area shape="rect" id="node5" href="$df/d2a/a00874.html#a988753828867da50c79630a42f78c158" title="Duplicate inside nodes, called by CoreExecutionPipeline. " alt="" coords="225,201,379,243"/>
-<area shape="rect" id="node6" href="$df/d2a/a00874.html#a6e6a3db5abbb30ccd4a24e0cd790c3e3" title="Core graph copy constructor. " alt="" coords="452,201,592,243"/>
-</map>

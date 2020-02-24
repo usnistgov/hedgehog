@@ -1,5 +1,0 @@
-<map id="hh::core::CoreReceiver::addSender" name="hh::core::CoreReceiver::addSender">
-<area shape="rect" id="node2" href="$d6/da7/a00822.html#a588496cc93fd95e8dfa39c52526837bb" title="Default destructor. " alt="" coords="214,5,417,47"/>
-<area shape="rect" id="node3" href="$df/d2a/a00874.html#a93aa25d3f0b11d52f8d0f99f575681ef" title="If the input core node is compatible, connect it to the source. " alt="" coords="236,71,395,112"/>
-<area shape="rect" id="node4" href="$d2/dab/a00886.html#aefb9bf3579d99a0389b642093efdbc4a" title="Add data and notification link between switch and one inside graph. " alt="" coords="211,137,420,193"/>
-</map>

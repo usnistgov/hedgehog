@@ -1,4 +1,0 @@
-<map id="hh::core::CoreQueueReceiver::queueSlot" name="hh::core::CoreQueueReceiver::queueSlot">
-<area shape="rect" id="node2" href="$d0/d66/a00858.html#aac5b6a9d927cffcb2560dfd6806e0515" title="CoreQueueReceiver default destructor. " alt="" coords="248,5,495,47"/>
-<area shape="rect" id="node3" href="$d0/d66/a00858.html#a47c505ed1819b9c007bc41d20a1c85f5" title="Receive a data from a CoreQueueSender, and store it into the waiting queue. " alt="" coords="274,71,469,112"/>
-</map>

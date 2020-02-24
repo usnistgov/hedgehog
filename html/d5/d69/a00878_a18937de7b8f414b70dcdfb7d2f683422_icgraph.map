@@ -1,6 +1,0 @@
-<map id="hh::core::CoreNode::numberThreads" name="hh::core::CoreNode::numberThreads">
-<area shape="rect" id="node2" href="$d5/d69/a00878.html#a191279c99cc0abb1a4197e980b4548a0" title="Copy inner structure from rhs nodes to this. " alt="" coords="213,13,353,54"/>
-<area shape="rect" id="node4" href="$d3/d50/a00882.html#ad8648eae0ba44b3b76e0675adecb8f05" title="Create a cluster for a CoreTask. " alt="" coords="189,79,376,135"/>
-<area shape="rect" id="node5" href="$d3/d50/a00882.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance. " alt="" coords="189,159,376,215"/>
-<area shape="rect" id="node3" href="$d3/d50/a00882.html#ada06aafbeeece6c59743f3db624e55b6" title="Copy the inner structure from rhs to this CoreTask. " alt="" coords="424,5,611,61"/>
-</map>
