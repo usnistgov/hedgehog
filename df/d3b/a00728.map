@@ -1,0 +1,13 @@
+<map id="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;" name="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;">
+<area shape="rect" id="node2" href="$dc/d8f/a00718.html" title="{hh::AbstractMemoryManager\l\&lt; ManagedMemory \&gt;\n||+ AbstractMemoryManager()\l+ AbstractMemoryManager()\l+ ~AbstractMemoryManager()\l+ copy()\l+ deviceId()\l+ profiler()\l+ currentSize()\l+ getManagedMemory()\l+ recycleMemory()\l+ initialize()\l+ initializeMemoryManager()\l# deviceId()\l# pool()\l# capacity()\l# isInitialized()\l# memoryManagerMutex()\l# initialized()\l}" alt="" coords="185,1543,381,1869"/>
+<area shape="rect" id="node20" href="$dc/d8f/a00718.html" title="Abstract interface for Hedgehog&#39;s Memory manager. " alt="" coords="275,1153,471,1480"/>
+<area shape="rect" id="node6" href="$d0/d7d/a00786.html" title="{hh::behavior::Pool\l\&lt; ManagedMemory \&gt;\n||+ Pool()\l+ queue()\l+ begin()\l+ end()\l+ size()\l+ empty()\l+ capacity()\l+ push_back()\l+ pop_front()\l}" alt="" coords="603,727,749,936"/>
+<area shape="rect" id="node15" href="$d0/d7d/a00786.html" title="Pool that is used by the memory manager. " alt="" coords="503,455,630,664"/>
+<area shape="rect" id="node8" href="$d7/d88/a01294.html" title="{shared_ptr\&lt; ManagedMemory \&gt;\n||}" alt="" coords="885,145,1091,223"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="745,145,860,223"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="1115,145,1255,223"/>
+<area shape="rect" id="node11" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="810,307,867,385"/>
+<area shape="rect" id="node13" href="$d7/d8c/a01306.html" title="{condition_variable\n||}" alt="" coords="563,145,690,223"/>
+<area shape="rect" id="node18" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="45,1006,83,1083"/>
+<area shape="rect" id="node19" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="403,1006,450,1083"/>
+</map>

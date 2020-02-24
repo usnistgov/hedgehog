@@ -1,0 +1,3 @@
+<map id="hh::behavior::Node::canTerminate" name="hh::behavior::Node::canTerminate">
+<area shape="rect" id="node2" href="$d3/d50/a00882.html#ac66e33d0562f99861405c7ac4cb41ccc" title="Call user&#45;defined or default canTerminate and lock/unlock the mutex if lock is true. " alt="" coords="185,5,372,61"/>
+</map>

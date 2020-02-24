@@ -1,0 +1,4 @@
+<map id="hh::core::CoreGraph::addReceiver" name="hh::core::CoreGraph::addReceiver">
+<area shape="rect" id="node2" href="$df/d2a/a00874.html#a0afa14fe13fa7c0107c28c1c5bc11307" title="Duplicate input nodes, and do the connections for the source compatible type. " alt="" coords="237,5,386,47"/>
+<area shape="rect" id="node3" href="$d2/dab/a00886.html#a60834528176521e6a7444aafef1b2d90" title="Connect a CoreReceiver to all output of a graph. " alt="" coords="193,71,429,127"/>
+</map>

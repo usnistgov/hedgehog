@@ -1,0 +1,5 @@
+<map id="hh::core::CoreNode::coreClusterNode" name="hh::core::CoreNode::coreClusterNode">
+<area shape="rect" id="node2" href="$d4/d8f/a00742.html#a0a2c0de1b54ae7eb1c3baf758d401cc1" title="Print an edge between the switch and a graph&#39;s input node. " alt="" coords="189,5,356,47"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html#a191279c99cc0abb1a4197e980b4548a0" title="Copy inner structure from rhs nodes to this. " alt="" coords="203,71,343,112"/>
+<area shape="rect" id="node4" href="$d3/d50/a00882.html#ada06aafbeeece6c59743f3db624e55b6" title="Copy the inner structure from rhs to this CoreTask. " alt="" coords="404,63,591,119"/>
+</map>

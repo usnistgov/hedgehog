@@ -1,0 +1,4 @@
+<map id="hh::core::CoreGraph::addReceiverToSource" name="hh::core::CoreGraph::addReceiverToSource">
+<area shape="rect" id="node2" href="$d6/da7/a00822.html#a1895090c31df631ecb79d5c1655b1116" title="Interface to add a CoreSender to the receiver. " alt="" coords="265,5,422,47"/>
+<area shape="rect" id="node3" href="$d0/d11/a00842.html#aae20c9232a695a7b4525c9b12ea0ec66" title="Register a CoreReceiver from an input node. " alt="" coords="212,71,475,112"/>
+</map>

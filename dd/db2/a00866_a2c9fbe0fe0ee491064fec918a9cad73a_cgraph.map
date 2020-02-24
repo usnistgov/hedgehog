@@ -1,0 +1,5 @@
+<map id="hh::core::CoreQueueNotifier::addSlot" name="hh::core::CoreQueueNotifier::addSlot">
+<area shape="rect" id="node2" href="$d5/d69/a00878.html#a0e7bf1c195b9ef5d9d7b93ab4c6f8f94" title="Node name accessor. " alt="" coords="263,5,399,47"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="254,71,409,98"/>
+<area shape="rect" id="node4" href="$dd/db2/a00866.html#a28d7e6ba9fc220fa5ba43b903b2490d0" title="Connected slots accessor. " alt="" coords="239,123,424,164"/>
+</map>

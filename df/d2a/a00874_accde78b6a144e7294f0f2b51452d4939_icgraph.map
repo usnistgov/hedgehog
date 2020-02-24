@@ -1,0 +1,4 @@
+<map id="hh::core::CoreGraph::addReceiversToSource" name="hh::core::CoreGraph::addReceiversToSource">
+<area shape="rect" id="node2" href="$df/d2a/a00874.html#a71d4034241c7d2f84075b31bcfab2566" title="Set a node as input for the graph. " alt="" coords="220,5,360,47"/>
+<area shape="rect" id="node3" href="$df/d2a/a00874.html#a945edc232f6683332795f28720296a39" title="Get ids of input nodes (vector&lt;pair&lt;nodeId, nodeIdCluster&gt;&gt;) " alt="" coords="408,13,573,39"/>
+</map>

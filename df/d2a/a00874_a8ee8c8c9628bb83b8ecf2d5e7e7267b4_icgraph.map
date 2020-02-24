@@ -1,0 +1,5 @@
+<map id="hh::core::CoreGraph::addSourceNotifierInputCoreNode" name="hh::core::CoreGraph::addSourceNotifierInputCoreNode">
+<area shape="rect" id="node2" href="$df/d2a/a00874.html#accde78b6a144e7294f0f2b51452d4939" title="Add receivers to source and do the connection. " alt="" coords="276,5,443,47"/>
+<area shape="rect" id="node3" href="$df/d2a/a00874.html#a71d4034241c7d2f84075b31bcfab2566" title="Set a node as input for the graph. " alt="" coords="491,5,631,47"/>
+<area shape="rect" id="node4" href="$df/d2a/a00874.html#a945edc232f6683332795f28720296a39" title="Get ids of input nodes (vector&lt;pair&lt;nodeId, nodeIdCluster&gt;&gt;) " alt="" coords="679,13,844,39"/>
+</map>

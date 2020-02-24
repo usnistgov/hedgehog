@@ -1,0 +1,4 @@
+<map id="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;" name="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;">
+<area shape="rect" id="node2" href="$dc/d8f/a00718.html" title="{hh::AbstractMemoryManager\l\&lt; ManagedMemory \&gt;\n|# memoryManagerMutex_\l&#45; deviceId_\l&#45; initialized_\l&#45; pool_\l&#45; profiler_\l|+ AbstractMemoryManager()\l+ AbstractMemoryManager()\l+ ~AbstractMemoryManager()\l+ copy()\l+ deviceId()\l+ profiler()\l+ currentSize()\l+ getManagedMemory()\l+ recycleMemory()\l+ initialize()\l+ initializeMemoryManager()\l# deviceId()\l# pool()\l# capacity()\l# isInitialized()\l# memoryManagerMutex()\l# initialized()\l}" alt="" coords="5,453,201,839"/>
+<area shape="rect" id="node3" href="$dc/d8f/a00718.html" title="Abstract interface for Hedgehog&#39;s Memory manager. " alt="" coords="5,5,201,391"/>
+</map>

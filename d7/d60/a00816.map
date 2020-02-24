@@ -1,0 +1,9 @@
+<map id="hh::core::CoreMultiReceivers&lt; Inputs &gt;" name="hh::core::CoreMultiReceivers&lt; Inputs &gt;">
+<area shape="rect" id="node2" href="$da/d90/a00826.html" title="Slot interface, receive notification from CoreNotifier. " alt="" coords="353,1664,521,1844"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="420,263,661,1396"/>
+<area shape="rect" id="node13" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; Inputs \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="474,1868,631,2063"/>
+<area shape="rect" id="node14" href="$d6/da7/a00822.html" title="Receiver Interface, receive one data type from CoreSender. " alt="" coords="578,1445,735,1640"/>
+<area shape="rect" id="node5" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="204,27,261,105"/>
+<area shape="rect" id="node7" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="428,27,467,105"/>
+<area shape="rect" id="node9" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="676,27,723,105"/>
+</map>

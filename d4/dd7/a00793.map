@@ -1,0 +1,5 @@
+<map id="hh::behavior::SwitchRule&lt; GraphInput &gt;" name="hh::behavior::SwitchRule&lt; GraphInput &gt;">
+<area shape="rect" id="node2" href="$d5/d12/a00794.html" title="{hh::behavior::SwitchRule\l\&lt; GraphInputs \&gt;\n||+ sendToGraph()\l}" alt="" coords="48,160,216,252"/>
+<area shape="rect" id="node3" href="$d8/dcb/a00706.html" title="{hh::AbstractExecutionPipeline\l\&lt; GraphOutput, GraphInputs... \&gt;\n|&#45; graph_\l&#45; coreExecutionPipeline_\l|+ AbstractExecutionPipeline()\l+ AbstractExecutionPipeline()\l+ AbstractExecutionPipeline()\l+ AbstractExecutionPipeline()\l+ ~AbstractExecutionPipeline()\l+ core()\l+ graph()\l}" alt="" coords="5,559,216,753"/>
+<area shape="rect" id="node4" href="$d8/dcb/a00706.html" title="Node interface made for duplicating a graph, for example in the case of multi&#45;GPU computation..." alt="" coords="127,301,329,496"/>
+</map>
