@@ -176,7 +176,7 @@ class AbstractExecutionPipeline
         ) {}
 
   /// @brief  Default destructor
-  ~AbstractExecutionPipeline() = default;
+  virtual ~AbstractExecutionPipeline() = default;
 
   /// @brief Execution Pipeline accessor core
   /// @return Execution Pipeline's core

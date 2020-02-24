@@ -39,10 +39,10 @@ if (NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -pedantic -pthread")
 endif (NOT MSVC)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
     set(CMAKE_COMPILER_IS_CLANGXX 1)
     set(use-libclang ON)
-endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 
 if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
@@ -57,17 +57,14 @@ if (CMAKE_COMPILER_IS_CLANGXX)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
 
-    if (APPLE)
-        link_libraries(c++fs)
-    else (APPLE)
+    if (NOT APPLE)
         link_libraries(stdc++fs)
-    endif (APPLE)
+    endif (NOT APPLE)
 elseif (NOT MSVC)
     link_libraries(stdc++fs)
 endif (CMAKE_COMPILER_IS_CLANGXX)
 
 set(TEST_SRC
-        ${HEDGEHOG_TESTS_SRC}
         testAll.cc
         tests/test_memory_manager.h
         tests/test_small_graph.h
@@ -130,6 +127,5 @@ endif ()
 
 target_include_directories(runAllTests PUBLIC ${GTEST_INCLUDE_DIRS})
 target_link_libraries(runAllTests ${GTEST_LIBRARY})
-
 
 add_dependencies(runAllTests googletest)

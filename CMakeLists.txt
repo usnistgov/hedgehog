@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(hedgehog VERSION 1.0.2 LANGUAGES CXX)
+project(hedgehog VERSION 1.0.3 LANGUAGES CXX)
 
 include(ExternalProject)
 
@@ -37,7 +37,7 @@ install(DIRECTORY hedgehog
 # Set targets
 option(LOG "Activate logging with GLOG" OFF)
 option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
-option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Fast Image core and api" ON)
+option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" ON)
 option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
@@ -69,7 +69,12 @@ endif (LOG)
 if (RUN_GTEST)
     ExternalProject_Add(googletest
             GIT_REPOSITORY "https://github.com/google/googletest.git"
-            CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps -DINSTALL_GMOCK:BOOL=OFF -DINSTALL_GTEST:BOOL=OFF -DBUILD_GMOCK:BOOL=OFF -DBUILD_GTEST:BOOL=OFF"
+            CMAKE_ARGS
+                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                -DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps
+                -DINSTALL_GTEST:BOOL=OFF
+                -DBUILD_GMOCK:BOOL=OFF
             UPDATE_COMMAND ""
             INSTALL_COMMAND ""
             )
@@ -78,7 +83,9 @@ if (RUN_GTEST)
     ExternalProject_Get_Property(googletest binary_dir)
 
     set(GTEST_INCLUDE_DIRS ${source_dir}/googletest/include)
-    set(GTEST_LIBRARY ${binary_dir}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+    set(GTEST_LIBRARY_PATH ${binary_dir}/lib/)
+    set(GTEST_LIBRARY gtest)
+
     message(STATUS "Binrary dir for gtest = ${binary_dir}")
 
     # Prevent GoogleTest from overriding our compiler/linker options
@@ -117,10 +124,10 @@ if (BUILD_MAIN)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
     endif (NOT MSVC)
 
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
         set(CMAKE_COMPILER_IS_CLANGXX 1)
         set(use-libclang ON)
-    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 
     if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
@@ -135,11 +142,9 @@ if (BUILD_MAIN)
 
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
 
-        if (APPLE)
-            link_libraries(c++fs)
-        else (APPLE)
+        if (NOT APPLE)
             link_libraries(stdc++fs)
-        endif (APPLE)
+        endif (NOT APPLE)
     elseif (NOT MSVC)
         link_libraries(stdc++fs)
     endif (CMAKE_COMPILER_IS_CLANGXX)

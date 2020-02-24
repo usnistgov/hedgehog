@@ -1,4 +1,4 @@
-# Hedgehog (hh) : A library to generate heterogeneous pipeline workflow systems
+# Hedgehog (hh) : A library to generate heterogeneous dataflow graphs
 
 The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors. This library represents the successor of the Hybrid Task Graph Scheduler ([HTGS](https://github.com/usnistgov/HTGS)).
 
