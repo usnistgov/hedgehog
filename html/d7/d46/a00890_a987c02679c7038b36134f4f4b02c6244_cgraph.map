@@ -1,0 +1,5 @@
+<map id="hh::core::CoreSwitch::removeSlot" name="hh::core::CoreSwitch::removeSlot">
+<area shape="rect" id="node2" href="$dd/db2/a00866.html#ab8825c9e52a2dca2ce485a57ee18ef82" title="Remove a slot from the set of connected slots. " alt="" coords="199,35,384,76"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html#a0e7bf1c195b9ef5d9d7b93ab4c6f8f94" title="Node name accessor. " alt="" coords="441,5,577,47"/>
+<area shape="rect" id="node4" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="432,71,587,98"/>
+</map>

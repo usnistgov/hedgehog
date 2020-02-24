@@ -1,0 +1,8 @@
+<map id="hh::core::CoreQueueSlot::notifiers" name="hh::core::CoreQueueSlot::notifiers">
+<area shape="rect" id="node2" href="$dc/d41/a00862.html#af3dd960833e7ec16db75e074edf8c93b" title="Number of CoreNotifier linked accessor. " alt="" coords="220,37,387,79"/>
+<area shape="rect" id="node6" href="$dc/d41/a00862.html#a9180f6fb74f9cbb7bf6b04e62ab754f3" title="Add a notifier to set of CoreNotifier. " alt="" coords="220,103,387,144"/>
+<area shape="rect" id="node7" href="$dc/d41/a00862.html#a76a9c2a5c4153fa2299d9a9d4436c6e2" title="Remove a notifier from set of CoreNotifier. " alt="" coords="220,168,387,209"/>
+<area shape="rect" id="node3" href="$d9/d87/a00846.html#a0ef6c6d0a6a592c163a4ea26e82fa963" title="Wait for notification from the output nodes and return the state of the sink. " alt="" coords="435,5,601,47"/>
+<area shape="rect" id="node4" href="$dc/d41/a00862.html#a02d325011f6ac3023470d60382c1c0bf" title="Test if CoreNotifier are linked to this CoreQueueSlot. " alt="" coords="435,71,601,112"/>
+<area shape="rect" id="node5" href="$d2/dab/a00886.html#ab6f3c165745ea5aa8a006bc9396690ab" title="Can terminate for the ep, specialised to not call user&#39;s defined one. " alt="" coords="649,63,859,119"/>
+</map>

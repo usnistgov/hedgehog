@@ -1,0 +1,7 @@
+<map id="hh::core::CoreGraphSink::waitForNotification" name="hh::core::CoreGraphSink::waitForNotification">
+<area shape="rect" id="node2" href="$dc/d41/a00862.html#a291c61a08be904f2b43a77dd66f2b7f8" title="Mutex accessor. " alt="" coords="222,5,389,47"/>
+<area shape="rect" id="node3" href="$dc/d41/a00862.html#a3a2fff98b86931ec99b561be324169d2" title="Condition variable accessor. " alt="" coords="222,71,389,112"/>
+<area shape="rect" id="node4" href="$d6/d2f/a00854.html#a544c2402b17e67e46c161900c7b87668" title="Test emptiness of all receivers. " alt="" coords="220,137,391,193"/>
+<area shape="rect" id="node5" href="$dc/d41/a00862.html#af3dd960833e7ec16db75e074edf8c93b" title="Number of CoreNotifier linked accessor. " alt="" coords="222,217,389,259"/>
+<area shape="rect" id="node6" href="$dc/d41/a00862.html#a698943a7750f0e320b4c7a1500442945" title="Protected accessor to the set of notifiers connected to the CoreQueueSlot. " alt="" coords="439,217,605,259"/>
+</map>

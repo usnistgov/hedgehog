@@ -1,0 +1,29 @@
+<map id="hh::core::CoreNode::id" name="hh::core::CoreNode::id">
+<area shape="rect" id="node2" href="$d4/d8f/a00742.html#afb34c55dce3662bbaff9f3910049235e" title="Print the execution pipeline header. " alt="" coords="242,5,437,47"/>
+<area shape="rect" id="node3" href="$d4/d8f/a00742.html#a0a2c0de1b54ae7eb1c3baf758d401cc1" title="Print an edge between the switch and a graph&#39;s input node. " alt="" coords="256,71,423,112"/>
+<area shape="rect" id="node4" href="$d4/d8f/a00742.html#aa837a1fb4ae94914f8c767cb37d75bd7" title="Extract and create node information. " alt="" coords="227,137,452,163"/>
+<area shape="rect" id="node5" href="$d0/d11/a00842.html#aae20c9232a695a7b4525c9b12ea0ec66" title="Register a CoreReceiver from an input node. " alt="" coords="208,188,471,229"/>
+<area shape="rect" id="node6" href="$d6/d2f/a00854.html#a48ec4585005173a8ed28ecb8df6f587d" title="Copy the inner structure of all receivers and the slot from rhs to this. " alt="" coords="551,298,722,354"/>
+<area shape="rect" id="node7" href="$d0/d66/a00858.html#ae5d7be8c0360745cb68c9152b5142de2" title="Copy the CoreQueueReceiver inner structure (queue and senders list) from rhs to this. " alt="" coords="224,305,455,347"/>
+<area shape="rect" id="node8" href="$dc/d41/a00862.html#a98ade0e472105c1c7a1d91861fe67743" title="Copy the inner structure of the receiver (mutex, condition variable and set of notifiers) ..." alt="" coords="256,371,423,412"/>
+<area shape="rect" id="node9" href="$dd/db2/a00866.html#a2c9fbe0fe0ee491064fec918a9cad73a" title="Add a slot to the set of connected slots. " alt="" coords="247,436,432,477"/>
+<area shape="rect" id="node11" href="$dd/db2/a00866.html#ab8825c9e52a2dca2ce485a57ee18ef82" title="Remove a slot from the set of connected slots. " alt="" coords="247,501,432,543"/>
+<area shape="rect" id="node13" href="$dd/db2/a00866.html#a83afb292207060948fca14f10a313013" title="Copy the inner structure of the notifier (set of slots and connections) " alt="" coords="247,567,432,608"/>
+<area shape="rect" id="node14" href="$da/d98/a00870.html#a431229143415a6069ed4e10019186a80" title="Copy the inner structure of a CoreQueueSender (destinations, and notifier) " alt="" coords="521,596,753,637"/>
+<area shape="rect" id="node15" href="$da/d98/a00870.html#a32c9800f4d9825ab2c1b195afac8e79a" title="Add a receiver to the set of receivers. " alt="" coords="242,684,437,725"/>
+<area shape="rect" id="node16" href="$da/d98/a00870.html#ade259cf9a73bd97553465e85b38e8fad" title="Remove a receiver from the set of receivers. " alt="" coords="231,749,448,791"/>
+<area shape="rect" id="node17" href="$da/d98/a00870.html#afe99d87d8e051eedd20a42676b4c26d3" title="Duplicate all the edges from this to it&#39;s copy duplicateNode. " alt="" coords="237,815,441,856"/>
+<area shape="rect" id="node18" href="$df/d2a/a00874.html#a1fcada50193752b42cf7f238e96369c0" title="Add a receiver to the graph, i.e, add a receiver to all output nodes. " alt="" coords="269,880,409,921"/>
+<area shape="rect" id="node21" href="$df/d2a/a00874.html#ad54c10e50d7988c8d8212493e4b2cdae" title="Remove a receiver from the graph, i.e, remove a receiver from all output nodes. " alt="" coords="269,945,409,987"/>
+<area shape="rect" id="node22" href="$df/d2a/a00874.html#a4c6b6af7dab1aebfdcc963d842c66715" title="Add a slot to a graph, i.e, to all output nodes. " alt="" coords="269,1011,409,1052"/>
+<area shape="rect" id="node23" href="$df/d2a/a00874.html#a1f3c00445e57af5e2a98b05d73786741" title="Remove a slot from a graph, i.e, from all output nodes. " alt="" coords="269,1076,409,1117"/>
+<area shape="rect" id="node24" href="$df/d2a/a00874.html#a8bfd00b15c4e6ea698b9bcf8e7cd9cc5" title="Add a notifier to the graph, ie, to all input nodes. " alt="" coords="269,1141,409,1183"/>
+<area shape="rect" id="node25" href="$df/d2a/a00874.html#ac7196ebd30c79eddc46080c6831dc8be" title="Remove a notifier from the graph, ie, from all input nodes. " alt="" coords="269,1207,409,1248"/>
+<area shape="rect" id="node26" href="$d5/d69/a00878.html#ab9ecb928dcccab2f748c392efc322527" title="Remove a node from the registered inside nodes. " alt="" coords="270,1272,409,1313"/>
+<area shape="rect" id="node28" href="$d3/d50/a00882.html#ada06aafbeeece6c59743f3db624e55b6" title="Copy the inner structure from rhs to this CoreTask. " alt="" coords="246,1338,433,1394"/>
+<area shape="rect" id="node10" href="$d7/d46/a00890.html#a892c7beaaa5c24c3a6ad6c8c7f8c8610" title="Add a slot for every input types. " alt="" coords="564,436,709,477"/>
+<area shape="rect" id="node12" href="$d7/d46/a00890.html#a987c02679c7038b36134f4f4b02c6244" title="Remove a slot from every input types. " alt="" coords="564,501,709,543"/>
+<area shape="rect" id="node19" href="$df/d2a/a00874.html#a0afa14fe13fa7c0107c28c1c5bc11307" title="Duplicate input nodes, and do the connections for the source compatible type. " alt="" coords="562,844,711,885"/>
+<area shape="rect" id="node20" href="$d2/dab/a00886.html#a60834528176521e6a7444aafef1b2d90" title="Connect a CoreReceiver to all output of a graph. " alt="" coords="519,910,755,966"/>
+<area shape="rect" id="node27" href="$df/d2a/a00874.html#a100bfb46e5fb3a5079411480042a8042" title="Set the graph as inside, in case of connection to another node. " alt="" coords="567,1272,707,1313"/>
+</map>

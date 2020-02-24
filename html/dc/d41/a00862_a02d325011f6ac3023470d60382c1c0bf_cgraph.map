@@ -1,0 +1,4 @@
+<map id="hh::core::CoreQueueSlot::hasNotifierConnected" name="hh::core::CoreQueueSlot::hasNotifierConnected">
+<area shape="rect" id="node2" href="$dc/d41/a00862.html#af3dd960833e7ec16db75e074edf8c93b" title="Number of CoreNotifier linked accessor. " alt="" coords="220,5,387,47"/>
+<area shape="rect" id="node3" href="$dc/d41/a00862.html#a698943a7750f0e320b4c7a1500442945" title="Protected accessor to the set of notifiers connected to the CoreQueueSlot. " alt="" coords="435,5,601,47"/>
+</map>

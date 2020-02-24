@@ -1,0 +1,10 @@
+<map id="hh::core::CoreGraphReceiver&lt; GraphInput &gt;" name="hh::core::CoreGraphReceiver&lt; GraphInput &gt;">
+<area shape="rect" id="node2" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; GraphInput \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="486,1703,643,1897"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="420,263,661,1396"/>
+<area shape="rect" id="node13" href="$d6/da7/a00822.html" title="Receiver Interface, receive one data type from CoreSender. " alt="" coords="562,1445,719,1640"/>
+<area shape="rect" id="node5" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="204,27,261,105"/>
+<area shape="rect" id="node7" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="428,27,467,105"/>
+<area shape="rect" id="node9" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="676,27,723,105"/>
+<area shape="rect" id="node16" title="STL class. " alt="" coords="302,1761,401,1839"/>
+<area shape="rect" id="node18" title="STL class. " alt="" coords="175,1982,315,2059"/>
+</map>

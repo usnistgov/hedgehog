@@ -1,0 +1,9 @@
+<map id="hh::core::CoreNode::copyInnerStructure" name="hh::core::CoreNode::copyInnerStructure">
+<area shape="rect" id="node2" href="$d5/d69/a00878.html#a48505bb8d0f786f8dbe1845dbaa807b9" title="Node inside property accessor. " alt="" coords="197,5,333,47"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html#aaf6773dc3db7b675e53787a582492ba3" title="Belonging node accessor. " alt="" coords="197,71,333,112"/>
+<area shape="rect" id="node4" href="$d5/d69/a00878.html#adff9727bd662f2c358dc0b3229c07d6f" title="Node registration property accessor. " alt="" coords="193,136,337,177"/>
+<area shape="rect" id="node5" href="$d5/d69/a00878.html#a820e38cb1c4453488b45866b488f5ab7" title="In cluster property accessor. " alt="" coords="197,201,333,243"/>
+<area shape="rect" id="node6" href="$d5/d69/a00878.html#ad31da246eff409274368185ec715bcb2" title="Is related to CUDA, used to have a green background on the dot file. " alt="" coords="197,267,333,308"/>
+<area shape="rect" id="node7" href="$d5/d69/a00878.html#a18937de7b8f414b70dcdfb7d2f683422" title="Number of threads associated accessor. " alt="" coords="197,332,333,373"/>
+<area shape="rect" id="node8" href="$d5/d69/a00878.html#a7dbb304ad7f405c9ea257ba9779b63be" title="Main cluster core node link to this node accessor. " alt="" coords="197,397,333,439"/>
+</map>

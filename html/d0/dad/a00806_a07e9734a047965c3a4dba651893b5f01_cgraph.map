@@ -1,0 +1,5 @@
+<map id="hh::core::CoreDefaultExecutionPipeline::removeSwitchReceiver" name="hh::core::CoreDefaultExecutionPipeline::removeSwitchReceiver">
+<area shape="rect" id="node2" href="$d0/d11/a00842.html#a4bd529533bd94657d62fdd22a346b37e" title="Get a set of CoreReceiver built from the input nodes. " alt="" coords="279,5,471,47"/>
+<area shape="rect" id="node3" href="$da/d98/a00870.html#ade259cf9a73bd97553465e85b38e8fad" title="Remove a receiver from the set of receivers. " alt="" coords="264,71,487,112"/>
+<area shape="rect" id="node4" href="$d0/d11/a00842.html#ae0391ba7a474a083e8064bced7bd8330" title="Remove a CoreSender from the graph. " alt="" coords="279,136,471,177"/>
+</map>
