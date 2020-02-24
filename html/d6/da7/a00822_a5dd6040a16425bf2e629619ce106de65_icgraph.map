@@ -1,0 +1,7 @@
+<map id="hh::core::CoreReceiver::receivers" name="hh::core::CoreReceiver::receivers">
+<area shape="rect" id="node2" href="$d6/da7/a00822.html#a2b1e7cc77e934fe6c4595b949462b072" title="Interface to get the number of element to be treated by this node for this type, by default return 0..." alt="" coords="241,5,416,47"/>
+<area shape="rect" id="node3" href="$da/d98/a00870.html#a32c9800f4d9825ab2c1b195afac8e79a" title="Add a receiver to the set of receivers. " alt="" coords="231,71,426,112"/>
+<area shape="rect" id="node4" href="$da/d98/a00870.html#ade259cf9a73bd97553465e85b38e8fad" title="Remove a receiver from the set of receivers. " alt="" coords="220,136,437,177"/>
+<area shape="rect" id="node5" href="$d2/dab/a00886.html#a304637b737bf9ed74e8c5e1a6f95dcb6" title="Add a receiver to the execution pipeline, to all inside graphs. " alt="" coords="224,202,433,258"/>
+<area shape="rect" id="node6" href="$d2/dab/a00886.html#a60834528176521e6a7444aafef1b2d90" title="Connect a CoreReceiver to all output of a graph. " alt="" coords="211,282,447,338"/>
+</map>

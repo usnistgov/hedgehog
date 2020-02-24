@@ -1,0 +1,6 @@
+<map id="hh::AbstractMemoryManager::pool" name="hh::AbstractMemoryManager::pool">
+<area shape="rect" id="node2" href="$dc/d8f/a00718.html#a36b2280c65baef582fb61fba0cd3983c" title="Return the current size of the inside pool. " alt="" coords="270,5,490,47"/>
+<area shape="rect" id="node3" href="$dc/d8f/a00718.html#af1b188dde9a4c0ebb700d39c37930d04" title="Get an available managed memory, block if none are available. " alt="" coords="244,71,516,112"/>
+<area shape="rect" id="node4" href="$dc/d8f/a00718.html#a189c89bb82b48aef4e496465747ecf08" title="Initialize the memory manager. " alt="" coords="279,136,481,177"/>
+<area shape="rect" id="node5" href="$dc/d8f/a00718.html#a279c4030e484aff4c26be7188c7a085d" title="Capacity accessor. " alt="" coords="279,201,481,243"/>
+</map>

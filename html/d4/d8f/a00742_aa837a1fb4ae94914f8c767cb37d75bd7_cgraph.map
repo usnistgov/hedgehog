@@ -1,0 +1,7 @@
+<map id="hh::DotPrinter::getNodeInformation" name="hh::DotPrinter::getNodeInformation">
+<area shape="rect" id="node2" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="279,5,433,32"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html#a0e7bf1c195b9ef5d9d7b93ab4c6f8f94" title="Node name accessor. " alt="" coords="288,57,424,98"/>
+<area shape="rect" id="node4" href="$d5/d69/a00878.html#a8aae19a78bdca08f73e2665c9c672724" title="Thread id accessor. " alt="" coords="288,122,424,163"/>
+<area shape="rect" id="node5" href="$d5/d69/a00878.html#a6b6cd674d7171a5d0634dae64804bb92" title="Graph id accessor. " alt="" coords="288,187,424,229"/>
+<area shape="rect" id="node6" href="$d5/d69/a00878.html#aa4025920ec6554c1b112d5e513b2d1b4" title="Node type accessor. " alt="" coords="288,253,424,294"/>
+</map>

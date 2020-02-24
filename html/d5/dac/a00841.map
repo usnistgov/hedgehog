@@ -1,0 +1,9 @@
+<map id="hh::core::CoreGraphReceiver&lt; GraphInput &gt;" name="hh::core::CoreGraphReceiver&lt; GraphInput &gt;">
+<area shape="rect" id="node5" href="$d0/d11/a00842.html" title="{hh::core::CoreGraphReceiver\l\&lt; GraphInputs \&gt;\n|&#45; graphReceiverInputs_\l|+ CoreGraphReceiver()\l+ ~CoreGraphReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ addGraphReceiverInput()\l+ receiverEmpty()\l+ receivers()\l+ node()\l}" alt="" coords="35,2211,227,2420"/>
+<area shape="rect" id="node2" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; GraphInput \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="53,1695,210,1889"/>
+<area shape="rect" id="node3" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="5,5,247,1388"/>
+<area shape="rect" id="node4" href="$d6/da7/a00822.html" title="Receiver Interface, receive one data type from CoreSender. " alt="" coords="147,1437,305,1632"/>
+<area shape="rect" id="node6" href="$d2/dc7/a00838.html" title="{hh::core::CoreGraphMulti\lReceivers\&lt; GraphInputs... \&gt;\n||+ CoreGraphMultiReceivers()\l+ ~CoreGraphMultiReceivers()\l+ receiversEmpty()\l+ node()\l}" alt="" coords="37,2668,237,2804"/>
+<area shape="rect" id="node8" href="$d2/dc7/a00838.html" title="Graph multi receiver. " alt="" coords="153,2469,353,2605"/>
+<area shape="rect" id="node7" href="$df/d2a/a00874.html" title="Core associated to the Graph. " alt="" coords="21,2853,252,3811"/>
+</map>

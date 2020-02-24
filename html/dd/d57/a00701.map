@@ -1,0 +1,11 @@
+<map id="hh::AbstractCUDATask&lt; TaskOutput, TaskInputs &gt;" name="hh::AbstractCUDATask&lt; TaskOutput, TaskInputs &gt;">
+<area shape="rect" id="node2" href="$d4/deb/a00710.html" title="{hh::AbstractTask\&lt; TaskOutput,\l TaskInputs... \&gt;\n|&#45; taskCore_\l&#45; mm_\l|+ AbstractTask()\l+ AbstractTask()\l+ AbstractTask()\l+ AbstractTask()\l+ AbstractTask()\l+ AbstractTask()\l+ ~AbstractTask()\l+ addResult()\l+ name()\l+ numberThreads()\l+ automaticStart()\l+ nodeType()\l+ deviceId()\l+ graphId()\l+ core()\l+ memoryManager()\l+ copy()\l+ initialize()\l+ shutdown()\l+ connectMemoryManager()\l+ getManagedMemory()\l+ canTerminate()\l}" alt="" coords="234,935,441,1349"/>
+<area shape="rect" id="node3" href="$d6/d17/a00778.html" title="{hh::behavior::MultiReceivers\l\&lt; TaskInputs... \&gt;\n||}" alt="" coords="146,316,334,408"/>
+<area shape="rect" id="node10" href="$d4/deb/a00710.html" title="Base node for computation. " alt="" coords="375,457,582,872"/>
+<area shape="rect" id="node4" href="$d3/daf/a00790.html" title="Node Behavior definition. " alt="" coords="234,5,414,112"/>
+<area shape="rect" id="node5" href="$d6/d17/a00778.html" title="MultiReceivers Behavior definition, node has a list of input types. " alt="" coords="43,161,231,253"/>
+<area shape="rect" id="node6" href="$da/d96/a00782.html" title="{hh::behavior::Sender\l\&lt; TaskOutput \&gt;\n||}" alt="" coords="358,316,501,408"/>
+<area shape="rect" id="node7" href="$da/d96/a00782.html" title="Sender Behavior definition, node has an output type. " alt="" coords="307,161,450,253"/>
+<area shape="rect" id="node8" href="$d3/dee/a00774.html" title="{hh::behavior::Execute\l\&lt; TaskInputs \&gt;\n||+ execute()\l}" alt="" coords="576,316,725,408"/>
+<area shape="rect" id="node9" href="$d3/dee/a00774.html" title="Execute Behavior definition, node that has an execution for an Input data type. " alt="" coords="576,161,725,253"/>
+</map>

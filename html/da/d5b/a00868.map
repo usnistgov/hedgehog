@@ -1,0 +1,10 @@
+<map id="hh::core::CoreQueueSender&lt; NodeOutput &gt;" name="hh::core::CoreQueueSender&lt; NodeOutput &gt;">
+<area shape="rect" id="node2" href="$d9/d02/a00834.html" title="{hh::core::CoreSender\l\&lt; NodeOutput \&gt;\n||+ CoreSender()\l+ ~CoreSender()\l+ addReceiver()\l+ removeReceiver()\l+ sendAndNotify()\l+ getSenders()\l+ duplicateEdge()\l}" alt="" coords="445,1901,591,2081"/>
+<area shape="rect" id="node3" href="$d9/daf/a00830.html" title="Core Notifier interface, emit notification to CoreSlot. " alt="" coords="463,1445,618,1596"/>
+<area shape="rect" id="node14" href="$d9/d02/a00834.html" title="Sender interface, send data to CoreReceiver. " alt="" coords="555,1659,702,1839"/>
+<area shape="rect" id="node15" href="$dd/db2/a00866.html" title="Notifier of CoreQueueSlot. " alt="" coords="295,1666,480,1831"/>
+<area shape="rect" id="node4" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="420,263,661,1396"/>
+<area shape="rect" id="node6" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="204,27,261,105"/>
+<area shape="rect" id="node8" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="428,27,467,105"/>
+<area shape="rect" id="node10" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="676,27,723,105"/>
+</map>

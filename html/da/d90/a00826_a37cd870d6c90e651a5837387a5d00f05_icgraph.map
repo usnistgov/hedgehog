@@ -1,0 +1,7 @@
+<map id="hh::core::CoreSlot::addNotifier" name="hh::core::CoreSlot::addNotifier">
+<area shape="rect" id="node2" href="$da/d90/a00826.html#a0d2d1d09706b4d28fef978e050d875cb" title="Core Slot destructor. " alt="" coords="229,5,357,47"/>
+<area shape="rect" id="node3" href="$df/d2a/a00874.html#a8ee8c8c9628bb83b8ecf2d5e7e7267b4" title="Add an input node to the source. " alt="" coords="181,71,404,112"/>
+<area shape="rect" id="node4" href="$df/d2a/a00874.html#accde78b6a144e7294f0f2b51452d4939" title="Add receivers to source and do the connection. " alt="" coords="452,71,619,112"/>
+<area shape="rect" id="node5" href="$df/d2a/a00874.html#a71d4034241c7d2f84075b31bcfab2566" title="Set a node as input for the graph. " alt="" coords="667,71,807,112"/>
+<area shape="rect" id="node6" href="$df/d2a/a00874.html#a945edc232f6683332795f28720296a39" title="Get ids of input nodes (vector&lt;pair&lt;nodeId, nodeIdCluster&gt;&gt;) " alt="" coords="855,78,1020,105"/>
+</map>

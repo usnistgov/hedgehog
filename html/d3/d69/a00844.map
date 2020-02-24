@@ -1,0 +1,20 @@
+<map id="hh::core::CoreGraphSink&lt; GraphOutput &gt;" name="hh::core::CoreGraphSink&lt; GraphOutput &gt;">
+<area shape="rect" id="node2" href="$d6/d2f/a00854.html" title="{hh::core::CoreQueueMulti\lReceivers\&lt; GraphOutput \&gt;\n||+ CoreQueueMultiReceivers()\l+ ~CoreQueueMultiReceivers()\l+ receiversEmpty()\l+ totalQueueSize()\l+ getSlots()\l+ queueSlot()\l+ copyInnerStructure()\l}" alt="" coords="573,2821,775,3001"/>
+<area shape="rect" id="node3" href="$d3/d60/a00818.html" title="{hh::core::CoreMultiReceivers\l\&lt; NodeInputs... \&gt;\n||+ CoreMultiReceivers()\l+ ~CoreMultiReceivers()\l+ receiversEmpty()\l+ totalQueueSize()\l+ removeForAllSenders()\l&#45; removeForAllSendersConditional()\l}" alt="" coords="260,2320,488,2485"/>
+<area shape="rect" id="node30" href="$d6/d2f/a00854.html" title="Multi receivers for nodes possessing a queue of data. " alt="" coords="642,2579,845,2759"/>
+<area shape="rect" id="node4" href="$da/d90/a00826.html" title="Slot interface, receive notification from CoreNotifier. " alt="" coords="153,1710,321,1890"/>
+<area shape="rect" id="node17" href="$d3/d60/a00818.html" title="Multi receiver interface, gather multiple CoreReceiver. " alt="" coords="57,2004,285,2169"/>
+<area shape="rect" id="node18" href="$dc/d41/a00862.html" title="Slot of CoreQueueMultiReceiver, receiving from CoreQueueNotifier. " alt="" coords="569,2276,745,2529"/>
+<area shape="rect" id="node5" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="592,263,833,1396"/>
+<area shape="rect" id="node15" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; Inputs \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="349,1703,506,1897"/>
+<area shape="rect" id="node16" href="$d6/da7/a00822.html" title="Receiver Interface, receive one data type from CoreSender. " alt="" coords="713,1445,870,1640"/>
+<area shape="rect" id="node23" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; NodeInputs \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="1225,1703,1382,1897"/>
+<area shape="rect" id="node27" href="$d6/da7/a00822.html" title="{hh::core::CoreReceiver\l\&lt; NodeInput \&gt;\n||+ CoreReceiver()\l+ ~CoreReceiver()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ queueSize()\l+ receivers()\l}" alt="" coords="606,1703,763,1897"/>
+<area shape="rect" id="node7" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="1391,27,1448,105"/>
+<area shape="rect" id="node22" href="$d0/d66/a00858.html" title="{hh::core::CoreQueueReceiver\l\&lt; NodeInputs \&gt;\n||+ CoreQueueReceiver()\l+ ~CoreQueueReceiver()\l+ queueSlot()\l+ queueSize()\l+ maxQueueSize()\l+ addSender()\l+ removeSender()\l+ receive()\l+ receiverEmpty()\l+ receivers()\l+ popFront()\l+ copyInnerStructure()\l}" alt="" coords="1279,2276,1474,2529"/>
+<area shape="rect" id="node26" href="$d0/d66/a00858.html" title="Receiver for nodes possessing a queue of data. " alt="" coords="1279,1960,1474,2213"/>
+<area shape="rect" id="node9" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="963,27,1001,105"/>
+<area shape="rect" id="node11" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="48,27,95,105"/>
+<area shape="rect" id="node24" href="$d1/dd8/a01022.html" title="{shared_ptr\&lt; std::set\l\&lt; hh::core::CoreSender\l\&lt; NodeInputs \&gt; * \&gt; \&gt;\n||}" alt="" coords="1600,2033,1759,2140"/>
+<area shape="rect" id="node25" href="$d3/d08/a01018.html" title="{shared_ptr\&lt; std::queue\l\&lt; std::shared_ptr\&lt; NodeInputs \&gt; \&gt; \&gt;\n||}" alt="" coords="1019,2041,1255,2133"/>
+</map>
