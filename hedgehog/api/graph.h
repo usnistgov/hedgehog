@@ -255,13 +255,15 @@ class Graph :
   /// , or nothing. Blue is faster, Red slower.
   /// @param structureOptions Show how the graph is represented, with or without input queue size, with or without all
   /// task clusters
+  /// @param suppressCout Suppresses the standard C output when marked as true, otherwise will report when dot files are
+  /// created or overwritten to standard out.
   /// @param debugOption Shows tasks as pointer values and their connections between the nodes.
   void createDotFile(std::filesystem::path const &dotFilePath,
                      ColorScheme colorScheme = ColorScheme::NONE,
                      StructureOptions structureOptions = StructureOptions::NONE,
-                     DebugOptions debugOption = DebugOptions::NONE) {
+                     DebugOptions debugOption = DebugOptions::NONE, bool suppressCout = false) {
     auto core = this->core().get();
-    DotPrinter printer(std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core);
+    DotPrinter printer(std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core, suppressCout);
     core->visit(&printer);
   }
 };
