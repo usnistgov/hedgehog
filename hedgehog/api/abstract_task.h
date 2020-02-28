@@ -150,7 +150,7 @@ class AbstractTask :
   }
 
   /// @brief Default destructor
-  ~AbstractTask() = default;
+  virtual ~AbstractTask() = default;
 
   /// @brief Add an output data
   /// @param output Data to send to the output nodes
@@ -176,14 +176,17 @@ class AbstractTask :
   /// @return Task's device ID
   int deviceId() { return this->taskCore_->deviceId(); }
 
+  /// @brief Task's graph ID accessor
+  /// @return Task's graph ID
+  int graphId() { return this->taskCore_->graphId(); }
+
   /// @brief Task's core accessor
   /// @return Task's core
   std::shared_ptr<core::CoreNode> core() final { return taskCore_; }
 
   /// @brief Task's memory manager accessor
   /// @return Task's memory manager
-  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &
-  memoryManager() const { return mm_; }
+  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const & memoryManager() const { return mm_; }
 
   /// @brief Default copy overload, fail if cluster need to be copied
   /// @return A copy of the current AbstractTask

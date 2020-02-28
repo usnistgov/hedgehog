@@ -249,7 +249,6 @@ class AbstractMemoryManager {
 
   /// @brief User-definable initialization step for a memory manager
   virtual void initializeMemoryManager() {}
-///   void ttl(size_t ttl) { ttl_ = ttl; }
  protected:
   /// @brief Inside pool accessor
   /// @return Inside pool

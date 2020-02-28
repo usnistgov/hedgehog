@@ -72,22 +72,6 @@ class GraphSignalHandler {
       graphInstance_->createDotFile("Exit-graph-output.dot");
   }
 
-  /// @brief Registers a task graph to be displayed when a signal is fired.
-  /// @param graph the task graph to be displayed.
-  static void registerGraph(Graph<GraphOutput, GraphInputs...> *graph) {
-    graphInstance_ = graph;
-  }
-
-  /// @brief Registers a signal for handling. (default SIGTERM)
-  /// @param signum Signal number id
-  /// @param atExit Boolean to test if GraphSignalHandler::atExit is called
-  static void registerSignal(int signum = SIGTERM, bool atExit = false) {
-    std::signal(signum, GraphSignalHandler<GraphOutput, GraphInputs ...>::handleSignal);
-    if (atExit) {
-      std::atexit(GraphSignalHandler<GraphOutput, GraphInputs ...>::atExit);
-    }
-  }
-
   /// @brief Sets the color scheme for dot file generation
   /// @param scheme the color scheme
   static void setColorScheme(ColorScheme scheme) {
@@ -106,6 +90,21 @@ class GraphSignalHandler {
     debugOptions = options;
   }
 
+  /// @brief Registers a task graph to be displayed when a signal is fired.
+  /// @param graph the task graph to be displayed.
+  static void registerGraph(Graph<GraphOutput, GraphInputs...> *graph) {
+    graphInstance_ = graph;
+  }
+
+  /// @brief Registers a signal for handling. (default SIGTERM)
+  /// @param signum Signal number id
+  /// @param atExit Boolean to test if GraphSignalHandler::atExit is called
+  static void registerSignal(int signum = SIGTERM, bool atExit = false) {
+    std::signal(signum, GraphSignalHandler<GraphOutput, GraphInputs ...>::handleSignal);
+    if (atExit) {
+      std::atexit(GraphSignalHandler<GraphOutput, GraphInputs ...>::atExit);
+    }
+  }
 };
 
 template<class GraphOutput, class ... GraphInputs>
@@ -115,6 +114,7 @@ bool GraphSignalHandler<GraphOutput, GraphInputs...>
 template<class GraphOutput, class ... GraphInputs>
 Graph<GraphOutput, GraphInputs...> *GraphSignalHandler<GraphOutput, GraphInputs...>
     ::graphInstance_ = nullptr; ///< Set default value at nullptr
+
 
 template<class GraphOutput, class ... GraphInputs>
 ColorScheme GraphSignalHandler<GraphOutput, GraphInputs...>
@@ -127,6 +127,7 @@ StructureOptions GraphSignalHandler<GraphOutput, GraphInputs...>
 template<class GraphOutput, class ... GraphInputs>
 DebugOptions GraphSignalHandler<GraphOutput, GraphInputs...>
     ::debugOptions = DebugOptions::DEBUG; ///< Sets the default debug options
+
 
 }
 #endif //HEDGEHOG_GRAPH_SIGNAL_HANDLER_H

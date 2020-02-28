@@ -41,7 +41,7 @@ void testSmallGraph() {
 
   g.waitForTermination();
 
-  ASSERT_EQ(count, 100);
+  ASSERT_EQ(count, (size_t)100);
 }
 
 #endif //HEDGEHOG_TESTS_TEST_SMALL_GRAPH_H

@@ -484,7 +484,7 @@ class DotPrinter : public AbstractPrinter {
         }
         // If extra information has been defined by the user, print it
         if (!node->extraPrintingInformation().empty()) {
-          ss << "\\nExtra Information: " << node->extraPrintingInformation();
+          ss << "\\n" << node->extraPrintingInformation();
         }
         ss << "\"";
         ss << ",shape=circle";

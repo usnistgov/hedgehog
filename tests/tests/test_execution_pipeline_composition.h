@@ -60,7 +60,7 @@ void testEPComposition() {
   while (graph->getBlockingResult()) { count++; }
   graph->waitForTermination();
 
-  ASSERT_EQ(count, 25600);
+  ASSERT_EQ(count, (size_t)25600);
 }
 
 #endif //HEDGEHOG_TESTS_TEST_EXECUTION_PIPELINE_COMPOSITION_H

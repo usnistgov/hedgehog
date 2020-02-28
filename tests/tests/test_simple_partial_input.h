@@ -53,7 +53,7 @@ void testPartialInputEP() {
 
   og->finishPushingData();
   while (og->getBlockingResult()) { ++count; }
-  ASSERT_EQ(count, 1200);
+  ASSERT_EQ(count, (size_t)1200);
   og->waitForTermination();
 }
 
@@ -79,7 +79,7 @@ void testSimplePartialInput() {
     while (g->getBlockingResult()) { ++count; }
     g->waitForTermination();
 
-    ASSERT_EQ(count, 100);
+    ASSERT_EQ(count, (size_t)100);
   }
 }
 
