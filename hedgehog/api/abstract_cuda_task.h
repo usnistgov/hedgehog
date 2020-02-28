@@ -117,6 +117,12 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
         enablePeerAccess_(enablePeerAccess) {
     this->core()->isCudaRelated(true);
   }
+  /// @brief Destructs the CUDA task. The CUDA context is set to the device the task is bound too to mimic initialization.
+  ~AbstractCUDATask() override {
+    if (this->memoryManager() != nullptr) {
+      checkCudaErrors(cudaSetDevice(this->memoryManager()->deviceId()));
+    }
+  }
 
   /// @brief Initialize an AbstractCUDATask to bound it to a CUDA device, and do the peer access if enabled.
   /// At the end will call AbstractCUDATask::initializeCuda.

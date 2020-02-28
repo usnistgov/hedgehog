@@ -28,6 +28,7 @@
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+link_directories(${GTEST_LIBRARY_PATH})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
 add_definitions(-D_GLIBCXX_ASSERTIONS)
