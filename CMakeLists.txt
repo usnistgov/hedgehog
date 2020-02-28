@@ -201,7 +201,7 @@ if (BUILD_MAIN)
             hedgehog/api/memory_manager/abstract_memory_manager.h
             hedgehog/api/memory_manager/memory_data.h
             hedgehog/behavior/memory_manager/pool.h
-            hedgehog/api/memory_manager/static_memory_manager.h)
+            hedgehog/api/memory_manager/static_memory_manager.h hedgehog/tools/cuda_debugging.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)

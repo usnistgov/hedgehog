@@ -26,7 +26,7 @@ void CudaLink2Example::execute(std::shared_ptr<float> ptr) {
 CudaLink2Example::CudaLink2Example() : AbstractCUDATask("CudaLink2Example", 2) {}
 
 void CudaLink2Example::initializeCuda() {
-  hh::checkCudaErrors(cudaSuccess);
+  checkCudaErrors(cudaSuccess);
   AbstractCUDATask::initializeCuda();
 }
 

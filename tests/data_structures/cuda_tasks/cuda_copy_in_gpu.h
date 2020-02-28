@@ -55,7 +55,7 @@ class CudaCopyInGpu : public hh::AbstractCUDATask<CudaMatrixBlockData<MatrixType
     block->ttl(blockTTL_);
 
     if (ptr->leadingDimension() == block->leadingDimension()) {
-      hh::checkCudaErrors(cudaMemcpyAsync(block->blockData(), ptr->blockData(),
+      checkCudaErrors(cudaMemcpyAsync(block->blockData(), ptr->blockData(),
                                           sizeof(MatrixType) * block->blockSizeHeight() * block->blockSizeWidth(),
                                           cudaMemcpyHostToDevice, this->stream()));
     } else {
@@ -66,7 +66,7 @@ class CudaCopyInGpu : public hh::AbstractCUDATask<CudaMatrixBlockData<MatrixType
           (int) matrixLeadingDimension_, block->blockData(), (int) block->leadingDimension(), this->stream());
     }
 
-    hh::checkCudaErrors(cudaStreamSynchronize(this->stream()));
+    checkCudaErrors(cudaStreamSynchronize(this->stream()));
     this->addResult(block);
   }
 
