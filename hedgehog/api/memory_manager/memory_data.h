@@ -57,6 +57,10 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>
   /// @brief Default destructor
   virtual ~MemoryData() = default;
 
+  /// @brief Test is a memory manager has been connected to the managed memory
+  /// @return True if a memory manager has been connected, else False
+  bool isMemoryManagerConnected(){ return memoryManager_ != nullptr; }
+
   /// @brief Memory manager accessor
   /// @return Memory manager
   [[nodiscard]] AbstractMemoryManager <ManagedMemory> *memoryManager() const { return memoryManager_; }
@@ -66,7 +70,14 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>
   void memoryManager(AbstractMemoryManager <ManagedMemory> *memoryManager) { memoryManager_ = memoryManager; }
 
   /// @brief Return the data to the memory manager
-  void returnToMemoryManager() { this->memoryManager_->recycleMemory(this->shared_from_this()); }
+  void returnToMemoryManager() {
+    if(memoryManager_){
+      this->memoryManager_->recycleMemory(this->shared_from_this());
+    }else{
+      throw(
+          std::runtime_error("The data you are trying to return to a memory manager is not linked to a memory manager."));
+    }
+  }
 
   /// @brief Mechanism to update the state of the data
   virtual void used() {};
