@@ -22,45 +22,15 @@
 
 #ifndef HEDGEHOG_ABSTRACT_CUDA_TASK_H
 #define HEDGEHOG_ABSTRACT_CUDA_TASK_H
-//#ifdef HH_USE_CUDA
+#ifdef HH_USE_CUDA
 #include <unordered_set>
 #include <cublas.h>
 #include <cuda_runtime.h>
 #include "abstract_task.h"
+#include "../tools/cuda_debugging.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
-#ifndef checkCudaErrors
-/// @brief Inline helper function for all of the SDK helper functions, to catch and show CUDA Error, in case of error,
-/// the device is reset (cudaDeviceReset) and the program exit
-/// @param err Error to manage
-/// @param file File generating the error
-/// @param line File's line generating the error
-inline void __checkCudaErrors(cudaError_t err, const char *file, const int line) {
-  if (cudaSuccess != err) {
-    std::cerr << "checkCudaErrors() Cuda error = "
-              << err
-              << "\"" << cudaGetErrorString(err) << " \" from "
-              << file << ":" << line << std::endl;
-    exit(43);
-  }
-}
-
-/// @brief Inline helper function for all of the SDK helper functions, to catch and show CUDA Status, in case of error,
-/// the device is reset (cudaDeviceReset) and the program exit
-/// @param status Status to manage
-/// @param file File generating the error
-/// @param line File's line generating the error
-inline void __checkCudaErrors(cublasStatus_t status, const char *file, const int line) {
-  if (CUBLAS_STATUS_SUCCESS != status) {
-    std::cerr << "checkCudaErrors() Status Error = "
-              << status << " from "
-              << file << ":" << line << std::endl;
-    exit(44);
-  }
-}
-#define checkCudaErrors(err) __checkCudaErrors(err, __FILE__, __LINE__)
-#endif
 
 /// @brief Abstract Task specialized for CUDA computation.
 /// @details At initialization, the device is set to the task (cudaSetDevice), and a stream is created and bound to the
@@ -116,6 +86,12 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
       : AbstractTask<TaskOutput, TaskInputs...>(name, numberThreads, automaticStart),
         enablePeerAccess_(enablePeerAccess) {
     this->core()->isCudaRelated(true);
+  }
+  /// @brief Destructs the CUDA task. The CUDA context is set to the device the task is bound too to mimic initialization.
+  ~AbstractCUDATask() override {
+    if (this->memoryManager() != nullptr) {
+      checkCudaErrors(cudaSetDevice(this->memoryManager()->deviceId()));
+    }
   }
 
   /// @brief Initialize an AbstractCUDATask to bound it to a CUDA device, and do the peer access if enabled.
@@ -179,6 +155,6 @@ class AbstractCUDATask : public AbstractTask<TaskOutput, TaskInputs...> {
 };
 }
 
-//#endif //HH_USE_CUDA
+#endif //HH_USE_CUDA
 
 #endif //HEDGEHOG_ABSTRACT_CUDA_TASK_H

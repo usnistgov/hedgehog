@@ -40,7 +40,7 @@ class CudaMatrixBlockData : public MatrixBlockData<Type, Id, Order::Column>,
   CudaMatrixBlockData() = default;
 
   explicit CudaMatrixBlockData(size_t blockSize) {
-    hh::checkCudaErrors(cudaMalloc((void **) this->adressBlockData(), sizeof(Type) * blockSize * blockSize));
+    checkCudaErrors(cudaMalloc((void **) this->adressBlockData(), sizeof(Type) * blockSize * blockSize));
   }
 
   CudaMatrixBlockData(
@@ -74,7 +74,7 @@ class CudaMatrixBlockData : public MatrixBlockData<Type, Id, Order::Column>,
     this->blockData_ = o->getBlockData();
   }
 
-  virtual ~CudaMatrixBlockData() { hh::checkCudaErrors(cudaFree(this->blockData())); }
+  virtual ~CudaMatrixBlockData() { checkCudaErrors(cudaFree(this->blockData())); }
 
   Type **adressBlockData() { return &this->blockData_; }
 
@@ -95,10 +95,10 @@ class CudaMatrixBlockData : public MatrixBlockData<Type, Id, Order::Column>,
     res->leadingDimension(this->leadingDimension());
     res->blockData(new Type[res->blockSizeWidth() * res->blockSizeHeight()]());
     res->fullMatrixData(res->blockData());
-    hh::checkCudaErrors(
+    checkCudaErrors(
         cudaMemcpyAsync(res->blockData(), this->blockData(),
                         res->blockSizeHeight() * res->blockSizeWidth() * sizeof(Type), cudaMemcpyDeviceToHost, stream));
-    hh::checkCudaErrors(cudaStreamSynchronize(stream));
+    checkCudaErrors(cudaStreamSynchronize(stream));
     return res;
   }
 

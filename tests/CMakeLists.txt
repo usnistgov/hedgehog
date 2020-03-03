@@ -28,6 +28,7 @@
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+link_directories(${GTEST_LIBRARY_PATH})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 
 add_definitions(-D_GLIBCXX_ASSERTIONS)
@@ -116,11 +117,19 @@ set(TEST_SRC
         data_structures/cuda_tasks/cuda_link2_example.h)
 
 if (CUDA_FOUND)
+    find_package(NVTX QUIET)
     cuda_add_executable(runAllTests ${TEST_SRC})
     target_compile_definitions(runAllTests PUBLIC -DHH_USE_CUDA)
     target_link_libraries(runAllTests ${CUDA_LIBRARIES})
     target_include_directories(runAllTests PUBLIC ${CUDA_INCLUDE_DIR} cuda)
     CUDA_ADD_CUBLAS_TO_TARGET(runAllTests)
+
+    if (NVTX_FOUND)
+        target_include_directories(runAllTests PUBLIC ${NVTX_INCLUDE_DIR})
+        target_link_libraries(runAllTests ${NVTX_LIBRARIES})
+        target_compile_definitions(runAllTests PUBLIC -DHH_USE_NVTX)
+    endif()
+
 else (CUDA_FOUND)
     add_executable(runAllTests ${TEST_SRC})
 endif ()

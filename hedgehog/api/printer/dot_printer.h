@@ -81,21 +81,25 @@ class DotPrinter : public AbstractPrinter {
   /// @param structureOptions Structure option chosen
   /// @param debugOptions Debug option chosen
   /// @param graph Graph to visit and create dot file
+  /// @param suppressCout Suppresses the standard C output when marked as true, otherwise will report when dot files are
+  /// created or overwritten to standard out.
   explicit DotPrinter(std::filesystem::path const &dotFilePath,
                       ColorScheme colorScheme, StructureOptions structureOptions, DebugOptions debugOptions,
-                      core::CoreNode *graph)
+                      core::CoreNode *graph, bool suppressCout = false)
       : AbstractPrinter(), edges_({}),
         colorScheme_(colorScheme), structureOptions_(structureOptions), debugOptions_(debugOptions) {
     assert(graph != nullptr);
     auto directoryPath = dotFilePath.parent_path();
     if (dotFilePath.has_filename()) {
       if (std::filesystem::exists(directoryPath)) {
-        if (std::filesystem::exists(dotFilePath)) {
-          std::cout
-              << "The file " << dotFilePath.filename() << " will be overwritten." << std::endl;
-        } else {
-          std::cout
-              << "The file " << dotFilePath.filename() << " will be created." << std::endl;
+        if (!suppressCout) {
+          if (std::filesystem::exists(dotFilePath)) {
+            std::cout
+                << "The file " << dotFilePath.filename() << " will be overwritten." << std::endl;
+          } else {
+            std::cout
+                << "The file " << dotFilePath.filename() << " will be created." << std::endl;
+          }
         }
         outputFile_ = std::ofstream(dotFilePath);
 

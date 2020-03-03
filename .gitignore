@@ -17,5 +17,4 @@ auto
 *.mtc
 *.mtc0
 /**/version.h
-/**/html/
 /**/cmake-build-*/

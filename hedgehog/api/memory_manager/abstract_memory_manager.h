@@ -247,6 +247,10 @@ class AbstractMemoryManager {
     }
   };
 
+  /// @brief Device Id accessor
+  /// @return Device id
+  [[nodiscard]] int deviceId() const { return deviceId_; }
+
   /// @brief User-definable initialization step for a memory manager
   virtual void initializeMemoryManager() {}
  protected:
@@ -268,10 +272,6 @@ class AbstractMemoryManager {
 
   /// @brief Flag the memory manager has initialized
   void initialized() { initialized_ = true; }
-
-  /// @brief Device Id accessor
-  /// @return Device id
-  [[nodiscard]] int deviceId() const { return deviceId_; }
 
 };
 
@@ -298,6 +298,15 @@ class AbstractMemoryManager<ManagedMemory,
   /// @brief Device id setter
   /// @exception std::runtime_error A Memory Manager without MemoryData
   void deviceId(int) {
+    std::ostringstream oss;
+    oss << "Call Memory manager method: " << __FUNCTION__ << " without managed memory data.";
+    HLOG_SELF(0, oss.str())
+    throw (std::runtime_error(oss.str()));
+  }
+
+  /// @brief Device id getter
+  /// @exception std::runtime_error A Memory Manager without MemoryData
+  int deviceId() const {
     std::ostringstream oss;
     oss << "Call Memory manager method: " << __FUNCTION__ << " without managed memory data.";
     HLOG_SELF(0, oss.str())
