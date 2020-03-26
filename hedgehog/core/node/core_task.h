@@ -164,32 +164,46 @@ class CoreTask
         finish;
 
     this->isActive(true);
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->initialize(this->threadId());
+#endif
     // Do the initialization phase
     this->preRun();
 
     // If automatic start is enable send nullptr to all input nodes and wake them up
     if (this->automaticStart()) {
+#ifndef HH_DISABLE_PROFILE
       start = std::chrono::high_resolution_clock::now();
+#endif
       (static_cast<CoreExecute<TaskInputs> *>(this)->callExecute(nullptr), ...);
+#ifndef HH_DISABLE_PROFILE
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+#endif
     }
 
     // Actual computation loop
     while (!this->callCanTerminate(true)) {
+#ifndef HH_DISABLE_PROFILE
       start = std::chrono::high_resolution_clock::now();
+#endif
       // Wait for a data to arrive or termination
       volatile bool canTerminate = this->waitForNotification();
+#ifndef HH_DISABLE_PROFILE
       finish = std::chrono::high_resolution_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+#endif
       // If can terminate break the loop early
       if (canTerminate) { break; }
+#ifndef HH_DISABLE_PROFILE
       start = std::chrono::high_resolution_clock::now();
+#endif
       // Operate the receivers to get a data and send it to execute
       (this->operateReceiver<TaskInputs>(), ...);
+#ifndef HH_DISABLE_PROFILE
       finish = std::chrono::high_resolution_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+#endif
     }
 
     // Do the shutdown phase
@@ -236,7 +250,9 @@ class CoreTask
   /// @details By default wait if the receivers queues are empty and the node have input nodes links
   /// @return True if the node can terminate, else False
   bool waitForNotification() override {
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->startRangeWaiting(this->totalQueueSize());
+#endif
     std::unique_lock<std::mutex> lock(*(this->slotMutex()));
     HLOG_SELF(2, "Wait for notification")
     this->notifyConditionVariable()->wait(lock,
@@ -251,7 +267,9 @@ class CoreTask
                                             return !receiversEmpty || callCanTerminate;
                                           });
     HLOG_SELF(2, "Notification received")
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->endRangeWaiting();
+#endif
     return callCanTerminate(false);
   }
 

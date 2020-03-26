@@ -116,4 +116,6 @@ else (CUDA_FOUND)
     add_executable(runAllTests ${TEST_SRC})
 endif ()
 
+target_compile_definitions(runAllTests PUBLIC -DHH_DISABLE_NVTX_PROFILE)
+target_compile_definitions(runAllTests PUBLIC -DHH_DISABLE_PROFILE)
 target_link_libraries(runAllTests gtest gtest_main)

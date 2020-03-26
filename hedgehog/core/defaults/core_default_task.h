@@ -63,9 +63,13 @@ class DefaultCoreTaskExecute : public virtual CoreTask<TaskOutput, TaskInputs...
   /// @param data Data send to the task
   void callExecute(std::shared_ptr<TaskInput> data) final {
     HLOG_SELF(2, "Call execute")
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->startRangeExecuting();
+#endif
     static_cast<behavior::Execute<TaskInput> *>(this->task())->execute(data);
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->endRangeExecuting();
+#endif
   }
 };
 #if defined (__clang__)
@@ -112,8 +116,9 @@ class CoreDefaultTask
 
   /// @brief Defines what a CoreDefaultTask does before the execute loop
   void preRun() override {
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->startRangeInitializing();
-
+#endif
     HLOG_SELF(0, "Initialize Memory manager for the task " << this->name() << " / " << this->id())
     // Call User-defined initialize
     this->task()->initialize();
@@ -124,17 +129,22 @@ class CoreDefaultTask
       this->task()->memoryManager()->deviceId(this->deviceId());
       this->task()->memoryManager()->initialize();
     }
-
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->endRangeInitializing();
+#endif
   }
 
   /// @brief Defines what a CoreDefaultTask does after the execute loop
   void postRun() override {
     this->isActive(false);
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->startRangeShuttingDown();
+#endif
     // Call User-defined shutdown
     this->task()->shutdown();
+#ifndef HH_DISABLE_NVTX_PROFILE
     this->nvtxProfiler()->endRangeShuttingDown();
+#endif
     // Notify all linked node, the node (this) is terminated
     this->notifyAllTerminated();
   }
