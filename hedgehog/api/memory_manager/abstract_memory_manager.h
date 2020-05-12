@@ -305,6 +305,7 @@ class AbstractMemoryManager<ManagedMemory,
   }
 
   /// @brief Device id getter
+  /// @return The device Id
   /// @exception std::runtime_error A Memory Manager without MemoryData
   int deviceId() const {
     std::ostringstream oss;
