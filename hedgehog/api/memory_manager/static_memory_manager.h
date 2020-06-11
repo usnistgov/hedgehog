@@ -82,32 +82,10 @@ namespace hh {
 template<class ManagedMemory, class... Args>
 class StaticMemoryManager : public AbstractMemoryManager<ManagedMemory> {
  private:
-
-  /// @brief SFINAE construct to test if ManagedMemory has a constructor with Args... as parameter
-  /// @details https://en.cppreference.com/w/cpp/language/sfinae
-  class HasConstructor {
-    /// @brief True test, testing if a constructor with the right parameters exist and can be called.
-    /// @tparam TestManagedMemory Type of data to test
-    /// @tparam TestArgs Type of constructor's parameters
-    /// @return std::true_type
-    template<class TestManagedMemory, class... TestArgs>
-    static std::true_type test(
-        decltype(new TestManagedMemory((std::declval<TestArgs>())...)));
-
-    /// @brief False test, default test in case the searched constructor does not exist, without instantiating anything
-    /// @tparam TestManagedMemory Type of data to test
-    /// @tparam TestArgs Type of constructor's parameters
-    /// @return std::false_type
-    template<class TestManagedMemory, class ...TestArgs>
-    static std::false_type test(...);
-   public:
-    /// @brief Enum to get statically the result of the test
-    enum { value = std::is_same_v<decltype(test<ManagedMemory, Args...>(0)), std::true_type> };
-  };
-
-  static_assert(HasConstructor::value,
+  static_assert(std::is_constructible_v<ManagedMemory>,
+                "The Memory that you are trying to manage does not have a constructor with no arguments.");
+  static_assert(std::is_constructible_v<ManagedMemory, Args...>,
                 "The Memory that you are trying to manage does not have the right constructor definition.");
-
   std::tuple<Args...> args_ = {}; ///< Values to pass to the constructor
 
  public:

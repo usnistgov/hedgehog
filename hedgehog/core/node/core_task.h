@@ -159,9 +159,11 @@ class CoreTask
   /// @brief Main loop for the CoreTask
   void run() override {
     HLOG_SELF(2, "Run")
+#ifndef HH_DISABLE_PROFILE
     std::chrono::time_point<std::chrono::high_resolution_clock>
         start,
         finish;
+#endif
 
     this->isActive(true);
 #ifndef HH_DISABLE_NVTX_PROFILE
