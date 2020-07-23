@@ -293,49 +293,49 @@ class CoreNode {
   /// @brief Compute and return the standard deviation execution time for all tasks in the node cluster
   /// @return The standard deviation execution time for all tasks in the node cluster
   [[nodiscard]] uint64_t stdvExecTimeCluster() const {
-    auto ret = 0;
+    double ret = 0;
     if (this->isInCluster()) {
       auto mean = this->meanExecTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->executionTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->executionTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
-      ret = (uint64_t) std::sqrt(ret);
+      ret = std::sqrt(ret);
     }
-    return ret;
+    return (uint64_t)ret;
   }
 
   /// @brief Compute and return the standard deviation wait time for all tasks in the node cluster
   /// @return The standard deviation wait time for all tasks in the node cluster
   [[nodiscard]] uint64_t stdvWaitTimeCluster() const {
-    auto ret = 0;
+    double ret = 0;
     if (this->isInCluster()) {
       auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->waitTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->waitTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
-      ret = (uint64_t) std::sqrt(ret);
+      ret = std::sqrt(ret);
     }
-    return ret;
+    return (uint64_t)ret;
   }
 
   /// @brief Compute and return the standard deviation memory wait time for all tasks in the node cluster
   /// @return The standard deviation memory wait time for all tasks in the node cluster
   [[nodiscard]] uint64_t stdvMemoryWaitTimeCluster() const {
-    auto ret = 0;
+    double ret = 0;
     if (this->isInCluster()) {
       auto mean = this->meanMemoryWaitTimeCluster().count(), meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += (uint64_t) std::pow(it->second->memoryWaitTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->memoryWaitTime().count(), 2) - meanSquare;
       }
       ret /= this->numberThreads();
-      ret = (uint64_t) std::sqrt(ret);
+      ret = std::sqrt(ret);
     }
-    return ret;
+    return (uint64_t)ret;
   }
 
   /// @brief Compute and return the min and max wait time for all tasks in the node cluster
