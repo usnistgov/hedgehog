@@ -65,7 +65,7 @@ class DotPrinter : public AbstractPrinter {
   StructureOptions structureOptions_ = {}; ///< Structure options chosen
   DebugOptions debugOptions_ = {}; ///< Debug option chosen
 
-  uint64_t
+  double
       maxExecutionTime_ = {},         ///< Maximum execution time measured in all inside graph's nodes
       minExecutionTime_ = {},         ///< Minimum execution time measured in all inside graph's nodes
       rangeExecutionTime_ = {},       ///< Difference between maximum and minimum execution time
@@ -126,8 +126,9 @@ class DotPrinter : public AbstractPrinter {
     graphExecutionDuration_ =
         graph->executionDuration().count() == 0 ?
         std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now() - graph->startExecutionTimeStamp()).count()
-                                                : graph->executionDuration().count();
+            std::chrono::system_clock::now() - graph->startExecutionTimeStamp()
+            ).count()
+        : graph->executionDuration().count();
   }
 
   /// @brief Destructor, close the file
@@ -166,8 +167,8 @@ class DotPrinter : public AbstractPrinter {
       if (debugOptions_ == DebugOptions::DEBUG) {
         outputFile_ << " " << node->id();
       }
-      outputFile_ << "\\nExecution time:" << this->durationPrinter(this->graphExecutionDuration_)
-                  << "\\nCreation time:" << this->durationPrinter(node->creationDuration().count())
+      outputFile_ << "\\nExecution time:" << durationPrinter(this->graphExecutionDuration_)
+                  << "\\nCreation time:" << durationPrinter(node->creationDuration().count())
                   << "\"; fontsize=25; penwidth=5; ranksep=0; labelloc=top; labeljust=left; \n";
       // If the graph is an inner graph, i.e. a node of the outer graph
     } else {
@@ -269,8 +270,6 @@ class DotPrinter : public AbstractPrinter {
         headLabel,
         penWidth = ",penwidth=1",
         queueStr;
-
-
 
     // If the queue information need to be printed
     if (this->structureOptions_ == StructureOptions::QUEUE || this->structureOptions_ == StructureOptions::ALL) {
@@ -397,6 +396,7 @@ class DotPrinter : public AbstractPrinter {
   std::string getNodeInformation(core::CoreNode *node) {
     std::stringstream ss;
 
+
     // Print the name
     ss << node->id() << " [label=\"" << node->name();
     // Print the id (adress) in case of debug
@@ -436,49 +436,79 @@ class DotPrinter : public AbstractPrinter {
         // If all nodes in a cluster need to be printed
         if (this->structureOptions_ == StructureOptions::ALLTHREADING
             || this->structureOptions_ == StructureOptions::ALL) {
-          ss << "\\nWait Time: " << this->durationPrinter(node->waitTime().count());
-          ss << "\\nExecution Time: " << this->durationPrinter(node->executionTime().count());
-          ss << "\\nMemory Wait Time: " << this->durationPrinter(node->memoryWaitTime().count());
+          ss << "\\nNumber Elements Received: " << node->numberReceivedElements();
+          ss << "\\nWait Time: " << durationPrinter(node->waitTime().count());
+          ss << "\\nExecution Time: " << durationPrinter(node->executionTime().count());
+          ss << "\\nExecution Time Per Element: " << durationPrinter(node->executionTimePerElement().count());
+          if (node->hasMemoryManagerAttached()) {
+            ss << "\\nMemory Wait Time: " << durationPrinter(node->memoryWaitTime().count());
+          }
           // If all nodes in a cluster should NOT be printed
         } else {
           //Get the time in the clusters
           auto minmaxWait = node->minmaxWaitTimeCluster();
           auto minmaxExec = node->minmaxExecTimeCluster();
+          auto minmaxElements = node->minmaxNumberElementsReceivedCluster();
+          auto minmaxExePerElement = node->minmaxExecTimePerElementCluster();
           auto minmaxMemoryWait = node->minmaxMemoryWaitTimeCluster();
-          // Print the wait time
-          ss << "\\nWait Time: ";
+          // Print the number of element received per task
+          ss << "\\nNumber of Elements Received Per Task: ";
           if (node->numberThreads() > 1) {
             ss << "\\n"
-                << "  Min: " << this->durationPrinter(minmaxWait.first) << "\\n"
-                << "  Avg: " << this->durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
-                << this->durationPrinter(node->stdvWaitTimeCluster()) << "\\n"
-                << "  Max: " << this->durationPrinter(minmaxWait.second) << "\\n\\n";
+               << "  Min: " << minmaxElements.first << "\\n"
+               << "  Avg: " << std::setw(3) << node->meanNumberElementsReceivedCluster()
+               << " +- " << std::setw(3) << node->stdvNumberElementsReceivedCluster()
+               << "\\n"
+               << "  Max: " << std::setw(3) << minmaxElements.second << "\\n";
           } else {
-            ss << this->durationPrinter(node->meanWaitTimeCluster().count()) << "\\n";
+            ss << node->meanNumberElementsReceivedCluster() << "\\n";
+          }
+          // Print the wait time
+          ss << "Wait Time: ";
+          if (node->numberThreads() > 1) {
+            ss << "\\n"
+                << "  Min: " << durationPrinter(minmaxWait.first) << "\\n"
+                << "  Avg: " << durationPrinter(node->meanWaitTimeCluster().count()) << " +- "
+                << durationPrinter(node->stdvWaitTimeCluster()) << "\\n"
+                << "  Max: " << durationPrinter(minmaxWait.second) << "\\n";
+          } else {
+            ss << durationPrinter(node->meanWaitTimeCluster().count()) << "\\n";
           }
           // Print the execution time
           ss << "Execution Time: ";
           if (node->numberThreads() > 1) {
             ss << "\\n"
-                << "  Min: " << this->durationPrinter(minmaxExec.first) << "\\n"
-                << "  Avg: " << this->durationPrinter(node->meanExecTimeCluster().count()) << " +- "
-                << this->durationPrinter(node->stdvExecTimeCluster()) << "\\n"
-                << "  Max: " << this->durationPrinter(minmaxExec.second) << "\\n\\n";
+                << "  Min: " << durationPrinter(minmaxExec.first) << "\\n"
+                << "  Avg: " << durationPrinter(node->meanExecTimeCluster().count()) << " +- "
+                << durationPrinter(node->stdvExecTimeCluster()) << "\\n"
+                << "  Max: " << durationPrinter(minmaxExec.second) << "\\n";
           } else {
-            ss << this->durationPrinter(node->meanExecTimeCluster().count()) << "\\n";
+            ss << durationPrinter(node->meanExecTimeCluster().count()) << "\\n";
+          }
+
+          // Print the execution time per Element
+          ss << "Execution Time Per Element: ";
+          if (node->numberThreads() > 1) {
+            ss << "\\n"
+               << "  Min: " << durationPrinter(minmaxExePerElement.first) << "\\n"
+               << "  Avg: " << durationPrinter(node->meanExecTimePerElementCluster().count()) << " +- "
+               << durationPrinter(node->stdvExecPerElementTimeCluster()) << "\\n"
+               << "  Max: " << durationPrinter(minmaxExePerElement.second) << "\\n";
+          } else {
+            ss << durationPrinter(node->meanExecTimePerElementCluster().count()) << "\\n";
           }
 
           // Print the memory wait time
-          if (node->meanMemoryWaitTimeCluster().count() > 0) {
+          if (node->hasMemoryManagerAttached()) {
             ss << "Memory Wait Time: ";
             if (node->numberThreads() > 1) {
               ss << "\\n"
-                  << "  Min: " << this->durationPrinter(minmaxMemoryWait.first) << "\\n"
-                  << "  Avg: " << this->durationPrinter(node->meanMemoryWaitTimeCluster().count()) << " +-"
-                  << this->durationPrinter(node->stdvMemoryWaitTimeCluster()) << "\\n"
-                  << "  Max: " << this->durationPrinter(minmaxMemoryWait.second) << "\\n\\n";
+                  << "  Min: " << durationPrinter(minmaxMemoryWait.first) << "\\n"
+                  << "  Avg: " << durationPrinter(node->meanMemoryWaitTimeCluster().count()) << " +-"
+                  << durationPrinter(node->stdvMemoryWaitTimeCluster()) << "\\n"
+                  << "  Max: " << durationPrinter(minmaxMemoryWait.second) << "\\n";
             } else {
-              ss << this->durationPrinter(node->meanMemoryWaitTimeCluster().count()) << "\\n";
+              ss << durationPrinter(node->meanMemoryWaitTimeCluster().count()) << "\\n";
             }
           }
         }
@@ -505,8 +535,10 @@ class DotPrinter : public AbstractPrinter {
           ss << "\\nActive input connection: " << dynamic_cast<core::CoreSlot *>(node)->numberInputNodes();
           ss << "\\nActive threads: " << dynamic_cast<core::CoreSlot *>(node)->numberActiveThreadInCluster();
         }
-        ss << "\\nWait Time: " << this->durationPrinter(node->waitTime().count());
-        ss << "\\nExecution Time: " << this->durationPrinter(node->executionTime().count());
+        ss << "\\nNumber Elements Received: " << node->numberReceivedElements();
+        ss << "\\nWait Time: " << durationPrinter(node->waitTime().count());
+        ss << "\\nExecution Time: " << durationPrinter(node->executionTime().count());
+        ss << "\\nExecution Time Per Element: " << durationPrinter(node->executionTimePerElement().count());
         ss << "\"";
         ss << ",shape=diamond";
         // Change the color of the circle depending on the user choice
@@ -530,9 +562,9 @@ class DotPrinter : public AbstractPrinter {
   /// @param min Minimum value
   /// @param range Range value
   /// @return RGB color associated with the value
-  std::string getRGBFromRange(uint64_t const &val, uint64_t const &min, uint64_t const &range) {
+  std::string getRGBFromRange(double const &val, double const &min, double const &range) {
 
-    uint64_t posRedToBlue = (std::abs((int64_t) val - (int64_t) min)) * 255 / range;
+    uint64_t posRedToBlue = (std::abs( val -  min)) * 255 / range;
     posRedToBlue = posRedToBlue > 255 ? 255 : posRedToBlue;
     std::stringstream ss;
     ss << "\"#"
@@ -548,33 +580,34 @@ class DotPrinter : public AbstractPrinter {
   /// @brief Get the rgb color for the execution time value
   /// @param val Execution value to get the RGB color
   /// @return RGB color for val
-  std::string getExecRGB(uint64_t val) {
+  std::string getExecRGB(double const & val) {
     return getRGBFromRange(val, this->minExecutionTime_, this->rangeExecutionTime_);
   }
 
   /// @brief Get the rgb color for the wait time value
   /// @param val Execution value to get the RGB color
   /// @return RGB color for val
-  std::string getWaitRGB(uint64_t val) {
+  std::string getWaitRGB(double const & val) {
     return getRGBFromRange(val, this->minWaitTime_, this->rangeWaitTime_);
   }
 
   /// @brief Print a duration with the good unit
   /// @param duration Duration to print
   /// @return std::string with the duration and the unit
-  std::string durationPrinter(uint64_t duration) {
+  static std::string durationPrinter(double const & duration) {
     std::ostringstream oss;
-    uint64_t
-        s = (duration % 1000000000) / 1000000,
-        mS = (duration % 1000000) / 1000,
-        uS = (duration % 1000);
+    uint64_t 
+        durationRounded = (uint64_t)duration,
+        s = (durationRounded % 1000000000) / 1000000,
+        mS = (durationRounded % 1000000) / 1000,
+        uS = (durationRounded % 1000);
 
     if (s > 0) {
       oss << s << "." << std::setfill('0') << std::setw(3) << mS << "s";
     } else if (mS > 0) {
       oss << mS << "." << std::setfill('0') << std::setw(3) << uS << "ms";
     } else {
-      oss << duration << "us";
+      oss << std::setw(3) << duration << "us";
     }
     return oss.str();
   }

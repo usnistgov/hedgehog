@@ -98,8 +98,7 @@ class CoreQueueReceiver : public virtual CoreReceiver<NodeInput> {
 
   /// @brief Receivers accessor
   /// @return {this}
-  std::set<CoreReceiver < NodeInput> *>
-  receivers() override { return {this}; }
+  std::set<CoreReceiver < NodeInput> *> receivers() override { return {this}; }
 
   /// @brief Return the front element of the queue and return it
   /// @attention Not thread safe

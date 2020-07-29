@@ -109,6 +109,12 @@ class CoreTask
   /// @return node as AbstractTask
   AbstractTask<TaskOutput, TaskInputs...> *task() const { return task_; }
 
+  /// @brief Test if a memory manager is attached to the task
+  /// @return True if there is a memory manager attached, else False
+  bool hasMemoryManagerAttached() const override {
+    return this->task()->memoryManager() != nullptr;
+  }
+
   /// @brief Automatic start property accessor
   /// @param automaticStart Automatic start property
   void automaticStart(bool automaticStart) { automaticStart_ = automaticStart; }
@@ -239,6 +245,7 @@ class CoreTask
     if (!receiver->receiverEmpty()) {
       // Get the data
       std::shared_ptr<Input> data = receiver->popFront();
+      this->incrementNumberReceivedElements();
       this->unlockUniqueMutex();
       // Call execute
       static_cast<CoreExecute<Input> *>(this)->callExecute(data);

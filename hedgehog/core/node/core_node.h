@@ -37,7 +37,7 @@
 namespace hh::core {
 
 /// @brief Hedgehog node's type
-enum struct NodeType { Graph, Task, StateManager, Sink, Source, ExecutionPipeline, Switch };
+enum struct NodeType {Graph, Task, StateManager, Sink, Source, ExecutionPipeline, Switch};
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /// @brief CoreSlot forward declaration
@@ -56,7 +56,9 @@ class CoreNode {
 
   int threadId_ = 0; ///< Thread id, used to debug only
 
-  size_t numberThreads_ = 1; ///< Number of threads associated to the node
+  size_t
+      numberThreads_ = 1, ///< Number of threads associated to the node
+      numberReceivedElements_ = 0; ///< Number of element received by the node
 
   std::string_view name_ = ""; ///< Node name
 
@@ -69,17 +71,17 @@ class CoreNode {
   std::shared_ptr<std::multimap<CoreNode *, std::shared_ptr<CoreNode>>>
       insideNodes_ = nullptr; ///< Map of inside nodes [Main Cluster Node -> Node]
 
-  std::chrono::duration<uint64_t, std::micro>
-      creationDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(), ///< Node creation duration
-      executionDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(), ///< Node execution duration
-      waitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(), ///< Node wait duration
-      memoryWaitDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(); ///< Node memory wait duration
+  std::chrono::duration<double, std::micro>
+      creationDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node creation duration
+      executionDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node execution duration
+      waitDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node wait duration
+      memoryWaitDuration_ = std::chrono::duration<double, std::micro>::zero(); ///< Node memory wait duration
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> const
-      creationTimeStamp_ = std::chrono::high_resolution_clock::now(); ///< Node creation timestamp
+  std::chrono::time_point<std::chrono::system_clock> const
+      creationTimeStamp_ = std::chrono::system_clock::now(); ///< Node creation timestamp
 
-  std::chrono::time_point<std::chrono::high_resolution_clock>
-      startExecutionTimeStamp_ = std::chrono::high_resolution_clock::now(); ///< Node begin execution timestamp
+  std::chrono::time_point<std::chrono::system_clock>
+      startExecutionTimeStamp_ = std::chrono::system_clock::now(); ///< Node begin execution timestamp
 
  public:
   /// @brief Deleted default constructor
@@ -170,16 +172,22 @@ class CoreNode {
 
   /// @brief Execution time accessor
   /// @return Execution time
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> const &executionTime() const { return executionDuration_; }
+  [[nodiscard]] std::chrono::duration<double, std::micro> const &executionTime() const { return executionDuration_; }
 
   /// @brief Wait time accessor
   /// @return Wait time
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> const &waitTime() const { return waitDuration_; }
+  [[nodiscard]] std::chrono::duration<double, std::micro> const &waitTime() const { return waitDuration_; }
 
   /// @brief Memory wait time accessor
   /// @return Memory wait time
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> const &memoryWaitTime() const {
-    return memoryWaitDuration_;
+  [[nodiscard]] std::chrono::duration<double, std::micro> const &memoryWaitTime() const {
+    return memoryWaitDuration_; }
+
+  /// @brief Execution time per element accessor
+  /// @return Execution time per element
+  [[nodiscard]] std::chrono::duration<double, std::micro> executionTimePerElement() const {
+    if(this->numberReceivedElements() == 0){ std::chrono::duration<double, std::micro>::zero(); }
+    return this->executionTime() / this->numberReceivedElements();
   }
 
   /// @brief In cluster property accessor
@@ -194,6 +202,10 @@ class CoreNode {
   /// @return True if CUDA related, else False
   [[nodiscard]] bool isCudaRelated() const { return isCudaRelated_; }
 
+  /// @brief Test if a memory manager is attached to the node, by default not
+  /// @return True if there is a memory manager attached, else False
+  [[nodiscard]] virtual bool hasMemoryManagerAttached() const {return false;}
+
   /// @brief Graph id accessor
   /// @return Graph id
   [[nodiscard]] virtual int graphId() { return this->belongingNode()->graphId(); }
@@ -204,53 +216,57 @@ class CoreNode {
 
   /// @brief Maximum execution time accessor
   /// @return Maximum execution time
-  [[nodiscard]] virtual std::chrono::duration<uint64_t, std::micro> maxExecutionTime() const {
+  [[nodiscard]] virtual std::chrono::duration<double, std::micro> maxExecutionTime() const {
     return this->executionDuration_;
   }
 
   /// @brief Minimum execution time accessor
   /// @return Minimum execution time
-  [[nodiscard]] virtual std::chrono::duration<uint64_t, std::micro> minExecutionTime() const {
+  [[nodiscard]] virtual std::chrono::duration<double, std::micro> minExecutionTime() const {
     return this->executionDuration_;
   }
 
   /// @brief Maximum waiting time accessor
   /// @return Maximum waiting time
-  [[nodiscard]] virtual std::chrono::duration<uint64_t, std::micro> maxWaitTime() const { return this->waitDuration_; }
+  [[nodiscard]] virtual std::chrono::duration<double, std::micro> maxWaitTime() const { return this->waitDuration_; }
 
   /// @brief Minimum waiting time accessor
   /// @return Minimum waiting time
-  [[nodiscard]] virtual std::chrono::duration<uint64_t, std::micro> minWaitTime() const { return this->waitDuration_; }
+  [[nodiscard]] virtual std::chrono::duration<double, std::micro> minWaitTime() const { return this->waitDuration_; }
 
   /// @brief Creation timestamp accessor
   /// @return Creation timestamp
-  [[nodiscard]] std::chrono::time_point<std::chrono::high_resolution_clock> const &creationTimeStamp() const {
+  [[nodiscard]] std::chrono::time_point<std::chrono::system_clock> const &creationTimeStamp() const {
     return creationTimeStamp_;
   }
 
   /// @brief Execution start timestamp accessor
   /// @return Execution start timestamp
-  [[nodiscard]] std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp() const {
+  [[nodiscard]] std::chrono::time_point<std::chrono::system_clock> const &startExecutionTimeStamp() const {
     return startExecutionTimeStamp_;
   }
 
   /// @brief Creation duration accessor
   /// @return Creation duration
-  [[nodiscard]] std::chrono::duration<uint64_t,
+  [[nodiscard]] std::chrono::duration<double,
                                       std::micro> const &creationDuration() const { return creationDuration_; }
 
   /// @brief Execution duration accessor
   /// @return Execution duration
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> const &executionDuration() const {
+  [[nodiscard]] std::chrono::duration<double, std::micro> const &executionDuration() const {
     return executionDuration_;
   }
 
+  /// @brief Number elements accessor
+  /// @return Number of received elements
+  [[nodiscard]] size_t numberReceivedElements() const {return numberReceivedElements_; }
+
   /// @brief Compute and return the mean execution time for all tasks in the node cluster
   /// @return The mean execution time for all tasks in the node cluster
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> meanExecTimeCluster() const {
+  [[nodiscard]] std::chrono::duration<double, std::micro> meanExecTimeCluster() const {
     auto ret = this->executionTime();
     if (this->isInCluster()) {
-      std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
+      std::chrono::duration<double, std::micro> sum = std::chrono::duration<double, std::micro>::zero();
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         sum += it->second->executionTime();
@@ -262,10 +278,10 @@ class CoreNode {
 
   /// @brief Compute and return the mean wait time for all tasks in the node cluster
   /// @return The mean wait time for all tasks in the node cluster
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> meanWaitTimeCluster() const {
+  [[nodiscard]] std::chrono::duration<double, std::micro> meanWaitTimeCluster() const {
     auto ret = this->waitTime();
     if (this->isInCluster()) {
-      std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
+      std::chrono::duration<double, std::micro> sum = std::chrono::duration<double, std::micro>::zero();
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         sum += it->second->waitTime();
@@ -277,13 +293,43 @@ class CoreNode {
 
   /// @brief Compute and return the mean memory wait time for all tasks in the node cluster
   /// @return The mean memory wait time for all tasks in the node cluster
-  [[nodiscard]] std::chrono::duration<uint64_t, std::micro> meanMemoryWaitTimeCluster() const {
+  [[nodiscard]] std::chrono::duration<double, std::micro> meanMemoryWaitTimeCluster() const {
     auto ret = this->memoryWaitTime();
     if (this->isInCluster()) {
-      std::chrono::duration<uint64_t, std::micro> sum = std::chrono::duration<uint64_t, std::micro>::zero();
+      std::chrono::duration<double, std::micro> sum = std::chrono::duration<double, std::micro>::zero();
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
         sum += it->second->memoryWaitTime();
+      }
+      ret = sum / this->numberThreads();
+    }
+    return ret;
+  }
+
+  /// @brief Compute and return the mean execution time per received element for all tasks in the node cluster
+  /// @return The mean execution time per received element for all tasks in the node cluster
+  [[nodiscard]] std::chrono::duration<double, std::micro> meanExecTimePerElementCluster() const {
+    auto ret = this->executionTimePerElement();
+    if (this->isInCluster()) {
+      std::chrono::duration<double, std::micro> sum = std::chrono::duration<double, std::micro>::zero();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        sum += it->second->executionTimePerElement();
+      }
+      ret = sum / this->numberThreads();
+    }
+    return ret;
+  }
+
+  /// @brief Compute and return the mean number of Elements received per task for all tasks in the node cluster
+  /// @return mean number of Elements received per task for all tasks in the node cluster
+  [[nodiscard]] double meanNumberElementsReceivedCluster() const {
+    double ret = this->numberReceivedElements();
+    if (this->isInCluster()) {
+      double sum = 0;
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        sum += it->second->numberReceivedElements();
       }
       ret = sum / this->numberThreads();
     }
@@ -295,15 +341,15 @@ class CoreNode {
   [[nodiscard]] uint64_t stdvExecTimeCluster() const {
     double ret = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanExecTimeCluster().count(), meanSquare = mean * mean;
+      auto mean = this->meanExecTimeCluster().count();//, meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += std::pow(it->second->executionTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->executionTime().count() - mean, 2);
       }
-      ret /= this->numberThreads();
+      ret /= (this->numberThreads() - 1);
       ret = std::sqrt(ret);
     }
-    return (uint64_t)ret;
+    return (uint64_t)std::round(ret);
   }
 
   /// @brief Compute and return the standard deviation wait time for all tasks in the node cluster
@@ -311,15 +357,15 @@ class CoreNode {
   [[nodiscard]] uint64_t stdvWaitTimeCluster() const {
     double ret = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanWaitTimeCluster().count(), meanSquare = mean * mean;
+      auto mean = this->meanWaitTimeCluster().count();//, meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += std::pow(it->second->waitTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->waitTime().count() - mean, 2) ;
       }
-      ret /= this->numberThreads();
+      ret /= (this->numberThreads() - 1);
       ret = std::sqrt(ret);
     }
-    return (uint64_t)ret;
+    return (uint64_t)std::round(ret);
   }
 
   /// @brief Compute and return the standard deviation memory wait time for all tasks in the node cluster
@@ -327,15 +373,50 @@ class CoreNode {
   [[nodiscard]] uint64_t stdvMemoryWaitTimeCluster() const {
     double ret = 0;
     if (this->isInCluster()) {
-      auto mean = this->meanMemoryWaitTimeCluster().count(), meanSquare = mean * mean;
+      auto mean = this->meanMemoryWaitTimeCluster().count();//, meanSquare = mean * mean;
       for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
            it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
-        ret += std::pow(it->second->memoryWaitTime().count(), 2) - meanSquare;
+        ret += std::pow(it->second->memoryWaitTime().count() - mean, 2);
       }
-      ret /= this->numberThreads();
+      ret /= (this->numberThreads() - 1);
       ret = std::sqrt(ret);
     }
-    return (uint64_t)ret;
+    return (uint64_t)std::round(ret);
+  }
+
+  /// @brief Compute and return the standard deviation execution per received element time for all tasks in the node
+  /// cluster
+  /// @return The standard deviation execution time per received element for all tasks in the node cluster
+  [[nodiscard]] uint64_t stdvExecPerElementTimeCluster() const {
+    double ret = 0;
+    if (this->isInCluster()) {
+      auto
+        mean = this->meanExecTimePerElementCluster().count();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += std::pow(it->second->executionTimePerElement().count() - mean, 2) ;
+      }
+      ret /= (this->numberThreads() - 1);
+      ret = std::sqrt(ret);
+    }
+    return (uint64_t)std::round(ret);
+  }
+
+  /// @brief Compute and return the standard deviation number of Elements received per task for all tasks in the node
+  /// cluster
+  /// @return The standard deviation number of Elements received per task for all tasks in the node cluster
+  [[nodiscard]] uint64_t stdvNumberElementsReceivedCluster() const {
+    double ret = 0;
+    if (this->isInCluster()) {
+      auto mean = this->meanNumberElementsReceivedCluster();
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        ret += std::pow(it->second->numberReceivedElements() - mean, 2) ;
+      }
+      ret /= (this->numberThreads() - 1);
+      ret = std::sqrt(ret);
+    }
+    return (uint64_t)std::round(ret);
   }
 
   /// @brief Compute and return the min and max wait time for all tasks in the node cluster
@@ -359,7 +440,7 @@ class CoreNode {
   }
 
   /// @brief Compute and return the min and max memory wait time for all tasks in the node cluster
-  /// @return The min and max memory mean wait time for all tasks in the node cluster
+  /// @return The min and max memory mean memory wait time for all tasks in the node cluster
   [[nodiscard]] std::pair<uint64_t, uint64_t> minmaxMemoryWaitTimeCluster() const {
     uint64_t min = std::numeric_limits<uint64_t>::max();
     uint64_t max = 0;
@@ -379,7 +460,7 @@ class CoreNode {
   }
 
   /// @brief Compute and return the min and max execution time for all tasks in the node cluster
-  /// @return The min and max execution wait time for all tasks in the node cluster
+  /// @return The min and max execution execution time for all tasks in the node cluster
   [[nodiscard]] std::pair<uint64_t, uint64_t> minmaxExecTimeCluster() const {
     uint64_t min = std::numeric_limits<uint64_t>::max();
     uint64_t max = 0;
@@ -396,6 +477,49 @@ class CoreNode {
       max = min;
     }
 
+    return {min, max};
+  }
+
+  /// @brief Compute and return the min and max execution time per element for all tasks in the node cluster
+  /// @return The min and max execution wait time for all tasks in the node cluster
+  [[nodiscard]] std::pair<double, double> minmaxExecTimePerElementCluster() const {
+    double
+      min = std::numeric_limits<double>::max(),
+      max = 0,
+      val = 0;
+    if (this->isInCluster()) {
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        val = it->second->executionTimePerElement().count();
+        if (val < min) { min = val; }
+        if (val > max) { max = val; }
+      }
+    } else {
+      min = this->executionTimePerElement().count();
+      max = min;
+    }
+    return {min, max};
+  }
+
+
+  /// @brief Compute and return the min and max number of Elements received per task for all tasks in the node cluster
+  /// @return The min and max number of Elements received per task for all tasks in the node cluster
+  [[nodiscard]] std::pair<size_t, size_t> minmaxNumberElementsReceivedCluster() const {
+    size_t
+        min = std::numeric_limits<size_t>::max(),
+        max = 0,
+        val = 0;
+    if (this->isInCluster()) {
+      for (auto it = this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).first;
+           it != this->belongingNode()->insideNodes()->equal_range(this->coreClusterNode()).second; ++it) {
+        val = it->second->numberReceivedElements();
+        if (val < min) { min = val; }
+        if (val > max) { max = val; }
+      }
+    } else {
+      min = this->executionTimePerElement().count();
+      max = min;
+    }
     return {min, max};
   }
 
@@ -422,9 +546,10 @@ class CoreNode {
   /// @brief Execution timestamp setter
   /// @param startExecutionTimeStamp Execution timestamp to set
   void startExecutionTimeStamp(
-      std::chrono::time_point<std::chrono::high_resolution_clock> const &startExecutionTimeStamp) {
+      std::chrono::time_point<std::chrono::system_clock> const &startExecutionTimeStamp) {
     startExecutionTimeStamp_ = startExecutionTimeStamp;
   }
+
   /// @brief Device id setter
   /// @param deviceId Device id
   virtual void deviceId(int deviceId) { this->belongingNode()->deviceId(deviceId); }
@@ -473,21 +598,24 @@ class CoreNode {
 
   /// @brief Creation duration setter
   /// @param creationDuration Creation duration to set
-  void creationDuration(std::chrono::duration<uint64_t, std::micro> const &creationDuration) {
+  void creationDuration(std::chrono::duration<double, std::micro> const &creationDuration) {
     creationDuration_ = creationDuration;
   }
 
   /// @brief Execution duration setter
   /// @param executionDuration Execution duration
-  void executionDuration(std::chrono::duration<uint64_t, std::micro> const &executionDuration) {
+  void executionDuration(std::chrono::duration<double, std::micro> const &executionDuration) {
     executionDuration_ = executionDuration;
   }
 
   /// @brief Add wait for memory duration to total duration
   /// @param memoryWait Duration to add to the memory duration
-  void incrementWaitForMemoryDuration(std::chrono::duration<uint64_t, std::micro> const &memoryWait) {
+  void incrementWaitForMemoryDuration(std::chrono::duration<double, std::micro> const &memoryWait) {
     this->memoryWaitDuration_ += memoryWait;
   }
+
+  /// @brief Increment the number of element received for the node
+  void incrementNumberReceivedElements() { ++this->numberReceivedElements_; }
 
   // Virtual
   /// @brief Method defining what to do before the run
@@ -558,11 +686,11 @@ class CoreNode {
 
   /// @brief Increment wait duration
   /// @param wait Duration to add to the wait duration
-  void incrementWaitDuration(std::chrono::duration<uint64_t, std::micro> const &wait) { this->waitDuration_ += wait; }
+  void incrementWaitDuration(std::chrono::duration<double, std::micro> const &wait) { this->waitDuration_ += wait; }
 
   /// @brief Increment execution duration
   /// @param exec Duration to add to the execution duration
-  void incrementExecutionDuration(std::chrono::duration<uint64_t, std::micro> const &exec) {
+  void incrementExecutionDuration(std::chrono::duration<double, std::micro> const &exec) {
     this->executionDuration_ += exec;
   }
 };

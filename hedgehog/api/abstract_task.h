@@ -219,7 +219,7 @@ class AbstractTask :
       exit(42);
     }
 #ifndef HH_DISABLE_PROFILE
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::system_clock::now();
 #endif
 #ifndef HH_DISABLE_NVTX_PROFILE
     this->taskCore_->nvtxProfiler()->startRangeWaitingForMemory();
@@ -229,8 +229,9 @@ class AbstractTask :
     this->taskCore_->nvtxProfiler()->endRangeWaitingForMem();
 #endif
 #ifndef HH_DISABLE_PROFILE
-    auto finish = std::chrono::high_resolution_clock::now();
-    this->core()->incrementWaitForMemoryDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+    auto finish = std::chrono::system_clock::now();
+    this->core()->incrementWaitForMemoryDuration(finish-start);
+//        std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
 #endif
     return data;
   }
