@@ -21,12 +21,12 @@
 #define HEDGEHOG_MEMORY_DATA_H
 
 #include <memory>
-#include "abstract_memory_manager.h"
+#include "memory_manager.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
 
-/// @brief Memory data interface to use a data type in a Memory manager (AbstractMemoryManager or StaticMemoryManager)
+/// @brief Memory data interface to use a data type in a Memory manager (MemoryManager or StaticMemoryManager)
 /// @details To declare a data A  or B using the interface MemoryData, it can be written as:
 /// @code
 /// class A : public MemoryData<A>{};
@@ -34,11 +34,11 @@ namespace hh {
 /// template <class T>
 /// class B : public MemoryData<B<T>>{};
 /// @endcode
-/// The data will be served from the pool to the task through the AbstractMemoryManager, and can be return with
+/// The data will be served from the pool to the task through the MemoryManager, and can be return with
 /// MemoryData::returnToMemoryManager().
 /// When returned, the MemoryData::used() and MemoryData::canBeRecycled() are called. If MemoryData::canBeRecycled()
 /// returns true, MemoryData::recycle() is called and it is returned to the pool and made available by its
-/// AbstractMemoryManager
+/// MemoryManager
 ///
 /// @par Virtual Functions
 /// MemoryData::used
@@ -49,7 +49,7 @@ namespace hh {
 template<class ManagedMemory>
 class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>> {
  private:
-  AbstractMemoryManager <ManagedMemory> *memoryManager_ = nullptr; ///< Link to the Memory Manager
+  MemoryManager <ManagedMemory> *memoryManager_ = nullptr; ///< Link to the Memory Manager
  public:
   /// @brief Default constructor
   MemoryData() = default;
@@ -63,11 +63,11 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>
 
   /// @brief Memory manager accessor
   /// @return Memory manager
-  [[nodiscard]] AbstractMemoryManager <ManagedMemory> *memoryManager() const { return memoryManager_; }
+  [[nodiscard]] MemoryManager <ManagedMemory> *memoryManager() const { return memoryManager_; }
 
   /// @brief Memory manager setter
   /// @param memoryManager Memory manager to set
-  void memoryManager(AbstractMemoryManager <ManagedMemory> *memoryManager) { memoryManager_ = memoryManager; }
+  void memoryManager(MemoryManager <ManagedMemory> *memoryManager) { memoryManager_ = memoryManager; }
 
   /// @brief Return the data to the memory manager
   void returnToMemoryManager() {

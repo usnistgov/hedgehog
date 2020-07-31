@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(hedgehog VERSION 1.0.8 LANGUAGES CXX)
+project(hedgehog VERSION 1.0.9 LANGUAGES CXX)
 
 include(ExternalProject)
 
@@ -195,10 +195,12 @@ if (BUILD_MAIN)
             hedgehog/core/node/execution_pipeline/core_execution_pipeline.h
             hedgehog/core/defaults/core_default_execution_pipeline.h
 
+            hedgehog/api/memory_manager/memory_manager.h
             hedgehog/api/memory_manager/abstract_memory_manager.h
             hedgehog/api/memory_manager/memory_data.h
             hedgehog/behavior/memory_manager/pool.h
-            hedgehog/api/memory_manager/static_memory_manager.h hedgehog/tools/cuda_debugging.h)
+            hedgehog/api/memory_manager/static_memory_manager.h
+            hedgehog/tools/cuda_debugging.h)
 
     # Set main executable to be moved to a specific target
     if (CUDA_FOUND)

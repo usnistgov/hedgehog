@@ -20,12 +20,12 @@
 #ifndef HEDGEHOG_STATIC_MEMORY_MANAGER_H
 #define HEDGEHOG_STATIC_MEMORY_MANAGER_H
 
-#include "abstract_memory_manager.h"
+#include "memory_manager.h"
 /// @brief Hedgehog main namespace
 namespace hh {
-/// @brief Derived class from AbstractMemoryManager for statically allocated MemoryData, used for example for GPU
+/// @brief Derived class from MemoryManager for statically allocated MemoryData, used for example for GPU
 /// computation to avoid synchronisation during dynamic allocation.
-/// @details The main difference between the AbstractMemoryManager and the StaticMemoryManager, is the allocation
+/// @details The main difference between the MemoryManager and the StaticMemoryManager, is the allocation
 /// process. Instead of filling the pool with default constructed data, the data will be constructed with a specific
 /// constructor.
 /// In order to select the constructor, the parameter's type(s) of the constructor that will be used as part of the
@@ -75,12 +75,12 @@ namespace hh {
 /// to transfer mandatory attributes to the copy.
 ///
 /// @par Virtual Functions
-/// AbstractMemoryManager::initializeMemoryManager
+/// MemoryManager::initializeMemoryManager
 ///
 /// @tparam ManagedMemory Type to be managed by the memory manager
 /// @tparam Args List of types corresponding to the constructor list of types
 template<class ManagedMemory, class... Args>
-class StaticMemoryManager : public AbstractMemoryManager<ManagedMemory> {
+class StaticMemoryManager : public MemoryManager<ManagedMemory> {
  private:
   static_assert(std::is_constructible_v<ManagedMemory>,
                 "The Memory that you are trying to manage does not have a constructor with no arguments.");
@@ -96,13 +96,13 @@ class StaticMemoryManager : public AbstractMemoryManager<ManagedMemory> {
   /// @param capacity Pool capacity
   /// @param args List of arguments to give the type constructor
   explicit StaticMemoryManager(size_t const &capacity, Args ... args) :
-      AbstractMemoryManager<ManagedMemory>(capacity), args_(std::forward<Args>(args)...) {
+      MemoryManager<ManagedMemory>(capacity), args_(std::forward<Args>(args)...) {
   }
 
   /// @brief Copy constructor used by the copy method
   /// @param rhs StaticMemoryManager to copy
   StaticMemoryManager(StaticMemoryManager<ManagedMemory, Args...> &rhs)
-      : AbstractMemoryManager<ManagedMemory>(rhs.capacity()), args_(rhs.args_) {}
+      : MemoryManager<ManagedMemory>(rhs.capacity()), args_(rhs.args_) {}
 
   /// @brief Initialize method, calling the private initialize method with the pack arguments, and the user definable
   /// initializeMemoryManager
@@ -117,7 +117,7 @@ class StaticMemoryManager : public AbstractMemoryManager<ManagedMemory> {
 
   /// @brief Copy method used for task duplication and execution pipeline
   /// @return The copy of the current (this) StaticMemoryManager
-  std::shared_ptr<AbstractMemoryManager < ManagedMemory>> copy() override {
+  std::shared_ptr<MemoryManager < ManagedMemory>> copy() override {
     return std::make_shared<StaticMemoryManager<ManagedMemory, Args...>>(*this);
   }
 

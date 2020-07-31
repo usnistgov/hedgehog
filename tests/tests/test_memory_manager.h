@@ -21,9 +21,9 @@
 #define HEDGEHOG_TESTS_TEST_MEMORY_MANAGER_H
 
 #include "../../hedgehog/hedgehog.h"
-
+#ifdef HH_USE_CUDA
 #include "../data_structures/cuda_tasks/cuda_int_to_memory_managed_int.h"
-
+#endif
 #include "../data_structures/tasks/int_to_static_memory_managed_int.h"
 #include "../data_structures/tasks/int_to_dynamic_memory_managed_int.h"
 #include "../data_structures/tasks/static_memory_managed_int_dynamic_memory_managed_int_to_static_memory_managed_int.h"
@@ -33,7 +33,6 @@
 #include "../data_structures/execution_pipelines/execution_pipeline_int_to_static_memory_managed_int.h"
 
 void testMemoryManagers() {
-#ifdef HH_USE_CUDA
   int count = 0;
   std::vector<int> deviceId = {0, 0, 0, 0, 0};
 
@@ -41,23 +40,31 @@ void testMemoryManagers() {
 
   auto staticTask = std::make_shared<IntToStaticMemoryManagedInt>(2);
   auto dynamicTask = std::make_shared<IntToDynamicMemoryManagedInt>(2);
+#ifdef HH_USE_CUDA
   auto CUDAStaticTask = std::make_shared<CudaIntToStaticMemoryManagedInt>();
-
+#endif
   auto outTask = std::make_shared<StaticMemoryManagedIntDynamicMemoryManagedIntToStaticMemoryManagedInt>();
   auto staticMM = std::make_shared<hh::StaticMemoryManager<StaticMemoryManageData<int>>>(2);
+#ifdef HH_USE_CUDA
   auto CUDAMM = std::make_shared<hh::StaticMemoryManager<StaticMemoryManageData<int>>>(2);
+#endif
   auto dynamicMM = std::make_shared<DynamicMemoryManager<int>>(2);
 
   staticTask->connectMemoryManager(staticMM);
   dynamicTask->connectMemoryManager(dynamicMM);
+#ifdef HH_USE_CUDA
   CUDAStaticTask->connectMemoryManager(CUDAMM);
-
+#endif
   innerGraph->input(staticTask);
   innerGraph->input(dynamicTask);
+#ifdef HH_USE_CUDA
   innerGraph->input(CUDAStaticTask);
+#endif
   innerGraph->addEdge(staticTask, outTask);
   innerGraph->addEdge(dynamicTask, outTask);
+#ifdef HH_USE_CUDA
   innerGraph->addEdge(CUDAStaticTask, outTask);
+#endif
   innerGraph->output(outTask);
 
   auto intToStaticMemoryManagedIntExecutionPipeline =
@@ -80,7 +87,10 @@ void testMemoryManagers() {
   }
 
   intToStaticMemoryManagedIntGraph->waitForTermination();
+#ifdef HH_USE_CUDA
   ASSERT_EQ(count, 1000);
+#else
+  ASSERT_EQ(count, 500);
 #endif
 }
 

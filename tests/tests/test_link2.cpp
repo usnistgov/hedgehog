@@ -24,16 +24,26 @@
 #include <hedgehog/api/tools/graph_signal_handler.h>
 
 #include <gtest/gtest.h>
+#ifdef HH_USE_CUDA
 #include "../data_structures/cuda_tasks/cuda_link_example.h"
-#include "tests/data_structures/cuda_tasks/cuda_link2_example.h"
+#include "../data_structures/cuda_tasks/cuda_link2_example.h"
+#else
+#include "../data_structures/tasks/link_example.h"
+#include "../data_structures/tasks/link2_example.h"
+#endif
 
 
 
 void testLink2() {
-#ifdef HH_USE_CUDA
+
   hh::Graph<int, int> g("SimpleLinkGraph");
+#ifdef HH_USE_CUDA
   auto t = std::make_shared<CudaLinkExample>();
   auto t2 = std::make_shared<CudaLink2Example>();
+#else
+  auto t = std::make_shared<LinkExample>();
+  auto t2 = std::make_shared<Link2Example>();
+#endif
   size_t count = 0;
 
   g.input(t);
@@ -56,5 +66,5 @@ void testLink2() {
   g.waitForTermination();
 
   ASSERT_EQ(count, (size_t)100);
-#endif
+
 }

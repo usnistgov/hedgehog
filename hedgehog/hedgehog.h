@@ -29,7 +29,7 @@
 #endif // HH_USE_CUDA
 #include "api/memory_manager/memory_data.h"
 #include "api/memory_manager/static_memory_manager.h"
-#include "api/memory_manager/abstract_memory_manager.h"
+#include "api/memory_manager/memory_manager.h"
 #include "api/state_manager/state_manager.h"
 #include "api/abstract_execution_pipeline.h"
 

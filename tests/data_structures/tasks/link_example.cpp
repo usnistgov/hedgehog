@@ -17,51 +17,14 @@
 // United States.
 
 
-#include <hedgehog/hedgehog.h>
-#include <hedgehog/api/tools/graph_signal_handler.h>
-#ifdef HH_USE_CUDA
-#include "../data_structures/cuda_tasks/cuda_link_example.h"
-#include "../data_structures/cuda_tasks/cuda_link2_example.h"
-#else
-#include "../data_structures/tasks/link_example.h"
-#include "../data_structures/tasks/link2_example.h"
-#endif
+#include "link_example.h"
 
-#include "test_link.h"
+void LinkExample::execute(std::shared_ptr<int> ptr) {
+  addResult(std::make_shared<float>(*ptr));
+}
 
-#include <gtest/gtest.h>
+LinkExample::LinkExample() : AbstractTask("LinkExample", 2) {}
 
-void testLink() {
-
-  hh::Graph<int, int> g("SimpleLinkGraph");
-  #ifdef HH_USE_CUDA
-  auto t = std::make_shared<CudaLinkExample>();
-  auto t2 = std::make_shared<CudaLink2Example>();
-  #else
-  auto t = std::make_shared<LinkExample>();
-  auto t2 = std::make_shared<Link2Example>();
-  #endif
-  size_t count = 0;
-
-  g.input(t);
-  g.addEdge(t, t2);
-  g.output(t2);
-
-  hh::GraphSignalHandler<int, int>::registerGraph(&g);
-  hh::GraphSignalHandler<int, int>::registerSignal();
-
-  g.executeGraph();
-
-  for (int i = 0; i < 100; ++i) { g.pushData(std::make_shared<int>(i)); }
-
-  g.finishPushingData();
-
-  while((g.getBlockingResult())) {
-    ++count;
-  }
-
-  g.waitForTermination();
-
-  ASSERT_EQ(count, (size_t)100);
-
+std::shared_ptr<hh::AbstractTask<float, int>> LinkExample::copy() {
+  return std::make_shared<LinkExample>();
 }

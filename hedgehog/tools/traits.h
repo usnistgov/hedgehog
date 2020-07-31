@@ -54,18 +54,18 @@ inline constexpr auto isUnique<T, Rest...> =
     std::bool_constant<(!std::is_same_v<T, Rest> && ...) && isUnique<Rest...>>{};
 
 /// @brief Test correctness of type given to a memory manager
-/// @tparam PossibleManagedMemory Type to test to be used in AbstractMemoryManager
+/// @tparam PossibleManagedMemory Type to test to be used in MemoryManager
 template<class PossibleManagedMemory>
 struct IsManagedMemory {
   constexpr static bool const value =
       std::is_base_of_v<MemoryData<PossibleManagedMemory>, PossibleManagedMemory>
           && std::is_default_constructible_v<PossibleManagedMemory>;    ///< True if PossibleManagedMemory can be
-  ///< handled by an AbstractMemoryManager, else
+  ///< handled by an MemoryManager, else
   ///< False
 };
 
 /// @brief Direct IsManagedMemory value accessor
-/// @tparam PossibleManagedMemory Type to test to be used in AbstractMemoryManager
+/// @tparam PossibleManagedMemory Type to test to be used in MemoryManager
 template<class PossibleManagedMemory>
 inline constexpr bool is_managed_memory_v = IsManagedMemory<PossibleManagedMemory>::value;
 

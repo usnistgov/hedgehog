@@ -23,7 +23,7 @@
 #include "../behavior/io/multi_receivers.h"
 #include "../behavior/io/sender.h"
 #include "../behavior/execute.h"
-#include "memory_manager/abstract_memory_manager.h"
+#include "memory_manager/memory_manager.h"
 #include "../core/node/core_node.h"
 #include "../core/defaults/core_default_task.h"
 
@@ -38,14 +38,14 @@ namespace hh {
 /// functionality. Also, if the AbstractTask is part of Graph that will be duplicated with an AbstractExecutionPipeline,
 /// AbstractTask::copy method needs to be overloaded.
 ///
-/// An AbstractMemoryManager could be linked to a task through a graph (from tutorial 4, example shows Cuda memory usage):
+/// An MemoryManager could be linked to a task through a graph (from tutorial 4, example shows Cuda memory usage):
 /// @code
 /// auto productTask = std::make_shared<CudaProductTask<MatrixType>>(p, numberThreadProduct);
 /// auto cudaMemoryManagerA = std::make_shared<CudaMemoryManager<MatrixType, 'a'>>(nBlocks + 4, blockSize);
 /// productTask->connectMemoryManager(cudaMemoryManagerProduct);
 /// @endcode
 ///
-/// Linking an AbstractMemoryManager requires that the AbstractTask's TaskOutput match the template type of the AbstractMemoryManager
+/// Linking an MemoryManager requires that the AbstractTask's TaskOutput match the template type of the MemoryManager
 ///
 /// The default order of execution is:
 ///     -# The cluster is created, for each task:
@@ -83,7 +83,7 @@ class AbstractTask :
   static_assert(sizeof... (TaskInputs) >= 1, "A node need to have one output type and at least one output type.");
 
   std::shared_ptr<core::CoreTask<TaskOutput, TaskInputs...>> taskCore_ = nullptr; ///< Task Core
-  std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm_ = nullptr; ///< Task's memory manager
+  std::shared_ptr<MemoryManager<TaskOutput>> mm_ = nullptr; ///< Task's memory manager
 
  public:
   /// @brief AbstractTask default constructor
@@ -186,7 +186,7 @@ class AbstractTask :
 
   /// @brief Task's memory manager accessor
   /// @return Task's memory manager
-  std::shared_ptr<AbstractMemoryManager<TaskOutput>> const & memoryManager() const { return mm_; }
+  std::shared_ptr<MemoryManager<TaskOutput>> const & memoryManager() const { return mm_; }
 
   /// @brief Default copy overload, fail if cluster need to be copied
   /// @return A copy of the current AbstractTask
@@ -200,7 +200,7 @@ class AbstractTask :
 
   /// @brief Connect a memory manager to the task
   /// @param mm Memory manager to connect
-  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> mm) {
+  void connectMemoryManager(std::shared_ptr<MemoryManager<TaskOutput>> mm) {
     static_assert(
         traits::is_managed_memory_v<TaskOutput>,
         "The type given to the memory manager should inherit \"MemoryData\", and be default constructible!");

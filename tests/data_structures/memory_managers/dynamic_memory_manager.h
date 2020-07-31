@@ -23,12 +23,12 @@
 #include "../datas/dynamic_memory_manage_data.h"
 
 template<class T>
-class DynamicMemoryManager : public hh::AbstractMemoryManager<DynamicMemoryManageData<T>> {
+class DynamicMemoryManager : public hh::MemoryManager<DynamicMemoryManageData<T>> {
  public:
   explicit DynamicMemoryManager(size_t const &poolSize)
-      : hh::AbstractMemoryManager<DynamicMemoryManageData<T>>(poolSize) {}
+      : hh::MemoryManager<DynamicMemoryManageData<T>>(poolSize) {}
 
-  std::shared_ptr<hh::AbstractMemoryManager<DynamicMemoryManageData<T>>> copy() override {
+  std::shared_ptr<hh::MemoryManager<DynamicMemoryManageData<T>>> copy() override {
     return std::make_shared<DynamicMemoryManager<T>>(this->capacity());
   }
 };

@@ -33,7 +33,7 @@
 #include "../../tools/nvtx_profiler.h"
 #include "../behavior/core_execute.h"
 
-#include "../../api/memory_manager/abstract_memory_manager.h"
+#include "../../api/memory_manager/memory_manager.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -344,7 +344,7 @@ class CoreTask
   /// and the memory manager defined
   /// @param mm Memory manager to connect
   /// @param taskCopy Task to connect the memory manager
-  void connectMemoryManager(std::shared_ptr<AbstractMemoryManager<TaskOutput>> const &mm,
+  void connectMemoryManager(std::shared_ptr<MemoryManager<TaskOutput>> const &mm,
                             std::shared_ptr<AbstractTask<TaskOutput, TaskInputs...>> taskCopy) {
     if constexpr (traits::is_managed_memory_v<TaskOutput>) {
       if (mm) {

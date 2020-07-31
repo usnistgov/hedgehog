@@ -23,6 +23,7 @@
 #include "../../hedgehog/hedgehog.h"
 #include "../data_structures/tasks/float_to_int_cycle.h"
 #include "../data_structures/tasks/int_double_char_to_float.h"
+#include "../data_structures/states/state_int_float_to_int.h"
 
 void testCycles() {
   int count = 0;
