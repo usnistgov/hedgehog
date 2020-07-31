@@ -166,7 +166,7 @@ class CoreTask
   void run() override {
     HLOG_SELF(2, "Run")
 #ifndef HH_DISABLE_PROFILE
-    std::chrono::time_point<std::chrono::high_resolution_clock>
+    std::chrono::time_point<std::chrono::system_clock>
         start,
         finish;
 #endif
@@ -181,11 +181,11 @@ class CoreTask
     // If automatic start is enable send nullptr to all input nodes and wake them up
     if (this->automaticStart()) {
 #ifndef HH_DISABLE_PROFILE
-      start = std::chrono::high_resolution_clock::now();
+      start = std::chrono::system_clock::now();
 #endif
       (static_cast<CoreExecute<TaskInputs> *>(this)->callExecute(nullptr), ...);
 #ifndef HH_DISABLE_PROFILE
-      finish = std::chrono::high_resolution_clock::now();
+      finish = std::chrono::system_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
 #endif
     }
@@ -193,23 +193,23 @@ class CoreTask
     // Actual computation loop
     while (!this->callCanTerminate(true)) {
 #ifndef HH_DISABLE_PROFILE
-      start = std::chrono::high_resolution_clock::now();
+      start = std::chrono::system_clock::now();
 #endif
       // Wait for a data to arrive or termination
       volatile bool canTerminate = this->waitForNotification();
 #ifndef HH_DISABLE_PROFILE
-      finish = std::chrono::high_resolution_clock::now();
+      finish = std::chrono::system_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
 #endif
       // If can terminate break the loop early
       if (canTerminate) { break; }
 #ifndef HH_DISABLE_PROFILE
-      start = std::chrono::high_resolution_clock::now();
+      start = std::chrono::system_clock::now();
 #endif
       // Operate the receivers to get a data and send it to execute
       (this->operateReceiver<TaskInputs>(), ...);
 #ifndef HH_DISABLE_PROFILE
-      finish = std::chrono::high_resolution_clock::now();
+      finish = std::chrono::system_clock::now();
       this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
 #endif
     }
