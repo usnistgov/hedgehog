@@ -74,6 +74,7 @@ class CoreNode {
   std::chrono::duration<double, std::micro>
       creationDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node creation duration
       executionDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node execution duration
+      perElementExecutionDuration_ = std::chrono::duration<uint64_t, std::micro>::zero(), ///< Node per element duration
       waitDuration_ = std::chrono::duration<double, std::micro>::zero(), ///< Node wait duration
       memoryWaitDuration_ = std::chrono::duration<double, std::micro>::zero(); ///< Node memory wait duration
 
@@ -174,6 +175,12 @@ class CoreNode {
   /// @return Execution time
   [[nodiscard]] std::chrono::duration<double, std::micro> const &executionTime() const { return executionDuration_; }
 
+  /// @brief Total time per element during execute
+  /// @return Total time per element during execute
+  [[nodiscard]] std::chrono::duration<double, std::micro> const &perElementExecutionTime() const {
+    return perElementExecutionDuration_;
+  }
+
   /// @brief Wait time accessor
   /// @return Wait time
   [[nodiscard]] std::chrono::duration<double, std::micro> const &waitTime() const { return waitDuration_; }
@@ -187,7 +194,7 @@ class CoreNode {
   /// @return Execution time per element
   [[nodiscard]] std::chrono::duration<double, std::micro> executionTimePerElement() const {
     if(this->numberReceivedElements() == 0){ std::chrono::duration<double, std::micro>::zero(); }
-    return this->executionTime() / this->numberReceivedElements();
+    return this->perElementExecutionTime() / this->numberReceivedElements();
   }
 
   /// @brief In cluster property accessor
@@ -692,6 +699,12 @@ class CoreNode {
   /// @param exec Duration to add to the execution duration
   void incrementExecutionDuration(std::chrono::duration<double, std::micro> const &exec) {
     this->executionDuration_ += exec;
+  }
+
+  /// @brief Increment per element execution duration
+  /// @param exec Duration to add to the per element execution duration
+  void incrementPerElementExecutionDuration(std::chrono::duration<uint64_t, std::micro> const &exec) {
+    this->perElementExecutionDuration_ += exec;
   }
 };
 

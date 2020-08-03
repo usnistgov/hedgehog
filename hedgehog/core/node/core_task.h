@@ -248,7 +248,11 @@ class CoreTask
       this->incrementNumberReceivedElements();
       this->unlockUniqueMutex();
       // Call execute
+      std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
       static_cast<CoreExecute<Input> *>(this)->callExecute(data);
+      std::chrono::time_point<std::chrono::high_resolution_clock> finish = std::chrono::high_resolution_clock::now();
+      this->incrementPerElementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+
     } else {
       // Unlock the mutex
       this->unlockUniqueMutex();

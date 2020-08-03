@@ -64,6 +64,38 @@ if (LOG)
 endif (LOG)
 
 if (RUN_GTEST)
+    # Add Compile flags
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+    if (NOT MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+    endif (NOT MSVC)
+
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+        set(CMAKE_COMPILER_IS_CLANGXX 1)
+        set(use-libclang ON)
+    endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+
+    if (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
+    endif (NOT APPLE AND NOT CMAKE_COMPILER_IS_CLANGXX AND NOT MSVC)
+
+    # Set specific flags for filesystem [experimental] library
+    if (CMAKE_COMPILER_IS_CLANGXX)
+        string(REGEX REPLACE bin.* "" CLANG_FOLDER ${CMAKE_CXX_COMPILER})
+        string(CONCAT FS_LIB_PATH ${CLANG_FOLDER} "lib/")
+        message("Try to find Filesystem library in " ${FS_LIB_PATH})
+        link_directories(${FS_LIB_PATH})
+
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug")
+
+        if (NOT APPLE)
+            link_libraries(stdc++fs)
+        endif (NOT APPLE)
+    elseif (NOT MSVC)
+        link_libraries(stdc++fs)
+    endif (CMAKE_COMPILER_IS_CLANGXX)
+
     # Download and unpack googletest at configure time
     configure_file(tests/CMakeLists.txt.gtest googletest-download/CMakeLists.txt)
     execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -118,7 +150,7 @@ if (BUILD_MAIN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
     if (NOT MSVC)
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Werror -pedantic -pthread")
     endif (NOT MSVC)
 
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")

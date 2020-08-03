@@ -438,7 +438,7 @@ class DotPrinter : public AbstractPrinter {
             || this->structureOptions_ == StructureOptions::ALL) {
           ss << "\\nNumber Elements Received: " << node->numberReceivedElements();
           ss << "\\nWait Time: " << durationPrinter(node->waitTime().count());
-          ss << "\\nExecution Time: " << durationPrinter(node->executionTime().count());
+          ss << "\\nDequeue + Execution Time: " << durationPrinter(node->executionTime().count());
           ss << "\\nExecution Time Per Element: " << durationPrinter(node->executionTimePerElement().count());
           if (node->hasMemoryManagerAttached()) {
             ss << "\\nMemory Wait Time: " << durationPrinter(node->memoryWaitTime().count());
@@ -475,7 +475,7 @@ class DotPrinter : public AbstractPrinter {
             ss << durationPrinter(node->meanWaitTimeCluster().count()) << "\\n";
           }
           // Print the execution time
-          ss << "Execution Time: ";
+          ss << "Dequeue + Execution Time: ";
           if (node->numberThreads() > 1) {
             ss << "\\n"
                 << "  Min: " << durationPrinter(minmaxExec.first) << "\\n"
@@ -537,7 +537,7 @@ class DotPrinter : public AbstractPrinter {
         }
         ss << "\\nNumber Elements Received: " << node->numberReceivedElements();
         ss << "\\nWait Time: " << durationPrinter(node->waitTime().count());
-        ss << "\\nExecution Time: " << durationPrinter(node->executionTime().count());
+        ss << "\\nDequeue + Execution Time: " << durationPrinter(node->executionTime().count());
         ss << "\\nExecution Time Per Element: " << durationPrinter(node->executionTimePerElement().count());
         ss << "\"";
         ss << ",shape=diamond";
