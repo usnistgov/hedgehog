@@ -213,6 +213,9 @@ class MemoryManager {
     managedMemory = this->pool()->pop_front();
     HLOG(4,
          "StaticMemoryManager After waiting: received: " << managedMemory << " pSize: " << (int) (this->pool()->size()))
+
+    managedMemory->reuse();
+
     return managedMemory;
   };
 

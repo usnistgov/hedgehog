@@ -92,6 +92,12 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>
   /// @attention If a StaticMemoryManager is used, then deallocation should be done within the destructor to match
   /// any allocations done within the constructor. (see StaticMemoryManager for more details)
   virtual void recycle() {};
+
+  /// @brief Mechanism to reuse the data.
+  /// @detauls If the ManagedMemory type uses user-defined allocations such as unified memory, then reuse is an
+  /// appropriate place to apply synchronization on any asynchronous operations that were applied in the recycle
+  /// function. It will be called only once before it is returned from getManagedMemory.
+  virtual void reuse() {};
 };
 }
 #endif //HEDGEHOG_MEMORY_DATA_H
