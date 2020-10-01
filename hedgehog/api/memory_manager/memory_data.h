@@ -94,7 +94,7 @@ class MemoryData : public std::enable_shared_from_this<MemoryData<ManagedMemory>
   virtual void recycle() {};
 
   /// @brief Mechanism to reuse the data.
-  /// @detauls If the ManagedMemory type uses user-defined allocations such as unified memory, then reuse is an
+  /// @details If the ManagedMemory type uses user-defined allocations such as unified memory, then reuse is an
   /// appropriate place to apply synchronization on any asynchronous operations that were applied in the recycle
   /// function. It will be called only once before it is returned from getManagedMemory.
   virtual void reuse() {};

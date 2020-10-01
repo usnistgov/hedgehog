@@ -203,7 +203,7 @@ class AbstractTask :
   void connectMemoryManager(std::shared_ptr<MemoryManager<TaskOutput>> mm) {
     static_assert(
         traits::is_managed_memory_v<TaskOutput>,
-        "The type given to the memory manager should inherit \"MemoryData\", and be default constructible!");
+        "The type given to the managed memory should inherit \"MemoryData\", and be default constructible!");
     mm_ = mm;
   }
 
