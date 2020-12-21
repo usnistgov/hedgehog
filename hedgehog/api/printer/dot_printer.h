@@ -27,32 +27,16 @@
 #include <iostream>
 #include <iomanip>
 #include <iterator>
+#include <hedgehog/api/printer/options/color_scheme.h>
+#include <hedgehog/api/printer/options/structure_options.h>
+#include <hedgehog/api/printer/options/debug_options.h>
 
 #include "abstract_printer.h"
+
 #include "../../core/io/base/receiver/core_slot.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
-/// @brief Enum color options
-enum class ColorScheme {
-  NONE, ///< No added coloration
-  EXECUTION, ///< Colors nodes based on execution time
-  WAIT ///< Colors nodes based on wait time
-};
-
-/// @brief Enum structural options
-enum class StructureOptions {
-  NONE, ///< No added structural options
-  ALLTHREADING, ///< Displays all tasks in clusters
-  QUEUE, ///< Displays queue details (max queue size and queue size along edges)
-  ALL ///< Displays both ALLTHREADING and QUEUE
-};
-
-/// @brief Enum to enable debug printing
-enum class DebugOptions {
-  NONE, ///< No added debug options
-  DEBUG ///< Shows debug information such as pointer addresses for nodes and edges
-};
 
 /// @brief Printer to produce a dot representation of the current state of the graph
 /// @details https://www.graphviz.org/doc/info/lang.html
@@ -164,7 +148,7 @@ class DotPrinter : public AbstractPrinter {
       outputFile_
           << "digraph " << node->id()
           << " {\nlabel=\"" << node->name();
-      if (debugOptions_ == DebugOptions::DEBUG) {
+      if (debugOptions_ == DebugOptions::ALL) {
         outputFile_ << " " << node->id();
       }
       outputFile_ << "\\nExecution time:" << durationPrinter(this->graphExecutionDuration_)
@@ -173,7 +157,7 @@ class DotPrinter : public AbstractPrinter {
       // If the graph is an inner graph, i.e. a node of the outer graph
     } else {
       outputFile_ << "subgraph cluster" << node->id() << " {\nlabel=\"" << node->name();
-      if (debugOptions_ == DebugOptions::DEBUG) {
+      if (debugOptions_ == DebugOptions::ALL) {
         outputFile_ << " " << node->id();
       }
       outputFile_ << "\"; fontsize=25; penwidth=5; fillcolor=white;\n";
@@ -236,7 +220,7 @@ class DotPrinter : public AbstractPrinter {
   void printExecutionPipelineHeader(core::CoreNode *epNode, core::CoreNode *switchNode) override {
     //Print the dot subgraph header
     outputFile_ << "subgraph cluster" << epNode->id() << " {\nlabel=\"" << epNode->name();
-    if (debugOptions_ == DebugOptions::DEBUG) { outputFile_ << " " << epNode->id() << " / " << switchNode->id(); }
+    if (debugOptions_ == DebugOptions::ALL) { outputFile_ << " " << epNode->id() << " / " << switchNode->id(); }
     // Print a "triangle" node to represent the execution pipeline switch
     outputFile_ << "\"; penwidth=1; style=dotted; style=filled; fillcolor=gray80;\n "
                 << switchNode->id() << "[label=\"\", shape=triangle];\n";
@@ -400,7 +384,7 @@ class DotPrinter : public AbstractPrinter {
     // Print the name
     ss << node->id() << " [label=\"" << node->name();
     // Print the id (adress) in case of debug
-    if (debugOptions_ == DebugOptions::DEBUG) {
+    if (debugOptions_ == DebugOptions::ALL) {
       ss << " " << node->id() << " \\(" << node->threadId() << ", " << node->graphId() << "\\)";
     }
 
@@ -421,7 +405,7 @@ class DotPrinter : public AbstractPrinter {
           }
         }
         // If debug information printed
-        if (debugOptions_ == DebugOptions::DEBUG) {
+        if (debugOptions_ == DebugOptions::ALL) {
           // Print number of active input connection
           ss << "\\nActive input connection: " << dynamic_cast<core::CoreSlot *>(node)->numberInputNodes();
           // If all nodes in a cluster need to be printed
@@ -531,7 +515,7 @@ class DotPrinter : public AbstractPrinter {
         break;
         // Print state manager
       case core::NodeType::StateManager:
-        if (debugOptions_ == DebugOptions::DEBUG) {
+        if (debugOptions_ == DebugOptions::ALL) {
           ss << "\\nActive input connection: " << dynamic_cast<core::CoreSlot *>(node)->numberInputNodes();
           ss << "\\nActive threads: " << dynamic_cast<core::CoreSlot *>(node)->numberActiveThreadInCluster();
         }

@@ -216,6 +216,9 @@ if (BUILD_MAIN)
             hedgehog/api/tools/graph_signal_handler.h
             hedgehog/api/printer/abstract_printer.h
             hedgehog/api/printer/dot_printer.h
+            hedgehog/api/printer/options/color_scheme.h
+            hedgehog/api/printer/options/debug_options.h
+            hedgehog/api/printer/options/structure_options.h
             hedgehog/api/scheduler/default_scheduler.h
             hedgehog/tools/nvtx_profiler.h
             hedgehog/behavior/switch_rule.h

@@ -126,8 +126,6 @@ StructureOptions GraphSignalHandler<GraphOutput, GraphInputs...>
 
 template<class GraphOutput, class ... GraphInputs>
 DebugOptions GraphSignalHandler<GraphOutput, GraphInputs...>
-    ::debugOptions = DebugOptions::DEBUG; ///< Sets the default debug options
-
-
+    ::debugOptions = DebugOptions::ALL; ///< Sets the default debug options
 }
 #endif //HEDGEHOG_GRAPH_SIGNAL_HANDLER_H
