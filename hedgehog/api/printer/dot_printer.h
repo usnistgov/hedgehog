@@ -27,13 +27,15 @@
 #include <iostream>
 #include <iomanip>
 #include <iterator>
-#include <hedgehog/api/printer/options/color_scheme.h>
-#include <hedgehog/api/printer/options/structure_options.h>
-#include <hedgehog/api/printer/options/debug_options.h>
 
 #include "abstract_printer.h"
 
 #include "../../core/io/base/receiver/core_slot.h"
+
+#include "options/color_scheme.h"
+#include "options/structure_options.h"
+#include "options/debug_options.h"
+
 
 /// @brief Hedgehog main namespace
 namespace hh {
