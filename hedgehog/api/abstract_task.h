@@ -138,6 +138,10 @@ class AbstractTask :
         (name, numberThreads, nodeType, this, automaticStart);
   }
 
+  /// @brief Constructor to create an AbstractTask with a special Core.
+  /// @param taskCore Task core to use
+  explicit AbstractTask(std::shared_ptr<core::CoreTask<TaskOutput, TaskInputs...>> taskCore) : taskCore_(taskCore){}
+
   /// @brief Copy constructor
   /// @param rhs Task to copy
   explicit AbstractTask(AbstractTask<TaskOutput, TaskInputs ...> *rhs) {
