@@ -542,7 +542,7 @@ class DotPrinter : public AbstractPrinter {
   }
 
   /// @brief Return a RGB color for a value knowing the minimum value and the range, blue least, red highest
-  /// @param val Value to get the color
+  /// @param ns Value to get the color
   /// @param min Minimum value
   /// @param range Range value
   /// @return RGB color associated with the value
@@ -562,21 +562,21 @@ class DotPrinter : public AbstractPrinter {
   }
 
   /// @brief Get the rgb color for the execution time value
-  /// @param val Execution value to get the RGB color
+  /// @param ns Execution value to get the RGB color
   /// @return RGB color for val
   std::string getExecRGB(std::chrono::nanoseconds const &ns) {
     return getRGBFromRange(ns, this->minExecutionTime_, this->rangeExecutionTime_);
   }
 
   /// @brief Get the rgb color for the wait time value
-  /// @param val Execution value to get the RGB color
+  /// @param ns Execution value to get the RGB color
   /// @return RGB color for val
   std::string getWaitRGB(std::chrono::nanoseconds const &ns) {
     return getRGBFromRange(ns, this->minWaitTime_, this->rangeWaitTime_);
   }
 
   /// @brief Print a duration with the good unit
-  /// @param duration Duration to print
+  /// @param ns Duration to print
   /// @return std::string with the duration and the unit
   static std::string durationPrinter(std::chrono::nanoseconds const &ns) {
     std::ostringstream oss;
