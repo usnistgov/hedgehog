@@ -173,10 +173,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   /// @brief Compute the maximum execution time for the graph's inside nodes
   /// @return The maximum execution time for the graph's inside nodes
-  [[nodiscard]] std::chrono::duration<double, std::micro> maxExecutionTime() const override {
-    std::chrono::duration<double, std::micro>
-        ret = std::chrono::duration<double, std::micro>::min(),
-        temp{};
+  [[nodiscard]] std::chrono::nanoseconds maxExecutionTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::min(), temp{};
     std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
       core = it.second;
@@ -197,8 +195,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   /// @brief Compute the minimum execution time for the graph's inside nodes
   /// @return The minimum execution time for the graph's inside nodes
-  [[nodiscard]] std::chrono::duration<double, std::micro> minExecutionTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::max(), temp{};
+  [[nodiscard]] std::chrono::nanoseconds minExecutionTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::max(), temp{};
     std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
       core = it.second;
@@ -218,8 +216,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   /// @brief Compute the maximum wait time for the graph's inside nodes
   /// @return The maximum wait time for the graph's inside nodes
-  [[nodiscard]] std::chrono::duration<double, std::micro> maxWaitTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::min(), temp{};
+  [[nodiscard]] std::chrono::nanoseconds maxWaitTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::min(), temp{};
     std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
       core = it.second;
@@ -239,8 +237,8 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
 
   /// @brief Compute the minimum wait time for the graph's inside nodes
   /// @return The minimum wait time for the graph's inside nodes
-  [[nodiscard]] std::chrono::duration<double, std::micro> minWaitTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::max(), temp{};
+  [[nodiscard]] std::chrono::nanoseconds minWaitTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::max(), temp{};
     std::shared_ptr<CoreNode> core;
     for (auto const &it : *(this->insideNodes())) {
       core = it.second;
@@ -511,9 +509,6 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     createInnerClustersAndLaunchThreads();
     auto finishCreationTime = std::chrono::system_clock::now();
     this->creationDuration(finishCreationTime - this->creationTimeStamp());
-//        std::chrono::duration_cast<std::chrono::microseconds>(
-//        finishCreationTime - this->creationTimeStamp())
-//        );
   }
 
   /// @brief Wait for all inside threads to join
@@ -523,8 +518,6 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
     std::chrono::time_point<std::chrono::system_clock>
         endExecutionTimeStamp = std::chrono::system_clock::now();
     this->executionDuration(endExecutionTimeStamp - this->startExecutionTimeStamp());
-//        std::chrono::duration_cast<std::chrono::microseconds>
-//                                (endExecutionTimeStamp - this->startExecutionTimeStamp()));
   }
 
   /// @brief Notify the graph no more input data will be pushed

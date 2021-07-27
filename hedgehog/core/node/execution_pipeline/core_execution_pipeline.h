@@ -215,10 +215,10 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   /// @brief Return the maximum execution time of all inside graphs
   /// @return Maximum execution time of all inside graphs
-  [[nodiscard]] std::chrono::duration<double, std::micro> maxExecutionTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::min();
+  [[nodiscard]] std::chrono::nanoseconds maxExecutionTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::min();
     for (auto graph: epGraphs_) {
-      std::chrono::duration<double, std::micro> temp = graph->maxExecutionTime();
+      std::chrono::nanoseconds temp = graph->maxExecutionTime();
       if (temp > ret) ret = temp;
     }
     return ret;
@@ -226,10 +226,10 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   /// @brief Return the minimum execution time of all inside graphs
   /// @return Minimum execution time of all inside graphs
-  [[nodiscard]] std::chrono::duration<double, std::micro> minExecutionTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::max();
+  [[nodiscard]] std::chrono::nanoseconds minExecutionTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::max();
     for (auto graph: epGraphs_) {
-      std::chrono::duration<double, std::micro> temp = graph->minExecutionTime();
+      std::chrono::nanoseconds temp = graph->minExecutionTime();
       if (temp < ret) ret = temp;
     }
     return ret;
@@ -237,10 +237,10 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   /// @brief Return the maximum wait time of all inside graphs
   /// @return Maximum wait time of all inside graphs
-  [[nodiscard]] std::chrono::duration<double, std::micro> maxWaitTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::min();
+  [[nodiscard]] std::chrono::nanoseconds maxWaitTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::min();
     for (auto graph: epGraphs_) {
-      std::chrono::duration<double, std::micro> temp = graph->maxWaitTime();
+      std::chrono::nanoseconds temp = graph->maxWaitTime();
       if (temp > ret) ret = temp;
     }
     return ret;
@@ -248,10 +248,10 @@ class CoreExecutionPipeline : public CoreTask<GraphOutput, GraphInputs...> {
 
   /// @brief Return the minimum wait time of all inside graphs
   /// @return Minimum wait time of all inside graphs
-  [[nodiscard]] std::chrono::duration<double, std::micro> minWaitTime() const override {
-    std::chrono::duration<double, std::micro> ret = std::chrono::duration<double, std::micro>::max();
+  [[nodiscard]] std::chrono::nanoseconds minWaitTime() const override {
+    std::chrono::nanoseconds ret = std::chrono::nanoseconds::max();
     for (auto graph: epGraphs_) {
-      std::chrono::duration<double, std::micro> temp = graph->minWaitTime();
+      std::chrono::nanoseconds temp = graph->minWaitTime();
       if (temp < ret) ret = temp;
     }
     return ret;

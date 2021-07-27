@@ -235,7 +235,6 @@ class AbstractTask :
 #ifndef HH_DISABLE_PROFILE
     auto finish = std::chrono::system_clock::now();
     this->core()->incrementWaitForMemoryDuration(finish-start);
-//        std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
 #endif
     return data;
   }

@@ -186,7 +186,7 @@ class CoreTask
       (static_cast<CoreExecute<TaskInputs> *>(this)->callExecute(nullptr), ...);
 #ifndef HH_DISABLE_PROFILE
       finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 #endif
     }
 
@@ -199,7 +199,7 @@ class CoreTask
       volatile bool canTerminate = this->waitForNotification();
 #ifndef HH_DISABLE_PROFILE
       finish = std::chrono::system_clock::now();
-      this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+      this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 #endif
       // If can terminate break the loop early
       if (canTerminate) { break; }
@@ -210,7 +210,7 @@ class CoreTask
       (this->operateReceiver<TaskInputs>(), ...);
 #ifndef HH_DISABLE_PROFILE
       finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
+      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 #endif
     }
 
@@ -248,11 +248,10 @@ class CoreTask
       this->incrementNumberReceivedElements();
       this->unlockUniqueMutex();
       // Call execute
-      std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
+      std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
       static_cast<CoreExecute<Input> *>(this)->callExecute(data);
-      std::chrono::time_point<std::chrono::high_resolution_clock> finish = std::chrono::high_resolution_clock::now();
-      this->incrementPerElementExecutionDuration(std::chrono::duration_cast<std::chrono::microseconds>(finish - start));
-
+      std::chrono::time_point<std::chrono::system_clock> finish = std::chrono::system_clock::now();
+      this->incrementPerElementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     } else {
       // Unlock the mutex
       this->unlockUniqueMutex();
