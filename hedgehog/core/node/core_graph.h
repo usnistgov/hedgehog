@@ -380,7 +380,7 @@ class CoreGraph : public CoreSender<GraphOutput>, public CoreGraphMultiReceivers
       this->addReceiversToSource(inputCoreNode);
     } else {
       std::ostringstream oss;
-      oss << "The node " << inputCoreNode->name() << " is not a multi receiver: " << __FUNCTION__;
+      oss << "The node " << inputNode->core()->name() << " is not a multi receiver: " << __FUNCTION__;
       HLOG_SELF(0, oss.str())
       throw (std::runtime_error(oss.str()));
     }

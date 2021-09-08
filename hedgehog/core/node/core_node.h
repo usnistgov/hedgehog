@@ -193,7 +193,7 @@ class CoreNode {
   /// @brief Execution time per element accessor
   /// @return Execution time per element
   [[nodiscard]] std::chrono::nanoseconds executionTimePerElement() const {
-    if(this->numberReceivedElements() == 0){ std::chrono::nanoseconds::zero(); }
+    if(this->numberReceivedElements() == 0){ return std::chrono::nanoseconds::zero(); }
     return this->perElementExecutionTime() / this->numberReceivedElements();
   }
 
@@ -522,7 +522,7 @@ class CoreNode {
         if (val > max) { max = val; }
       }
     } else {
-      min = this->executionTimePerElement().count();
+      min = this->numberReceivedElements();
       max = min;
     }
     return {min, max};
