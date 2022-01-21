@@ -90,8 +90,8 @@ class NvtxProfiler {
   /// @brief Creates an event attribute with a specified color
   /// @param color the color shown in the timeline view
   nvtxEventAttributes_t *createEventAttribute(uint32_t color) {
-    nvtxEventAttributes_t *event = new nvtxEventAttributes_t;
-    bzero(event, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
+    nvtxEventAttributes_t *event = new nvtxEventAttributes_t;    
+    std::memset(event, 0, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
     event->version = NVTX_VERSION;
     event->size = NVTX_EVENT_ATTRIB_STRUCT_SIZE;
     event->colorType = NVTX_COLOR_ARGB;
