@@ -1,0 +1,6 @@
+<map id="hh::core::CoreNode::memoryWaitTime" name="hh::core::CoreNode::memoryWaitTime">
+<area shape="rect" id="node1" title="Memory wait time accessor." alt="" coords="528,39,664,80"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#adbe0e76cbd9375829e0dc79bcd711244" title="Compute and return the mean memory wait time for all tasks in the node cluster." alt="" coords="273,39,480,80"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a09e05a3162eb9fde6b6efaa5b0110909" title="Compute and return the min and max memory wait time for all tasks in the node cluster." alt="" coords="5,5,225,47"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a2d75d62826e14816dcc139f83abdf4fb" title="Compute and return the standard deviation memory wait time for all tasks in the node cluster." alt="" coords="16,71,215,112"/>
+</map>

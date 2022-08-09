@@ -1,0 +1,5 @@
+<map id="hh::core::CoreTask::connectMemoryManager" name="hh::core::CoreTask::connectMemoryManager">
+<area shape="rect" id="node1" title="Connect a memory manager to a task if the type is valid (HedgehogTraits::is_managed_memory_v&lt;TaskOutp..." alt="" coords="239,53,412,94"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#ad8648eae0ba44b3b76e0675adecb8f05" title="Create a cluster for a CoreTask." alt="" coords="5,5,191,61"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance." alt="" coords="5,85,191,141"/>
+</map>

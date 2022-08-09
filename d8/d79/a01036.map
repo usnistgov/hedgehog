@@ -1,0 +1,17 @@
+<map id="hh::behavior::BaseStateManager&lt; StateOutput, StateInputs &gt;" name="hh::behavior::BaseStateManager&lt; StateOutput, StateInputs &gt;">
+<area shape="rect" id="node1" title="Base State Manager, needed to avoid virtual inheritance of AbstractTask." alt="" coords="258,1428,470,1520"/>
+<area shape="rect" id="node12" href="$d2/d41/a01037.html" title=" " alt="" coords="258,1583,470,1675"/>
+<area shape="rect" id="node2" href="$d4/d95/a00989.html" title=" " alt="" coords="261,949,467,1379"/>
+<area shape="rect" id="node3" href="$d2/db8/a01057.html" title=" " alt="" coords="81,316,269,408"/>
+<area shape="rect" id="node10" href="$d4/d95/a00989.html" title="Base node for computation." alt="" coords="430,457,634,887"/>
+<area shape="rect" id="node4" href="$d8/d18/a01069.html" title="Node Behavior definition." alt="" coords="230,5,410,112"/>
+<area shape="rect" id="node5" href="$d2/db8/a01057.html" title="MultiReceivers Behavior definition, node has a list of input types." alt="" coords="43,161,231,253"/>
+<area shape="rect" id="node6" href="$de/d9e/a01061.html" title=" " alt="" coords="293,316,435,408"/>
+<area shape="rect" id="node7" href="$de/d9e/a01061.html" title="Sender Behavior definition, node has an output type." alt="" coords="358,161,501,253"/>
+<area shape="rect" id="node11" href="$de/d9e/a01061.html" title=" " alt="" coords="461,316,603,408"/>
+<area shape="rect" id="node8" href="$dc/d99/a01053.html" title=" " alt="" coords="680,316,829,408"/>
+<area shape="rect" id="node9" href="$dc/d99/a01053.html" title="Execute Behavior definition, node that has an execution for an Input data type." alt="" coords="680,161,829,253"/>
+<area shape="rect" id="node13" href="$d1/d83/a01041.html" title="Implementation of the execute method for the StateManager." alt="" coords="163,1724,397,1875"/>
+<area shape="rect" id="node14" href="$d1/d83/a01041.html" title=" " alt="" coords="239,1952,473,2103"/>
+<area shape="rect" id="node15" href="$d7/d46/a01045.html" title="Hedgehog graph&#39;s node, used to manage an AbstractState." alt="" coords="251,2152,461,2317"/>
+</map>

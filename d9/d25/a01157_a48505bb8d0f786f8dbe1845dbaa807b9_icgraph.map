@@ -1,0 +1,13 @@
+<map id="hh::core::CoreNode::isInside" name="hh::core::CoreNode::isInside">
+<area shape="rect" id="node1" title="Node inside property accessor." alt="" coords="509,319,645,361"/>
+<area shape="rect" id="node2" href="$dc/d06/a01153.html#adb8f457c0e552918c62ef09a4c13c8f7" title="Add a directed edge from a compatible &quot;from&quot; node to &quot;to&quot; node." alt="" coords="251,5,449,61"/>
+<area shape="rect" id="node3" href="$dc/d06/a01153.html#a8a66be420038d9812e9a2f94022a24f2" title="Broadcast data and notify all input nodes." alt="" coords="239,85,461,141"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a191279c99cc0abb1a4197e980b4548a0" title="Copy inner structure from rhs nodes to this." alt="" coords="280,166,420,207"/>
+<area shape="rect" id="node6" href="$dc/d06/a01153.html#a28cb85b928640ef36c4188081a3ea674" title="Execute the graph." alt="" coords="251,232,449,288"/>
+<area shape="rect" id="node7" href="$dc/d06/a01153.html#a3bbc4440a08c030ac44d3778b3afcc80" title="Notify the graph no more input data will be pushed." alt="" coords="251,312,449,368"/>
+<area shape="rect" id="node8" href="$dc/d06/a01153.html#a0af86dfc35e8aa8dcccce30228189309" title="Get data out of the graph." alt="" coords="251,392,449,448"/>
+<area shape="rect" id="node9" href="$dc/d06/a01153.html#a71d4034241c7d2f84075b31bcfab2566" title="Set a node as input for the graph." alt="" coords="251,472,449,528"/>
+<area shape="rect" id="node10" href="$dc/d06/a01153.html#aadc8bd15557f2e0e396a95c5e56324bf" title="Set a node as output for the graph." alt="" coords="251,552,449,608"/>
+<area shape="rect" id="node11" href="$dc/d06/a01153.html#a100bfb46e5fb3a5079411480042a8042" title="Set the graph as inside, in case of connection to another node." alt="" coords="251,632,449,688"/>
+<area shape="rect" id="node5" href="$dc/d81/a01161.html#ada06aafbeeece6c59743f3db624e55b6" title="Copy the inner structure from rhs to this CoreTask." alt="" coords="5,159,191,215"/>
+</map>

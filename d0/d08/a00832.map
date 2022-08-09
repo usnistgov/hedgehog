@@ -1,7 +1,0 @@
-<map id="hh::core::CoreSender&lt; Output &gt;" name="hh::core::CoreSender&lt; Output &gt;">
-<area shape="rect" id="node2" href="$d9/daf/a00830.html" title="Core Notifier interface, emit notification to CoreSlot. " alt="" coords="463,1445,618,1596"/>
-<area shape="rect" id="node3" href="$d5/d69/a00878.html" title="Main Hedgehog core abstraction. " alt="" coords="420,263,661,1396"/>
-<area shape="rect" id="node5" href="$de/d02/a01026.html" title="{size_t\n||}" alt="" coords="204,27,261,105"/>
-<area shape="rect" id="node7" href="$df/db5/a01158.html" title="{int\n||}" alt="" coords="428,27,467,105"/>
-<area shape="rect" id="node9" href="$d5/d4c/a01058.html" title="{bool\n||}" alt="" coords="676,27,723,105"/>
-</map>

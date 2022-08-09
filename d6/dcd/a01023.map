@@ -1,0 +1,3 @@
+<map id="hh::AbstractScheduler" name="hh::AbstractScheduler">
+<area shape="rect" id="node1" title="Abstract Hedgehog Scheduler interface, define per graph how the threads are bound to the nodes." alt="" coords="5,5,163,141"/>
+</map>

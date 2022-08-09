@@ -1,0 +1,9 @@
+<map id="hh::core::CoreNode::meanWaitTimeCluster" name="hh::core::CoreNode::meanWaitTimeCluster">
+<area shape="rect" id="node1" title="Compute and return the mean wait time for all tasks in the node cluster." alt="" coords="5,169,164,211"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#aaf6773dc3db7b675e53787a582492ba3" title="Belonging node accessor." alt="" coords="212,5,348,47"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a7dbb304ad7f405c9ea257ba9779b63be" title="Main cluster core node link to this node accessor." alt="" coords="212,71,348,112"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a167640f4e32db537e4be06a04a9a7ff6" title="Inside node accessor." alt="" coords="212,136,348,177"/>
+<area shape="rect" id="node5" href="$d9/d25/a01157.html#a820e38cb1c4453488b45866b488f5ab7" title="In cluster property accessor." alt="" coords="212,201,348,243"/>
+<area shape="rect" id="node6" href="$d9/d25/a01157.html#a18937de7b8f414b70dcdfb7d2f683422" title="Number of threads associated accessor." alt="" coords="212,267,348,308"/>
+<area shape="rect" id="node7" href="$d9/d25/a01157.html#aa7fa448f842eef4a6f8f289320486c7c" title="Wait time accessor." alt="" coords="212,332,348,373"/>
+</map>

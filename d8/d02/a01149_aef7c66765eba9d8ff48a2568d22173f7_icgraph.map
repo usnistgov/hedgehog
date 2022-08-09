@@ -1,0 +1,5 @@
+<map id="hh::core::CoreQueueSender::visit" name="hh::core::CoreQueueSender::visit">
+<area shape="rect" id="node1" title="Special visit method for a CoreQueueSender, printing an edge." alt="" coords="239,43,423,84"/>
+<area shape="rect" id="node2" href="$d9/d17/a01129.html#adc82a9241761c41f02c8c7a82a0f9d6a" title="Special visit method for graph&#39;s source." alt="" coords="7,5,189,47"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#abb886c833772a895e26effba595cba9f" title="Special visit method for a CoreTask." alt="" coords="5,71,191,127"/>
+</map>

@@ -1,7 +1,0 @@
-<map id="hh::core::CoreGraph::addEdge" name="hh::core::CoreGraph::addEdge">
-<area shape="rect" id="node2" href="$d5/d69/a00878.html#a48505bb8d0f786f8dbe1845dbaa807b9" title="Node inside property accessor. " alt="" coords="199,5,335,47"/>
-<area shape="rect" id="node3" href="$d5/d69/a00878.html#ae15e7b1921fd31311a89fcddb7244764" title="Slots accessor for the node. " alt="" coords="199,71,335,112"/>
-<area shape="rect" id="node4" href="$d9/daf/a00830.html#aa7980d62de65f61f69cfbc088562a080" title="Interface to add a CoreSlot to this notifier. " alt="" coords="193,136,340,177"/>
-<area shape="rect" id="node5" href="$df/d2a/a00874.html#a8ebe18d356e78905b130cc77bfdd0797" title="Register a node inside the graph. " alt="" coords="197,201,337,243"/>
-<area shape="rect" id="node6" href="$d5/d69/a00878.html#a3881f9aa60ddfb5e88c74a3bcb9d1c92" title="Add a node to the inside nodes. " alt="" coords="388,201,547,243"/>
-</map>

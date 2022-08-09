@@ -1,0 +1,7 @@
+<map id="hh::core::CoreTask::task" name="hh::core::CoreTask::task">
+<area shape="rect" id="node1" title="Node accessor." alt="" coords="265,133,399,174"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#aa07c388be3e8cfe027241a6082a4e4b2" title="CoreTask constructor (Used for AbstractTask and StateManager)" alt="" coords="19,5,204,61"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#ad8648eae0ba44b3b76e0675adecb8f05" title="Create a cluster for a CoreTask." alt="" coords="19,85,204,141"/>
+<area shape="rect" id="node4" href="$dc/d81/a01161.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance." alt="" coords="19,165,204,221"/>
+<area shape="rect" id="node5" href="$dc/d81/a01161.html#aa9deb3d46f4ecb44f32c05bb7e77a507" title="Test if a memory manager is attached to the task." alt="" coords="5,245,217,301"/>
+</map>

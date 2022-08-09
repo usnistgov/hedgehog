@@ -1,0 +1,8 @@
+<map id="hh::core::CoreNode::numberActiveThreadInCluster" name="hh::core::CoreNode::numberActiveThreadInCluster">
+<area shape="rect" id="node1" title="Compute and return the number of active nodes in a cluster." alt="" coords="5,136,208,177"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#aaf6773dc3db7b675e53787a582492ba3" title="Belonging node accessor." alt="" coords="256,5,392,47"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a7dbb304ad7f405c9ea257ba9779b63be" title="Main cluster core node link to this node accessor." alt="" coords="256,71,392,112"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a167640f4e32db537e4be06a04a9a7ff6" title="Inside node accessor." alt="" coords="256,136,392,177"/>
+<area shape="rect" id="node5" href="$d9/d25/a01157.html#a54c1a46c3dd5dc6f3456cf304902cf6b" title="Is active property accessor." alt="" coords="256,201,392,243"/>
+<area shape="rect" id="node6" href="$d9/d25/a01157.html#a820e38cb1c4453488b45866b488f5ab7" title="In cluster property accessor." alt="" coords="256,267,392,308"/>
+</map>

@@ -1,5 +1,0 @@
-<map id="hh::core::CoreNode::getSlots" name="hh::core::CoreNode::getSlots">
-<area shape="rect" id="node2" href="$da/d98/a00870.html#abc5481dd204f9cda9cfd46baca27affe" title="Connect coreNodeSender to a coreNodeReceiver, connect for data transfer and signal handling..." alt="" coords="189,5,413,61"/>
-<area shape="rect" id="node3" href="$df/d2a/a00874.html#adb8f457c0e552918c62ef09a4c13c8f7" title="Add a directed edge from a compatible &quot;from&quot; node to &quot;to&quot; node. " alt="" coords="231,86,371,127"/>
-<area shape="rect" id="node4" href="$d2/dab/a00886.html#aefb9bf3579d99a0389b642093efdbc4a" title="Add data and notification link between switch and one inside graph. " alt="" coords="197,152,406,208"/>
-</map>

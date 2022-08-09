@@ -1,0 +1,5 @@
+<map id="hh::core::CoreNode::isCudaRelated" name="hh::core::CoreNode::isCudaRelated">
+<area shape="rect" id="node1" title="Is related to CUDA, used to have a green background on the dot file." alt="" coords="427,13,563,54"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#a191279c99cc0abb1a4197e980b4548a0" title="Copy inner structure from rhs nodes to this." alt="" coords="239,13,379,54"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#ada06aafbeeece6c59743f3db624e55b6" title="Copy the inner structure from rhs to this CoreTask." alt="" coords="5,5,191,61"/>
+</map>

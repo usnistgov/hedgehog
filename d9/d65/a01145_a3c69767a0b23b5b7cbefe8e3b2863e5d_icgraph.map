@@ -1,0 +1,11 @@
+<map id="hh::core::CoreQueueNotifier::slots" name="hh::core::CoreQueueNotifier::slots">
+<area shape="rect" id="node1" title="Connected slots accessor." alt="" coords="575,181,760,223"/>
+<area shape="rect" id="node2" href="$d9/d65/a01145.html#a2c9fbe0fe0ee491064fec918a9cad73a" title="Add a slot to the set of connected slots." alt="" coords="321,71,507,112"/>
+<area shape="rect" id="node5" href="$d9/d65/a01145.html#a5c1042d791d34493f64ef1650de3d6ee" title="Notify all slots that the node is terminated." alt="" coords="321,181,507,223"/>
+<area shape="rect" id="node9" href="$d7/daf/a01169.html#a78140dc43ed60a916eb06d1dfa72e9ee" title="Stream all sender information into oss." alt="" coords="301,247,527,288"/>
+<area shape="rect" id="node3" href="$d9/d17/a01129.html#a7041944b4ce48a9c55db239a4d7ba0a4" title="Add slot to all inputs node possessing a CoreQueueSender." alt="" coords="39,5,220,47"/>
+<area shape="rect" id="node4" href="$d7/daf/a01169.html#a892c7beaaa5c24c3a6ad6c8c7f8c8610" title="Add a slot for every input types." alt="" coords="39,71,220,112"/>
+<area shape="rect" id="node6" href="$d7/daf/a01169.html#a8abc8506c685b6f92b0c6f0df492d84e" title="Notify terminated for all input types." alt="" coords="37,137,221,193"/>
+<area shape="rect" id="node7" href="$d9/d17/a01129.html#a11cf04cd3aa3566420aa1a3c89784309" title="Notify all input nodes possessing a CoreQueueSender of termination." alt="" coords="5,217,253,259"/>
+<area shape="rect" id="node8" href="$de/d1c/a01093.html#a58e255999d1e6ba40714d5f4165f5ebd" title="Defines what a CoreDefaultTask does after the execute loop." alt="" coords="42,283,217,324"/>
+</map>

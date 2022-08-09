@@ -1,0 +1,7 @@
+<map id="hh::core::CoreNode::perElementExecutionTime" name="hh::core::CoreNode::perElementExecutionTime">
+<area shape="rect" id="node1" title="Total time per element during execute." alt="" coords="787,43,969,84"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#af5271ed426f0259a4980a46b89a08a6b" title="Execution time per element accessor." alt="" coords="556,43,739,84"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a8ca83a29539e10c45c88ca4b27d87b88" title="Compute and return the mean execution time per received element for all tasks in the node cluster." alt="" coords="277,5,508,47"/>
+<area shape="rect" id="node5" href="$d9/d25/a01157.html#aa2d9bd573b893d19a2cdb8551ca87c4c" title="Compute and return the min and max execution time per element for all tasks in the node cluster." alt="" coords="291,71,494,127"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#aa06893f28e1008a7ca4e936f6dd84b72" title="Compute and return the standard deviation execution per received element time for all tasks in the no..." alt="" coords="5,5,229,47"/>
+</map>

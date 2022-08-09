@@ -1,0 +1,5 @@
+<map id="hh::traits::is_included&lt; T1, T2 &gt;" name="hh::traits::is_included&lt; T1, T2 &gt;">
+<area shape="rect" id="node1" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2." alt="" coords="27,375,174,467"/>
+<area shape="rect" id="node2" href="$de/d61/a01205.html" title=" " alt="" coords="5,204,196,325"/>
+<area shape="rect" id="node3" href="$de/d61/a01205.html" title="is_included Default case" alt="" coords="24,5,177,97"/>
+</map>

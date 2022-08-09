@@ -1,0 +1,4 @@
+<map id="hh::core::CoreQueueReceiver::popFront" name="hh::core::CoreQueueReceiver::popFront">
+<area shape="rect" id="node1" title="Return the front element of the queue and return it." alt="" coords="239,13,433,54"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#acca8bb46eee186b6a1ca6ba2af7f6af0" title="Operate a CoreTasks&#39;s receiver for a specific type, thread safe." alt="" coords="5,5,191,61"/>
+</map>

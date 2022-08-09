@@ -1,6 +1,0 @@
-<map id="hh::core::CoreGraph::output" name="hh::core::CoreGraph::output">
-<area shape="rect" id="node2" href="$d5/d69/a00878.html#a48505bb8d0f786f8dbe1845dbaa807b9" title="Node inside property accessor. " alt="" coords="199,5,335,47"/>
-<area shape="rect" id="node3" href="$d9/d02/a00834.html#a1549fb33434f9bb003e01d949d356c1f" title="Get inner CoreSender represented by this one in the case of outer graph for example. " alt="" coords="193,71,340,112"/>
-<area shape="rect" id="node4" href="$df/d2a/a00874.html#a8ebe18d356e78905b130cc77bfdd0797" title="Register a node inside the graph. " alt="" coords="197,136,337,177"/>
-<area shape="rect" id="node5" href="$d5/d69/a00878.html#a3881f9aa60ddfb5e88c74a3bcb9d1c92" title="Add a node to the inside nodes. " alt="" coords="388,136,547,177"/>
-</map>

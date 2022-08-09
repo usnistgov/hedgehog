@@ -1,0 +1,7 @@
+<map id="hh::AbstractTask::memoryManager" name="hh::AbstractTask::memoryManager">
+<area shape="rect" id="node1" title="Task&#39;s memory manager accessor." alt="" coords="265,133,441,174"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#ad8648eae0ba44b3b76e0675adecb8f05" title="Create a cluster for a CoreTask." alt="" coords="19,5,204,61"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance." alt="" coords="19,85,204,141"/>
+<area shape="rect" id="node4" href="$dc/d81/a01161.html#aa9deb3d46f4ecb44f32c05bb7e77a507" title="Test if a memory manager is attached to the task." alt="" coords="5,165,217,221"/>
+<area shape="rect" id="node5" href="$de/d1c/a01093.html#a47ca74a8994ccbc66e848cfae190c9d6" title="Defines what a CoreDefaultTask does before the execute loop." alt="" coords="24,246,199,287"/>
+</map>

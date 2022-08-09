@@ -1,0 +1,6 @@
+<map id="hh::core::CoreQueueNotifier::addSlot" name="hh::core::CoreQueueNotifier::addSlot">
+<area shape="rect" id="node1" title="Add a slot to the set of connected slots." alt="" coords="5,57,191,98"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor." alt="" coords="254,5,409,32"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#aea5c9af30ef76fb2d7bc4979960538c9" title="Node name accessor." alt="" coords="263,57,399,98"/>
+<area shape="rect" id="node4" href="$d9/d65/a01145.html#a3c69767a0b23b5b7cbefe8e3b2863e5d" title="Connected slots accessor." alt="" coords="239,122,424,163"/>
+</map>

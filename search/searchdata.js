@@ -4,11 +4,11 @@ var indexSectionsWithContent =
   1: "_abcdeghimnps",
   2: "h",
   3: "v",
-  4: "_abcdefghijlmnopqrstuvw~",
+  4: "abcdefghijlmnopqrstuvw~",
   5: "abcdefghimnopqrstuvw",
   6: "iot",
   7: "cdns",
-  8: "adenqw",
+  8: "aenqw",
   9: "h"
 };
 

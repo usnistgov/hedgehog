@@ -1,9 +1,0 @@
-<map id="hh::core::CoreQueueNotifier::slots" name="hh::core::CoreQueueNotifier::slots">
-<area shape="rect" id="node2" href="$dd/db2/a00866.html#a2c9fbe0fe0ee491064fec918a9cad73a" title="Add a slot to the set of connected slots. " alt="" coords="239,23,424,64"/>
-<area shape="rect" id="node4" href="$dd/db2/a00866.html#a5c1042d791d34493f64ef1650de3d6ee" title="Notify all slots that the node is terminated. " alt="" coords="239,104,424,145"/>
-<area shape="rect" id="node8" href="$d7/d46/a00890.html#a78140dc43ed60a916eb06d1dfa72e9ee" title="Stream all sender information into oss. " alt="" coords="259,169,404,211"/>
-<area shape="rect" id="node3" href="$d7/d46/a00890.html#a892c7beaaa5c24c3a6ad6c8c7f8c8610" title="Add a slot for every input types. " alt="" coords="490,5,635,47"/>
-<area shape="rect" id="node5" href="$da/d71/a00814.html#a58e255999d1e6ba40714d5f4165f5ebd" title="Defines what a CoreDefaultTask does after the execute loop. " alt="" coords="475,71,651,112"/>
-<area shape="rect" id="node6" href="$dc/d0a/a00850.html#a11cf04cd3aa3566420aa1a3c89784309" title="Notify all input nodes possessing a CoreQueueSender of termination. " alt="" coords="472,136,653,177"/>
-<area shape="rect" id="node7" href="$d7/d46/a00890.html#a8abc8506c685b6f92b0c6f0df492d84e" title="Notify terminated for all input types. " alt="" coords="490,201,635,243"/>
-</map>

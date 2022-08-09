@@ -1,0 +1,10 @@
+<map id="hh::core::CoreNode::minmaxExecTimeCluster" name="hh::core::CoreNode::minmaxExecTimeCluster">
+<area shape="rect" id="node1" title="Compute and return the min and max execution time for all tasks in the node cluster." alt="" coords="5,189,183,231"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#aaf6773dc3db7b675e53787a582492ba3" title="Belonging node accessor." alt="" coords="441,5,577,47"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a7dbb304ad7f405c9ea257ba9779b63be" title="Main cluster core node link to this node accessor." alt="" coords="441,71,577,112"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a167640f4e32db537e4be06a04a9a7ff6" title="Inside node accessor." alt="" coords="441,267,577,308"/>
+<area shape="rect" id="node5" href="$d9/d25/a01157.html#a820e38cb1c4453488b45866b488f5ab7" title="In cluster property accessor." alt="" coords="441,332,577,373"/>
+<area shape="rect" id="node6" href="$d9/d25/a01157.html#ad0c4d0752c6fe9121ab20759db638a20" title="Compute and return the mean execution time for all tasks in the node cluster." alt="" coords="231,189,393,231"/>
+<area shape="rect" id="node7" href="$d9/d25/a01157.html#a6af146b79b4c7605fe28f06fe13d3f35" title="Execution time accessor." alt="" coords="441,136,577,177"/>
+<area shape="rect" id="node8" href="$d9/d25/a01157.html#a18937de7b8f414b70dcdfb7d2f683422" title="Number of threads associated accessor." alt="" coords="441,201,577,243"/>
+</map>

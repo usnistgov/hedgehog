@@ -1,5 +1,0 @@
-<map id="hh::core::CoreGraphSource::visit" name="hh::core::CoreGraphSource::visit">
-<area shape="rect" id="node2" href="$d1/da6/a00738.html#a22065a0f5110a958ab90cdeb0bec5be7" title="Accessor to check if a node has been visited by the printer. " alt="" coords="255,5,398,47"/>
-<area shape="rect" id="node3" href="$d1/da6/a00738.html#a99f8d13b9b53b7ba329c1ac82a54d285" title="Print node information. " alt="" coords="251,71,402,112"/>
-<area shape="rect" id="node4" href="$da/d98/a00870.html#aef7c66765eba9d8ff48a2568d22173f7" title="Special visit method for a CoreQueueSender, printing an edge. " alt="" coords="235,136,419,177"/>
-</map>

@@ -1,3 +1,26 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/dd3/a00902.html" title="Base definition of HelperCoreMultiReceiversType. " alt="" coords="5,5,187,47"/>
+<area shape="rect" id="node1" href="$dc/d99/a01053.html" title=" " alt="" coords="205,568,354,609"/>
+<area shape="rect" id="node2" href="$d4/d95/a00989.html" title=" " alt="" coords="421,301,632,343"/>
+<area shape="rect" id="node3" href="$d4/d95/a00989.html" title=" " alt="" coords="423,477,630,519"/>
+<area shape="rect" id="node9" href="$d4/d95/a00989.html" title=" " alt="" coords="423,399,630,440"/>
+<area shape="rect" id="node10" href="$d4/d95/a00989.html" title=" " alt="" coords="425,672,629,713"/>
+<area shape="rect" id="node11" href="$d4/d95/a00989.html" title="Base node for computation." alt="" coords="425,581,629,623"/>
+<area shape="rect" id="node4" href="$d2/d41/a01037.html" title=" " alt="" coords="680,445,892,487"/>
+<area shape="rect" id="node8" href="$d2/d41/a01037.html" title="Base State Manager, needed to avoid virtual inheritance of AbstractTask." alt="" coords="680,511,892,552"/>
+<area shape="rect" id="node5" href="$d1/d83/a01041.html" title="Implementation of the execute method for the StateManager." alt="" coords="943,398,1145,454"/>
+<area shape="rect" id="node6" href="$d1/d83/a01041.html" title=" " alt="" coords="940,478,1148,534"/>
+<area shape="rect" id="node7" href="$d7/d46/a01045.html" title="Hedgehog graph&#39;s node, used to manage an AbstractState." alt="" coords="1196,485,1407,527"/>
+<area shape="rect" id="node12" href="$d8/d18/a01069.html" title="Node Behavior definition." alt="" coords="5,422,137,449"/>
+<area shape="rect" id="node13" href="$da/d0a/a00993.html" title=" " alt="" coords="442,21,611,63"/>
+<area shape="rect" id="node14" href="$d2/db8/a01057.html" title="MultiReceivers Behavior definition, node has a list of input types." alt="" coords="185,803,373,844"/>
+<area shape="rect" id="node15" href="$de/d9e/a01061.html" title="Sender Behavior definition, node has an output type." alt="" coords="208,868,351,909"/>
+<area shape="rect" id="node16" href="$da/d0a/a00993.html" title="Main Hedgehog object that does computation." alt="" coords="442,87,611,128"/>
+<area shape="rect" id="node17" href="$d2/db8/a01057.html" title=" " alt="" coords="185,87,373,128"/>
+<area shape="rect" id="node20" href="$d2/db8/a01057.html" title=" " alt="" coords="185,503,373,544"/>
+<area shape="rect" id="node21" href="$de/d9e/a01061.html" title=" " alt="" coords="208,152,351,193"/>
+<area shape="rect" id="node22" href="$de/d9e/a01061.html" title=" " alt="" coords="208,385,351,427"/>
+<area shape="rect" id="node23" href="$de/d9e/a01061.html" title=" " alt="" coords="208,685,351,727"/>
+<area shape="rect" id="node18" href="$da/deb/a00985.html" title=" " alt="" coords="421,152,632,193"/>
+<area shape="rect" id="node19" href="$da/deb/a00985.html" title="Node interface made for duplicating a graph, for example in the case of multi&#45;GPU computation." alt="" coords="427,217,626,259"/>
+<area shape="rect" id="node24" href="$d9/d7c/a01073.html" title=" " alt="" coords="195,217,363,259"/>
 </map>

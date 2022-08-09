@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['is_5fincluded',['is_included',['../d0/df0/a00934.html',1,'hh::traits']]],
-  ['ismanagedmemory',['IsManagedMemory',['../d3/dd1/a00914.html',1,'hh::traits']]]
+  ['is_5fincluded_585',['is_included',['../d5/d54/a01213.html',1,'hh::traits']]],
+  ['ismanagedmemory_586',['IsManagedMemory',['../dd/d43/a01193.html',1,'hh::traits']]]
 ];

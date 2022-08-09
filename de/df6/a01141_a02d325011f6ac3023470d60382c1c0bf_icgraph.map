@@ -1,0 +1,4 @@
+<map id="hh::core::CoreQueueSlot::hasNotifierConnected" name="hh::core::CoreQueueSlot::hasNotifierConnected">
+<area shape="rect" id="node1" title="Test if CoreNotifier are linked to this CoreQueueSlot." alt="" coords="263,13,429,54"/>
+<area shape="rect" id="node2" href="$d8/d92/a01165.html#ab6f3c165745ea5aa8a006bc9396690ab" title="Can terminate for the ep, specialised to not call user&#39;s defined one." alt="" coords="5,5,215,61"/>
+</map>

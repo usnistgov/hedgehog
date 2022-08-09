@@ -1,0 +1,6 @@
+<map id="hh::core::CoreQueueSlot::slotMutex" name="hh::core::CoreQueueSlot::slotMutex">
+<area shape="rect" id="node1" title="Mutex accessor." alt="" coords="299,79,465,120"/>
+<area shape="rect" id="node2" href="$d6/dc4/a01125.html#a0ef6c6d0a6a592c163a4ea26e82fa963" title="Wait for notification from the output nodes and return the state of the sink." alt="" coords="45,5,211,47"/>
+<area shape="rect" id="node3" href="$d2/df3/a01085.html#a1f27ede1c60fbd48da0042b090ece3ba" title="Define how the CoreDefaultExecutionPipeline wait for data." alt="" coords="5,71,251,127"/>
+<area shape="rect" id="node4" href="$dc/d81/a01161.html#a39908109a77b4064c37876dc6ecc1379" title="Wait method for notification." alt="" coords="35,151,221,207"/>
+</map>

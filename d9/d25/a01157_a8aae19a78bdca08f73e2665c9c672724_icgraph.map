@@ -1,0 +1,8 @@
+<map id="hh::core::CoreNode::threadId" name="hh::core::CoreNode::threadId">
+<area shape="rect" id="node1" title="Thread id accessor." alt="" coords="493,126,629,167"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#ad8648eae0ba44b3b76e0675adecb8f05" title="Create a cluster for a CoreTask." alt="" coords="240,5,425,61"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance." alt="" coords="240,85,425,141"/>
+<area shape="rect" id="node4" href="$d5/dfb/a01021.html#aa837a1fb4ae94914f8c767cb37d75bd7" title="Extract and create node information." alt="" coords="220,165,445,192"/>
+<area shape="rect" id="node6" href="$dc/d81/a01161.html#aea2086f7f4a23144d8621b8286178ccb" title="Main loop for the CoreTask." alt="" coords="240,216,425,272"/>
+<area shape="rect" id="node5" href="$d5/dfb/a01021.html#a151022226d1669917a836a1af15ff6df" title="Print node main information." alt="" coords="5,158,172,199"/>
+</map>

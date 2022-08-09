@@ -1,26 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d3/dee/a00774.html" title="hh::behavior::Execute\l\&lt; TaskInputs \&gt;" alt="" coords="205,450,354,491"/>
-<area shape="rect" id="node2" href="$d4/deb/a00710.html" title="hh::AbstractTask\&lt; GraphOutput,\l TaskInputs... \&gt;" alt="" coords="421,333,633,374"/>
-<area shape="rect" id="node3" href="$d4/deb/a00710.html" title="hh::AbstractTask\&lt; StateOutput,\l StateInputs... \&gt;" alt="" coords="423,425,631,466"/>
-<area shape="rect" id="node9" href="$d4/deb/a00710.html" title="hh::AbstractTask\&lt; TaskOutput,\l TaskInputs... \&gt;" alt="" coords="424,619,631,661"/>
-<area shape="rect" id="node11" href="$d4/deb/a00710.html" title="Base node for computation. " alt="" coords="424,529,631,570"/>
-<area shape="rect" id="node4" href="$d2/d4a/a00758.html" title="hh::behavior::BaseStateManager\l\&lt; StateOutput, StateInputs... \&gt;" alt="" coords="681,458,893,499"/>
-<area shape="rect" id="node8" href="$d2/d4a/a00758.html" title="Base State Manager, needed to avoid virtual inheritance of AbstractTask. " alt="" coords="681,393,893,434"/>
-<area shape="rect" id="node5" href="$df/d5f/a00762.html" title="Implementation of the execute method for the StateManager. " alt="" coords="945,411,1146,467"/>
-<area shape="rect" id="node6" href="$df/d5f/a00762.html" title="hh::behavior::StateManager\lExecuteDefinition\&lt; StateInputs,\l StateOutput, StateInputs... \&gt;" alt="" coords="941,491,1149,547"/>
-<area shape="rect" id="node7" href="$d4/d13/a00766.html" title="Hedgehog graph&#39;s node, used to manage an AbstractState. " alt="" coords="1197,498,1408,539"/>
-<area shape="rect" id="node10" href="$dd/d85/a00702.html" title="Abstract Task specialized for CUDA computation. " alt="" coords="694,619,881,661"/>
-<area shape="rect" id="node12" href="$d3/daf/a00790.html" title="Node Behavior definition. " alt="" coords="5,392,137,419"/>
-<area shape="rect" id="node13" href="$df/d96/a00714.html" title="hh::Graph\&lt; GraphOutput,\l GraphInputs... \&gt;" alt="" coords="443,21,612,62"/>
-<area shape="rect" id="node14" href="$d6/d17/a00778.html" title="MultiReceivers Behavior definition, node has a list of input types. " alt="" coords="185,750,373,791"/>
-<area shape="rect" id="node15" href="$da/d96/a00782.html" title="Sender Behavior definition, node has an output type. " alt="" coords="208,815,351,857"/>
-<area shape="rect" id="node16" href="$df/d96/a00714.html" title="Main Hedgehog object that does computation. " alt="" coords="443,86,612,127"/>
-<area shape="rect" id="node17" href="$d6/d17/a00778.html" title="hh::behavior::MultiReceivers\l\&lt; GraphInputs... \&gt;" alt="" coords="185,86,373,127"/>
-<area shape="rect" id="node20" href="$d6/d17/a00778.html" title="hh::behavior::MultiReceivers\l\&lt; TaskInputs... \&gt;" alt="" coords="185,515,373,557"/>
-<area shape="rect" id="node21" href="$da/d96/a00782.html" title="hh::behavior::Sender\l\&lt; GraphOutput \&gt;" alt="" coords="208,151,351,193"/>
-<area shape="rect" id="node22" href="$da/d96/a00782.html" title="hh::behavior::Sender\l\&lt; StateOutput \&gt;" alt="" coords="208,385,351,426"/>
-<area shape="rect" id="node23" href="$da/d96/a00782.html" title="hh::behavior::Sender\l\&lt; TaskOutput \&gt;" alt="" coords="208,633,351,674"/>
-<area shape="rect" id="node18" href="$d8/dcb/a00706.html" title="hh::AbstractExecutionPipeline\l\&lt; GraphOutput, GraphInputs... \&gt;" alt="" coords="422,217,633,258"/>
-<area shape="rect" id="node19" href="$d8/dcb/a00706.html" title="Node interface made for duplicating a graph, for example in the case of multi&#45;GPU computation..." alt="" coords="428,151,627,193"/>
-<area shape="rect" id="node24" href="$d5/d12/a00794.html" title="hh::behavior::SwitchRule\l\&lt; GraphInputs \&gt;" alt="" coords="195,217,363,258"/>
+<area shape="rect" id="node1" href="$d0/dc9/a01065.html" title=" " alt="" coords="5,5,152,47"/>
 </map>

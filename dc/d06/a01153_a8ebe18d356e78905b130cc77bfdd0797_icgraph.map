@@ -1,0 +1,7 @@
+<map id="hh::core::CoreGraph::registerNode" name="hh::core::CoreGraph::registerNode">
+<area shape="rect" id="node1" title="Register a node inside the graph." alt="" coords="252,133,392,174"/>
+<area shape="rect" id="node2" href="$dc/d06/a01153.html#adb8f457c0e552918c62ef09a4c13c8f7" title="Add a directed edge from a compatible &quot;from&quot; node to &quot;to&quot; node." alt="" coords="5,5,204,61"/>
+<area shape="rect" id="node3" href="$dc/d06/a01153.html#a988753828867da50c79630a42f78c158" title="Duplicate inside nodes, called by CoreExecutionPipeline." alt="" coords="5,85,204,141"/>
+<area shape="rect" id="node4" href="$dc/d06/a01153.html#a71d4034241c7d2f84075b31bcfab2566" title="Set a node as input for the graph." alt="" coords="5,165,204,221"/>
+<area shape="rect" id="node5" href="$dc/d06/a01153.html#aadc8bd15557f2e0e396a95c5e56324bf" title="Set a node as output for the graph." alt="" coords="5,245,204,301"/>
+</map>

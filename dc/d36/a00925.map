@@ -1,4 +1,0 @@
-<map id="hh::traits::_is_included_&lt; T1, T2, Is &gt;" name="hh::traits::_is_included_&lt; T1, T2, Is &gt;">
-<area shape="rect" id="node2" href="$d8/d38/a00926.html" title="{hh::traits::_is_included\l_\&lt; T1, T2, std::make_integer\l_sequence\&lt; std::size_t, std\l::tuple_size\&lt; T1 \&gt;::value \&gt; \&gt;\n||}" alt="" coords="5,204,196,325"/>
-<area shape="rect" id="node3" href="$d0/df0/a00934.html" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2..." alt="" coords="27,375,174,467"/>
-</map>

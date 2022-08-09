@@ -1,0 +1,6 @@
+<map id="hh::core::CoreNode::waitTime" name="hh::core::CoreNode::waitTime">
+<area shape="rect" id="node1" title="Wait time accessor." alt="" coords="433,39,569,80"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#a50d3712d44aebff7ed834799a4b8e1a2" title="Compute and return the mean wait time for all tasks in the node cluster." alt="" coords="227,39,385,80"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#ada1225430d33fec3808936514db597c6" title="Compute and return the min and max wait time for all tasks in the node cluster." alt="" coords="5,5,179,47"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#a2f8a33d772f480135397297600a29981" title="Compute and return the standard deviation wait time for all tasks in the node cluster." alt="" coords="16,71,168,112"/>
+</map>

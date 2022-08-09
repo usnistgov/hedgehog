@@ -1,0 +1,9 @@
+<map id="hh::Graph&lt; GraphOutput, GraphInputs &gt;" name="hh::Graph&lt; GraphOutput, GraphInputs &gt;">
+<area shape="rect" id="node1" title="Main Hedgehog object that does computation." alt="" coords="33,457,203,784"/>
+<area shape="rect" id="node7" href="$da/d0a/a00993.html" title=" " alt="" coords="33,847,203,1173"/>
+<area shape="rect" id="node2" href="$d2/db8/a01057.html" title=" " alt="" coords="24,316,212,408"/>
+<area shape="rect" id="node3" href="$d8/d18/a01069.html" title="Node Behavior definition." alt="" coords="79,5,259,112"/>
+<area shape="rect" id="node4" href="$d2/db8/a01057.html" title="MultiReceivers Behavior definition, node has a list of input types." alt="" coords="75,161,263,253"/>
+<area shape="rect" id="node5" href="$de/d9e/a01061.html" title=" " alt="" coords="236,316,379,408"/>
+<area shape="rect" id="node6" href="$de/d9e/a01061.html" title="Sender Behavior definition, node has an output type." alt="" coords="339,161,481,253"/>
+</map>

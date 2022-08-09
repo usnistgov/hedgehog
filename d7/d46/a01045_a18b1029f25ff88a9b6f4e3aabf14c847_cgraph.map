@@ -1,0 +1,6 @@
+<map id="hh::StateManager::copy" name="hh::StateManager::copy">
+<area shape="rect" id="node1" title="Default override of the copy method, copy the name, the state and the automatic start." alt="" coords="5,78,167,105"/>
+<area shape="rect" id="node2" href="$d4/d95/a00989.html#acfc34e37dfb34a05c4c2feb8dac8411a" title="Task&#39;s automatic start accessor." alt="" coords="215,5,425,47"/>
+<area shape="rect" id="node3" href="$d4/d95/a00989.html#aa884a889fe98362f60d6a8666be27215" title="Task&#39;s name accessor." alt="" coords="217,71,423,112"/>
+<area shape="rect" id="node4" href="$d7/d46/a01045.html#af4e273978dc83dab17b9d1487426b6bc" title="Managed state accessor." alt="" coords="239,137,401,163"/>
+</map>

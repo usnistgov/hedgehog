@@ -1,0 +1,4 @@
+<map id="hh::core::CoreNode::meanNumberElementsReceivedCluster" name="hh::core::CoreNode::meanNumberElementsReceivedCluster">
+<area shape="rect" id="node1" title="Compute and return the mean number of Elements received per task for all tasks in the node cluster." alt="" coords="264,5,483,61"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#a7bb63799c0c4afa731d72c61014b159f" title="Compute and return the standard deviation number of Elements received per task for all tasks in the n..." alt="" coords="5,5,216,61"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="hh::core::CoreNode::CoreNode" name="hh::core::CoreNode::CoreNode">
+<area shape="rect" id="node1" title="Core node only constructor." alt="" coords="5,71,141,112"/>
+<area shape="rect" id="node2" href="$d9/d25/a01157.html#aea5c9af30ef76fb2d7bc4979960538c9" title="Node name accessor." alt="" coords="189,5,325,47"/>
+<area shape="rect" id="node3" href="$d9/d25/a01157.html#a18937de7b8f414b70dcdfb7d2f683422" title="Number of threads associated accessor." alt="" coords="189,71,325,112"/>
+<area shape="rect" id="node4" href="$d9/d25/a01157.html#aa4025920ec6554c1b112d5e513b2d1b4" title="Node type accessor." alt="" coords="189,136,325,177"/>
+</map>

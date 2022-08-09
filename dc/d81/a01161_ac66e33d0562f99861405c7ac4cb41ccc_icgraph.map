@@ -1,0 +1,5 @@
+<map id="hh::core::CoreTask::callCanTerminate" name="hh::core::CoreTask::callCanTerminate">
+<area shape="rect" id="node1" title="Call user&#45;defined or default canTerminate and lock/unlock the mutex if lock is true." alt="" coords="239,53,372,94"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#aea2086f7f4a23144d8621b8286178ccb" title="Main loop for the CoreTask." alt="" coords="5,5,191,61"/>
+<area shape="rect" id="node3" href="$dc/d81/a01161.html#a39908109a77b4064c37876dc6ecc1379" title="Wait method for notification." alt="" coords="5,85,191,141"/>
+</map>

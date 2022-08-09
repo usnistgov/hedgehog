@@ -1,0 +1,3 @@
+<map id="hh::NvtxProfiler" name="hh::NvtxProfiler">
+<area shape="rect" id="node1" title="A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task grap..." alt="" coords="5,5,220,288"/>
+</map>

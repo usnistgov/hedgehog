@@ -1,0 +1,5 @@
+<map id="hh::core::CoreQueueSender::destinations" name="hh::core::CoreQueueSender::destinations">
+<area shape="rect" id="node1" title="Destination accessor." alt="" coords="256,39,440,80"/>
+<area shape="rect" id="node2" href="$d8/d02/a01149.html#afe99d87d8e051eedd20a42676b4c26d3" title="Duplicate all the edges from this to it&#39;s copy duplicateNode." alt="" coords="5,5,208,47"/>
+<area shape="rect" id="node3" href="$d8/d02/a01149.html#aef7c66765eba9d8ff48a2568d22173f7" title="Special visit method for a CoreQueueSender, printing an edge." alt="" coords="15,71,199,112"/>
+</map>

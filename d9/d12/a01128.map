@@ -1,2 +1,12 @@
-<map id="shared_ptr&lt; hh::AbstractTask&lt; GraphOutput, TaskInputs... &gt; &gt;" name="shared_ptr&lt; hh::AbstractTask&lt; GraphOutput, TaskInputs... &gt; &gt;">
+<map id="hh::core::CoreGraphSource&lt; GraphInputs &gt;" name="hh::core::CoreGraphSource&lt; GraphInputs &gt;">
+<area shape="rect" id="node1" title="Part of the outer graph that sends data from the outside to the input nodes." alt="" coords="168,2977,349,3187"/>
+<area shape="rect" id="node10" href="$d9/d17/a01129.html" title=" " alt="" coords="168,3249,349,3459"/>
+<area shape="rect" id="node2" href="$d8/d02/a01149.html" title=" " alt="" coords="131,2689,387,2928"/>
+<area shape="rect" id="node3" href="$d8/ded/a01113.html" title=" " alt="" coords="5,2159,152,2339"/>
+<area shape="rect" id="node4" href="$d8/dbf/a01109.html" title="Core Notifier interface, emit notification to CoreSlot." alt="" coords="261,1716,414,1867"/>
+<area shape="rect" id="node6" href="$d8/ded/a01113.html" title="Sender interface, send data to CoreReceiver." alt="" coords="176,1916,323,2096"/>
+<area shape="rect" id="node7" href="$d9/d65/a01145.html" title="Notifier of CoreQueueSlot." alt="" coords="347,2166,533,2331"/>
+<area shape="rect" id="node9" href="$d8/ded/a01113.html" title=" " alt="" coords="176,2159,323,2339"/>
+<area shape="rect" id="node5" href="$d9/d25/a01157.html" title="Main Hedgehog core abstraction." alt="" coords="210,5,465,1667"/>
+<area shape="rect" id="node8" href="$d8/d02/a01149.html" title="Sender for nodes possessing a queue of data." alt="" coords="131,2388,387,2627"/>
 </map>

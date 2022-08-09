@@ -1,0 +1,4 @@
+<map id="hh::MemoryManager::currentSize" name="hh::MemoryManager::currentSize">
+<area shape="rect" id="node1" title="Return the current size of the inside pool." alt="" coords="284,5,433,47"/>
+<area shape="rect" id="node2" href="$d7/d06/a01005.html#aeb43885141ef94eab10431a8f69a7811" title="Get an available managed memory, block if none are available." alt="" coords="5,5,236,47"/>
+</map>

@@ -1,0 +1,27 @@
+<map id="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;" name="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;">
+<area shape="rect" id="node1" title="Derived class from MemoryManager for statically allocated MemoryData, used for example for GPU comput..." alt="" coords="565,2160,744,2325"/>
+<area shape="rect" id="node2" href="$d7/d06/a01005.html" title=" " alt="" coords="475,1771,661,2097"/>
+<area shape="rect" id="node3" title="STL class." alt="" coords="197,462,281,539"/>
+<area shape="rect" id="node5" href="$d0/dc9/a01065.html" title=" " alt="" coords="464,918,611,1127"/>
+<area shape="rect" id="node16" href="$d0/dc9/a01065.html" title="Pool that is used by the memory manager." alt="" coords="643,609,770,819"/>
+<area shape="rect" id="node24" href="$d7/d06/a01005.html" title="Abstract interface for Hedgehog&#39;s Memory manager." alt="" coords="408,1381,595,1708"/>
+<area shape="rect" id="node4" title=" " alt="" coords="217,1227,466,1319"/>
+<area shape="rect" id="node6" title=" " alt="" coords="783,455,963,547"/>
+<area shape="rect" id="node7" title=" " alt="" coords="841,285,1015,377"/>
+<area shape="rect" id="node8" href="$d5/d99/a01901.html" title=" " alt="" coords="944,145,1067,223"/>
+<area shape="rect" id="node9" title="STL class." alt="" coords="779,145,920,223"/>
+<area shape="rect" id="node18" title=" " alt="" coords="473,285,647,377"/>
+<area shape="rect" id="node21" title=" " alt="" coords="967,1227,1102,1319"/>
+<area shape="rect" id="node10" title=" " alt="" coords="670,5,709,83"/>
+<area shape="rect" id="node11" title="STL class." alt="" coords="672,293,787,370"/>
+<area shape="rect" id="node15" title="STL class." alt="" coords="126,293,266,370"/>
+<area shape="rect" id="node17" title=" " alt="" coords="575,455,737,547"/>
+<area shape="rect" id="node12" href="$d2/d1d/a01277.html" title=" " alt="" coords="491,462,549,539"/>
+<area shape="rect" id="node13" title=" " alt="" coords="313,455,460,547"/>
+<area shape="rect" id="node14" title=" " alt="" coords="322,293,449,370"/>
+<area shape="rect" id="node19" title=" " alt="" coords="450,145,553,223"/>
+<area shape="rect" id="node20" href="$da/d24/a01609.html" title=" " alt="" coords="581,1234,619,1311"/>
+<area shape="rect" id="node22" href="$d3/d10/a01189.html" title="A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task grap..." alt="" coords="1091,881,1306,1164"/>
+<area shape="rect" id="node23" href="$d3/da1/a01613.html" title=" " alt="" coords="751,1234,798,1311"/>
+<area shape="rect" id="node25" title=" " alt="" coords="685,1895,797,1973"/>
+</map>

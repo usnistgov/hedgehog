@@ -1,6 +1,0 @@
-<map id="hh::core::CoreSwitch::addSlot" name="hh::core::CoreSwitch::addSlot">
-<area shape="rect" id="node2" href="$dd/db2/a00866.html#a2c9fbe0fe0ee491064fec918a9cad73a" title="Add a slot to the set of connected slots. " alt="" coords="199,64,384,105"/>
-<area shape="rect" id="node3" href="$d5/d69/a00878.html#a0e7bf1c195b9ef5d9d7b93ab4c6f8f94" title="Node name accessor. " alt="" coords="457,5,593,47"/>
-<area shape="rect" id="node4" href="$d5/d69/a00878.html#a770f57570bac58eb3fb012c3e8c351a8" title="Unique Id accessor. " alt="" coords="447,71,602,98"/>
-<area shape="rect" id="node5" href="$dd/db2/a00866.html#a28d7e6ba9fc220fa5ba43b903b2490d0" title="Connected slots accessor. " alt="" coords="432,123,617,164"/>
-</map>

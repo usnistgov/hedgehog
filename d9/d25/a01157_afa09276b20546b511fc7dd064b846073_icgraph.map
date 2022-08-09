@@ -1,0 +1,4 @@
+<map id="hh::core::CoreNode::incrementExecutionDuration" name="hh::core::CoreNode::incrementExecutionDuration">
+<area shape="rect" id="node1" title="Increment execution duration." alt="" coords="239,13,433,54"/>
+<area shape="rect" id="node2" href="$dc/d81/a01161.html#aea2086f7f4a23144d8621b8286178ccb" title="Main loop for the CoreTask." alt="" coords="5,5,191,61"/>
+</map>

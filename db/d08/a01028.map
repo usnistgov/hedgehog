@@ -1,0 +1,4 @@
+<map id="hh::DefaultScheduler" name="hh::DefaultScheduler">
+<area shape="rect" id="node1" title="Default scheduler for Hedgehog graph." alt="" coords="9,189,159,340"/>
+<area shape="rect" id="node2" href="$db/d23/a01025.html" title="Abstract Hedgehog Scheduler interface, define per graph how the threads are bound to the nodes." alt="" coords="5,5,163,141"/>
+</map>
