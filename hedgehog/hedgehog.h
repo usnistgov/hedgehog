@@ -11,26 +11,43 @@
 // THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE. You
 // are solely responsible for determining the appropriateness of using and distributing the software and you assume
 // all risks associated with its use, including but not limited to the risks and costs of program errors, compliance
-// with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of 
+// with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of
 // operation. This software is not intended to be used in any situation where a failure could cause risk of injury or
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
 
+
 #ifndef HEDGEHOG_HEDGEHOG_H
 #define HEDGEHOG_HEDGEHOG_H
 
-/// @brief Main include file, including all files that are used when using Hedgehog
+#include <version>
 
-#include "api/graph.h"
-#include "api/abstract_task.h"
+#ifdef HH_ENABLE_HH_CX
+#if !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
+#error The compiler has not the features for Hedgehog CX
+#undef HH_ENABLE_HH_CX
+#endif // !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
+#endif // HH_ENABLE_HH_CX
+
+#include "src/api/task/abstract_task.h"
+#include "src/api/graph/graph.h"
+#include "src/api/graph/graph_signal_handler.h"
+#include "src/api/execution_pipeline/abstract_execution_pipeline.h"
+
+#include "src/api/memory_manager/manager/memory_manager.h"
+#include "src/api/memory_manager/managed_memory.h"
+#include "src/api/memory_manager/manager/static_memory_manager.h"
+
+#include "src/api/state_manager/state_manager.h"
+
 #ifdef HH_USE_CUDA
-#include "api/abstract_cuda_task.h"
-#endif // HH_USE_CUDA
-#include "api/memory_manager/memory_data.h"
-#include "api/memory_manager/static_memory_manager.h"
-#include "api/memory_manager/memory_manager.h"
-#include "api/state_manager/state_manager.h"
-#include "api/abstract_execution_pipeline.h"
+#include "src/api/task/abstract_cuda_task.h"
+#include "src/tools/cuda_debugging.h"
+#endif //HH_USE_CUDA
+
+#ifdef HH_ENABLE_HH_CX
+#include "hedgehog_cx/hedgehog_cx.h"
+#endif //HH_ENABLE_HH_CX
 
 #endif //HEDGEHOG_HEDGEHOG_H

@@ -1,31 +1,29 @@
 # Hedgehog (hh) : A library to generate heterogeneous dataflow graphs
 
-The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors. This library represents the successor of the Hybrid Task Graph Scheduler ([HTGS](https://github.com/usnistgov/HTGS)).
+Hedgehog is a header-only API that is designed to aid in creating dataflow graphs for algorithms to obtain performance across CPUs and multiple co-processors. This library represents the successor of the Hybrid Task Graph Scheduler ([HTGS](https://github.com/usnistgov/HTGS)).
 
 ## Dependencies
 
-1) C++17 compiler, with std::filesystem available (gcc 8+, llvm 7+) 
+1) C++20 compiler (tested with gcc 11.1+, clang 10, and MSVC 14.33)
 
 2) pthread
 
 3) CUDA (https://developer.nvidia.com/cuda-zone) [optional]
 
-4) GLOG (https://github.com/google/glog) [optional / log]
+4) GTEST (https://github.com/google/googletest) [optional / test]
 
-5) GTEST (https://github.com/google/googletest) [optional / test]
-
-6) doxygen (www.doxygen.org/) [optional / Documentation]
+5) For the static analysis (hh_cx) a compiler with the constexpr std::vector (P1004R2) and constexpr std::string (P0980R1) is needed, tested with gcc 12.1.0 +
 
 ## Building Hedgehog
 **CMake Options:**
 
 CMAKE_INSTALL_PREFIX - Where to install Hedgehog (and documentation)
 
-LOG - Enable log with GLOG
+TEST_HEDGEHOG - Compiles and runs google unit tests for Hedgehog ('make run-test' to re-run)
 
-BUILD_DOXYGEN - Creates doxygen documentation ('make doc' to generate)
+ENABLE_CHECK_CUDA - Enable extra checks for CUDA library if found
 
-RUN_GTEST - Compiles and runs google unit tests for Hedgehog ('make run-test' to re-run)
+ENABLE_NVTX - Enable NVTX if CUDA is found
 
 BUILD_MAIN - Build main file
 
@@ -58,6 +56,11 @@ Bruno Bachelet
 Loïc Yon
 
 Mary Brady
+
+# Special thanks
+
+We would like to thank Prof. Joel Falcou (https://www.lri.fr/~falcou/ / https://github.com/jfalcou) and Jules Penuchot (https://github.com/JPenuchot)
+for their advice!
 
 # Contact Us
 
