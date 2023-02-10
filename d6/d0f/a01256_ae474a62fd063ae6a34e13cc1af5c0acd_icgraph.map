@@ -1,0 +1,15 @@
+<map id="hh::behavior::TaskNode::memoryManager" name="hh::behavior::TaskNode::memoryManager">
+<area shape="rect" id="node1" title="Memory manager accessor." alt="" coords="787,165,961,205"/>
+<area shape="rect" id="node2" href="$d2/d22/a01196.html#a58fa0ff98eead739651d474cc0e71ec3" title="Default destructor." alt="" coords="554,5,721,45"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="567,69,708,109"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a3795f50cf979b43d0957a1238d9a3692" title="Accessor to the memory manager." alt="" coords="536,133,739,173"/>
+<area shape="rect" id="node7" href="$d2/db1/a01428.html#a5986fecdc835d034d0745cc561635877" title="Accessor to the memory manager." alt="" coords="566,197,709,237"/>
+<area shape="rect" id="node10" href="$d5/da5/a01424.html#a1cac4c9fa995d721628e268b93e21665" title="Initialize the state manager." alt="" coords="536,265,739,305"/>
+<area shape="rect" id="node12" href="$d2/db1/a01428.html#a3263adaf4e67190e5cd9313b60afa1e2" title="Initialize the task." alt="" coords="567,336,708,376"/>
+<area shape="rect" id="node5" href="$d5/da5/a01424.html#aa2bfdcb035cf5a8913ade10a809a09da" title="Clone method, to duplicate a state manager when it is part of another graph in an execution pipeline." alt="" coords="5,108,208,148"/>
+<area shape="rect" id="node6" href="$d5/da5/a01424.html#a377a37a7ced0758daec2a417f8a4794b" title="Test if a memory manager is attached." alt="" coords="261,129,483,169"/>
+<area shape="rect" id="node8" href="$d2/db1/a01428.html#a425a51804c2c6baf4a7aae30eefdcfb6" title="Clone method, to duplicate a task when it is part of another graph in an execution pipeline." alt="" coords="36,209,177,249"/>
+<area shape="rect" id="node9" href="$d2/db1/a01428.html#ae680e3591a2194eda57a68596bed4f65" title="Test if a memory manager is attached." alt="" coords="261,244,483,284"/>
+<area shape="rect" id="node11" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="256,309,488,334"/>
+<area shape="rect" id="node13" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="287,358,457,383"/>
+</map>

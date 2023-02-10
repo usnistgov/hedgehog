@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::ClonableAbstraction::clone" name="hh::core::abstraction::ClonableAbstraction::clone">
+<area shape="rect" id="node1" title="Clone virtual function." alt="" coords="632,5,793,60"/>
+<area shape="rect" id="node2" href="$d4/d0e/a01272.html#ab3ed3b5af9b53b855b9db3b78f443414" title="Store a core clone." alt="" coords="423,5,584,60"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a9c7f7d7b3a7946ff284ee5dcb4080913" title="Clone all of the inside nodes." alt="" coords="204,13,375,53"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html#a7dbbd75437334da0a15377e7b5aa33ed" title="Copy constructor using an added correspondence map." alt="" coords="5,13,156,53"/>
+</map>

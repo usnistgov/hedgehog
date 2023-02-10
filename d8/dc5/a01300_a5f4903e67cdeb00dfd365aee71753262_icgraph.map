@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::SlotAbstraction::mutex" name="hh::core::abstraction::SlotAbstraction::mutex">
+<area shape="rect" id="node1" title="Protected accessor to mutex." alt="" coords="324,41,503,81"/>
+<area shape="rect" id="node2" href="$dc/d85/a01436.html#a94e759cda13dabe3b18b7e6f3c59c3d5" title="Get a result from the sink, if none is available wait for it (block the current thread)" alt="" coords="66,5,215,45"/>
+<area shape="rect" id="node3" href="$d5/d53/a01324.html#a10fdc12c96f38606ca77a8ca7e0da2a0" title="Wait statement when the node is alive and no input data are available." alt="" coords="5,70,276,125"/>
+</map>

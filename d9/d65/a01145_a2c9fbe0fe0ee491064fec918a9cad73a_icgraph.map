@@ -1,5 +1,0 @@
-<map id="hh::core::CoreQueueNotifier::addSlot" name="hh::core::CoreQueueNotifier::addSlot">
-<area shape="rect" id="node1" title="Add a slot to the set of connected slots." alt="" coords="235,39,420,80"/>
-<area shape="rect" id="node2" href="$d9/d17/a01129.html#a7041944b4ce48a9c55db239a4d7ba0a4" title="Add slot to all inputs node possessing a CoreQueueSender." alt="" coords="5,5,187,47"/>
-<area shape="rect" id="node3" href="$d7/daf/a01169.html#a892c7beaaa5c24c3a6ad6c8c7f8c8610" title="Add a slot for every input types." alt="" coords="5,71,187,112"/>
-</map>

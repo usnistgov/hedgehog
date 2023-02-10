@@ -1,0 +1,7 @@
+<map id="hh::core::abstraction::GraphNodeAbstraction" name="hh::core::abstraction::GraphNodeAbstraction">
+<area shape="rect" id="node1" title="Base graph node abstraction." alt="" coords="114,495,334,1009"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html" title=" " alt="" coords="111,1945,347,2769"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html" title="Graph core." alt="" coords="245,1059,481,1883"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="5,5,229,445"/>
+<area shape="rect" id="node3" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="253,165,408,285"/>
+</map>

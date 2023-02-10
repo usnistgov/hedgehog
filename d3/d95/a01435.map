@@ -1,0 +1,8 @@
+<map id="hh::core::GraphSink&lt; Outputs &gt;" name="hh::core::GraphSink&lt; Outputs &gt;">
+<area shape="rect" id="node1" title="Sink of the graph, only used in an outer graph." alt="" coords="244,932,441,1187"/>
+<area shape="rect" id="node6" href="$dc/d85/a01436.html" title=" " alt="" coords="244,1249,441,1504"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="5,443,229,883"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html" title="Core&#39;s abstraction to receive a signal." alt="" coords="253,473,432,853"/>
+<area shape="rect" id="node4" href="$d8/d7a/a01292.html" title=" " alt="" coords="457,475,698,850"/>
+<area shape="rect" id="node5" href="$d8/d7a/a01292.html" title="Core&#39;s abstraction to receive a piece of data." alt="" coords="457,5,698,380"/>
+</map>

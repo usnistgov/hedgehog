@@ -1,0 +1,4 @@
+<map id="hh::core::CoreStateManager::hasMemoryManagerAttached" name="hh::core::CoreStateManager::hasMemoryManagerAttached">
+<area shape="rect" id="node1" title="Test if a memory manager is attached." alt="" coords="256,29,479,69"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#aa2bfdcb035cf5a8913ade10a809a09da" title="Clone method, to duplicate a state manager when it is part of another graph in an execution pipeline." alt="" coords="5,29,208,69"/>
+</map>

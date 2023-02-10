@@ -1,6 +1,0 @@
-<map id="hh::behavior::SwitchRule&lt; GraphInput &gt;" name="hh::behavior::SwitchRule&lt; GraphInput &gt;">
-<area shape="rect" id="node1" title="Behavior definition for dispatching data to a Graph managed by an AbstractExecutionPipeline." alt="" coords="48,5,216,97"/>
-<area shape="rect" id="node2" href="$d9/d7c/a01073.html" title=" " alt="" coords="48,160,216,252"/>
-<area shape="rect" id="node3" href="$da/deb/a00985.html" title=" " alt="" coords="5,559,216,753"/>
-<area shape="rect" id="node4" href="$da/deb/a00985.html" title="Node interface made for duplicating a graph, for example in the case of multi&#45;GPU computation." alt="" coords="127,301,329,496"/>
-</map>

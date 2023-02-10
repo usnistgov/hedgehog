@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/d99/a01053.html" title="Execute Behavior definition, node that has an execution for an Input data type." alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node1" href="$d8/d8e/a01224.html" title=" " alt="" coords="5,69,201,109"/>
+<area shape="rect" id="node2" href="$de/d16/a01228.html" title="Behavior abstraction for states that send multiple types of data." alt="" coords="273,5,451,45"/>
+<area shape="rect" id="node3" href="$d8/d2b/a01236.html" title="Behavior abstraction for tasks that send multiple types of data." alt="" coords="249,69,475,109"/>
+<area shape="rect" id="node4" href="$d0/d67/a01232.html" title=" " alt="" coords="8,5,199,45"/>
 </map>

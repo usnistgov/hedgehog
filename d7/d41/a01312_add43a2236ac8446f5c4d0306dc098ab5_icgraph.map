@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::NodeAbstraction::name" name="hh::core::abstraction::NodeAbstraction::name">
+<area shape="rect" id="node1" title="Accessor to the core&#39;s name." alt="" coords="220,49,403,89"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#a3e39800b9b7bf4a2d5ad0d288a71d076" title="Create the abstraction with the node&#39;s name." alt="" coords="5,5,172,60"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="18,85,159,125"/>
+</map>

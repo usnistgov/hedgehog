@@ -1,0 +1,11 @@
+<map id="hh::core::CoreGraph&lt; Separator, AllTypes &gt;" name="hh::core::CoreGraph&lt; Separator, AllTypes &gt;">
+<area shape="rect" id="node1" title="Graph core." alt="" coords="545,1059,781,1883"/>
+<area shape="rect" id="node9" href="$d0/d05/a01420.html" title=" " alt="" coords="545,1945,781,2769"/>
+<area shape="rect" id="node2" href="$d1/d56/a01308.html" title="Base graph node abstraction." alt="" coords="114,495,334,1009"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="5,5,229,445"/>
+<area shape="rect" id="node4" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="253,165,408,285"/>
+<area shape="rect" id="node5" href="$dc/dd9/a01268.html" title="Abstraction for cleanable core." alt="" coords="359,682,548,822"/>
+<area shape="rect" id="node6" href="$d4/d0e/a01272.html" title="Core abstraction for clonable nodes, nodes duplicated by execution pipeline." alt="" coords="572,672,753,832"/>
+<area shape="rect" id="node7" title=" " alt="" coords="778,719,985,785"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1009,719,1223,785"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="hh::core::CoreSwitch&lt; Inputs &gt;" name="hh::core::CoreSwitch&lt; Inputs &gt;">
+<area shape="rect" id="node1" title="Switch core." alt="" coords="59,1413,208,1573"/>
+<area shape="rect" id="node8" href="$db/dff/a01432.html" title=" " alt="" coords="59,1636,208,1796"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="5,924,229,1364"/>
+<area shape="rect" id="node3" href="$dc/d54/a01344.html" title=" " alt="" coords="254,1047,543,1241"/>
+<area shape="rect" id="node4" href="$d7/d8d/a01288.html" title="Core abstraction to notify slots." alt="" coords="219,350,397,610"/>
+<area shape="rect" id="node7" href="$dc/d54/a01344.html" title="Output management abstraction for the task." alt="" coords="254,667,543,861"/>
+<area shape="rect" id="node5" href="$d4/d64/a01296.html" title=" " alt="" coords="457,343,633,617"/>
+<area shape="rect" id="node6" href="$d4/d64/a01296.html" title="Core abstraction to send data." alt="" coords="457,5,633,280"/>
+</map>

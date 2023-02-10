@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::GraphNodeAbstraction::minMaxExecutionDuration" name="hh::core::abstraction::GraphNodeAbstraction::minMaxExecutionDuration">
+<area shape="rect" id="node1" title="Accessor to the min / max execution duration of the nodes in the graph." alt="" coords="5,41,208,96"/>
+<area shape="rect" id="node2" href="$d6/dae/a01304.html#a171ebcfe37fbe6e3781dd90cbee2bb79" title="Getter to the min max execution duration from the nodes inside the graphs in the execution pipeline." alt="" coords="256,5,509,60"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html#aaf5f7ca4aee5cf9c417e169508ca7197" title="Node accessor." alt="" coords="293,85,472,125"/>
+</map>

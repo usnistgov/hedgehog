@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::NotifierAbstraction::NotifierAbstraction" name="hh::core::abstraction::NotifierAbstraction::NotifierAbstraction">
+<area shape="rect" id="node1" title="Constructor utilising a concrete implementation." alt="" coords="236,5,391,60"/>
+<area shape="rect" id="node2" href="$df/d31/a01440.html#adfd6a3697347cdc70dd6cbaede62128e" title="Send a piece of data to all input nodes and notify them." alt="" coords="5,13,188,53"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="hh::core::implementor::ImplementorReceiver&lt; Input &gt;" name="hh::core::implementor::ImplementorReceiver&lt; Input &gt;">
+<area shape="rect" id="node1" title="Implementor for the ReceiverAbstraction." alt="" coords="607,5,848,320"/>
+<area shape="rect" id="node2" href="$d1/dcc/a01392.html" title=" " alt="" coords="5,760,247,1060"/>
+<area shape="rect" id="node4" href="$d2/d29/a01376.html" title="Default concrete implementation of the receiver abstraction for the graph core." alt="" coords="143,400,384,680"/>
+<area shape="rect" id="node5" href="$d1/dcc/a01392.html" title="Concrete implementation of the receiver core abstraction for a type using a std::queue." alt="" coords="408,390,649,690"/>
+<area shape="rect" id="node6" href="$d2/d82/a01404.html" title=" " alt="" coords="673,383,915,697"/>
+<area shape="rect" id="node7" href="$d2/d82/a01404.html" title=" " alt="" coords="939,383,1180,697"/>
+<area shape="rect" id="node8" href="$d2/d82/a01404.html" title=" " alt="" coords="1204,383,1445,697"/>
+<area shape="rect" id="node3" href="$d0/d36/a01388.html" title="Concrete implementation of the receiver core abstraction for multiple types using a std::queue." alt="" coords="31,1109,221,1224"/>
+</map>

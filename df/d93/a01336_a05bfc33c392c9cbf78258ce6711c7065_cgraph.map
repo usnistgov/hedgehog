@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::GraphOutputsManagementAbstraction::disconnectSinkFromSender" name="hh::core::abstraction::GraphOutputsManagementAbstraction::disconnectSinkFromSender">
+<area shape="rect" id="node1" title="Disconnect the sink from the graph&#39;s output senders." alt="" coords="5,5,285,60"/>
+<area shape="rect" id="node2" href="$d4/d64/a01296.html#a355368d095b4411a115db0e1eebd1a88" title="Const accessor to senders." alt="" coords="333,5,491,60"/>
+</map>

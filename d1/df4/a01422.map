@@ -1,0 +1,52 @@
+<map id="hh::core::CoreStateManager&lt; Separator, AllTypes &gt;" name="hh::core::CoreStateManager&lt; Separator, AllTypes &gt;">
+<area shape="rect" id="node1" title="AbstractState manager core." alt="" coords="741,3403,971,3863"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html" title="Task core abstraction used to define some method for task&#45;like behaving cores like CoreExecutionPipel..." alt="" coords="737,1185,1015,1700"/>
+<area shape="rect" id="node36" title=" " alt="" coords="1061,1908,1235,2003"/>
+<area shape="rect" id="node49" href="$d5/da5/a01424.html" title=" " alt="" coords="1274,3403,1505,3863"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="464,224,688,584"/>
+<area shape="rect" id="node6" href="$d1/d56/a01308.html" title="Base graph node abstraction." alt="" coords="137,1235,357,1650"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1241,679,1386,774"/>
+<area shape="rect" id="node4" title=" " alt="" coords="741,13,819,78"/>
+<area shape="rect" id="node13" href="$de/d65/a01500.html" title="A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task grap..." alt="" coords="834,221,1067,587"/>
+<area shape="rect" id="node5" title=" " alt="" coords="512,13,555,78"/>
+<area shape="rect" id="node7" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="457,920,612,1040"/>
+<area shape="rect" id="node8" href="$dd/d05/a01504.html" title="Node print options." alt="" coords="462,664,613,789"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1092,13,1191,78"/>
+<area shape="rect" id="node10" href="$db/d09/a01838.html" title=" " alt="" coords="381,947,433,1013"/>
+<area shape="rect" id="node39" href="$dc/db6/a01212.html" title="Copy interface used to copy a node when either a group of nodes is created or a node is duplicated wh..." alt="" coords="178,1724,342,1884"/>
+<area shape="rect" id="node11" title=" " alt="" coords="275,5,445,85"/>
+<area shape="rect" id="node12" title=" " alt="" coords="875,687,1018,767"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1597,371,1747,437"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1571,813,1773,893"/>
+<area shape="rect" id="node42" title=" " alt="" coords="1896,3213,2088,3307"/>
+<area shape="rect" id="node48" title=" " alt="" coords="1618,3925,1814,4020"/>
+<area shape="rect" id="node15" title=" " alt="" coords="2249,13,2271,78"/>
+<area shape="rect" id="node21" title=" " alt="" coords="1419,2150,1568,2215"/>
+<area shape="rect" id="node16" href="$d4/dd5/a01244.html" title="Behavior abstraction for the base node." alt="" coords="1102,917,1239,1043"/>
+<area shape="rect" id="node34" href="$d6/d0f/a01256.html" title="Behavior abstraction for TaskNode." alt="" coords="1091,2080,1293,2285"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1403,1067,1589,1161"/>
+<area shape="rect" id="node18" href="$d4/d0e/a01272.html" title="Core abstraction for clonable nodes, nodes duplicated by execution pipeline." alt="" coords="1640,3180,1821,3340"/>
+<area shape="rect" id="node19" title=" " alt="" coords="1143,2443,1329,2552"/>
+<area shape="rect" id="node28" title=" " alt="" coords="798,2723,967,2817"/>
+<area shape="rect" id="node46" title=" " alt="" coords="2171,2457,2317,2537"/>
+<area shape="rect" id="node22" href="$dc/dd9/a01268.html" title="Abstraction for cleanable core." alt="" coords="1427,3190,1616,3330"/>
+<area shape="rect" id="node23" href="$d9/d31/a01208.html" title="Cleanable interface." alt="" coords="1668,2130,1836,2235"/>
+<area shape="rect" id="node33" href="$d2/db4/a01192.html" title=" " alt="" coords="1404,2377,1615,2617"/>
+<area shape="rect" id="node43" href="$d6/d97/a01188.html" title=" " alt="" coords="1803,2923,1976,3103"/>
+<area shape="rect" id="node47" href="$d6/d97/a01188.html" title="Hedgehog AbstractState." alt="" coords="1927,2680,2100,2860"/>
+<area shape="rect" id="node50" href="$d2/db4/a01192.html" title="AbstractState manager." alt="" coords="1963,4083,2173,4323"/>
+<area shape="rect" id="node24" href="$d3/d51/a01264.html" title="Abstraction for core that present termination condition." alt="" coords="1088,3190,1301,3330"/>
+<area shape="rect" id="node25" href="$d7/d5a/a01204.html" title="Behavior abstraction for nodes that expose termination condition." alt="" coords="578,2130,771,2235"/>
+<area shape="rect" id="node26" href="$d5/d37/a01276.html" title=" " alt="" coords="861,3185,1064,3335"/>
+<area shape="rect" id="node27" title=" " alt="" coords="647,2737,756,2803"/>
+<area shape="rect" id="node30" href="$d5/d37/a01276.html" title="Core abstraction for copyable nodes." alt="" coords="830,2945,1015,3080"/>
+<area shape="rect" id="node29" title=" " alt="" coords="559,2457,737,2537"/>
+<area shape="rect" id="node31" title=" " alt="" coords="632,3227,837,3293"/>
+<area shape="rect" id="node32" title=" " alt="" coords="397,3227,608,3293"/>
+<area shape="rect" id="node37" href="$dc/db6/a01212.html" title=" " alt="" coords="144,2095,347,2270"/>
+<area shape="rect" id="node38" href="$d6/d02/a01542.html" title=" " alt="" coords="356,1923,447,1988"/>
+<area shape="rect" id="node40" title=" " alt="" coords="1939,2135,2141,2230"/>
+<area shape="rect" id="node41" title=" " alt="" coords="2199,2135,2409,2230"/>
+<area shape="rect" id="node44" title=" " alt="" coords="1689,2450,1887,2545"/>
+<area shape="rect" id="node45" title=" " alt="" coords="1912,2443,2096,2552"/>
+</map>

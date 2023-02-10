@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::NotifierAbstraction::addSlot" name="hh::core::abstraction::NotifierAbstraction::addSlot">
+<area shape="rect" id="node1" title="Add a SlotAbstraction to this notifier." alt="" coords="324,84,479,139"/>
+<area shape="rect" id="node2" href="$d9/d45/a01332.html#abe6c8b08c4be77476216d6a8b212cf70" title="Add an input node to a graph." alt="" coords="6,5,275,60"/>
+<area shape="rect" id="node3" href="$d5/d53/a01324.html#a3262221bc8f562eec06641a42457132e" title="Connect a graph to the switch." alt="" coords="5,84,276,139"/>
+<area shape="rect" id="node4" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="70,163,211,203"/>
+</map>

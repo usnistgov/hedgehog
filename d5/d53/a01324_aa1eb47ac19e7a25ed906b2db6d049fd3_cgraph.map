@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::connectInputGraphForAType" name="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::connectInputGraphForAType">
+<area shape="rect" id="node1" title="Connect a graph to the switch for the type Input." alt="" coords="5,45,291,100"/>
+<area shape="rect" id="node2" href="$d4/d64/a01296.html#ab60d1fba8fbe4670233ab76f198755d3" title="Add a ReceiverAbstraction." alt="" coords="341,5,498,60"/>
+<area shape="rect" id="node3" href="$d8/d7a/a01292.html#a9e03ea002ff6506fc084e6b63517bbaf" title="Const accessor to receivers." alt="" coords="339,84,500,139"/>
+</map>

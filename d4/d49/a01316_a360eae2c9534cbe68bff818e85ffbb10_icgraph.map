@@ -1,0 +1,9 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::setInitialized" name="hh::core::abstraction::TaskNodeAbstraction::setInitialized">
+<area shape="rect" id="node1" title="Set the task as initialized." alt="" coords="564,62,731,117"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a621e359cf5d86749a6b0281ee2dbb158" title="Initialize the execution pipeline." alt="" coords="285,5,516,45"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a1cac4c9fa995d721628e268b93e21665" title="Initialize the state manager." alt="" coords="299,69,502,109"/>
+<area shape="rect" id="node6" href="$d2/db1/a01428.html#a3263adaf4e67190e5cd9313b60afa1e2" title="Initialize the task." alt="" coords="330,133,471,173"/>
+<area shape="rect" id="node3" href="$d5/dec/a01416.html#af9ea06dff91c41d9a5f5db42f0432df0" title="Constructor using a user&#45;defined execution pipeline, the base CoreGraph and the deviceIds to determin..." alt="" coords="8,5,235,45"/>
+<area shape="rect" id="node5" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,77,237,102"/>
+<area shape="rect" id="node7" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="36,141,207,166"/>
+</map>

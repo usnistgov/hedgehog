@@ -1,0 +1,8 @@
+<map id="hh::core::CoreGraph::addEdgeForACommonType" name="hh::core::CoreGraph::addEdgeForACommonType">
+<area shape="rect" id="node1" title="Connect two nodes together for a common type." alt="" coords="5,69,209,109"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#a91b429b916829c7a538026a852b8527a" title="Connect a notifier to a slot, used when connecting two nodes." alt="" coords="269,5,437,45"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html#ae46df6a3da4d1312833ffbd37b195caa" title="Register a node inside of a graph." alt="" coords="257,69,449,109"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html#a4c8f8d72b335f1cba2e725191e57473e" title="Test if the graph has been registered." alt="" coords="278,133,429,173"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html#acafea7994501ed52ef84d56abefb68be" title="Add a NotifierAbstraction to this slot." alt="" coords="506,5,715,45"/>
+<area shape="rect" id="node6" href="$d7/d41/a01312.html#aa5f777e43c43c3b4094deca0b9dbbeb0" title="Accessor to registration flag." alt="" coords="497,133,724,173"/>
+</map>

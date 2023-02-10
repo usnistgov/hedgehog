@@ -1,0 +1,5 @@
+<map id="hh::core::CoreTask::memoryManager" name="hh::core::CoreTask::memoryManager">
+<area shape="rect" id="node1" title="Accessor to the memory manager." alt="" coords="465,29,608,69"/>
+<area shape="rect" id="node2" href="$d2/db1/a01428.html#a425a51804c2c6baf4a7aae30eefdcfb6" title="Clone method, to duplicate a task when it is part of another graph in an execution pipeline." alt="" coords="5,29,147,69"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#ae680e3591a2194eda57a68596bed4f65" title="Test if a memory manager is attached." alt="" coords="195,57,417,97"/>
+</map>

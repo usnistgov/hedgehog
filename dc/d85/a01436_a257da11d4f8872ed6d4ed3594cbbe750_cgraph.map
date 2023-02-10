@@ -1,0 +1,6 @@
+<map id="hh::core::GraphSink::print" name="hh::core::GraphSink::print">
+<area shape="rect" id="node1" title="Gather sink information." alt="" coords="5,45,155,85"/>
+<area shape="rect" id="node2" href="$d8/d7a/a01292.html#a4fa67962c4767a2363385bf1c76b6357" title="Add to the printer the edge information." alt="" coords="203,5,371,60"/>
+<area shape="rect" id="node4" href="$d1/d35/a01184.html#a4657e3a43ca56b6c00da5dd21c2bde7c" title="Print outer graph sink." alt="" coords="209,84,364,109"/>
+<area shape="rect" id="node3" href="$d1/d35/a01184.html#aba7577b761b485995da8ff53f6301fd8" title="Print edge information." alt="" coords="419,20,577,45"/>
+</map>

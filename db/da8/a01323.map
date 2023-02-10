@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction&lt; Inputs &gt;" name="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction&lt; Inputs &gt;">
+<area shape="rect" id="node1" title="Input management abstraction for the execution pipeline." alt="" coords="5,872,275,1216"/>
+<area shape="rect" id="node2" href="$d8/dc5/a01300.html" title="Core&#39;s abstraction to receive a signal." alt="" coords="35,443,213,823"/>
+<area shape="rect" id="node3" href="$d8/d7a/a01292.html" title=" " alt="" coords="238,445,479,820"/>
+<area shape="rect" id="node4" href="$d8/d7a/a01292.html" title="Core&#39;s abstraction to receive a piece of data." alt="" coords="238,5,479,380"/>
+</map>

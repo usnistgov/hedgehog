@@ -1,0 +1,10 @@
+<map id="hh::core::abstraction::TaskOutputsManagementAbstraction&lt; Outputs &gt;" name="hh::core::abstraction::TaskOutputsManagementAbstraction&lt; Outputs &gt;">
+<area shape="rect" id="node1" title="Output management abstraction for the task." alt="" coords="163,667,452,861"/>
+<area shape="rect" id="node5" href="$dc/d54/a01344.html" title=" " alt="" coords="5,924,295,1119"/>
+<area shape="rect" id="node8" href="$dc/d54/a01344.html" title=" " alt="" coords="319,924,608,1119"/>
+<area shape="rect" id="node2" href="$d7/d8d/a01288.html" title="Core abstraction to notify slots." alt="" coords="159,350,338,610"/>
+<area shape="rect" id="node3" href="$d4/d64/a01296.html" title=" " alt="" coords="362,343,538,617"/>
+<area shape="rect" id="node4" href="$d4/d64/a01296.html" title="Core abstraction to send data." alt="" coords="362,5,538,280"/>
+<area shape="rect" id="node6" href="$db/dff/a01432.html" title=" " alt="" coords="81,1391,230,1551"/>
+<area shape="rect" id="node7" href="$db/dff/a01432.html" title="Switch core." alt="" coords="171,1168,321,1328"/>
+</map>

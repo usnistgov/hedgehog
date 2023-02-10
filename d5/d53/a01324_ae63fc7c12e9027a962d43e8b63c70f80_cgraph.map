@@ -1,0 +1,7 @@
+<map id="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::canTerminate" name="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::canTerminate">
+<area shape="rect" id="node1" title="Can terminate implementation." alt="" coords="5,124,276,179"/>
+<area shape="rect" id="node2" href="$d8/dc5/a01300.html#ac77caddab07e31249c99d5bd9436fa14" title="Test if there is at least one notifier connected." alt="" coords="355,5,563,60"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html#a61fc8dbd901bb00589511cbcfb74f12a" title="Lock mutex." alt="" coords="365,84,554,139"/>
+<area shape="rect" id="node4" href="$d5/d53/a01324.html#a0d142cdbc0447f2cfb9eff3cdc919193" title="Test if the receivers are empty." alt="" coords="324,163,595,217"/>
+<area shape="rect" id="node5" href="$d8/dc5/a01300.html#a1008def1bedea8c352b909df3050dced" title="Unlock mutex." alt="" coords="357,241,562,296"/>
+</map>

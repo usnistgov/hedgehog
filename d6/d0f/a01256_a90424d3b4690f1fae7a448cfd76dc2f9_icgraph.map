@@ -1,0 +1,5 @@
+<map id="hh::behavior::TaskNode::extraPrintingInformation" name="hh::behavior::TaskNode::extraPrintingInformation">
+<area shape="rect" id="node1" title="Print extra information for the task." alt="" coords="256,37,447,77"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#a6761793504b4931c17a50d513f52f686" title="Accessor to user&#45;defined extra information for the state&#45;manager." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a5856d5c2f4b8e768ec54c8e13c5d061d" title="Accessor to user&#45;defined extra information for the task." alt="" coords="11,69,202,109"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="hh::core::abstraction::SlotAbstraction::addNotifier" name="hh::core::abstraction::SlotAbstraction::addNotifier">
+<area shape="rect" id="node1" title="Add a NotifierAbstraction to this slot." alt="" coords="600,49,809,89"/>
+<area shape="rect" id="node2" href="$df/d93/a01336.html#aa436726a5f8e05484c2741415149bf35" title="Add an output node in the graph." alt="" coords="272,5,552,60"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a91b429b916829c7a538026a852b8527a" title="Connect a notifier to a slot, used when connecting two nodes." alt="" coords="328,85,496,125"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html#a50de601a8ee34effc265495bfda1038d" title="Connect two nodes together for a common type." alt="" coords="13,53,217,93"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html#aeaa7653d59ca2d96a1c00bd6932bfa1f" title="Connect two nodes together for all common types." alt="" coords="5,117,224,157"/>
+</map>

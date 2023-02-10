@@ -1,0 +1,17 @@
+<map id="hh::core::implementor::GraphSlot" name="hh::core::implementor::GraphSlot">
+<area shape="rect" id="node1" title="Default concrete implementation of the slot abstraction for the graph core." alt="" coords="5,467,184,667"/>
+<area shape="rect" id="node2" href="$dc/d10/a01412.html" title="Implementor for the SlotAbstraction." alt="" coords="132,133,311,353"/>
+<area shape="rect" id="node12" title=" " alt="" coords="259,519,405,614"/>
+<area shape="rect" id="node3" title=" " alt="" coords="555,1289,746,1384"/>
+<area shape="rect" id="node4" title=" " alt="" coords="537,1147,765,1227"/>
+<area shape="rect" id="node5" href="$d8/dc5/a01300.html" title="Core&#39;s abstraction to receive a signal." alt="" coords="485,729,664,1069"/>
+<area shape="rect" id="node6" title=" " alt="" coords="451,527,597,607"/>
+<area shape="rect" id="node7" title=" " alt="" coords="765,211,849,276"/>
+<area shape="rect" id="node8" title=" " alt="" coords="517,211,667,276"/>
+<area shape="rect" id="node10" title=" " alt="" coords="621,527,779,607"/>
+<area shape="rect" id="node9" title=" " alt="" coords="847,5,870,71"/>
+<area shape="rect" id="node15" title=" " alt="" coords="977,377,1127,443"/>
+<area shape="rect" id="node11" title=" " alt="" coords="873,211,1007,276"/>
+<area shape="rect" id="node13" title=" " alt="" coords="716,867,817,932"/>
+<area shape="rect" id="node14" title=" " alt="" coords="803,534,826,599"/>
+</map>

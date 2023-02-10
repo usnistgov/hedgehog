@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::CopyableAbstraction::callCopy" name="hh::core::abstraction::CopyableAbstraction::callCopy">
+<area shape="rect" id="node1" title="Interface to call user&#45;defined copy method." alt="" coords="269,53,435,108"/>
+<area shape="rect" id="node2" href="$dd/d18/a01284.html#a6209032259faa10bdbe879e600e08483" title="Call the used&#45;defined copy and register the copy in the group." alt="" coords="5,5,221,60"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a425a51804c2c6baf4a7aae30eefdcfb6" title="Clone method, to duplicate a task when it is part of another graph in an execution pipeline." alt="" coords="43,109,184,149"/>
+</map>

@@ -1,27 +1,4 @@
 var a00167 =
 [
-    [ "CoreDefaultExecutionPipeline", "d2/df3/a01085.html", "d2/df3/a01085" ],
-    [ "CoreDefaultExecutionPipelineExecute", "dd/dee/a01081.html", "dd/dee/a01081" ],
-    [ "CoreDefaultTask", "de/d1c/a01093.html", "de/d1c/a01093" ],
-    [ "CoreExecute", "d0/dd3/a01077.html", "d0/dd3/a01077" ],
-    [ "CoreExecutionPipeline", "d8/d92/a01165.html", "d8/d92/a01165" ],
-    [ "CoreGraph", "dc/d06/a01153.html", "dc/d06/a01153" ],
-    [ "CoreGraphMultiReceivers", "d6/d8b/a01117.html", "d6/d8b/a01117" ],
-    [ "CoreGraphReceiver", "dd/de4/a01121.html", "dd/de4/a01121" ],
-    [ "CoreGraphSink", "d6/dc4/a01125.html", "d6/dc4/a01125" ],
-    [ "CoreGraphSource", "d9/d17/a01129.html", "d9/d17/a01129" ],
-    [ "CoreMultiReceivers", "d1/dfa/a01097.html", "d1/dfa/a01097" ],
-    [ "CoreNode", "d9/d25/a01157.html", "d9/d25/a01157" ],
-    [ "CoreNotifier", "d8/dbf/a01109.html", "d8/dbf/a01109" ],
-    [ "CoreQueueMultiReceivers", "db/d28/a01133.html", "db/d28/a01133" ],
-    [ "CoreQueueNotifier", "d9/d65/a01145.html", "d9/d65/a01145" ],
-    [ "CoreQueueReceiver", "d6/d6e/a01137.html", "d6/d6e/a01137" ],
-    [ "CoreQueueSender", "d8/d02/a01149.html", "d8/d02/a01149" ],
-    [ "CoreQueueSlot", "de/df6/a01141.html", "de/df6/a01141" ],
-    [ "CoreReceiver", "de/d99/a01101.html", "de/d99/a01101" ],
-    [ "CoreSender", "d8/ded/a01113.html", "d8/ded/a01113" ],
-    [ "CoreSlot", "de/d1d/a01105.html", "de/d1d/a01105" ],
-    [ "CoreSwitch", "d7/daf/a01169.html", "d7/daf/a01169" ],
-    [ "CoreTask", "dc/d81/a01161.html", "dc/d81/a01161" ],
-    [ "DefaultCoreTaskExecute", "d3/dc4/a01089.html", "d3/dc4/a01089" ]
+    [ "hh::core::abstraction::GroupableAbstraction< CopyableNode, CopyableCore >", "dd/d18/a01284.html", "dd/d18/a01284" ]
 ];

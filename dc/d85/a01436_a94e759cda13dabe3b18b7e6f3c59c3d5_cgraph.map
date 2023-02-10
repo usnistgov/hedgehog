@@ -1,0 +1,7 @@
+<map id="hh::core::GraphSink::getBlockingResult" name="hh::core::GraphSink::getBlockingResult">
+<area shape="rect" id="node1" title="Get a result from the sink, if none is available wait for it (block the current thread)" alt="" coords="5,117,155,157"/>
+<area shape="rect" id="node2" href="$d8/dc5/a01300.html#ac77caddab07e31249c99d5bd9436fa14" title="Test if there is at least one notifier connected." alt="" coords="210,5,418,60"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html#a5f4903e67cdeb00dfd365aee71753262" title="Protected accessor to mutex." alt="" coords="225,85,403,125"/>
+<area shape="rect" id="node4" href="$dc/d85/a01436.html#aba1f9d25eedb5bcbd1f704fa07e3edfa" title="Test if the receivers for all types are empty." alt="" coords="239,149,389,189"/>
+<area shape="rect" id="node5" href="$d8/dc5/a01300.html#afd8ac5b2991920290b5c5a0a2bc62bd0" title="Protected accessor to condition variable." alt="" coords="203,213,425,268"/>
+</map>

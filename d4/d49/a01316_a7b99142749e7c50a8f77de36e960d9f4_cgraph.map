@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::perElementExecutionDuration" name="hh::core::abstraction::TaskNodeAbstraction::perElementExecutionDuration">
+<area shape="rect" id="node1" title="Accessor to the duration the average duration of processing an input data." alt="" coords="5,5,229,60"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#adf52af056f41f41ed520baa115b67ff1" title="Accessor to the number of received elements." alt="" coords="277,5,479,60"/>
+</map>

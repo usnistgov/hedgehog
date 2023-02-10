@@ -1,0 +1,11 @@
+<map id="hh::core::abstraction::ReceiverAbstraction&lt; Input &gt;" name="hh::core::abstraction::ReceiverAbstraction&lt; Input &gt;">
+<area shape="rect" id="node1" title="Core&#39;s abstraction to receive a piece of data." alt="" coords="511,5,753,380"/>
+<area shape="rect" id="node2" href="$d8/d7a/a01292.html" title=" " alt="" coords="98,443,339,817"/>
+<area shape="rect" id="node5" href="$d8/d7a/a01292.html" title=" " alt="" coords="511,443,753,817"/>
+<area shape="rect" id="node9" href="$d8/d7a/a01292.html" title=" " alt="" coords="777,443,1018,817"/>
+<area shape="rect" id="node3" href="$dc/d85/a01436.html" title=" " alt="" coords="5,1273,203,1528"/>
+<area shape="rect" id="node4" href="$dc/d85/a01436.html" title="Sink of the graph, only used in an outer graph." alt="" coords="120,911,317,1166"/>
+<area shape="rect" id="node6" href="$d5/d53/a01324.html" title="Input management abstraction for the execution pipeline." alt="" coords="341,867,611,1211"/>
+<area shape="rect" id="node7" href="$d9/d45/a01332.html" title="Input management abstraction for the graph." alt="" coords="635,871,925,1206"/>
+<area shape="rect" id="node8" href="$d7/d51/a01340.html" title="Input management abstraction for the task." alt="" coords="949,891,1227,1186"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="hh::core::implementor::DefaultSender&lt; Output &gt;" name="hh::core::implementor::DefaultSender&lt; Output &gt;">
+<area shape="rect" id="node1" title="Default concrete implementation of sender abstraction." alt="" coords="9,289,198,469"/>
+<area shape="rect" id="node3" href="$de/d1f/a01364.html" title=" " alt="" coords="5,532,201,712"/>
+<area shape="rect" id="node2" href="$df/d84/a01408.html" title="Implementor for the SenderAbstraction." alt="" coords="14,5,193,240"/>
+<area shape="rect" id="node4" href="$d2/d3f/a01356.html" title="Default implementors for the sender abstraction, used by tasks or state managers." alt="" coords="12,761,195,876"/>
+</map>

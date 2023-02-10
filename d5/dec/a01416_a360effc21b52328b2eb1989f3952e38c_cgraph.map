@@ -1,0 +1,4 @@
+<map id="hh::core::CoreExecutionPipeline::postRun" name="hh::core::CoreExecutionPipeline::postRun">
+<area shape="rect" id="node1" title="Post run logic, disconnects the switch and waits for each graph to terminate." alt="" coords="5,13,232,53"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#aa0d5ced405fb2c9aadfadff75cb2a070" title="Accessor to task status." alt="" coords="280,5,447,60"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="hh::behavior::StateMultiSenders&lt; Outputs &gt;" name="hh::behavior::StateMultiSenders&lt; Outputs &gt;">
+<area shape="rect" id="node1" title="Behavior abstraction for states that send multiple types of data." alt="" coords="118,357,289,477"/>
+<area shape="rect" id="node2" href="$d8/d8e/a01224.html" title=" " alt="" coords="5,198,193,298"/>
+<area shape="rect" id="node3" href="$d8/d8e/a01224.html" title="Behavior abstraction for nodes that send multiple types of data." alt="" coords="5,15,193,115"/>
+<area shape="rect" id="node4" href="$d0/d67/a01232.html" title=" " alt="" coords="217,188,400,308"/>
+<area shape="rect" id="node5" href="$d0/d67/a01232.html" title="Behavior abstraction for states that send a type of data, holds a ready list for that type." alt="" coords="217,5,400,125"/>
+</map>

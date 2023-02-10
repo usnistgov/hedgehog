@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::GraphOutputsManagementAbstraction&lt; Outputs &gt;" name="hh::core::abstraction::GraphOutputsManagementAbstraction&lt; Outputs &gt;">
+<area shape="rect" id="node1" title="Output management abstraction for the grpah." alt="" coords="5,667,305,961"/>
+<area shape="rect" id="node2" href="$d7/d8d/a01288.html" title="Core abstraction to notify slots." alt="" coords="7,350,186,610"/>
+<area shape="rect" id="node3" href="$d4/d64/a01296.html" title=" " alt="" coords="210,343,386,617"/>
+<area shape="rect" id="node4" href="$d4/d64/a01296.html" title="Core abstraction to send data." alt="" coords="210,5,386,280"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="hh::core::CoreExecutionPipeline::operateReceiver" name="hh::core::CoreExecutionPipeline::operateReceiver">
+<area shape="rect" id="node1" title="Operate the receiver for a specific input type." alt="" coords="5,13,232,53"/>
+<area shape="rect" id="node2" href="$d8/d7a/a01292.html#a47ef70f7035d0592319b8eb0d79baa02" title="Get an input data from the concrete receiver implementation." alt="" coords="280,5,441,60"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="hh::core::CoreGraph::connectNotifierToSlot" name="hh::core::CoreGraph::connectNotifierToSlot">
+<area shape="rect" id="node1" title="Connect a notifier to a slot, used when connecting two nodes." alt="" coords="272,37,440,77"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#a50de601a8ee34effc265495bfda1038d" title="Connect two nodes together for a common type." alt="" coords="13,5,217,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#aeaa7653d59ca2d96a1c00bd6932bfa1f" title="Connect two nodes together for all common types." alt="" coords="5,69,224,109"/>
+</map>

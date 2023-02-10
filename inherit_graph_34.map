@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$de/d61/a01205.html" title=" " alt="" coords="5,5,196,76"/>
-<area shape="rect" id="node2" href="$d5/d54/a01213.html" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2." alt="" coords="244,20,391,61"/>
+<area shape="rect" id="node1" href="$db/d17/a01148.html" title="Scheduler abstraction to manage graph&#39;s threads." alt="" coords="5,5,116,31"/>
+<area shape="rect" id="node2" href="$d6/de6/a01132.html" title="Default scheduler use in Hedgehog graph." alt="" coords="164,5,323,31"/>
 </map>

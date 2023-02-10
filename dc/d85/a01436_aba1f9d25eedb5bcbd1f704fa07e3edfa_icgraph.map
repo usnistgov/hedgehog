@@ -1,0 +1,4 @@
+<map id="hh::core::GraphSink::receiversEmpty" name="hh::core::GraphSink::receiversEmpty">
+<area shape="rect" id="node1" title="Test if the receivers for all types are empty." alt="" coords="203,5,352,45"/>
+<area shape="rect" id="node2" href="$dc/d85/a01436.html#a94e759cda13dabe3b18b7e6f3c59c3d5" title="Get a result from the sink, if none is available wait for it (block the current thread)" alt="" coords="5,5,155,45"/>
+</map>

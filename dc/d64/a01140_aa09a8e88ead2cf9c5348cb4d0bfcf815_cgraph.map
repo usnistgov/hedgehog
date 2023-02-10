@@ -1,0 +1,6 @@
+<map id="hh::GraphSignalHandler::registerSignal" name="hh::GraphSignalHandler::registerSignal">
+<area shape="rect" id="node1" title="Registers a signal for handling. (default SIGTERM)" alt="" coords="5,5,181,45"/>
+<area shape="rect" id="node2" href="$dc/d64/a01140.html#a00d3b2598228c38d5b20aa36499037aa" title="Create a dot file at exit if the instance still exist." alt="" coords="229,5,405,45"/>
+<area shape="rect" id="node3" href="$d1/dae/a01136.html#a0771ce76ca607bd3248d1fcd9f949bbe" title="Create a dot file representing a snapshot of the state of the graph at the moment of the call,..." alt="" coords="453,13,633,38"/>
+<area shape="rect" id="node4" href="$d4/dd5/a01244.html#aaaca8440e21ed343e595fa3f197dcece" title="Core accessor." alt="" coords="681,5,827,45"/>
+</map>

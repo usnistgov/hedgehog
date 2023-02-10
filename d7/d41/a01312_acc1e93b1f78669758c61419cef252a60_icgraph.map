@@ -1,0 +1,7 @@
+<map id="hh::core::abstraction::NodeAbstraction::incrementExecutionDuration" name="hh::core::abstraction::NodeAbstraction::incrementExecutionDuration">
+<area shape="rect" id="node1" title="Increment execution duration." alt="" coords="309,65,521,120"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a6faec4040c77b640704f44560b5684c3" title="Main core execution pipeline logic." alt="" coords="5,5,261,31"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="17,55,249,80"/>
+<area shape="rect" id="node4" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="48,104,219,129"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html#ac352ed4ef662ad9ffdb37bdb77f51e90" title="Wait for the graph to terminate." alt="" coords="56,154,211,194"/>
+</map>

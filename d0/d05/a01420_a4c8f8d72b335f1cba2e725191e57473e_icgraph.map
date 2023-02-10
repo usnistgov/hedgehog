@@ -1,0 +1,13 @@
+<map id="hh::core::CoreGraph::testRegistered" name="hh::core::CoreGraph::testRegistered">
+<area shape="rect" id="node1" title="Test if the graph has been registered." alt="" coords="280,309,431,349"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#a50de601a8ee34effc265495bfda1038d" title="Connect two nodes together for a common type." alt="" coords="17,5,221,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#aeaa7653d59ca2d96a1c00bd6932bfa1f" title="Connect two nodes together for all common types." alt="" coords="9,69,228,109"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html#a8109d0795f05ad92d4297a71c6123524" title="Broadcast an input data to all inputs nodes." alt="" coords="15,134,223,189"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html#a04be7ef01bf8a97af05f3d01a6d64b19" title="Clean the graph." alt="" coords="43,213,194,253"/>
+<area shape="rect" id="node6" href="$d0/d05/a01420.html#a36cedf68da4dfe8257227e9989043006" title="Execute the graph." alt="" coords="43,277,194,317"/>
+<area shape="rect" id="node7" href="$d0/d05/a01420.html#aa2461f81934529980299d0c4cd9c4ea8" title="Indicate to the graph that no more input will be sent, trigger the termination of the graph." alt="" coords="43,341,194,381"/>
+<area shape="rect" id="node8" href="$d0/d05/a01420.html#af1084c3ca00c3c888546e13d1a1031f6" title="Connect a core&#39;s node as input of the graph for an compatible input type." alt="" coords="18,405,219,445"/>
+<area shape="rect" id="node9" href="$d0/d05/a01420.html#a3354cead17068664d2416aac57056002" title="Connect a core&#39;s node as input of the graph for all compatible types." alt="" coords="11,469,227,509"/>
+<area shape="rect" id="node10" href="$d0/d05/a01420.html#af6649899f8142867cdcf4d931044aa6d" title="Connect a core&#39;s node as output of the graph for a compatible type." alt="" coords="13,533,225,573"/>
+<area shape="rect" id="node11" href="$d0/d05/a01420.html#a51bdf6f29540335e019dc9f78c21eac7" title="Connect a core&#39;s node as output of the graph for all compatible types." alt="" coords="5,597,232,637"/>
+</map>

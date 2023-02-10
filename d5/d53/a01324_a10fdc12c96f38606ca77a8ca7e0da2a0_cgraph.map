@@ -1,0 +1,10 @@
+<map id="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::wait" name="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::wait">
+<area shape="rect" id="node1" title="Wait statement when the node is alive and no input data are available." alt="" coords="5,264,276,319"/>
+<area shape="rect" id="node2" href="$d5/d53/a01324.html#ae63fc7c12e9027a962d43e8b63c70f80" title="Can terminate implementation." alt="" coords="324,163,595,217"/>
+<area shape="rect" id="node5" href="$d5/d53/a01324.html#a0d142cdbc0447f2cfb9eff3cdc919193" title="Test if the receivers are empty." alt="" coords="643,241,913,296"/>
+<area shape="rect" id="node7" href="$d8/dc5/a01300.html#a5f4903e67cdeb00dfd365aee71753262" title="Protected accessor to mutex." alt="" coords="370,299,549,339"/>
+<area shape="rect" id="node8" href="$d8/dc5/a01300.html#afd8ac5b2991920290b5c5a0a2bc62bd0" title="Protected accessor to condition variable." alt="" coords="348,364,571,419"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html#ac77caddab07e31249c99d5bd9436fa14" title="Test if there is at least one notifier connected." alt="" coords="674,5,882,60"/>
+<area shape="rect" id="node4" href="$d8/dc5/a01300.html#a61fc8dbd901bb00589511cbcfb74f12a" title="Lock mutex." alt="" coords="683,84,873,139"/>
+<area shape="rect" id="node6" href="$d8/dc5/a01300.html#a1008def1bedea8c352b909df3050dced" title="Unlock mutex." alt="" coords="675,163,881,217"/>
+</map>

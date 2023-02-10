@@ -1,0 +1,6 @@
+<map id="hh::core::CoreExecutionPipeline::registerAndDuplicateGraph" name="hh::core::CoreExecutionPipeline::registerAndDuplicateGraph">
+<area shape="rect" id="node1" title="Register and duplicate the coreGraph in the execution pipeline." alt="" coords="5,61,232,101"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a8a16e382162b086c815852b01bd1bcd5" title="Clone method, to duplicate an execution pipeline when it is part of another graph in an execution pip..." alt="" coords="280,29,507,69"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html#a9a41a0e96d20148bd776757052c49dbd" title="Get the graph identifier (got from belonging graph)" alt="" coords="296,93,491,133"/>
+<area shape="rect" id="node4" href="$d7/d41/a01312.html#ad653b61766dfab8fdf7bab2319f15a3f" title="Belonging graph accessor." alt="" coords="555,86,765,141"/>
+</map>

@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/d0c/a01173.html" title="Base definition of HelperMultiReceiversType." alt="" coords="5,5,217,47"/>
+<area shape="rect" id="node1" href="$d2/d82/a01404.html" title="Implementor for the ReceiverAbstraction." alt="" coords="5,69,176,124"/>
+<area shape="rect" id="node2" href="$d1/dcc/a01392.html" title=" " alt="" coords="224,13,423,53"/>
+<area shape="rect" id="node4" href="$d2/d29/a01376.html" title="Default concrete implementation of the receiver abstraction for the graph core." alt="" coords="229,77,418,117"/>
+<area shape="rect" id="node5" href="$d1/dcc/a01392.html" title="Concrete implementation of the receiver core abstraction for a type using a std::queue." alt="" coords="227,141,419,181"/>
+<area shape="rect" id="node3" href="$d0/d36/a01388.html" title="Concrete implementation of the receiver core abstraction for multiple types using a std::queue." alt="" coords="471,5,640,60"/>
 </map>

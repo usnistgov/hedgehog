@@ -1,4 +1,12 @@
-<map id="hh::traits::IsManagedMemory&lt; PossibleManagedMemory &gt;" name="hh::traits::IsManagedMemory&lt; PossibleManagedMemory &gt;">
-<area shape="rect" id="node1" title="Test correctness of type given to a memory manager." alt="" coords="5,145,201,237"/>
-<area shape="rect" id="node2" href="$d3/da1/a01613.html" title=" " alt="" coords="80,5,127,83"/>
+<map id="hh::StateManager&lt; Separator, AllTypes &gt;" name="hh::StateManager&lt; Separator, AllTypes &gt;">
+<area shape="rect" id="node1" title="AbstractState manager." alt="" coords="487,517,698,777"/>
+<area shape="rect" id="node10" href="$d2/db4/a01192.html" title=" " alt="" coords="487,840,698,1100"/>
+<area shape="rect" id="node2" href="$d6/d0f/a01256.html" title="Behavior abstraction for TaskNode." alt="" coords="5,243,207,468"/>
+<area shape="rect" id="node3" href="$d4/dd5/a01244.html" title="Behavior abstraction for the base node." alt="" coords="37,23,175,148"/>
+<area shape="rect" id="node4" href="$d7/d5a/a01204.html" title="Behavior abstraction for nodes that expose termination condition." alt="" coords="231,303,424,408"/>
+<area shape="rect" id="node5" href="$d9/d31/a01208.html" title="Cleanable interface." alt="" coords="449,303,617,408"/>
+<area shape="rect" id="node6" href="$dc/db6/a01212.html" title=" " alt="" coords="641,268,843,443"/>
+<area shape="rect" id="node7" href="$dc/db6/a01212.html" title="Copy interface used to copy a node when either a group of nodes is created or a node is duplicated wh..." alt="" coords="660,5,824,165"/>
+<area shape="rect" id="node8" title=" " alt="" coords="867,308,1070,403"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1095,308,1304,403"/>
 </map>

@@ -1,0 +1,6 @@
+<map id="hh::StateManager::StateManager" name="hh::StateManager::StateManager">
+<area shape="rect" id="node1" title="AbstractState Manager constructor with a user&#45;custom core." alt="" coords="5,77,241,102"/>
+<area shape="rect" id="node2" href="$d4/dd5/a01244.html#aaaca8440e21ed343e595fa3f197dcece" title="Core accessor." alt="" coords="320,5,465,45"/>
+<area shape="rect" id="node3" href="$d2/db4/a01192.html#a35786174a5fe0b5fe245bd0ba60f47e3" title="Accessor to the core." alt="" coords="289,69,496,109"/>
+<area shape="rect" id="node4" href="$d2/db4/a01192.html#a22efb69a360ba9e8e20fc10b317f4e47" title="AbstractState accessor." alt="" coords="303,134,482,159"/>
+</map>

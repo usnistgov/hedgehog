@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/d06/a01005.html" title=" " alt="" coords="5,5,155,47"/>
+<area shape="rect" id="node1" href="$dc/d10/a01412.html" title="Implementor for the SlotAbstraction." alt="" coords="5,37,172,77"/>
+<area shape="rect" id="node2" href="$dd/d0c/a01368.html" title="Default concrete implementation of slot interface." alt="" coords="220,5,387,45"/>
+<area shape="rect" id="node3" href="$d7/dde/a01384.html" title="Default concrete implementation of the slot abstraction for the graph core." alt="" coords="220,69,387,109"/>
 </map>

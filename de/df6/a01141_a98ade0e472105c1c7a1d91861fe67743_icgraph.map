@@ -1,4 +1,0 @@
-<map id="hh::core::CoreQueueSlot::copyInnerStructure" name="hh::core::CoreQueueSlot::copyInnerStructure">
-<area shape="rect" id="node1" title="Copy the inner structure of the receiver (mutex, condition variable and set of notifiers)" alt="" coords="224,13,391,54"/>
-<area shape="rect" id="node2" href="$db/d28/a01133.html#a48ec4585005173a8ed28ecb8df6f587d" title="Copy the inner structure of all receivers and the slot from rhs to this." alt="" coords="5,5,176,61"/>
-</map>

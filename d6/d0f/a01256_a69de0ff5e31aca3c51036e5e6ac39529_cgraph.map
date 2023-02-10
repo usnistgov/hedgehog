@@ -1,0 +1,5 @@
+<map id="hh::behavior::TaskNode::getManagedMemory" name="hh::behavior::TaskNode::getManagedMemory">
+<area shape="rect" id="node1" title="Get a managed memory for the memory manager attached to the task, can block if none are available at ..." alt="" coords="5,5,180,45"/>
+<area shape="rect" id="node2" href="$d4/dd5/a01244.html#a1d13f00015747395086e5ba631011f7b" title="Node&#39;s name accessor." alt="" coords="228,5,373,45"/>
+<area shape="rect" id="node3" href="$d4/dd5/a01244.html#aaaca8440e21ed343e595fa3f197dcece" title="Core accessor." alt="" coords="421,5,567,45"/>
+</map>

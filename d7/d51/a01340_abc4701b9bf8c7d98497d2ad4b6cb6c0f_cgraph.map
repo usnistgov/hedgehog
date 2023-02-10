@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::TaskInputsManagementAbstraction::callAllExecuteWithNullptr" name="hh::core::abstraction::TaskInputsManagementAbstraction::callAllExecuteWithNullptr">
+<area shape="rect" id="node1" title="Call for all types the user&#45;defined execute method with nullptr as data." alt="" coords="5,5,264,60"/>
+<area shape="rect" id="node2" href="$d8/d0d/a01280.html#a73295a77d83f0a09b29309a9e64f3b8b" title="Interface for calling user&#45;defined execution." alt="" coords="312,5,467,60"/>
+</map>

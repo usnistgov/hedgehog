@@ -1,0 +1,5 @@
+<map id="hh::core::CoreTask::ids" name="hh::core::CoreTask::ids">
+<area shape="rect" id="node1" title="Node ids [nodeId, nodeGroupId] accessor." alt="" coords="5,56,173,81"/>
+<area shape="rect" id="node2" href="$d7/da3/a01260.html#a6c8aaf240b961d3686f8fc4fdd64f39f" title="Group id representative accessor." alt="" coords="221,5,417,60"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html#a0ff2deedd72a5d865b86df1b614c17b9" title="Core&#39;s id (&#39;x&#39; + address of abstraction) as string." alt="" coords="240,85,399,125"/>
+</map>

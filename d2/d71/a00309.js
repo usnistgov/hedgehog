@@ -1,0 +1,25 @@
+var a00309 =
+[
+    [ "AnyGroupableAbstraction", "d7/da3/a01260.html", "d7/da3/a01260" ],
+    [ "CanTerminateAbstraction", "d3/d51/a01264.html", "d3/d51/a01264" ],
+    [ "CleanableAbstraction", "dc/dd9/a01268.html", "dc/dd9/a01268" ],
+    [ "ClonableAbstraction", "d4/d0e/a01272.html", "d4/d0e/a01272" ],
+    [ "CopyableAbstraction", "d5/d37/a01276.html", "d5/d37/a01276" ],
+    [ "ExecuteAbstraction", "d8/d0d/a01280.html", "d8/d0d/a01280" ],
+    [ "ExecutionPipelineInputsManagementAbstraction", "d5/d53/a01324.html", "d5/d53/a01324" ],
+    [ "ExecutionPipelineNodeAbstraction", "d6/dae/a01304.html", "d6/dae/a01304" ],
+    [ "ExecutionPipelineOutputsManagementAbstraction", "dc/dd9/a01328.html", "dc/dd9/a01328" ],
+    [ "GraphInputsManagementAbstraction", "d9/d45/a01332.html", "d9/d45/a01332" ],
+    [ "GraphNodeAbstraction", "d1/d56/a01308.html", "d1/d56/a01308" ],
+    [ "GraphOutputsManagementAbstraction", "df/d93/a01336.html", "df/d93/a01336" ],
+    [ "GroupableAbstraction", "dd/d18/a01284.html", "dd/d18/a01284" ],
+    [ "NodeAbstraction", "d7/d41/a01312.html", "d7/d41/a01312" ],
+    [ "NotifierAbstraction", "d7/d8d/a01288.html", "d7/d8d/a01288" ],
+    [ "PrintableAbstraction", "df/dec/a01320.html", "df/dec/a01320" ],
+    [ "ReceiverAbstraction", "d8/d7a/a01292.html", "d8/d7a/a01292" ],
+    [ "SenderAbstraction", "d4/d64/a01296.html", "d4/d64/a01296" ],
+    [ "SlotAbstraction", "d8/dc5/a01300.html", "d8/dc5/a01300" ],
+    [ "TaskInputsManagementAbstraction", "d7/d51/a01340.html", "d7/d51/a01340" ],
+    [ "TaskNodeAbstraction", "d4/d49/a01316.html", "d4/d49/a01316" ],
+    [ "TaskOutputsManagementAbstraction", "dc/d54/a01344.html", "dc/d54/a01344" ]
+];

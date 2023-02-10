@@ -1,0 +1,11 @@
+<map id="hh::core::CoreGraph::registerNodeInsideGraph" name="hh::core::CoreGraph::registerNodeInsideGraph">
+<area shape="rect" id="node1" title="Register a node inside of a graph." alt="" coords="479,197,671,237"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#a50de601a8ee34effc265495bfda1038d" title="Connect two nodes together for a common type." alt="" coords="215,5,419,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#aeaa7653d59ca2d96a1c00bd6932bfa1f" title="Connect two nodes together for all common types." alt="" coords="208,69,427,109"/>
+<area shape="rect" id="node4" href="$d0/d05/a01420.html#a9c7f7d7b3a7946ff284ee5dcb4080913" title="Clone all of the inside nodes." alt="" coords="232,133,403,173"/>
+<area shape="rect" id="node6" href="$d0/d05/a01420.html#af1084c3ca00c3c888546e13d1a1031f6" title="Connect a core&#39;s node as input of the graph for an compatible input type." alt="" coords="217,197,418,237"/>
+<area shape="rect" id="node7" href="$d0/d05/a01420.html#a3354cead17068664d2416aac57056002" title="Connect a core&#39;s node as input of the graph for all compatible types." alt="" coords="209,261,425,301"/>
+<area shape="rect" id="node8" href="$d0/d05/a01420.html#af6649899f8142867cdcf4d931044aa6d" title="Connect a core&#39;s node as output of the graph for a compatible type." alt="" coords="211,325,423,365"/>
+<area shape="rect" id="node9" href="$d0/d05/a01420.html#a51bdf6f29540335e019dc9f78c21eac7" title="Connect a core&#39;s node as output of the graph for all compatible types." alt="" coords="204,389,431,429"/>
+<area shape="rect" id="node5" href="$d0/d05/a01420.html#a7dbbd75437334da0a15377e7b5aa33ed" title="Copy constructor using an added correspondence map." alt="" coords="5,133,156,173"/>
+</map>

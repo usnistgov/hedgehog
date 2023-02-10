@@ -1,0 +1,8 @@
+<map id="hh::core::abstraction::SlotAbstraction" name="hh::core::abstraction::SlotAbstraction">
+<area shape="rect" id="node1" title="Core&#39;s abstraction to receive a signal." alt="" coords="387,5,565,385"/>
+<area shape="rect" id="node2" href="$dc/d85/a01436.html" title=" " alt="" coords="5,841,203,1096"/>
+<area shape="rect" id="node3" href="$dc/d85/a01436.html" title="Sink of the graph, only used in an outer graph." alt="" coords="120,479,317,734"/>
+<area shape="rect" id="node4" href="$d5/d53/a01324.html" title="Input management abstraction for the execution pipeline." alt="" coords="341,435,611,779"/>
+<area shape="rect" id="node5" href="$d9/d45/a01332.html" title="Input management abstraction for the graph." alt="" coords="635,439,925,774"/>
+<area shape="rect" id="node6" href="$d7/d51/a01340.html" title="Input management abstraction for the task." alt="" coords="949,459,1227,754"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::NotifierAbstraction::notify" name="hh::core::abstraction::NotifierAbstraction::notify">
+<area shape="rect" id="node1" title="Notify a slot to wake up." alt="" coords="324,41,479,96"/>
+<area shape="rect" id="node2" href="$dc/d54/a01344.html#a85e44b78ad60f620a9d556b39c41d855" title="Send a piece of data and notify the successors." alt="" coords="5,5,276,60"/>
+<area shape="rect" id="node3" href="$df/d31/a01440.html#adfd6a3697347cdc70dd6cbaede62128e" title="Send a piece of data to all input nodes and notify them." alt="" coords="49,85,232,125"/>
+</map>

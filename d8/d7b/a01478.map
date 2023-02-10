@@ -1,0 +1,5 @@
+<map id="hh::tool::internals::HasType&lt; T, std::tuple&lt; Front, Ts... &gt; &gt;" name="hh::tool::internals::HasType&lt; T, std::tuple&lt; Front, Ts... &gt; &gt;">
+<area shape="rect" id="node1" title="Definition of HasType if T is different than the front type of the variadic." alt="" coords="5,292,175,387"/>
+<area shape="rect" id="node2" href="$d2/d48/a01472.html" title=" " alt="" coords="5,148,175,243"/>
+<area shape="rect" id="node3" href="$d2/d48/a01472.html" title="Base definition of HasType testing if a type T is in tuple Tuple." alt="" coords="11,5,169,85"/>
+</map>

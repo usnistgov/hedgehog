@@ -1,0 +1,10 @@
+<map id="hh::behavior::CanTerminate::canTerminate" name="hh::behavior::CanTerminate::canTerminate">
+<area shape="rect" id="node1" title="Termination condition." alt="" coords="1029,55,1231,95"/>
+<area shape="rect" id="node2" href="$d3/d51/a01264.html#a9fd6ff1f0b66f3e389964486b96e1ea6" title="Call user&#45;definable termination." alt="" coords="787,48,981,103"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#aba8e1f2c165f859ff9fc118e5c670f12" title="Call user&#45;definable termination." alt="" coords="536,23,739,63"/>
+<area shape="rect" id="node6" href="$d2/db1/a01428.html#ae62de435b4d1b998fda65bdb14f451c9" title="Call user&#45;definable termination." alt="" coords="566,87,709,127"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,5,237,31"/>
+<area shape="rect" id="node5" href="$d5/da5/a01424.html#a2ce2d00f5a93f1304bf8e61c50e9dc60" title="Wait statement when the node is alive and no input data are available." alt="" coords="285,26,488,66"/>
+<area shape="rect" id="node7" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="36,120,207,145"/>
+<area shape="rect" id="node8" href="$d2/db1/a01428.html#a4b151f1c188f04a11744bfcac4095a25" title="Wait statement when the node is alive and no input data are available." alt="" coords="316,142,457,182"/>
+</map>

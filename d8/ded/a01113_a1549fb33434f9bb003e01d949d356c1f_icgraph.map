@@ -1,6 +1,0 @@
-<map id="hh::core::CoreSender::getSenders" name="hh::core::CoreSender::getSenders">
-<area shape="rect" id="node1" title="Get inner CoreSender represented by this one in the case of outer graph for example." alt="" coords="256,79,403,120"/>
-<area shape="rect" id="node2" href="$d8/ded/a01113.html#a1e35ff37bb31d8f13a760605d4fd7103" title="Duplicate all the edges from this to it&#39;s copy duplicateNode." alt="" coords="5,5,208,47"/>
-<area shape="rect" id="node3" href="$dc/d06/a01153.html#a988753828867da50c79630a42f78c158" title="Duplicate inside nodes, called by CoreExecutionPipeline." alt="" coords="7,71,206,127"/>
-<area shape="rect" id="node4" href="$dc/d06/a01153.html#aadc8bd15557f2e0e396a95c5e56324bf" title="Set a node as output for the graph." alt="" coords="7,151,206,207"/>
-</map>

@@ -1,0 +1,7 @@
+<map id="hh::behavior::TaskNode::shutdown" name="hh::behavior::TaskNode::shutdown">
+<area shape="rect" id="node1" title="shutdown step for the task" alt="" coords="536,37,711,77"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#a8828e1fc33108fc73f8bfe017d9c2864" title="Post run logic, shutdown the state manager, notify successor nodes of state manager termination." alt="" coords="285,5,488,45"/>
+<area shape="rect" id="node4" href="$d2/db1/a01428.html#a0a92b010bd456f671ed56484806b59ed" title="When a task terminates, set the task to non active, call user&#45;defined shutdown, and disconnect the ta..." alt="" coords="316,69,457,109"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,13,237,38"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="36,77,207,102"/>
+</map>

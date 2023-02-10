@@ -1,0 +1,51 @@
+<map id="hh::core::CoreGraph&lt; Separator, AllTypes &gt;" name="hh::core::CoreGraph&lt; Separator, AllTypes &gt;">
+<area shape="rect" id="node1" title="Graph core." alt="" coords="535,4483,771,5252"/>
+<area shape="rect" id="node2" href="$d1/d56/a01308.html" title="Base graph node abstraction." alt="" coords="438,705,658,1120"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="1087,1183,1311,1543"/>
+<area shape="rect" id="node42" href="$d0/d05/a01420.html" title=" " alt="" coords="1042,2563,1278,3332"/>
+<area shape="rect" id="node43" href="$d0/d05/a01420.html" title="Graph core." alt="" coords="1846,4483,2082,5252"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1147,1821,1399,1931"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1383,1627,1620,1707"/>
+<area shape="rect" id="node30" title=" " alt="" coords="1743,1620,1889,1715"/>
+<area shape="rect" id="node4" title=" " alt="" coords="1447,880,1526,945"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1421,543,1552,623"/>
+<area shape="rect" id="node6" title=" " alt="" coords="1337,880,1380,945"/>
+<area shape="rect" id="node7" title=" " alt="" coords="828,550,927,615"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1143,873,1313,953"/>
+<area shape="rect" id="node9" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="5,523,160,643"/>
+<area shape="rect" id="node10" href="$dd/d05/a01504.html" title="Node print options." alt="" coords="7,335,158,460"/>
+<area shape="rect" id="node11" href="$d0/deb/a01508.html" title="Simple color representation." alt="" coords="7,177,158,257"/>
+<area shape="rect" id="node12" title=" " alt="" coords="53,5,112,71"/>
+<area shape="rect" id="node13" title=" " alt="" coords="184,543,355,623"/>
+<area shape="rect" id="node14" href="$da/dcf/a01558.html" title=" " alt="" coords="425,550,455,615"/>
+<area shape="rect" id="node15" href="$db/d09/a01838.html" title=" " alt="" coords="517,550,569,615"/>
+<area shape="rect" id="node16" title=" " alt="" coords="1172,2048,1375,2172"/>
+<area shape="rect" id="node19" title=" " alt="" coords="1835,1330,1957,1395"/>
+<area shape="rect" id="node29" title=" " alt="" coords="1957,1829,2144,1923"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1817,880,1839,945"/>
+<area shape="rect" id="node21" title=" " alt="" coords="1231,1635,1358,1700"/>
+<area shape="rect" id="node23" title=" " alt="" coords="2168,1843,2317,1909"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1661,1330,1811,1395"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1041,1330,1063,1395"/>
+<area shape="rect" id="node48" title=" " alt="" coords="812,1635,913,1700"/>
+<area shape="rect" id="node28" title=" " alt="" coords="2149,2055,2336,2165"/>
+<area shape="rect" id="node35" title=" " alt="" coords="1983,2365,2126,2445"/>
+<area shape="rect" id="node44" title=" " alt="" coords="1413,2207,1568,2301"/>
+<area shape="rect" id="node24" title=" " alt="" coords="611,550,666,615"/>
+<area shape="rect" id="node25" href="$dc/dd9/a01268.html" title="Abstraction for cleanable core." alt="" coords="1767,2335,1956,2475"/>
+<area shape="rect" id="node26" href="$d9/d31/a01208.html" title="Cleanable interface." alt="" coords="1777,2057,1945,2163"/>
+<area shape="rect" id="node27" href="$d4/d0e/a01272.html" title="Core abstraction for clonable nodes, nodes duplicated by execution pipeline." alt="" coords="2156,2325,2337,2485"/>
+<area shape="rect" id="node38" href="$d4/dd5/a01244.html" title="Behavior abstraction for the base node." alt="" coords="1686,3395,1823,3520"/>
+<area shape="rect" id="node41" title=" " alt="" coords="838,3410,1047,3505"/>
+<area shape="rect" id="node46" title=" " alt="" coords="938,1635,1113,1700"/>
+<area shape="rect" id="node32" title=" " alt="" coords="541,2373,747,2438"/>
+<area shape="rect" id="node33" title=" " alt="" coords="772,2373,985,2438"/>
+<area shape="rect" id="node34" href="$d1/d88/a01578.html" title=" " alt="" coords="1134,2373,1186,2438"/>
+<area shape="rect" id="node36" href="$db/d17/a01148.html" title="Scheduler abstraction to manage graph&#39;s threads." alt="" coords="1988,2037,2121,2183"/>
+<area shape="rect" id="node37" href="$d1/dae/a01136.html" title=" " alt="" coords="1239,4040,1403,4420"/>
+<area shape="rect" id="node49" href="$d1/dae/a01136.html" title="Hedgehog graph abstraction." alt="" coords="1311,3597,1475,3977"/>
+<area shape="rect" id="node39" title=" " alt="" coords="1123,3410,1325,3505"/>
+<area shape="rect" id="node40" title=" " alt="" coords="1401,3410,1610,3505"/>
+<area shape="rect" id="node45" title=" " alt="" coords="951,1836,1100,1916"/>
+<area shape="rect" id="node47" title=" " alt="" coords="964,1330,1012,1395"/>
+</map>

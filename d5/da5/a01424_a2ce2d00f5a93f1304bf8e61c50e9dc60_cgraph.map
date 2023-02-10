@@ -1,0 +1,7 @@
+<map id="hh::core::CoreStateManager::wait" name="hh::core::CoreStateManager::wait">
+<area shape="rect" id="node1" title="Wait statement when the node is alive and no input data are available." alt="" coords="5,49,208,89"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#aba8e1f2c165f859ff9fc118e5c670f12" title="Call user&#45;definable termination." alt="" coords="256,13,459,53"/>
+<area shape="rect" id="node5" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="274,77,441,132"/>
+<area shape="rect" id="node3" href="$d3/d51/a01264.html#a9fd6ff1f0b66f3e389964486b96e1ea6" title="Call user&#45;definable termination." alt="" coords="507,5,701,60"/>
+<area shape="rect" id="node4" href="$d7/d5a/a01204.html#a34c540b5a8cc5f1f8f7b16b73f3fa966" title="Termination condition." alt="" coords="749,13,951,53"/>
+</map>

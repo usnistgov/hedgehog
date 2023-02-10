@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::GraphInputsManagementAbstraction&lt; Inputs &gt;" name="hh::core::abstraction::GraphInputsManagementAbstraction&lt; Inputs &gt;">
+<area shape="rect" id="node1" title="Input management abstraction for the graph." alt="" coords="5,872,295,1207"/>
+<area shape="rect" id="node2" href="$d8/dc5/a01300.html" title="Core&#39;s abstraction to receive a signal." alt="" coords="45,443,223,823"/>
+<area shape="rect" id="node3" href="$d8/d7a/a01292.html" title=" " alt="" coords="248,445,489,820"/>
+<area shape="rect" id="node4" href="$d8/d7a/a01292.html" title="Core&#39;s abstraction to receive a piece of data." alt="" coords="248,5,489,380"/>
+</map>

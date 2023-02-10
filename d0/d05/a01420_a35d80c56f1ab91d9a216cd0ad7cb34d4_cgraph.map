@@ -1,0 +1,5 @@
+<map id="hh::core::CoreGraph::createInnerGroupsAndLaunchThreads" name="hh::core::CoreGraph::createInnerGroupsAndLaunchThreads">
+<area shape="rect" id="node1" title="Create the inner groups and launch the threads inside of a graph." alt="" coords="5,41,227,96"/>
+<area shape="rect" id="node2" href="$d1/d56/a01308.html#a67e364618257911e991ce595ac2453a0" title="Base graph abstraction." alt="" coords="275,5,452,60"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#acccdac950fec2766a27d47d28b5c7430" title="Launch the threads with the scheduler." alt="" coords="288,85,439,125"/>
+</map>

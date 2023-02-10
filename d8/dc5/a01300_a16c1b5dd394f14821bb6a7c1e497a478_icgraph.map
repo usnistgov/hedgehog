@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::SlotAbstraction::connectedNotifiers" name="hh::core::abstraction::SlotAbstraction::connectedNotifiers">
+<area shape="rect" id="node1" title="Accessor to the NotifierAbstraction attached to this slot, protected with mutex." alt="" coords="232,27,436,82"/>
+<area shape="rect" id="node2" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="24,5,165,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a798d22c48441430d3e9ba2671c0a13d4" title="Node ids [nodeId, nodeGroupId] accessor." alt="" coords="5,70,184,95"/>
+</map>

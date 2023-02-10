@@ -1,4 +1,0 @@
-<map id="hh::core::CoreGraph::sendAndNotify" name="hh::core::CoreGraph::sendAndNotify">
-<area shape="rect" id="node1" title="Send a data and notify receivers, not possible for a graph, throws an error in every case." alt="" coords="276,13,416,54"/>
-<area shape="rect" id="node2" href="$dc/d06/a01153.html#a8a66be420038d9812e9a2f94022a24f2" title="Broadcast data and notify all input nodes." alt="" coords="5,5,228,61"/>
-</map>

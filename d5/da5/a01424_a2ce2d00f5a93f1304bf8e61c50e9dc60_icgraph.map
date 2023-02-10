@@ -1,0 +1,4 @@
+<map id="hh::core::CoreStateManager::wait" name="hh::core::CoreStateManager::wait">
+<area shape="rect" id="node1" title="Wait statement when the node is alive and no input data are available." alt="" coords="285,5,488,45"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,13,237,38"/>
+</map>

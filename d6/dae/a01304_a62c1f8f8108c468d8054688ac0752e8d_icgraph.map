@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::ExecutionPipelineNodeAbstraction::minMaxWaitDuration" name="hh::core::abstraction::ExecutionPipelineNodeAbstraction::minMaxWaitDuration">
+<area shape="rect" id="node1" title="Getter to the min max wait duration from the nodes inside the graphs in the execution pipeline." alt="" coords="231,29,484,84"/>
+<area shape="rect" id="node2" href="$d1/d56/a01308.html#a3b85dd12e2ce60e025deb4b18f1f709d" title="Accessor to the min / max wait duration of the nodes in the graph." alt="" coords="5,29,183,84"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="hh::core::CoreExecutionPipeline::minMaxWaitDuration" name="hh::core::CoreExecutionPipeline::minMaxWaitDuration">
+<area shape="rect" id="node1" title="Getter to the min max wait duration from the nodes inside the graphs in the execution pipeline." alt="" coords="5,29,232,69"/>
+</map>

@@ -1,5 +1,0 @@
-<map id="hh::core::CoreExecutionPipeline::connectGraphToEP" name="hh::core::CoreExecutionPipeline::connectGraphToEP">
-<area shape="rect" id="node1" title="Connect a graph to the switch and register it." alt="" coords="263,53,472,94"/>
-<area shape="rect" id="node2" href="$d8/d92/a01165.html#ae1d50ae05904e98d452aa750b1587980" title="The core execution pipeline constructor." alt="" coords="5,5,215,61"/>
-<area shape="rect" id="node3" href="$d8/d92/a01165.html#a4fdb13963594487a192cf5e5cc595211" title="Duplicate the graphs and link it to the switch." alt="" coords="5,85,215,141"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="hh::core::CoreNode::graphId" name="hh::core::CoreNode::graphId">
-<area shape="rect" id="node1" title="Graph id accessor." alt="" coords="493,57,629,99"/>
-<area shape="rect" id="node2" href="$dd/dee/a01081.html#a70ea8e00941e47540bcba126a03418cd" title="Wrapper to the user&#45;defined SwitchRule::sendToGraph." alt="" coords="230,5,435,76"/>
-<area shape="rect" id="node3" href="$d5/dfb/a01021.html#aa837a1fb4ae94914f8c767cb37d75bd7" title="Extract and create node information." alt="" coords="220,101,445,127"/>
-<area shape="rect" id="node4" href="$d5/dfb/a01021.html#a151022226d1669917a836a1af15ff6df" title="Print node main information." alt="" coords="5,93,172,135"/>
-</map>

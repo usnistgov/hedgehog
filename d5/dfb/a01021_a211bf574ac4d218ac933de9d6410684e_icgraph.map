@@ -1,5 +1,0 @@
-<map id="hh::DotPrinter::getRGBFromRange" name="hh::DotPrinter::getRGBFromRange">
-<area shape="rect" id="node1" title="Return a RGB color for a value knowing the minimum value and the range, blue least,..." alt="" coords="241,23,429,65"/>
-<area shape="rect" id="node2" href="$d5/dfb/a01021.html#a4a48ede3609127012eca2753df80d78b" title="Get the rgb color for the execution time value." alt="" coords="5,5,193,32"/>
-<area shape="rect" id="node3" href="$d5/dfb/a01021.html#a2a661f02c502d601a2aa8e3195802168" title="Get the rgb color for the wait time value." alt="" coords="7,56,191,83"/>
-</map>

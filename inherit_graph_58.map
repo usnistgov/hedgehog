@@ -1,0 +1,26 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="213,69,411,109"/>
+<area shape="rect" id="node2" href="$d6/d97/a01188.html" title=" " alt="" coords="493,35,672,75"/>
+<area shape="rect" id="node3" href="$dc/dcc/a01200.html" title=" " alt="" coords="477,216,688,256"/>
+<area shape="rect" id="node5" href="$d6/d97/a01188.html" title="Hedgehog AbstractState." alt="" coords="499,99,666,139"/>
+<area shape="rect" id="node6" href="$dc/dcc/a01200.html" title="Base node for computation." alt="" coords="477,280,688,320"/>
+<area shape="rect" id="node4" href="$d2/d22/a01196.html" title="Abstract Task specialized for CUDA computation." alt="" coords="740,216,917,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="207,505,417,545"/>
+<area shape="rect" id="node8" href="$d9/d12/a01128.html" title=" " alt="" coords="475,789,690,829"/>
+<area shape="rect" id="node9" href="$d1/dae/a01136.html" title=" " alt="" coords="499,560,666,600"/>
+<area shape="rect" id="node10" href="$d2/db4/a01192.html" title=" " alt="" coords="473,369,692,409"/>
+<area shape="rect" id="node11" href="$d9/d12/a01128.html" title="Execution pipeline abstraction." alt="" coords="475,725,690,765"/>
+<area shape="rect" id="node12" href="$d1/dae/a01136.html" title="Hedgehog graph abstraction." alt="" coords="499,624,666,664"/>
+<area shape="rect" id="node13" href="$d2/db4/a01192.html" title="AbstractState manager." alt="" coords="473,433,692,473"/>
+<area shape="rect" id="node14" title=" " alt="" coords="213,620,411,660"/>
+<area shape="rect" id="node15" title=" " alt="" coords="217,785,407,825"/>
+<area shape="rect" id="node16" title=" " alt="" coords="222,5,402,45"/>
+<area shape="rect" id="node17" title=" " alt="" coords="199,184,425,224"/>
+<area shape="rect" id="node18" href="$d7/d5a/a01204.html" title="Behavior abstraction for nodes that expose termination condition." alt="" coords="211,327,413,353"/>
+<area shape="rect" id="node19" href="$d9/d31/a01208.html" title="Cleanable interface." alt="" coords="224,134,400,159"/>
+<area shape="rect" id="node20" href="$dc/db6/a01212.html" title=" " alt="" coords="209,850,415,905"/>
+<area shape="rect" id="node21" href="$dc/db6/a01212.html" title=" " alt="" coords="211,249,413,303"/>
+<area shape="rect" id="node22" href="$dc/db6/a01212.html" title=" " alt="" coords="207,426,417,481"/>
+<area shape="rect" id="node23" href="$d4/dd5/a01244.html" title="Behavior abstraction for the base node." alt="" coords="5,685,151,710"/>
+<area shape="rect" id="node24" href="$d6/d0f/a01256.html" title="Behavior abstraction for TaskNode." alt="" coords="225,377,399,402"/>
+</map>

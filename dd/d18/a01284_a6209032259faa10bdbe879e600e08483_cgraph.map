@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::GroupableAbstraction::callCopyAndRegisterInGroup" name="hh::core::abstraction::GroupableAbstraction::callCopyAndRegisterInGroup">
+<area shape="rect" id="node1" title="Call the used&#45;defined copy and register the copy in the group." alt="" coords="5,84,221,139"/>
+<area shape="rect" id="node2" href="$d5/d37/a01276.html#a7197af8f43133691be8a453a0e614cc8" title="Interface to call user&#45;defined copy method." alt="" coords="285,5,450,60"/>
+<area shape="rect" id="node3" href="$d7/da3/a01260.html#a8258ced057bd05407943e0b00b3dc0d7" title="Group of cores accessor." alt="" coords="269,84,465,139"/>
+<area shape="rect" id="node4" href="$d7/da3/a01260.html#abcc49a00e40fd56f70cefa14f75df953" title="Group representative accessor." alt="" coords="269,163,465,217"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::TaskInputsManagementAbstraction::copyInnerStructure" name="hh::core::abstraction::TaskInputsManagementAbstraction::copyInnerStructure">
+<area shape="rect" id="node1" title="Copy the task core inner structure to this." alt="" coords="5,45,264,100"/>
+<area shape="rect" id="node2" href="$d8/d7a/a01292.html#a1992a0b1a0b598b3631063d6ba27b154" title="Copy inner structure of the receiver to this one." alt="" coords="332,5,493,60"/>
+<area shape="rect" id="node3" href="$d8/dc5/a01300.html#adc6ab3b33173bb8ef4f76e9d3e6c8be9" title="Copy the inner structure of copyableCore into this." alt="" coords="312,84,513,139"/>
+</map>

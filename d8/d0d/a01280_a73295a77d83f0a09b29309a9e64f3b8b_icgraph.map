@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::ExecuteAbstraction::callExecute" name="hh::core::abstraction::ExecuteAbstraction::callExecute">
+<area shape="rect" id="node1" title="Interface for calling user&#45;defined execution." alt="" coords="312,45,467,100"/>
+<area shape="rect" id="node2" href="$d7/d51/a01340.html#abc4701b9bf8c7d98497d2ad4b6cb6c0f" title="Call for all types the user&#45;defined execute method with nullptr as data." alt="" coords="5,5,264,60"/>
+<area shape="rect" id="node3" href="$d7/d51/a01340.html#aa04f418ebe4dcb15584a2fcf269d3168" title="Access the ReceiverAbstraction of the type InputDataType to process an element." alt="" coords="5,84,264,139"/>
+</map>

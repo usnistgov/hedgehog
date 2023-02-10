@@ -1,0 +1,12 @@
+<map id="hh::core::abstraction::NotifierAbstraction" name="hh::core::abstraction::NotifierAbstraction">
+<area shape="rect" id="node1" title="Core abstraction to notify slots." alt="" coords="410,5,589,265"/>
+<area shape="rect" id="node2" href="$df/d31/a01440.html" title=" " alt="" coords="5,679,196,859"/>
+<area shape="rect" id="node3" href="$dc/d54/a01344.html" title=" " alt="" coords="232,672,521,867"/>
+<area shape="rect" id="node6" href="$dc/d54/a01344.html" title=" " alt="" coords="853,672,1143,867"/>
+<area shape="rect" id="node7" href="$df/d31/a01440.html" title="Source of the graph, only used in an outer graph." alt="" coords="88,372,279,552"/>
+<area shape="rect" id="node8" href="$dc/dd9/a01328.html" title="Output management abstraction for the execution pipeline." alt="" coords="669,360,943,564"/>
+<area shape="rect" id="node9" href="$df/d93/a01336.html" title="Output management abstraction for the grpah." alt="" coords="968,315,1268,609"/>
+<area shape="rect" id="node10" href="$dc/d54/a01344.html" title="Output management abstraction for the task." alt="" coords="355,365,644,559"/>
+<area shape="rect" id="node4" href="$db/dff/a01432.html" title=" " alt="" coords="287,1139,437,1299"/>
+<area shape="rect" id="node5" href="$db/dff/a01432.html" title="Switch core." alt="" coords="378,916,527,1076"/>
+</map>

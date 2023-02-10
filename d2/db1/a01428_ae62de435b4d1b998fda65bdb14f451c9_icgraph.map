@@ -1,0 +1,5 @@
+<map id="hh::core::CoreTask::callCanTerminate" name="hh::core::CoreTask::callCanTerminate">
+<area shape="rect" id="node1" title="Call user&#45;definable termination." alt="" coords="413,5,556,45"/>
+<area shape="rect" id="node2" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="5,13,176,38"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a4b151f1c188f04a11744bfcac4095a25" title="Wait statement when the node is alive and no input data are available." alt="" coords="224,33,365,73"/>
+</map>

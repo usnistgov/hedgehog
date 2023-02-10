@@ -1,0 +1,5 @@
+<map id="hh::behavior::StateSender&lt; Output &gt;" name="hh::behavior::StateSender&lt; Output &gt;">
+<area shape="rect" id="node1" title="Behavior abstraction for states that send a type of data, holds a ready list for that type." alt="" coords="5,5,188,125"/>
+<area shape="rect" id="node2" href="$d0/d67/a01232.html" title=" " alt="" coords="5,188,188,308"/>
+<area shape="rect" id="node3" href="$de/d16/a01228.html" title="Behavior abstraction for states that send multiple types of data." alt="" coords="11,357,182,477"/>
+</map>

@@ -1,5 +1,13 @@
-<map id="hh::traits::is_included&lt; T1, T2 &gt;" name="hh::traits::is_included&lt; T1, T2 &gt;">
-<area shape="rect" id="node1" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2." alt="" coords="27,375,174,467"/>
-<area shape="rect" id="node2" href="$de/d61/a01205.html" title=" " alt="" coords="5,204,196,325"/>
-<area shape="rect" id="node3" href="$de/d61/a01205.html" title="is_included Default case" alt="" coords="24,5,177,97"/>
+<map id="hh::behavior::Copyable&lt; NodeType &gt;" name="hh::behavior::Copyable&lt; NodeType &gt;">
+<area shape="rect" id="node1" title="Copy interface used to copy a node when either a group of nodes is created or a node is duplicated wh..." alt="" coords="331,5,495,165"/>
+<area shape="rect" id="node2" href="$dc/db6/a01212.html" title=" " alt="" coords="95,243,289,417"/>
+<area shape="rect" id="node6" href="$dc/db6/a01212.html" title=" " alt="" coords="314,243,513,417"/>
+<area shape="rect" id="node9" href="$dc/db6/a01212.html" title=" " alt="" coords="537,243,740,417"/>
+<area shape="rect" id="node3" href="$dc/dcc/a01200.html" title=" " alt="" coords="5,809,208,1029"/>
+<area shape="rect" id="node5" href="$dc/dcc/a01200.html" title="Base node for computation." alt="" coords="99,487,301,707"/>
+<area shape="rect" id="node4" href="$d2/d22/a01196.html" title="Abstract Task specialized for CUDA computation." alt="" coords="22,1099,191,1419"/>
+<area shape="rect" id="node7" href="$d9/d12/a01128.html" title=" " alt="" coords="255,829,473,1009"/>
+<area shape="rect" id="node8" href="$d9/d12/a01128.html" title="Execution pipeline abstraction." alt="" coords="380,507,599,687"/>
+<area shape="rect" id="node10" href="$d2/db4/a01192.html" title=" " alt="" coords="553,789,764,1049"/>
+<area shape="rect" id="node11" href="$d2/db4/a01192.html" title="AbstractState manager." alt="" coords="675,467,885,727"/>
 </map>

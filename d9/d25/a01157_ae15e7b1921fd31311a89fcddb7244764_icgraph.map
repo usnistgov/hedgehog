@@ -1,6 +1,0 @@
-<map id="hh::core::CoreNode::getSlots" name="hh::core::CoreNode::getSlots">
-<area shape="rect" id="node1" title="Slots accessor for the node." alt="" coords="276,93,412,134"/>
-<area shape="rect" id="node2" href="$dc/d06/a01153.html#adb8f457c0e552918c62ef09a4c13c8f7" title="Add a directed edge from a compatible &quot;from&quot; node to &quot;to&quot; node." alt="" coords="17,5,216,61"/>
-<area shape="rect" id="node3" href="$d8/d92/a01165.html#aefb9bf3579d99a0389b642093efdbc4a" title="Add data and notification link between switch and one inside graph." alt="" coords="12,85,221,141"/>
-<area shape="rect" id="node4" href="$d8/d02/a01149.html#abc5481dd204f9cda9cfd46baca27affe" title="Connect coreNodeSender to a coreNodeReceiver, connect for data transfer and signal handling." alt="" coords="5,165,228,221"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="hh::core::CoreNode::executionDuration" name="hh::core::CoreNode::executionDuration">
-<area shape="rect" id="node1" title="Execution duration accessor." alt="" coords="252,43,388,84"/>
-<area shape="rect" id="node2" href="$d9/d25/a01157.html#a289b4f54d9663acb70502af7a7bf18e4" title="Execution duration setter." alt="" coords="37,5,173,47"/>
-<area shape="rect" id="node3" href="$dc/d06/a01153.html#a9d703339b9660fed4432ad22bc947640" title="Wait for all inside threads to join." alt="" coords="5,71,204,127"/>
-</map>

@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['joinall_254',['joinAll',['../db/d23/a01025.html#a6c204b82317d13dd80b6432780b2ccd8',1,'hh::AbstractScheduler::joinAll()'],['../d0/daa/a01029.html#a99b0aa99b12d3ff1d9f58092cb7bedcf',1,'hh::DefaultScheduler::joinAll()']]],
-  ['jointhreads_255',['joinThreads',['../dc/d06/a01153.html#a9be10d3f621cdc2f90f50cc9f0ee9eb2',1,'hh::core::CoreGraph::joinThreads()'],['../d9/d25/a01157.html#ab4735b27fe961346fb382a94d41f77db',1,'hh::core::CoreNode::joinThreads()']]]
+  ['jet_5fcolor_2eh_0',['jet_color.h',['../da/dec/a00080.html',1,'']]],
+  ['jetcolor_1',['JetColor',['../d3/d32/a01176.html',1,'hh::JetColor'],['../d3/d32/a01176.html#a3b2ce4c90265f5c0e6829d702516c537',1,'hh::JetColor::JetColor()']]],
+  ['joinall_2',['joinAll',['../d6/de6/a01132.html#a99b0aa99b12d3ff1d9f58092cb7bedcf',1,'hh::DefaultScheduler::joinAll()'],['../db/d17/a01148.html#a0a2c56807f49488ad88fef8d75361f1b',1,'hh::Scheduler::joinAll()']]],
+  ['jointhreads_3',['joinThreads',['../d1/d56/a01308.html#ad505064bec3d36d6e8923aa2e48f9dce',1,'hh::core::abstraction::GraphNodeAbstraction::joinThreads()'],['../d0/d05/a01420.html#a17b8510906db4323d1dd5e05a53ecfdd',1,'hh::core::CoreGraph::joinThreads()']]]
 ];

@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::ExecutionPipelineOutputsManagementAbstraction&lt; Outputs &gt;" name="hh::core::abstraction::ExecutionPipelineOutputsManagementAbstraction&lt; Outputs &gt;">
+<area shape="rect" id="node1" title="Output management abstraction for the execution pipeline." alt="" coords="16,667,291,871"/>
+<area shape="rect" id="node2" href="$d7/d8d/a01288.html" title="Core abstraction to notify slots." alt="" coords="5,350,184,610"/>
+<area shape="rect" id="node3" href="$d4/d64/a01296.html" title=" " alt="" coords="208,343,384,617"/>
+<area shape="rect" id="node4" href="$d4/d64/a01296.html" title="Core abstraction to send data." alt="" coords="208,5,384,280"/>
+</map>

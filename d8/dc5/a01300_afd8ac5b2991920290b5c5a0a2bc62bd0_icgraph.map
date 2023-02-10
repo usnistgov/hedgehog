@@ -1,0 +1,8 @@
+<map id="hh::core::abstraction::SlotAbstraction::slotConditionVariable" name="hh::core::abstraction::SlotAbstraction::slotConditionVariable">
+<area shape="rect" id="node1" title="Protected accessor to condition variable." alt="" coords="324,149,547,203"/>
+<area shape="rect" id="node2" href="$dc/d85/a01436.html#a94e759cda13dabe3b18b7e6f3c59c3d5" title="Get a result from the sink, if none is available wait for it (block the current thread)" alt="" coords="66,5,215,45"/>
+<area shape="rect" id="node3" href="$d5/d53/a01324.html#a10fdc12c96f38606ca77a8ca7e0da2a0" title="Wait statement when the node is alive and no input data are available." alt="" coords="5,70,276,125"/>
+<area shape="rect" id="node4" href="$d7/d51/a01340.html#a32ed410a802163cf03cc92914228bdf7" title="Wake up implementation (notify one node waiting on the condition variable)" alt="" coords="11,149,270,203"/>
+<area shape="rect" id="node5" href="$d5/d53/a01324.html#a22709f5f699dd126a52af45277683593" title="Wake up implementation (notify one node waiting on the condition variable)" alt="" coords="5,227,276,282"/>
+<area shape="rect" id="node6" href="$dc/d85/a01436.html#a17118e2d5383fd748debd959f0b86ccd" title="Wake up implementation (notify one node waiting on the condition variable)" alt="" coords="66,307,215,347"/>
+</map>

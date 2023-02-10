@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::NodeAbstraction::node" name="hh::core::abstraction::NodeAbstraction::node">
+<area shape="rect" id="node1" title="Node accessor." alt="" coords="256,65,435,105"/>
+<area shape="rect" id="node2" href="$d1/d56/a01308.html#abf09961c5114e56ee6c6ddad22b7b000" title="Accessor to the min / max execution duration of the nodes in the graph." alt="" coords="5,5,208,60"/>
+<area shape="rect" id="node3" href="$d1/d56/a01308.html#a3b85dd12e2ce60e025deb4b18f1f709d" title="Accessor to the min / max wait duration of the nodes in the graph." alt="" coords="18,108,195,163"/>
+</map>

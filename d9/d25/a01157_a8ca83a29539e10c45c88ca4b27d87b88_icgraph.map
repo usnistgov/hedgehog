@@ -1,4 +1,0 @@
-<map id="hh::core::CoreNode::meanExecTimePerElementCluster" name="hh::core::CoreNode::meanExecTimePerElementCluster">
-<area shape="rect" id="node1" title="Compute and return the mean execution time per received element for all tasks in the node cluster." alt="" coords="277,5,508,47"/>
-<area shape="rect" id="node2" href="$d9/d25/a01157.html#aa06893f28e1008a7ca4e936f6dd84b72" title="Compute and return the standard deviation execution per received element time for all tasks in the no..." alt="" coords="5,5,229,47"/>
-</map>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['finishpushingdata_183',['finishPushingData',['../da/d0a/a00993.html#adf92d4996c1a6bf90af21e9e2eb2b83e',1,'hh::Graph::finishPushingData()'],['../dc/d06/a01153.html#a3bbc4440a08c030ac44d3778b3afcc80',1,'hh::core::CoreGraph::finishPushingData()']]],
-  ['frontandpop_184',['frontAndPop',['../d2/d57/a01033.html#a050de00d5c9a941354f77aea702ad91c',1,'hh::AbstractState']]],
-  ['full_5fversion_185',['FULL_VERSION',['../d0/d48/a00165.html#a96c1490be6c69db1c0c1280ed86c23d2',1,'hh']]]
+  ['finishpushingdata_0',['finishPushingData',['../d1/dae/a01136.html#a613693f9c16ec7d942e005d0034edad2',1,'hh::Graph::finishPushingData()'],['../d0/d05/a01420.html#aa2461f81934529980299d0c4cd9c4ea8',1,'hh::core::CoreGraph::finishPushingData()']]],
+  ['font_1',['font',['../dd/d05/a01504.html#ae136f026937f950f5eeaf83270042b33',1,'hh::tool::PrintOptions::font() const'],['../dd/d05/a01504.html#aaddf6ecbf660cdb7c1237f117cbba146',1,'hh::tool::PrintOptions::font(Color font)']]],
+  ['font_5f_2',['font_',['../dd/d05/a01504.html#a5ed60a787dd3ef98cee8f4f69f6ac0c4',1,'hh::tool::PrintOptions']]]
 ];

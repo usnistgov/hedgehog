@@ -1,0 +1,16 @@
+<map id="hh::core::abstraction::NodeAbstraction::belongingGraph" name="hh::core::abstraction::NodeAbstraction::belongingGraph">
+<area shape="rect" id="node1" title="Belonging graph accessor." alt="" coords="1113,190,1324,245"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#ae537c7dab8424a741f8834504b4177a4" title="Get the device identifier (got from belonging graph)" alt="" coords="849,69,1051,109"/>
+<area shape="rect" id="node7" href="$d7/d41/a01312.html#a9a41a0e96d20148bd776757052c49dbd" title="Get the graph identifier (got from belonging graph)" alt="" coords="853,133,1047,173"/>
+<area shape="rect" id="node12" href="$d5/dec/a01416.html#a998c9c70bfa8c13e00b8f3b56b6d52d4" title="Register the execution pipeline into the belongingGraph." alt="" coords="837,197,1063,237"/>
+<area shape="rect" id="node13" href="$d7/d41/a01312.html#a23e4fa4dabf57296c2b2d23d8b8a651f" title="Register node to the given graph." alt="" coords="835,261,1065,301"/>
+<area shape="rect" id="node14" href="$d1/d56/a01308.html#ab6c7cee82a48f41314d4330acd1be577" title="Register a graph inside a graph." alt="" coords="585,286,762,341"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a1cac4c9fa995d721628e268b93e21665" title="Initialize the state manager." alt="" coords="572,5,775,45"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html#a3263adaf4e67190e5cd9313b60afa1e2" title="Initialize the task." alt="" coords="603,69,744,109"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="280,13,512,38"/>
+<area shape="rect" id="node6" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="311,77,481,102"/>
+<area shape="rect" id="node8" href="$db/dff/a01432.html#a7b8fcdaad647ddc5c864fd8c9d9dbfc0" title="Interface to user&#45;defined switch rules." alt="" coords="596,133,751,173"/>
+<area shape="rect" id="node9" href="$d5/dec/a01416.html#aeea48babfe2b7354fe15041290f6f52c" title="Register and duplicate the coreGraph in the execution pipeline." alt="" coords="560,197,787,237"/>
+<area shape="rect" id="node10" href="$d5/dec/a01416.html#a621e359cf5d86749a6b0281ee2dbb158" title="Initialize the execution pipeline." alt="" coords="281,197,511,237"/>
+<area shape="rect" id="node11" href="$d5/dec/a01416.html#af9ea06dff91c41d9a5f5db42f0432df0" title="Constructor using a user&#45;defined execution pipeline, the base CoreGraph and the deviceIds to determin..." alt="" coords="5,197,232,237"/>
+</map>

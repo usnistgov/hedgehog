@@ -1,0 +1,6 @@
+<map id="hh::core::CoreExecutionPipeline::clone" name="hh::core::CoreExecutionPipeline::clone">
+<area shape="rect" id="node1" title="Clone method, to duplicate an execution pipeline when it is part of another graph in an execution pip..." alt="" coords="833,29,1060,69"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#aeea48babfe2b7354fe15041290f6f52c" title="Register and duplicate the coreGraph in the execution pipeline." alt="" coords="559,29,785,69"/>
+<area shape="rect" id="node3" href="$d5/dec/a01416.html#a621e359cf5d86749a6b0281ee2dbb158" title="Initialize the execution pipeline." alt="" coords="280,29,511,69"/>
+<area shape="rect" id="node4" href="$d5/dec/a01416.html#af9ea06dff91c41d9a5f5db42f0432df0" title="Constructor using a user&#45;defined execution pipeline, the base CoreGraph and the deviceIds to determin..." alt="" coords="5,29,232,69"/>
+</map>

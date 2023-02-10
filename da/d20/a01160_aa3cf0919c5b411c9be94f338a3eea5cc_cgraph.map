@@ -1,0 +1,5 @@
+<map id="hh::MemoryManager::recycleMemory" name="hh::MemoryManager::recycleMemory">
+<area shape="rect" id="node1" title="Recycling mechanism for managed memory." alt="" coords="5,37,171,77"/>
+<area shape="rect" id="node2" href="$d9/d42/a01156.html#ab13df467ef418bf61cab4efc707bfbe2" title="Inside pool accessor." alt="" coords="219,5,429,45"/>
+<area shape="rect" id="node3" href="$d9/d42/a01156.html#a37a76400b73aacfb60ca898d80cfd88c" title="Accessor to NVTX profiler." alt="" coords="219,69,429,109"/>
+</map>

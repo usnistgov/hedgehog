@@ -1,0 +1,4 @@
+<map id="hh::core::CoreGraph::connectNotifierToSlot" name="hh::core::CoreGraph::connectNotifierToSlot">
+<area shape="rect" id="node1" title="Connect a notifier to a slot, used when connecting two nodes." alt="" coords="5,5,173,45"/>
+<area shape="rect" id="node2" href="$d8/dc5/a01300.html#acafea7994501ed52ef84d56abefb68be" title="Add a NotifierAbstraction to this slot." alt="" coords="221,5,431,45"/>
+</map>

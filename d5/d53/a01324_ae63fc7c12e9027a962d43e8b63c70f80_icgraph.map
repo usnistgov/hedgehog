@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::canTerminate" name="hh::core::abstraction::ExecutionPipelineInputsManagementAbstraction::canTerminate">
+<area shape="rect" id="node1" title="Can terminate implementation." alt="" coords="324,5,595,60"/>
+<area shape="rect" id="node2" href="$d5/d53/a01324.html#a10fdc12c96f38606ca77a8ca7e0da2a0" title="Wait statement when the node is alive and no input data are available." alt="" coords="5,5,276,60"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="hh::core::CoreTask::preRun" name="hh::core::CoreTask::preRun">
+<area shape="rect" id="node1" title="Initialize the task." alt="" coords="5,141,147,181"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#ae537c7dab8424a741f8834504b4177a4" title="Get the device identifier (got from belonging graph)" alt="" coords="195,13,396,53"/>
+<area shape="rect" id="node4" href="$d6/d0f/a01256.html#a98c332a0ac7f165dab64fb71bd130e51" title="initialize step for the task" alt="" coords="208,77,383,117"/>
+<area shape="rect" id="node5" href="$d6/d0f/a01256.html#ae474a62fd063ae6a34e13cc1af5c0acd" title="Memory manager accessor." alt="" coords="208,141,383,181"/>
+<area shape="rect" id="node6" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="212,205,379,260"/>
+<area shape="rect" id="node7" href="$d4/d49/a01316.html#a360eae2c9534cbe68bff818e85ffbb10" title="Set the task as initialized." alt="" coords="212,284,379,339"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html#ad653b61766dfab8fdf7bab2319f15a3f" title="Belonging graph accessor." alt="" coords="444,5,655,60"/>
+</map>

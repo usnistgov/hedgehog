@@ -1,6 +1,0 @@
-<map id="hh::core::CoreQueueSlot::numberInputNodes" name="hh::core::CoreQueueSlot::numberInputNodes">
-<area shape="rect" id="node1" title="Number of CoreNotifier linked accessor." alt="" coords="477,46,644,87"/>
-<area shape="rect" id="node2" href="$de/df6/a01141.html#a02d325011f6ac3023470d60382c1c0bf" title="Test if CoreNotifier are linked to this CoreQueueSlot." alt="" coords="263,13,429,54"/>
-<area shape="rect" id="node4" href="$d6/dc4/a01125.html#a0ef6c6d0a6a592c163a4ea26e82fa963" title="Wait for notification from the output nodes and return the state of the sink." alt="" coords="263,78,429,119"/>
-<area shape="rect" id="node3" href="$d8/d92/a01165.html#ab6f3c165745ea5aa8a006bc9396690ab" title="Can terminate for the ep, specialised to not call user&#39;s defined one." alt="" coords="5,5,215,61"/>
-</map>

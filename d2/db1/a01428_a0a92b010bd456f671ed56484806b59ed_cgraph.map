@@ -1,0 +1,6 @@
+<map id="hh::core::CoreTask::postRun" name="hh::core::CoreTask::postRun">
+<area shape="rect" id="node1" title="When a task terminates, set the task to non active, call user&#45;defined shutdown, and disconnect the ta..." alt="" coords="5,91,147,131"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#aa0d5ced405fb2c9aadfadff75cb2a070" title="Accessor to task status." alt="" coords="199,5,365,60"/>
+<area shape="rect" id="node3" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="199,84,365,139"/>
+<area shape="rect" id="node4" href="$d6/d0f/a01256.html#ad9a5416afc9608034c9f5fe9c2b2b2bf" title="shutdown step for the task" alt="" coords="195,163,369,203"/>
+</map>

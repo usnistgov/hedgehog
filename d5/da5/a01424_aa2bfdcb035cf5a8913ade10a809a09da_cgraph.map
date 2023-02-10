@@ -1,0 +1,7 @@
+<map id="hh::core::CoreStateManager::clone" name="hh::core::CoreStateManager::clone">
+<area shape="rect" id="node1" title="Clone method, to duplicate a state manager when it is part of another graph in an execution pipeline." alt="" coords="5,99,208,139"/>
+<area shape="rect" id="node2" href="$d5/d37/a01276.html#a7197af8f43133691be8a453a0e614cc8" title="Interface to call user&#45;defined copy method." alt="" coords="262,5,473,75"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a377a37a7ced0758daec2a417f8a4794b" title="Test if a memory manager is attached." alt="" coords="256,99,479,139"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a3795f50cf979b43d0957a1238d9a3692" title="Accessor to the memory manager." alt="" coords="527,128,729,168"/>
+<area shape="rect" id="node5" href="$d6/d0f/a01256.html#ae474a62fd063ae6a34e13cc1af5c0acd" title="Memory manager accessor." alt="" coords="777,128,952,168"/>
+</map>

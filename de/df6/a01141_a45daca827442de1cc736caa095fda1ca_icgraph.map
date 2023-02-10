@@ -1,8 +1,0 @@
-<map id="hh::core::CoreQueueSlot::notifyConditionVariable" name="hh::core::CoreQueueSlot::notifyConditionVariable">
-<area shape="rect" id="node1" title="Condition variable accessor." alt="" coords="532,119,699,160"/>
-<area shape="rect" id="node2" href="$d6/dc4/a01125.html#a0ef6c6d0a6a592c163a4ea26e82fa963" title="Wait for notification from the output nodes and return the state of the sink." alt="" coords="278,5,445,47"/>
-<area shape="rect" id="node3" href="$d2/df3/a01085.html#a1f27ede1c60fbd48da0042b090ece3ba" title="Define how the CoreDefaultExecutionPipeline wait for data." alt="" coords="239,71,484,127"/>
-<area shape="rect" id="node4" href="$dc/d81/a01161.html#a39908109a77b4064c37876dc6ecc1379" title="Wait method for notification." alt="" coords="269,151,454,207"/>
-<area shape="rect" id="node5" href="$de/df6/a01141.html#a826aca4a557e9bef1899c941772f1407" title="Wake up and notify a node connected to the condition variable CoreQueueSlot::notifyConditionVariable_..." alt="" coords="278,232,445,273"/>
-<area shape="rect" id="node6" href="$dc/d81/a01161.html#aea2086f7f4a23144d8621b8286178ccb" title="Main loop for the CoreTask." alt="" coords="5,225,191,281"/>
-</map>

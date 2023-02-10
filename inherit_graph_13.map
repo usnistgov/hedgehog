@@ -1,3 +1,50 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d0/dc9/a01065.html" title=" " alt="" coords="5,5,132,47"/>
+<area shape="rect" id="node1" href="$d7/da3/a01260.html" title="Abstraction for cores/nodes that can form groups." alt="" coords="5,74,201,114"/>
+<area shape="rect" id="node2" href="$dd/d18/a01284.html" title=" " alt="" coords="289,5,493,89"/>
+<area shape="rect" id="node5" href="$dd/d18/a01284.html" title="Typed abstraction for groupable node." alt="" coords="267,277,514,332"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html" title=" " alt="" coords="612,157,801,197"/>
+<area shape="rect" id="node4" href="$d2/db1/a01428.html" title="Task core." alt="" coords="618,221,795,261"/>
+<area shape="rect" id="node6" href="$d3/d51/a01264.html" title="Abstraction for core that present termination condition." alt="" coords="293,114,488,154"/>
+<area shape="rect" id="node7" href="$d5/da5/a01424.html" title=" " alt="" coords="605,285,808,325"/>
+<area shape="rect" id="node8" href="$d5/da5/a01424.html" title="AbstractState manager core." alt="" coords="605,349,808,389"/>
+<area shape="rect" id="node9" href="$dc/dd9/a01268.html" title="Abstraction for cleanable core." alt="" coords="306,421,475,461"/>
+<area shape="rect" id="node10" href="$d0/d05/a01420.html" title=" " alt="" coords="612,678,801,718"/>
+<area shape="rect" id="node11" href="$d0/d05/a01420.html" title="Graph core." alt="" coords="618,742,795,782"/>
+<area shape="rect" id="node12" href="$d4/d0e/a01272.html" title="Core abstraction for clonable nodes, nodes duplicated by execution pipeline." alt="" coords="310,578,471,618"/>
+<area shape="rect" id="node13" href="$d5/dec/a01416.html" title=" " alt="" coords="881,553,1108,593"/>
+<area shape="rect" id="node14" href="$d5/dec/a01416.html" title="Execution pipeline core." alt="" coords="881,479,1108,519"/>
+<area shape="rect" id="node15" href="$d5/d37/a01276.html" title="Core abstraction for copyable nodes." alt="" coords="21,231,186,285"/>
+<area shape="rect" id="node16" href="$d5/d37/a01276.html" title=" " alt="" coords="285,485,496,554"/>
+<area shape="rect" id="node17" title=" " alt="" coords="679,577,734,603"/>
+<area shape="rect" id="node18" title=" " alt="" coords="677,528,737,553"/>
+<area shape="rect" id="node19" href="$d8/d0d/a01280.html" title=" " alt="" coords="26,1716,181,1771"/>
+<area shape="rect" id="node20" href="$d7/d51/a01340.html" title="Input management abstraction for the task." alt="" coords="261,1716,520,1771"/>
+<area shape="rect" id="node21" title=" " alt="" coords="367,707,415,732"/>
+<area shape="rect" id="node22" title=" " alt="" coords="363,756,418,781"/>
+<area shape="rect" id="node23" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="26,874,181,914"/>
+<area shape="rect" id="node24" href="$db/dff/a01432.html" title=" " alt="" coords="629,1058,784,1098"/>
+<area shape="rect" id="node25" href="$dc/d85/a01436.html" title=" " alt="" coords="316,1494,465,1534"/>
+<area shape="rect" id="node26" href="$df/d31/a01440.html" title=" " alt="" coords="308,971,473,1011"/>
+<area shape="rect" id="node27" href="$db/dff/a01432.html" title="Switch core." alt="" coords="629,869,784,909"/>
+<area shape="rect" id="node28" href="$dc/d85/a01436.html" title="Sink of the graph, only used in an outer graph." alt="" coords="316,1430,465,1470"/>
+<area shape="rect" id="node29" href="$df/d31/a01440.html" title="Source of the graph, only used in an outer graph." alt="" coords="308,907,473,947"/>
+<area shape="rect" id="node30" href="$d1/d56/a01308.html" title="Base graph node abstraction." alt="" coords="302,642,479,682"/>
+<area shape="rect" id="node31" href="$d4/d49/a01316.html" title="Task core abstraction used to define some method for task&#45;like behaving cores like CoreExecutionPipel..." alt="" coords="307,357,474,397"/>
+<area shape="rect" id="node32" href="$d6/dae/a01304.html" title="Abstraction specialized for the execution pipeline." alt="" coords="580,413,833,453"/>
+<area shape="rect" id="node33" href="$d7/d8d/a01288.html" title="Core abstraction to notify slots." alt="" coords="26,1122,181,1162"/>
+<area shape="rect" id="node34" href="$dc/d54/a01344.html" title=" " alt="" coords="255,1115,526,1169"/>
+<area shape="rect" id="node35" href="$dc/d54/a01344.html" title=" " alt="" coords="255,1193,526,1248"/>
+<area shape="rect" id="node36" href="$dc/dd9/a01328.html" title="Output management abstraction for the execution pipeline." alt="" coords="249,1036,532,1091"/>
+<area shape="rect" id="node37" href="$df/d93/a01336.html" title="Output management abstraction for the grpah." alt="" coords="251,1351,531,1405"/>
+<area shape="rect" id="node38" href="$dc/d54/a01344.html" title="Output management abstraction for the task." alt="" coords="255,1272,526,1327"/>
+<area shape="rect" id="node39" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="22,499,185,539"/>
+<area shape="rect" id="node40" href="$d8/d7a/a01292.html" title=" " alt="" coords="23,1637,184,1692"/>
+<area shape="rect" id="node41" href="$d5/d53/a01324.html" title="Input management abstraction for the execution pipeline." alt="" coords="255,1637,526,1692"/>
+<area shape="rect" id="node42" href="$d9/d45/a01332.html" title="Input management abstraction for the graph." alt="" coords="256,1559,525,1613"/>
+<area shape="rect" id="node43" href="$d8/d7a/a01292.html" title=" " alt="" coords="23,1455,184,1509"/>
+<area shape="rect" id="node44" href="$d4/d64/a01296.html" title=" " alt="" coords="23,952,183,1007"/>
+<area shape="rect" id="node45" href="$d4/d64/a01296.html" title=" " alt="" coords="23,1193,183,1248"/>
+<area shape="rect" id="node46" href="$d8/dc5/a01300.html" title="Core&#39;s abstraction to receive a signal." alt="" coords="26,1566,181,1606"/>
+<area shape="rect" id="node47" title=" " alt="" coords="367,179,414,204"/>
+<area shape="rect" id="node48" title=" " alt="" coords="365,228,417,253"/>
 </map>

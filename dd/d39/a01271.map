@@ -1,0 +1,11 @@
+<map id="hh::core::abstraction::ClonableAbstraction" name="hh::core::abstraction::ClonableAbstraction">
+<area shape="rect" id="node1" title="Core abstraction for clonable nodes, nodes duplicated by execution pipeline." alt="" coords="575,5,756,165"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html" title=" " alt="" coords="9,1263,249,1763"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html" title=" " alt="" coords="338,1101,574,1925"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html" title=" " alt="" coords="630,1263,861,1763"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html" title=" " alt="" coords="901,1293,1131,1733"/>
+<area shape="rect" id="node6" href="$d5/dec/a01416.html" title="Execution pipeline core." alt="" coords="5,377,245,877"/>
+<area shape="rect" id="node7" href="$d0/d05/a01420.html" title="Graph core." alt="" coords="387,215,623,1039"/>
+<area shape="rect" id="node8" href="$d5/da5/a01424.html" title="AbstractState manager core." alt="" coords="647,377,878,877"/>
+<area shape="rect" id="node9" href="$d2/db1/a01428.html" title="Task core." alt="" coords="1005,407,1235,847"/>
+</map>

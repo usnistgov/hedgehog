@@ -1,0 +1,7 @@
+<map id="hh::Printer::printEdge" name="hh::Printer::printEdge">
+<area shape="rect" id="node1" title="Print edge information." alt="" coords="540,85,699,110"/>
+<area shape="rect" id="node2" href="$d8/d7a/a01292.html#a4fa67962c4767a2363385bf1c76b6357" title="Add to the printer the edge information." alt="" coords="324,70,492,125"/>
+<area shape="rect" id="node3" href="$dc/d85/a01436.html#a257da11d4f8872ed6d4ed3594cbbe750" title="Gather sink information." alt="" coords="66,5,215,45"/>
+<area shape="rect" id="node4" href="$d5/d53/a01324.html#aefb931b491522c07a7a14dec875dc98d" title="Visitor for the execution pipeline edge." alt="" coords="5,70,276,125"/>
+<area shape="rect" id="node5" href="$d7/d51/a01340.html#a6227e6ef8ca371c12d3a869f5f1f08ce" title="Add edge information to the printer." alt="" coords="11,149,270,203"/>
+</map>

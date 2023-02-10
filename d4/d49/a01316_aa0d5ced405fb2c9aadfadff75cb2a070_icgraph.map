@@ -1,0 +1,9 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::isActive" name="hh::core::abstraction::TaskNodeAbstraction::isActive">
+<area shape="rect" id="node1" title="Accessor to task status." alt="" coords="584,142,751,197"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a360effc21b52328b2eb1989f3952e38c" title="Post run logic, disconnects the switch and waits for each graph to terminate." alt="" coords="309,5,536,45"/>
+<area shape="rect" id="node3" href="$d5/dec/a01416.html#a6faec4040c77b640704f44560b5684c3" title="Main core execution pipeline logic." alt="" coords="5,42,261,67"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a8828e1fc33108fc73f8bfe017d9c2864" title="Post run logic, shutdown the state manager, notify successor nodes of state manager termination." alt="" coords="321,120,524,160"/>
+<area shape="rect" id="node5" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="17,155,249,181"/>
+<area shape="rect" id="node6" href="$d2/db1/a01428.html#a0a92b010bd456f671ed56484806b59ed" title="When a task terminates, set the task to non active, call user&#45;defined shutdown, and disconnect the ta..." alt="" coords="352,235,493,275"/>
+<area shape="rect" id="node7" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="48,270,219,295"/>
+</map>

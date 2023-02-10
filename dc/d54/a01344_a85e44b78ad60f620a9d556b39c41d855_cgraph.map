@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::TaskOutputsManagementAbstraction::sendAndNotify" name="hh::core::abstraction::TaskOutputsManagementAbstraction::sendAndNotify">
+<area shape="rect" id="node1" title="Send a piece of data and notify the successors." alt="" coords="5,45,276,100"/>
+<area shape="rect" id="node2" href="$d7/d8d/a01288.html#ad430646d19ef215989cf18b08b919732" title="Notify a slot to wake up." alt="" coords="327,5,481,60"/>
+<area shape="rect" id="node3" href="$d4/d64/a01296.html#aeb78ce41f06100da5b3e79a0153b1eb0" title="Send a data as output of the node." alt="" coords="324,84,484,139"/>
+</map>

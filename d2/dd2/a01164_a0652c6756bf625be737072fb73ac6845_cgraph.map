@@ -1,0 +1,6 @@
+<map id="hh::StaticMemoryManager::initialize" name="hh::StaticMemoryManager::initialize">
+<area shape="rect" id="node1" title="Initialize the memory manager." alt="" coords="5,69,200,109"/>
+<area shape="rect" id="node2" href="$d9/d42/a01156.html#aebcc7af928e19eefed9d652f633956db" title="Flag the memory manager has initialized." alt="" coords="248,5,459,45"/>
+<area shape="rect" id="node3" href="$d2/dd2/a01164.html#a273d1f188de721de92f052564d9d3087" title="User&#45;definable initialization step for a memory manager." alt="" coords="255,69,452,109"/>
+<area shape="rect" id="node4" href="$d9/d42/a01156.html#a4253f6884c224c40e147fc152204a884" title="Initialized flag accessor." alt="" coords="248,133,459,173"/>
+</map>

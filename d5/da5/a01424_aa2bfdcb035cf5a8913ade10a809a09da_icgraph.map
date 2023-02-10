@@ -1,0 +1,3 @@
+<map id="hh::core::CoreStateManager::clone" name="hh::core::CoreStateManager::clone">
+<area shape="rect" id="node1" title="Clone method, to duplicate a state manager when it is part of another graph in an execution pipeline." alt="" coords="5,29,208,69"/>
+</map>

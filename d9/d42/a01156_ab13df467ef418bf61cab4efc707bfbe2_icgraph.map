@@ -1,0 +1,12 @@
+<map id="hh::AbstractMemoryManager::pool" name="hh::AbstractMemoryManager::pool">
+<area shape="rect" id="node1" title="Inside pool accessor." alt="" coords="508,229,719,269"/>
+<area shape="rect" id="node2" href="$d9/d42/a01156.html#a840ecc339cf590b801ae65d93a15585e" title="Capacity accessor." alt="" coords="249,5,460,45"/>
+<area shape="rect" id="node4" href="$d9/d42/a01156.html#ad5526a947262e8bb69c422ffa1b7cc31" title="Return the current size of the inside pool." alt="" coords="249,69,460,109"/>
+<area shape="rect" id="node5" href="$da/d20/a01160.html#a44c58f154f7fdd4f0fda2602ff1c7930" title="Get managed memory from the pool." alt="" coords="272,133,437,173"/>
+<area shape="rect" id="node6" href="$d2/dd2/a01164.html#aa97d8d99efb04e551f05e2de64a74dce" title="Get a managed memory from the pool." alt="" coords="257,197,452,237"/>
+<area shape="rect" id="node7" href="$da/d20/a01160.html#af40be90deeb5f884e635eb4e189e84c9" title="Initialize the memory manager." alt="" coords="272,261,437,301"/>
+<area shape="rect" id="node8" href="$d2/dd2/a01164.html#ab8d941758c3daf2a67372e4d8dd22d6b" title="Initialize implementation using the tuple of arguments stored." alt="" coords="257,325,452,365"/>
+<area shape="rect" id="node9" href="$da/d20/a01160.html#aa3cf0919c5b411c9be94f338a3eea5cc" title="Recycling mechanism for managed memory." alt="" coords="272,389,437,429"/>
+<area shape="rect" id="node10" href="$d2/dd2/a01164.html#a3a4a45b656797e3ad9459c8932f650b7" title="Recycling mechanism for managed memory." alt="" coords="257,453,452,493"/>
+<area shape="rect" id="node3" href="$da/d20/a01160.html#a5cc747aaef0fb1c205bf433eca4410ed" title="Default copy method." alt="" coords="5,13,201,38"/>
+</map>

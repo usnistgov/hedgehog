@@ -1,0 +1,6 @@
+<map id="hh::core::CoreGraph::waitForTermination" name="hh::core::CoreGraph::waitForTermination">
+<area shape="rect" id="node1" title="Wait for the graph to terminate." alt="" coords="5,85,160,125"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#acc1e93b1f78669758c61419cef252a60" title="Increment execution duration." alt="" coords="221,5,433,60"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a17b8510906db4323d1dd5e05a53ecfdd" title="Wait for the threads to join." alt="" coords="252,85,403,125"/>
+<area shape="rect" id="node4" href="$d7/d41/a01312.html#a4fe2ab75d527f31a8c916db0ab4b1145" title="Accessor to the starting execution timestamp." alt="" coords="208,149,447,204"/>
+</map>

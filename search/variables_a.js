@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['name_5f_966',['name_',['../d9/d25/a01157.html#a3610c20530fd65e006efcde46b0d11fa',1,'hh::core::CoreNode']]],
-  ['notifiers_5f_967',['notifiers_',['../de/df6/a01141.html#af7a0a7380ae805ea92dc4f527bb86fce',1,'hh::core::CoreQueueSlot']]],
-  ['notifyconditionvariable_5f_968',['notifyConditionVariable_',['../de/df6/a01141.html#ab4bd0e148e58f09ca301375db894b913',1,'hh::core::CoreQueueSlot']]],
-  ['numbergraphs_5f_969',['numberGraphs_',['../d8/d92/a01165.html#a49f609d8ae5ed4d118d92fa9e14590b7',1,'hh::core::CoreExecutionPipeline']]],
-  ['numberreceivedelements_5f_970',['numberReceivedElements_',['../d9/d25/a01157.html#a44a80a4c03273b77395229919e874a8e',1,'hh::core::CoreNode']]],
-  ['numberthreads_5f_971',['numberThreads_',['../d9/d25/a01157.html#a91b9e0ed358e5b4f01a9472ecbdf380b',1,'hh::core::CoreNode']]],
-  ['nvtxprofiler_5f_972',['nvtxProfiler_',['../dc/d81/a01161.html#aacedc4650ed94be812eb74cdbacad3de',1,'hh::core::CoreTask']]]
+  ['peerdeviceids_5f_0',['peerDeviceIds_',['../d2/d22/a01196.html#aeb50fd4da4565d8c6c7d796eacf650ae',1,'hh::AbstractCUDATask']]],
+  ['perelementexecutionduration_5f_1',['perElementExecutionDuration_',['../d4/d49/a01316.html#a9a9dc10c052f2d583d93cc69d6d87862',1,'hh::core::abstraction::TaskNodeAbstraction']]],
+  ['pool_5f_2',['pool_',['../d9/d42/a01156.html#aa7ef62b74a74af80beefe68a5e967f27',1,'hh::AbstractMemoryManager']]],
+  ['printoptions_5f_3',['printOptions_',['../df/dec/a01320.html#a5192a9af2e553e3fbeea8043a8e62df1',1,'hh::core::abstraction::PrintableAbstraction']]],
+  ['profiler_5f_4',['profiler_',['../d9/d42/a01156.html#a02db268a9fb8a1b746c86151bd6e700d',1,'hh::AbstractMemoryManager']]]
 ];

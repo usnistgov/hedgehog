@@ -1,3 +1,5 @@
-<map id="hh::helper::HelperCoreMultiReceiversType&lt; Inputs &gt;" name="hh::helper::HelperCoreMultiReceiversType&lt; Inputs &gt;">
-<area shape="rect" id="node1" title="Base definition of HelperCoreMultiReceiversType." alt="" coords="5,5,187,97"/>
+<map id="hh::ColorPicker" name="hh::ColorPicker">
+<area shape="rect" id="node1" title="Color scheme abstraction for dot file generation." alt="" coords="97,5,259,111"/>
+<area shape="rect" id="node2" href="$d6/db6/a01172.html" title="Blue to Red color range." alt="" coords="5,159,167,264"/>
+<area shape="rect" id="node3" href="$d3/d32/a01176.html" title="Jet color range." alt="" coords="191,159,352,264"/>
 </map>

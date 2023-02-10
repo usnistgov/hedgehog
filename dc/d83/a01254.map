@@ -1,0 +1,52 @@
+<map id="hh::behavior::TaskNode" name="hh::behavior::TaskNode">
+<area shape="rect" id="node1" title="Behavior abstraction for TaskNode." alt="" coords="2373,3184,2575,3389"/>
+<area shape="rect" id="node2" href="$d4/dd5/a01244.html" title="Behavior abstraction for the base node." alt="" coords="2239,1145,2376,1271"/>
+<area shape="rect" id="node50" href="$d4/d49/a01316.html" title="Task core abstraction used to define some method for task&#45;like behaving cores like CoreExecutionPipel..." alt="" coords="1117,1373,1394,1888"/>
+<area shape="rect" id="node3" title=" " alt="" coords="2321,867,2467,962"/>
+<area shape="rect" id="node4" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="1427,412,1651,772"/>
+<area shape="rect" id="node8" href="$d1/d56/a01308.html" title="Base graph node abstraction." alt="" coords="1868,1951,2088,2365"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1963,1153,2215,1263"/>
+<area shape="rect" id="node19" title=" " alt="" coords="2059,875,2297,955"/>
+<area shape="rect" id="node5" title=" " alt="" coords="903,142,981,207"/>
+<area shape="rect" id="node44" href="$de/d65/a01500.html" title="A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task grap..." alt="" coords="367,409,600,775"/>
+<area shape="rect" id="node6" title=" " alt="" coords="877,5,1007,85"/>
+<area shape="rect" id="node7" title=" " alt="" coords="835,142,878,207"/>
+<area shape="rect" id="node29" href="$d9/d42/a01156.html" title="Abstract Memory manager." alt="" coords="2391,2428,2605,2813"/>
+<area shape="rect" id="node9" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="1013,1148,1167,1268"/>
+<area shape="rect" id="node10" href="$dd/d05/a01504.html" title="Node print options." alt="" coords="1081,852,1232,977"/>
+<area shape="rect" id="node11" href="$d0/deb/a01508.html" title="Simple color representation." alt="" coords="1044,552,1195,632"/>
+<area shape="rect" id="node12" title=" " alt="" coords="1006,142,1065,207"/>
+<area shape="rect" id="node13" title=" " alt="" coords="2035,1591,2206,1671"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1339,142,1438,207"/>
+<area shape="rect" id="node15" href="$da/dcf/a01558.html" title=" " alt="" coords="2513,1598,2544,1663"/>
+<area shape="rect" id="node16" href="$db/d09/a01838.html" title=" " alt="" coords="3419,882,3471,947"/>
+<area shape="rect" id="node31" href="$d4/da6/a01168.html" title=" " alt="" coords="3372,1521,3523,1741"/>
+<area shape="rect" id="node40" href="$d4/da6/a01168.html" title="Pool of data used by the memory manager." alt="" coords="3637,1105,3775,1311"/>
+<area shape="rect" id="node17" title=" " alt="" coords="2230,1569,2433,1693"/>
+<area shape="rect" id="node20" title=" " alt="" coords="2176,559,2297,625"/>
+<area shape="rect" id="node21" title=" " alt="" coords="2493,142,2516,207"/>
+<area shape="rect" id="node22" title=" " alt="" coords="1917,559,2044,625"/>
+<area shape="rect" id="node24" title=" " alt="" coords="2766,559,2915,625"/>
+<area shape="rect" id="node27" title=" " alt="" coords="2430,559,2579,625"/>
+<area shape="rect" id="node36" title=" " alt="" coords="3161,559,3281,625"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1969,142,1992,207"/>
+<area shape="rect" id="node30" title=" " alt="" coords="2942,2118,3209,2198"/>
+<area shape="rect" id="node38" title=" " alt="" coords="3797,875,3954,955"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1956,1598,2011,1663"/>
+<area shape="rect" id="node26" title=" " alt="" coords="1470,135,1641,215"/>
+<area shape="rect" id="node28" title=" " alt="" coords="2373,2959,2575,3039"/>
+<area shape="rect" id="node33" title=" " alt="" coords="2699,875,2849,955"/>
+<area shape="rect" id="node43" title=" " alt="" coords="1325,1001,1468,1081"/>
+<area shape="rect" id="node49" title=" " alt="" coords="1233,2111,1408,2205"/>
+<area shape="rect" id="node34" href="$d9/d97/a01152.html" title="Abstraction used to manage an user type with a memory manager." alt="" coords="2731,2876,2961,3121"/>
+<area shape="rect" id="node32" title=" " alt="" coords="3169,1168,3392,1248"/>
+<area shape="rect" id="node35" title=" " alt="" coords="2731,2581,2958,2661"/>
+<area shape="rect" id="node41" title=" " alt="" coords="3495,875,3664,955"/>
+<area shape="rect" id="node37" title=" " alt="" coords="3688,882,3772,947"/>
+<area shape="rect" id="node39" title=" " alt="" coords="3808,559,3943,625"/>
+<area shape="rect" id="node42" title=" " alt="" coords="3519,559,3640,625"/>
+<area shape="rect" id="node45" title=" " alt="" coords="337,142,489,207"/>
+<area shape="rect" id="node46" title=" " alt="" coords="513,142,651,207"/>
+<area shape="rect" id="node47" title=" " alt="" coords="5,142,172,207"/>
+<area shape="rect" id="node48" title=" " alt="" coords="196,142,304,207"/>
+</map>

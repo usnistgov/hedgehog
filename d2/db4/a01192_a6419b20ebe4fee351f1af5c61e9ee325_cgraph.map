@@ -1,0 +1,9 @@
+<map id="hh::StateManager::copy" name="hh::StateManager::copy">
+<area shape="rect" id="node1" title="Provide a copy of the state manager." alt="" coords="5,99,181,125"/>
+<area shape="rect" id="node2" href="$d2/db4/a01192.html#a9e3f195f443285a4ac15277af045eb33" title="Customizable copy method." alt="" coords="229,63,440,103"/>
+<area shape="rect" id="node5" href="$d4/dd5/a01244.html#a1d13f00015747395086e5ba631011f7b" title="Node&#39;s name accessor." alt="" coords="521,120,666,160"/>
+<area shape="rect" id="node3" href="$d2/db4/a01192.html#a2060f3e8458214f1c931f4b8b1e5a7e9" title="Automatic start flag accessor." alt="" coords="488,5,699,45"/>
+<area shape="rect" id="node7" href="$d2/db4/a01192.html#a22efb69a360ba9e8e20fc10b317f4e47" title="AbstractState accessor." alt="" coords="504,70,683,95"/>
+<area shape="rect" id="node4" href="$d2/db4/a01192.html#a35786174a5fe0b5fe245bd0ba60f47e3" title="Accessor to the core." alt="" coords="747,5,953,45"/>
+<area shape="rect" id="node6" href="$d4/dd5/a01244.html#aaaca8440e21ed343e595fa3f197dcece" title="Core accessor." alt="" coords="777,120,923,160"/>
+</map>

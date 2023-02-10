@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::waitDuration" name="hh::core::abstraction::TaskNodeAbstraction::waitDuration">
+<area shape="rect" id="node1" title="Accessor to the duration the node was in a wait state." alt="" coords="263,45,429,100"/>
+<area shape="rect" id="node2" href="$d7/da3/a01260.html#ab24654a1071f4911d8341ca96aff97fd" title="Accessor to the mean / standard deviation wait duration of the nodes in the group." alt="" coords="5,5,215,60"/>
+<area shape="rect" id="node3" href="$d7/da3/a01260.html#a9541a716fd7d0f6d4a22ea0e1ebef483" title="Accessor to the min / max wait duration of the nodes in the group." alt="" coords="6,84,214,139"/>
+</map>

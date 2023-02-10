@@ -1,0 +1,5 @@
+<map id="hh::core::CoreStateManager::callCanTerminate" name="hh::core::CoreStateManager::callCanTerminate">
+<area shape="rect" id="node1" title="Call user&#45;definable termination." alt="" coords="536,5,739,45"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,13,237,38"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a2ce2d00f5a93f1304bf8e61c50e9dc60" title="Wait statement when the node is alive and no input data are available." alt="" coords="285,33,488,73"/>
+</map>

@@ -1,3 +1,7 @@
-<map id="hh::NvtxProfiler" name="hh::NvtxProfiler">
-<area shape="rect" id="node1" title="A class to wrap calls to the NVTX library for tracking events that occur within an Hedgehog task grap..." alt="" coords="5,5,220,288"/>
+<map id="hh::AbstractState&lt; Separator, AllTypes &gt;" name="hh::AbstractState&lt; Separator, AllTypes &gt;">
+<area shape="rect" id="node1" title="Hedgehog AbstractState." alt="" coords="211,164,384,364"/>
+<area shape="rect" id="node5" href="$d6/d97/a01188.html" title=" " alt="" coords="211,427,384,627"/>
+<area shape="rect" id="node2" href="$d9/d31/a01208.html" title="Cleanable interface." alt="" coords="5,7,173,113"/>
+<area shape="rect" id="node3" title=" " alt="" coords="198,13,397,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="421,5,605,115"/>
 </map>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['output_5ft_1004',['output_t',['../de/d9e/a01061.html#a0bc429b8fe943c35d891089731515af2',1,'hh::behavior::Sender']]]
+  ['gim_0',['GIM',['../d5/d0f/a00308.html#a27646736360a425bb7f2910846e6e25c',1,'hh::core']]],
+  ['gom_1',['GOM',['../d5/d0f/a00308.html#a15d2fb70650b71a5b89dcf60804c8df6',1,'hh::core']]]
 ];

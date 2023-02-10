@@ -1,0 +1,6 @@
+<map id="hh::core::CoreGraph::cleanGraph" name="hh::core::CoreGraph::cleanGraph">
+<area shape="rect" id="node1" title="Clean the graph." alt="" coords="5,37,156,77"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#acf046185936a94dec75c8c38847ed14c" title="Gather cleanable nodes." alt="" coords="204,5,355,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a4c8f8d72b335f1cba2e725191e57473e" title="Test if the graph has been registered." alt="" coords="204,69,355,109"/>
+<area shape="rect" id="node4" href="$d7/d41/a01312.html#aa5f777e43c43c3b4094deca0b9dbbeb0" title="Accessor to registration flag." alt="" coords="403,69,629,109"/>
+</map>

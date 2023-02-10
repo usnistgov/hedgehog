@@ -1,0 +1,7 @@
+<map id="hh::MemoryManager::initialize" name="hh::MemoryManager::initialize">
+<area shape="rect" id="node1" title="Initialize the memory manager." alt="" coords="5,101,171,141"/>
+<area shape="rect" id="node2" href="$d9/d42/a01156.html#aebcc7af928e19eefed9d652f633956db" title="Flag the memory manager has initialized." alt="" coords="219,5,429,45"/>
+<area shape="rect" id="node3" href="$da/d20/a01160.html#a086d88fa7e38414f65a77ed9be1f4e24" title="User&#45;definable initialization step for a memory manager." alt="" coords="229,69,419,109"/>
+<area shape="rect" id="node4" href="$d9/d42/a01156.html#a4253f6884c224c40e147fc152204a884" title="Initialized flag accessor." alt="" coords="219,133,429,173"/>
+<area shape="rect" id="node5" href="$d9/d42/a01156.html#ab13df467ef418bf61cab4efc707bfbe2" title="Inside pool accessor." alt="" coords="219,197,429,237"/>
+</map>

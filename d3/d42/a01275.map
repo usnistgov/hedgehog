@@ -1,3 +1,10 @@
-<map id="size_t" name="size_t">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,63,83"/>
+<map id="hh::core::abstraction::CopyableAbstraction&lt; CopyableNode &gt;" name="hh::core::abstraction::CopyableAbstraction&lt; CopyableNode &gt;">
+<area shape="rect" id="node1" title="Core abstraction for copyable nodes." alt="" coords="172,5,357,160"/>
+<area shape="rect" id="node2" href="$dd/d18/a01284.html" title=" " alt="" coords="36,662,261,886"/>
+<area shape="rect" id="node5" href="$dd/d18/a01284.html" title="Typed abstraction for groupable node." alt="" coords="145,237,384,432"/>
+<area shape="rect" id="node6" href="$d5/d37/a01276.html" title=" " alt="" coords="409,250,611,419"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html" title=" " alt="" coords="5,1649,236,2089"/>
+<area shape="rect" id="node4" href="$d2/db1/a01428.html" title="Task core." alt="" coords="137,1117,368,1557"/>
+<area shape="rect" id="node7" href="$d5/da5/a01424.html" title=" " alt="" coords="417,1087,648,1587"/>
+<area shape="rect" id="node8" href="$d5/da5/a01424.html" title="AbstractState manager core." alt="" coords="529,524,760,1024"/>
 </map>

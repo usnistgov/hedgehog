@@ -1,0 +1,4 @@
+<map id="hh::core::CoreExecutionPipeline::postRun" name="hh::core::CoreExecutionPipeline::postRun">
+<area shape="rect" id="node1" title="Post run logic, disconnects the switch and waits for each graph to terminate." alt="" coords="309,5,536,45"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a6faec4040c77b640704f44560b5684c3" title="Main core execution pipeline logic." alt="" coords="5,13,261,38"/>
+</map>

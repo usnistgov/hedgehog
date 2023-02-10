@@ -1,5 +1,0 @@
-<map id="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;" name="hh::StaticMemoryManager&lt; ManagedMemory, Args &gt;">
-<area shape="rect" id="node1" title="Derived class from MemoryManager for statically allocated MemoryData, used for example for GPU comput..." alt="" coords="9,888,188,1053"/>
-<area shape="rect" id="node2" href="$d7/d06/a01005.html" title=" " alt="" coords="5,453,192,839"/>
-<area shape="rect" id="node3" href="$d7/d06/a01005.html" title="Abstract interface for Hedgehog&#39;s Memory manager." alt="" coords="5,5,192,391"/>
-</map>

@@ -1,0 +1,8 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::numberReceivedElements" name="hh::core::abstraction::TaskNodeAbstraction::numberReceivedElements">
+<area shape="rect" id="node1" title="Accessor to the number of received elements." alt="" coords="661,84,863,139"/>
+<area shape="rect" id="node2" href="$d7/da3/a01260.html#a64b712699c26e972ff285eac6abbe6f8" title="Accessor to the mean / standard deviation number of elements received in the group." alt="" coords="316,5,613,60"/>
+<area shape="rect" id="node3" href="$d7/da3/a01260.html#ac5891bd7db9c63c515cec0295407b79b" title="Accessor to the min / max number of elements received in the group." alt="" coords="317,84,613,139"/>
+<area shape="rect" id="node4" href="$d4/d49/a01316.html#a7b99142749e7c50a8f77de36e960d9f4" title="Accessor to the duration the average duration of processing an input data." alt="" coords="353,163,577,217"/>
+<area shape="rect" id="node5" href="$d7/da3/a01260.html#ac6ff9dfea202c35c20d684335d6c5303" title="Accessor to the mean / standard deviation execution per elements duration of the nodes in the group." alt="" coords="5,123,268,177"/>
+<area shape="rect" id="node6" href="$d7/da3/a01260.html#aae8cecefc4cbd61730b23e35a595716c" title="Accessor to the min / max execution per elements duration of the nodes in the group." alt="" coords="6,201,267,256"/>
+</map>

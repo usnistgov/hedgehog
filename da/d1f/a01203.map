@@ -1,3 +1,8 @@
-<map id="hh::traits::_is_included_&lt; T1, T2, Is &gt;" name="hh::traits::_is_included_&lt; T1, T2, Is &gt;">
-<area shape="rect" id="node1" title="is_included Default case" alt="" coords="5,5,159,97"/>
+<map id="hh::behavior::CanTerminate" name="hh::behavior::CanTerminate">
+<area shape="rect" id="node1" title="Behavior abstraction for nodes that expose termination condition." alt="" coords="201,5,394,111"/>
+<area shape="rect" id="node2" href="$dc/dcc/a01200.html" title=" " alt="" coords="7,503,209,723"/>
+<area shape="rect" id="node4" href="$d2/db4/a01192.html" title=" " alt="" coords="239,483,449,743"/>
+<area shape="rect" id="node5" href="$dc/dcc/a01200.html" title="Base node for computation." alt="" coords="5,180,208,400"/>
+<area shape="rect" id="node6" href="$d2/db4/a01192.html" title="AbstractState manager." alt="" coords="360,160,571,420"/>
+<area shape="rect" id="node3" href="$d2/d22/a01196.html" title="Abstract Task specialized for CUDA computation." alt="" coords="23,792,193,1112"/>
 </map>

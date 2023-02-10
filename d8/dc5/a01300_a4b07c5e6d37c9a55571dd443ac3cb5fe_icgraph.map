@@ -1,0 +1,7 @@
+<map id="hh::core::abstraction::SlotAbstraction::slots" name="hh::core::abstraction::SlotAbstraction::slots">
+<area shape="rect" id="node1" title="Const accessor to slots." alt="" coords="323,117,491,157"/>
+<area shape="rect" id="node2" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="69,5,211,45"/>
+<area shape="rect" id="node3" href="$d9/d45/a01332.html#aba12d833cdc9dc855c31c49231a0003e" title="Disconnect the source when the graph is set as inside." alt="" coords="5,70,275,125"/>
+<area shape="rect" id="node4" href="$d9/d45/a01332.html#abba54be1ef129d7662249d30a73595e2" title="Duplicate source edge for a type." alt="" coords="5,149,275,203"/>
+<area shape="rect" id="node5" href="$d9/d45/a01332.html#aaa0108302873d0e6d5ac9b361b4f3953" title="Graph wake up, wakes up all registered slots of the input node." alt="" coords="5,227,275,282"/>
+</map>

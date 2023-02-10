@@ -1,3 +1,7 @@
-<map id="TaskOutput" name="TaskOutput">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,95,83"/>
+<map id="hh::core::abstraction::CanTerminateAbstraction" name="hh::core::abstraction::CanTerminateAbstraction">
+<area shape="rect" id="node1" title="Abstraction for core that present termination condition." alt="" coords="215,5,429,145"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html" title=" " alt="" coords="5,757,236,1257"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html" title=" " alt="" coords="268,787,499,1227"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html" title="AbstractState manager core." alt="" coords="9,195,240,695"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html" title="Task core." alt="" coords="385,225,616,665"/>
 </map>

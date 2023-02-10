@@ -1,0 +1,8 @@
+<map id="hh::core::abstraction::ExecutionPipelineNodeAbstraction" name="hh::core::abstraction::ExecutionPipelineNodeAbstraction">
+<area shape="rect" id="node1" title="Abstraction specialized for the execution pipeline." alt="" coords="87,1199,361,1419"/>
+<area shape="rect" id="node5" href="$d5/dec/a01416.html" title=" " alt="" coords="109,2031,349,2531"/>
+<area shape="rect" id="node6" href="$d5/dec/a01416.html" title="Execution pipeline core." alt="" coords="245,1468,485,1968"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html" title="Task core abstraction used to define some method for task&#45;like behaving cores like CoreExecutionPipel..." alt="" coords="85,495,363,1149"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html" title="Base core node abstraction." alt="" coords="5,5,229,445"/>
+<area shape="rect" id="node4" href="$df/dec/a01320.html" title="PrintAbstraction, used to determine if the node should be visited by the printer and colored." alt="" coords="253,165,408,285"/>
+</map>

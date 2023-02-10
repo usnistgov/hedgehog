@@ -1,4 +1,10 @@
-<map id="hh::traits::_is_included_&lt; T1, T2, std::integer_sequence&lt; std::size_t, Is... &gt; &gt;" name="hh::traits::_is_included_&lt; T1, T2, std::integer_sequence&lt; std::size_t, Is... &gt; &gt;">
-<area shape="rect" id="node1" title="Check if a tuple of types T1 is included in a tuple of type T2, all type in T1 are in T2." alt="" coords="5,145,168,267"/>
-<area shape="rect" id="node2" href="$d3/da1/a01613.html" title=" " alt="" coords="63,5,110,83"/>
+<map id="hh::behavior::Cleanable" name="hh::behavior::Cleanable">
+<area shape="rect" id="node1" title="Cleanable interface." alt="" coords="425,5,593,111"/>
+<area shape="rect" id="node2" href="$d6/d97/a01188.html" title=" " alt="" coords="5,513,179,713"/>
+<area shape="rect" id="node3" href="$dc/dcc/a01200.html" title=" " alt="" coords="279,503,481,723"/>
+<area shape="rect" id="node5" href="$d2/db4/a01192.html" title=" " alt="" coords="511,483,721,743"/>
+<area shape="rect" id="node6" href="$d6/d97/a01188.html" title="Hedgehog AbstractState." alt="" coords="107,190,280,390"/>
+<area shape="rect" id="node7" href="$dc/dcc/a01200.html" title="Base node for computation." alt="" coords="304,180,507,400"/>
+<area shape="rect" id="node8" href="$d2/db4/a01192.html" title="AbstractState manager." alt="" coords="632,160,843,420"/>
+<area shape="rect" id="node4" href="$d2/d22/a01196.html" title="Abstract Task specialized for CUDA computation." alt="" coords="295,792,465,1112"/>
 </map>

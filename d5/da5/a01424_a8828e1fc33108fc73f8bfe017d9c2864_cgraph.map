@@ -1,0 +1,6 @@
+<map id="hh::core::CoreStateManager::postRun" name="hh::core::CoreStateManager::postRun">
+<area shape="rect" id="node1" title="Post run logic, shutdown the state manager, notify successor nodes of state manager termination." alt="" coords="5,91,208,131"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#aa0d5ced405fb2c9aadfadff75cb2a070" title="Accessor to task status." alt="" coords="260,5,427,60"/>
+<area shape="rect" id="node3" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="260,84,427,139"/>
+<area shape="rect" id="node4" href="$d6/d0f/a01256.html#ad9a5416afc9608034c9f5fe9c2b2b2bf" title="shutdown step for the task" alt="" coords="256,163,431,203"/>
+</map>

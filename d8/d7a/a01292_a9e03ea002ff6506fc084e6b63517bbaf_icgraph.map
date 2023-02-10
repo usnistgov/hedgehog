@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::ReceiverAbstraction::receivers" name="hh::core::abstraction::ReceiverAbstraction::receivers">
+<area shape="rect" id="node1" title="Const accessor to receivers." alt="" coords="339,84,500,139"/>
+<area shape="rect" id="node2" href="$d5/d53/a01324.html#aa1eb47ac19e7a25ed906b2db6d049fd3" title="Connect a graph to the switch for the type Input." alt="" coords="5,5,291,60"/>
+<area shape="rect" id="node3" href="$d9/d45/a01332.html#af623171b04c3d4989f98de33d6fda879" title="Disconnect the source from the input node receivers." alt="" coords="13,84,283,139"/>
+<area shape="rect" id="node4" href="$d9/d45/a01332.html#abba54be1ef129d7662249d30a73595e2" title="Duplicate source edge for a type." alt="" coords="13,163,283,217"/>
+</map>

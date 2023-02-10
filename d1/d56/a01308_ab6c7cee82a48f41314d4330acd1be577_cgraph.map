@@ -1,0 +1,6 @@
+<map id="hh::core::abstraction::GraphNodeAbstraction::registerNode" name="hh::core::abstraction::GraphNodeAbstraction::registerNode">
+<area shape="rect" id="node1" title="Register a graph inside a graph." alt="" coords="5,33,183,88"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#ad653b61766dfab8fdf7bab2319f15a3f" title="Belonging graph accessor." alt="" coords="509,5,720,60"/>
+<area shape="rect" id="node3" href="$d7/d41/a01312.html#a23e4fa4dabf57296c2b2d23d8b8a651f" title="Register node to the given graph." alt="" coords="231,41,461,81"/>
+<area shape="rect" id="node4" href="$d1/d56/a01308.html#a333158817af97916ac760c1840f4b02a" title="Set a graph inside another one." alt="" coords="257,105,435,160"/>
+</map>

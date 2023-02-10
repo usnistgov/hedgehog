@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['basecoregraph_34',['baseCoreGraph',['../d8/d92/a01165.html#a9777f506a2a519695f3ba448d27a004a',1,'hh::core::CoreExecutionPipeline']]],
-  ['basestatemanager_35',['BaseStateManager',['../d2/d41/a01037.html',1,'hh::behavior::BaseStateManager&lt; StateOutput, StateInputs &gt;'],['../d2/d41/a01037.html#a6637eeac5976db3deb4a1b92bd652d31',1,'hh::behavior::BaseStateManager::BaseStateManager()']]],
-  ['basestatemanager_3c_20stateoutput_2c_20stateinputs_2e_2e_2e_20_3e_36',['BaseStateManager&lt; StateOutput, StateInputs... &gt;',['../d2/d41/a01037.html',1,'hh::behavior']]],
-  ['begin_37',['begin',['../d0/dc9/a01065.html#af009ae081cb3caa86ae87c76d69dfbdc',1,'hh::behavior::Pool']]],
-  ['belongingnode_38',['belongingNode',['../d9/d25/a01157.html#aaf6773dc3db7b675e53787a582492ba3',1,'hh::core::CoreNode::belongingNode() const'],['../d9/d25/a01157.html#a99f4d4dfe5b5aff950f47ba6debb467e',1,'hh::core::CoreNode::belongingNode(CoreNode *belongingNode)']]],
-  ['belongingnode_5f_39',['belongingNode_',['../d9/d25/a01157.html#ad9274473bb79ee9ed0b09d5db101efb3',1,'hh::core::CoreNode']]],
-  ['broadcastandnotifytoallinputs_40',['broadcastAndNotifyToAllInputs',['../dc/d06/a01153.html#a8a66be420038d9812e9a2f94022a24f2',1,'hh::core::CoreGraph']]]
+  ['b_5f_0',['b_',['../d0/deb/a01508.html#a7f4a7c5bdb7424d5241e360649c6fa3f',1,'hh::tool::PrintOptions::Color']]],
+  ['background_1',['background',['../dd/d05/a01504.html#a03efd0e3e1165e7174b71364d074d214',1,'hh::tool::PrintOptions::background() const'],['../dd/d05/a01504.html#a5027d25f6df8c5fb37472ed0bbeb0801',1,'hh::tool::PrintOptions::background(Color background)']]],
+  ['background_5f_2',['background_',['../dd/d05/a01504.html#a9cb6a8ed92704101a265024c96dfa2df',1,'hh::tool::PrintOptions']]],
+  ['begin_3',['begin',['../d4/da6/a01168.html#a5cdf0e0d4aa06a60f589cf583476aced',1,'hh::tool::Pool']]],
+  ['belonginggraph_4',['belongingGraph',['../d7/d41/a01312.html#ad653b61766dfab8fdf7bab2319f15a3f',1,'hh::core::abstraction::NodeAbstraction']]],
+  ['belonginggraph_5f_5',['belongingGraph_',['../d7/d41/a01312.html#ab991138270c82598de748424dcbb8f51',1,'hh::core::abstraction::NodeAbstraction']]],
+  ['blue_5fto_5fred_5fcolor_2eh_6',['blue_to_red_color.h',['../db/db6/a00074.html',1,'']]],
+  ['bluetoredcolor_7',['BlueToRedColor',['../d6/db6/a01172.html#afe6968cb2a028f4fb054e56aa57d76ad',1,'hh::BlueToRedColor::BlueToRedColor()'],['../d6/db6/a01172.html',1,'hh::BlueToRedColor']]],
+  ['broadcastandnotifyallinputnodes_8',['broadcastAndNotifyAllInputNodes',['../d0/d05/a01420.html#a8109d0795f05ad92d4297a71c6123524',1,'hh::core::CoreGraph']]]
 ];

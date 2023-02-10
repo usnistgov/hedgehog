@@ -1,0 +1,4 @@
+<map id="hh::core::CoreGraph::joinThreads" name="hh::core::CoreGraph::joinThreads">
+<area shape="rect" id="node1" title="Wait for the threads to join." alt="" coords="208,5,359,45"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#ac352ed4ef662ad9ffdb37bdb77f51e90" title="Wait for the graph to terminate." alt="" coords="5,5,160,45"/>
+</map>

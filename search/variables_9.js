@@ -1,15 +1,12 @@
 var searchData=
 [
-  ['major_5fversion_954',['MAJOR_VERSION',['../d0/d48/a00165.html#ad76c7c3dec85ab871a3f5f09ea648cfd',1,'hh']]],
-  ['maxexecutiontime_5f_955',['maxExecutionTime_',['../d5/dfb/a01021.html#a31d3b0ae02fe7677e3da6ba2ff764a6a',1,'hh::DotPrinter']]],
-  ['maxqueuesize_5f_956',['maxQueueSize_',['../d6/d6e/a01137.html#a174bf171c7496a3b84bf363be7d76fa7',1,'hh::core::CoreQueueReceiver']]],
-  ['maxwaittime_5f_957',['maxWaitTime_',['../d5/dfb/a01021.html#ab4e1e601d59b3145b6265f93ea8269dd',1,'hh::DotPrinter']]],
-  ['memorymanager_5f_958',['memoryManager_',['../df/d59/a01001.html#a3d521a5fb557a92413e3917cc24169b4',1,'hh::MemoryData']]],
-  ['memorymanagermutex_5f_959',['memoryManagerMutex_',['../d7/d06/a01005.html#a04203ae601e1e7314fe01d9135f7ebc2',1,'hh::MemoryManager']]],
-  ['memorywaitduration_5f_960',['memoryWaitDuration_',['../d9/d25/a01157.html#a469b986e3ac5930f3dc657958662947b',1,'hh::core::CoreNode']]],
-  ['minexecutiontime_5f_961',['minExecutionTime_',['../d5/dfb/a01021.html#acb897f74247a30d33d2e9c4f7cfec499',1,'hh::DotPrinter']]],
-  ['minor_5fversion_962',['MINOR_VERSION',['../d0/d48/a00165.html#a692cf7d227799e1df8fe1edc301588e4',1,'hh']]],
-  ['minwaittime_5f_963',['minWaitTime_',['../d5/dfb/a01021.html#a1d591a959c3d41d5864f09e330594e27',1,'hh::DotPrinter']]],
-  ['mm_5f_964',['mm_',['../d4/d95/a00989.html#abab74517cfc81bb9d9249c0786d5052b',1,'hh::AbstractTask']]],
-  ['mutex_5f_965',['mutex_',['../d0/dc9/a01065.html#a74103cddc74b6574132f46bad78f8ea2',1,'hh::behavior::Pool']]]
+  ['name_5f_0',['name_',['../d7/d41/a01312.html#a6abdbc67e70111bda5dab36376482023',1,'hh::core::abstraction::NodeAbstraction']]],
+  ['node_5f_1',['node_',['../d4/d49/a01316.html#a4aa7607ae87f2bf9877a3818f05dc36d',1,'hh::core::abstraction::TaskNodeAbstraction']]],
+  ['nodecopies_5f_2',['nodeCopies_',['../d5/d37/a01276.html#a7e86e11f29ed88958032cf9b06dae00e',1,'hh::core::abstraction::CopyableAbstraction']]],
+  ['nodes_5f_3',['nodes_',['../d1/dae/a01136.html#adfecd7f72dae1f8c6fa997e12a6cd786',1,'hh::Graph']]],
+  ['notifiers_5f_4',['notifiers_',['../dd/d0c/a01368.html#a51343276b449ec77342a1b8ca67c93f8',1,'hh::core::implementor::DefaultSlot']]],
+  ['numberreceivedelements_5f_5',['numberReceivedElements_',['../d4/d49/a01316.html#a125879b5afff40bd89a6a36e131be191',1,'hh::core::abstraction::TaskNodeAbstraction']]],
+  ['numberthreads_5f_6',['numberThreads_',['../dc/db6/a01212.html#a7401ee69cc4d1494726f65fa335ac5c1',1,'hh::behavior::Copyable::numberThreads_'],['../d7/da3/a01260.html#a8cd3b4420ef70598130b453844a2d581',1,'hh::core::abstraction::AnyGroupableAbstraction::numberThreads_']]],
+  ['numberthreadscreated_5f_7',['numberThreadsCreated_',['../dd/d18/a01284.html#aea24163373fc920a126656b9014468d1',1,'hh::core::abstraction::GroupableAbstraction']]],
+  ['nvtxprofiler_5f_8',['nvtxProfiler_',['../d4/d49/a01316.html#a500ae9759328b2e6d9a5a7944938aa3e',1,'hh::core::abstraction::TaskNodeAbstraction']]]
 ];

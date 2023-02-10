@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::AnyGroupableAbstraction::meanSDWaitDurationGroup" name="hh::core::abstraction::AnyGroupableAbstraction::meanSDWaitDurationGroup">
+<area shape="rect" id="node1" title="Accessor to the mean / standard deviation wait duration of the nodes in the group." alt="" coords="5,5,215,60"/>
+<area shape="rect" id="node2" href="$d4/d49/a01316.html#ade3f9b04bc7e4110928002f12501d630" title="Accessor to the duration the node was in a wait state." alt="" coords="263,5,429,60"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="hh::core::abstraction::TaskInputsManagementAbstraction::operateReceiver" name="hh::core::abstraction::TaskInputsManagementAbstraction::operateReceiver">
+<area shape="rect" id="node1" title="Access the ReceiverAbstraction of the type InputDataType to process an element." alt="" coords="5,249,264,304"/>
+<area shape="rect" id="node2" href="$d8/d0d/a01280.html#a73295a77d83f0a09b29309a9e64f3b8b" title="Interface for calling user&#45;defined execution." alt="" coords="369,5,524,60"/>
+<area shape="rect" id="node3" href="$d8/d7a/a01292.html#a47ef70f7035d0592319b8eb0d79baa02" title="Get an input data from the concrete receiver implementation." alt="" coords="366,84,527,139"/>
+<area shape="rect" id="node4" href="$d4/d49/a01316.html#a1e40903adef04344f888052f9b3de825" title="Increment the number of elements received." alt="" coords="312,163,581,217"/>
+<area shape="rect" id="node5" href="$d4/d49/a01316.html#ab012f8fa9369b762a98f1d9959e2cc1f" title="Increase the execution time per elements." alt="" coords="329,242,564,311"/>
+<area shape="rect" id="node6" href="$d8/dc5/a01300.html#a61fc8dbd901bb00589511cbcfb74f12a" title="Lock mutex." alt="" coords="352,336,541,391"/>
+<area shape="rect" id="node7" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="363,415,530,469"/>
+<area shape="rect" id="node8" href="$d8/dc5/a01300.html#a1008def1bedea8c352b909df3050dced" title="Unlock mutex." alt="" coords="344,493,549,548"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="hh::Printer::registerNode" name="hh::Printer::registerNode">
+<area shape="rect" id="node1" title="Register a visited node." alt="" coords="280,109,461,134"/>
+<area shape="rect" id="node2" href="$d5/dec/a01416.html#a67b858fe03b13ea6c7fffc4fcfea3d83" title="Visit an execution pipeline." alt="" coords="5,5,232,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a0e0383e5e76581d258053f4cf71b6dea" title="Visit the graph." alt="" coords="43,69,194,109"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a7ce4855f6ceece320ca78a3d4c4780f8" title="Visit the state manager." alt="" coords="17,133,220,173"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html#a1d54bf6b55047e531f01226e8c2b3ebc" title="Visit the task." alt="" coords="48,197,189,237"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="hh::behavior::Node::core" name="hh::behavior::Node::core">
+<area shape="rect" id="node1" title="Core accessor." alt="" coords="772,112,917,152"/>
+<area shape="rect" id="node2" href="$d2/d22/a01196.html#a3eefb578a7bdd471fb37d7721cfc3b43" title="Custom core task constructor." alt="" coords="523,5,689,45"/>
+<area shape="rect" id="node3" href="$dc/dcc/a01200.html#acc9d9c2edf0d7367b859c8ee7a469fd9" title="AbstractTask main constructor." alt="" coords="496,70,716,95"/>
+<area shape="rect" id="node4" href="$d2/db4/a01192.html#a8046339ab1fcf22fc8bfc6903a902e1c" title="Main state manager constructor." alt="" coords="488,119,724,145"/>
+<area shape="rect" id="node5" href="$d1/dae/a01136.html#a0771ce76ca607bd3248d1fcd9f949bbe" title="Create a dot file representing a snapshot of the state of the graph at the moment of the call,..." alt="" coords="516,169,696,194"/>
+<area shape="rect" id="node9" href="$d4/dd5/a01244.html#a1d13f00015747395086e5ba631011f7b" title="Node&#39;s name accessor." alt="" coords="533,247,679,287"/>
+<area shape="rect" id="node6" href="$dc/d64/a01140.html#a00d3b2598228c38d5b20aa36499037aa" title="Create a dot file at exit if the instance still exist." alt="" coords="247,97,423,137"/>
+<area shape="rect" id="node8" href="$dc/d64/a01140.html#a02afa146dc5af1ad764aceb8e5f76dc4" title="Function that handles signals." alt="" coords="247,161,423,201"/>
+<area shape="rect" id="node7" href="$dc/d64/a01140.html#aa09a8e88ead2cf9c5348cb4d0bfcf815" title="Registers a signal for handling. (default SIGTERM)" alt="" coords="5,97,181,137"/>
+<area shape="rect" id="node10" href="$d2/db4/a01192.html#a6419b20ebe4fee351f1af5c61e9ee325" title="Provide a copy of the state manager." alt="" coords="5,255,181,281"/>
+<area shape="rect" id="node11" href="$d2/db4/a01192.html#a9e3f195f443285a4ac15277af045eb33" title="Customizable copy method." alt="" coords="229,276,440,316"/>
+<area shape="rect" id="node12" href="$d6/d0f/a01256.html#a69de0ff5e31aca3c51036e5e6ac39529" title="Get a managed memory for the memory manager attached to the task, can block if none are available at ..." alt="" coords="247,340,422,380"/>
+<area shape="rect" id="node13" href="$d6/d97/a01188.html#a1beb70d8e6f446f72adf399f18675f4a" title="Accessor to the managed memory if a memory manager has been attached to a StateManager." alt="" coords="15,340,172,380"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::nvtxProfiler" name="hh::core::abstraction::TaskNodeAbstraction::nvtxProfiler">
+<area shape="rect" id="node1" title="Accessor to the NVTX profiler attached to the node." alt="" coords="592,256,759,311"/>
+<area shape="rect" id="node2" href="$d7/d51/a01340.html#aa04f418ebe4dcb15584a2fcf269d3168" title="Access the ReceiverAbstraction of the type InputDataType to process an element." alt="" coords="285,5,544,60"/>
+<area shape="rect" id="node3" href="$d5/da5/a01424.html#a8828e1fc33108fc73f8bfe017d9c2864" title="Post run logic, shutdown the state manager, notify successor nodes of state manager termination." alt="" coords="313,85,516,125"/>
+<area shape="rect" id="node4" href="$d5/da5/a01424.html#a62d55f88dbce9b19ce7afdd006ebc14a" title="Main core state manager logic." alt="" coords="5,179,237,204"/>
+<area shape="rect" id="node5" href="$d2/db1/a01428.html#a0a92b010bd456f671ed56484806b59ed" title="When a task terminates, set the task to non active, call user&#45;defined shutdown, and disconnect the ta..." alt="" coords="344,327,485,367"/>
+<area shape="rect" id="node6" href="$d2/db1/a01428.html#a12f2750cf1abc70b6597c3b146ce35e2" title="Main core task logic." alt="" coords="36,420,207,445"/>
+<area shape="rect" id="node7" href="$d5/da5/a01424.html#a1cac4c9fa995d721628e268b93e21665" title="Initialize the state manager." alt="" coords="313,199,516,239"/>
+<area shape="rect" id="node8" href="$d2/db1/a01428.html#a3263adaf4e67190e5cd9313b60afa1e2" title="Initialize the task." alt="" coords="344,442,485,482"/>
+<area shape="rect" id="node9" href="$d5/da5/a01424.html#a2ce2d00f5a93f1304bf8e61c50e9dc60" title="Wait statement when the node is alive and no input data are available." alt="" coords="313,263,516,303"/>
+<area shape="rect" id="node10" href="$d2/db1/a01428.html#a4b151f1c188f04a11744bfcac4095a25" title="Wait statement when the node is alive and no input data are available." alt="" coords="344,506,485,546"/>
+</map>

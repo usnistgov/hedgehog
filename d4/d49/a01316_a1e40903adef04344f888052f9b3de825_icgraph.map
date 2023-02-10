@@ -1,0 +1,4 @@
+<map id="hh::core::abstraction::TaskNodeAbstraction::incrementNumberReceivedElements" name="hh::core::abstraction::TaskNodeAbstraction::incrementNumberReceivedElements">
+<area shape="rect" id="node1" title="Increment the number of elements received." alt="" coords="312,5,581,60"/>
+<area shape="rect" id="node2" href="$d7/d51/a01340.html#aa04f418ebe4dcb15584a2fcf269d3168" title="Access the ReceiverAbstraction of the type InputDataType to process an element." alt="" coords="5,5,264,60"/>
+</map>

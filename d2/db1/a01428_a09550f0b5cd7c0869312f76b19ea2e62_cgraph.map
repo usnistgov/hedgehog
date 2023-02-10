@@ -1,0 +1,14 @@
+<map id="hh::core::CoreTask::createGroup" name="hh::core::CoreTask::createGroup">
+<area shape="rect" id="node1" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="5,431,147,471"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#a51fde03092f158a45209a4afac66aad2" title="Core node constructor using the core&#39;s name." alt="" coords="195,5,449,45"/>
+<area shape="rect" id="node3" href="$d7/d8d/a01288.html#a2c03379c8b6695ab5a9e12f7b3fdc0b6" title="Add a SlotAbstraction to this notifier." alt="" coords="245,70,399,125"/>
+<area shape="rect" id="node4" href="$dd/d18/a01284.html#a6209032259faa10bdbe879e600e08483" title="Call the used&#45;defined copy and register the copy in the group." alt="" coords="207,149,437,248"/>
+<area shape="rect" id="node5" href="$d8/dc5/a01300.html#a16c1b5dd394f14821bb6a7c1e497a478" title="Accessor to the NotifierAbstraction attached to this slot, protected with mutex." alt="" coords="220,273,424,327"/>
+<area shape="rect" id="node6" href="$d7/d8d/a01288.html#af52df05114302b25d9fa3f347012c837" title="Accessor to the slots attached to this notifier." alt="" coords="245,351,399,406"/>
+<area shape="rect" id="node7" href="$d6/d0f/a01256.html#ae474a62fd063ae6a34e13cc1af5c0acd" title="Memory manager accessor." alt="" coords="235,431,409,471"/>
+<area shape="rect" id="node8" href="$d7/d41/a01312.html#add43a2236ac8446f5c4d0306dc098ab5" title="Accessor to the core&#39;s name." alt="" coords="231,495,413,535"/>
+<area shape="rect" id="node9" href="$d7/d8d/a01288.html#ae84450540fbb6611167a4c867012f36a" title="Const accessor to notifiers." alt="" coords="245,559,399,614"/>
+<area shape="rect" id="node10" href="$d7/da3/a01260.html#afd2fb7613e9198d3cfa17c33e4bc4eab" title="Accessor to the number of threads." alt="" coords="224,638,420,693"/>
+<area shape="rect" id="node11" href="$d8/dc5/a01300.html#a4b07c5e6d37c9a55571dd443ac3cb5fe" title="Const accessor to slots." alt="" coords="238,717,406,757"/>
+<area shape="rect" id="node12" href="$dd/d18/a01284.html#acf0c6bb44dbee1da4aa60513b040edbe" title="Accessor to thread id." alt="" coords="221,781,423,880"/>
+</map>

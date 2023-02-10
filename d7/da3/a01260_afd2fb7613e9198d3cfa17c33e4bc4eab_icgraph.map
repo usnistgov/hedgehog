@@ -1,0 +1,5 @@
+<map id="hh::core::abstraction::AnyGroupableAbstraction::numberThreads" name="hh::core::abstraction::AnyGroupableAbstraction::numberThreads">
+<area shape="rect" id="node1" title="Accessor to the number of threads." alt="" coords="195,30,391,85"/>
+<area shape="rect" id="node2" href="$d2/db1/a01428.html#a9b0289c8ed9a70198455e4798b647df1" title="Create a CoreTask from a user&#45;defined AbstractTask, its name, the number of threads and the automatic..." alt="" coords="5,5,147,45"/>
+<area shape="rect" id="node3" href="$d2/db1/a01428.html#a09550f0b5cd7c0869312f76b19ea2e62" title="Create a group for this task, and connect each copies to the predecessor and successor nodes." alt="" coords="5,69,147,109"/>
+</map>

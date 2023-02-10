@@ -1,6 +1,0 @@
-<map id="hh::AbstractTask::name" name="hh::AbstractTask::name">
-<area shape="rect" id="node1" title="Task&#39;s name accessor." alt="" coords="296,86,457,113"/>
-<area shape="rect" id="node2" href="$d4/d95/a00989.html#a0aebece7e8e96e0fbd55789ff0444aa5" title="Create a task with a custom name." alt="" coords="23,5,230,47"/>
-<area shape="rect" id="node3" href="$dc/d81/a01161.html#a3422fe9dbb5f0c3f977975b463f755e7" title="Create a copy from this instance." alt="" coords="34,71,219,127"/>
-<area shape="rect" id="node4" href="$d4/d95/a00989.html#ad722d57fe88888510d6e22c4ab0e4998" title="Memory manager accessor." alt="" coords="5,152,248,193"/>
-</map>

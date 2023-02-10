@@ -1,4 +1,0 @@
-<map id="hh::core::CoreReceiver::addSender" name="hh::core::CoreReceiver::addSender">
-<area shape="rect" id="node1" title="Interface to add a CoreSender to the receiver." alt="" coords="252,13,409,54"/>
-<area shape="rect" id="node2" href="$dc/d06/a01153.html#a93aa25d3f0b11d52f8d0f99f575681ef" title="If the input core node is compatible, connect it to the source." alt="" coords="5,5,204,61"/>
-</map>

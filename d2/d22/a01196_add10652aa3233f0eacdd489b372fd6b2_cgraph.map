@@ -1,0 +1,4 @@
+<map id="hh::AbstractCUDATask::shutdown" name="hh::AbstractCUDATask::shutdown">
+<area shape="rect" id="node1" title="Shutdown an AbstractCUDATask to destroy the task&#39;s CUDA stream created during AbstractCUDATask::initi..." alt="" coords="5,5,172,45"/>
+<area shape="rect" id="node2" href="$d2/d22/a01196.html#a89459fce14548089525577a7fbff50b2" title="Virtual shutdown step, where user defined data structure can be destroyed." alt="" coords="220,5,387,45"/>
+</map>

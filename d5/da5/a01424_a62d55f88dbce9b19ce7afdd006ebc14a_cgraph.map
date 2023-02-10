@@ -1,0 +1,19 @@
+<map id="hh::core::CoreStateManager::run" name="hh::core::CoreStateManager::run">
+<area shape="rect" id="node1" title="Main core state manager logic." alt="" coords="5,221,237,247"/>
+<area shape="rect" id="node2" href="$d5/da5/a01424.html#aba8e1f2c165f859ff9fc118e5c670f12" title="Call user&#45;definable termination." alt="" coords="545,13,748,53"/>
+<area shape="rect" id="node5" href="$d7/d41/a01312.html#acc1e93b1f78669758c61419cef252a60" title="Increment execution duration." alt="" coords="285,365,497,420"/>
+<area shape="rect" id="node6" href="$d4/d49/a01316.html#a23966dadae25a5125f7b0f47fa316287" title="Increment the wait duration." alt="" coords="301,444,482,499"/>
+<area shape="rect" id="node7" href="$d4/d49/a01316.html#aa0d5ced405fb2c9aadfadff75cb2a070" title="Accessor to task status." alt="" coords="563,221,730,276"/>
+<area shape="rect" id="node8" href="$d4/d49/a01316.html#a9ae242eafa41e07553039a1b9656c0c5" title="Accessor to the NVTX profiler attached to the node." alt="" coords="563,77,730,132"/>
+<area shape="rect" id="node9" href="$d5/da5/a01424.html#a8828e1fc33108fc73f8bfe017d9c2864" title="Post run logic, shutdown the state manager, notify successor nodes of state manager termination." alt="" coords="290,185,493,225"/>
+<area shape="rect" id="node11" href="$d5/da5/a01424.html#a1cac4c9fa995d721628e268b93e21665" title="Initialize the state manager." alt="" coords="290,301,493,341"/>
+<area shape="rect" id="node17" href="$d5/da5/a01424.html#a2ce2d00f5a93f1304bf8e61c50e9dc60" title="Wait statement when the node is alive and no input data are available." alt="" coords="290,70,493,110"/>
+<area shape="rect" id="node3" href="$d3/d51/a01264.html#a9fd6ff1f0b66f3e389964486b96e1ea6" title="Call user&#45;definable termination." alt="" coords="804,5,999,60"/>
+<area shape="rect" id="node4" href="$d7/d5a/a01204.html#a34c540b5a8cc5f1f8f7b16b73f3fa966" title="Termination condition." alt="" coords="1055,13,1256,53"/>
+<area shape="rect" id="node10" href="$d6/d0f/a01256.html#ad9a5416afc9608034c9f5fe9c2b2b2bf" title="shutdown step for the task" alt="" coords="559,157,734,197"/>
+<area shape="rect" id="node12" href="$d7/d41/a01312.html#ae537c7dab8424a741f8834504b4177a4" title="Get the device identifier (got from belonging graph)" alt="" coords="546,301,747,341"/>
+<area shape="rect" id="node14" href="$d6/d0f/a01256.html#a98c332a0ac7f165dab64fb71bd130e51" title="initialize step for the task" alt="" coords="559,365,734,405"/>
+<area shape="rect" id="node15" href="$d6/d0f/a01256.html#ae474a62fd063ae6a34e13cc1af5c0acd" title="Memory manager accessor." alt="" coords="559,429,734,469"/>
+<area shape="rect" id="node16" href="$d4/d49/a01316.html#a360eae2c9534cbe68bff818e85ffbb10" title="Set the task as initialized." alt="" coords="563,493,730,548"/>
+<area shape="rect" id="node13" href="$d7/d41/a01312.html#ad653b61766dfab8fdf7bab2319f15a3f" title="Belonging graph accessor." alt="" coords="796,293,1007,348"/>
+</map>

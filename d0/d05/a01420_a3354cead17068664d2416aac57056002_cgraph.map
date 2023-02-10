@@ -1,0 +1,6 @@
+<map id="hh::core::CoreGraph::setInputForAllCommonTypes" name="hh::core::CoreGraph::setInputForAllCommonTypes">
+<area shape="rect" id="node1" title="Connect a core&#39;s node as input of the graph for all compatible types." alt="" coords="5,37,221,77"/>
+<area shape="rect" id="node2" href="$d0/d05/a01420.html#ae46df6a3da4d1312833ffbd37b195caa" title="Register a node inside of a graph." alt="" coords="269,5,461,45"/>
+<area shape="rect" id="node3" href="$d0/d05/a01420.html#a4c8f8d72b335f1cba2e725191e57473e" title="Test if the graph has been registered." alt="" coords="290,69,441,109"/>
+<area shape="rect" id="node4" href="$d7/d41/a01312.html#aa5f777e43c43c3b4094deca0b9dbbeb0" title="Accessor to registration flag." alt="" coords="509,69,736,109"/>
+</map>

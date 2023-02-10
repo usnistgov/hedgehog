@@ -1,0 +1,7 @@
+<map id="hh::core::CoreExecutionPipeline::run" name="hh::core::CoreExecutionPipeline::run">
+<area shape="rect" id="node1" title="Main core execution pipeline logic." alt="" coords="5,132,261,157"/>
+<area shape="rect" id="node2" href="$d7/d41/a01312.html#acc1e93b1f78669758c61419cef252a60" title="Increment execution duration." alt="" coords="317,5,529,60"/>
+<area shape="rect" id="node3" href="$d4/d49/a01316.html#a23966dadae25a5125f7b0f47fa316287" title="Increment the wait duration." alt="" coords="332,84,513,139"/>
+<area shape="rect" id="node4" href="$d4/d49/a01316.html#aa0d5ced405fb2c9aadfadff75cb2a070" title="Accessor to task status." alt="" coords="584,179,751,233"/>
+<area shape="rect" id="node5" href="$d5/dec/a01416.html#a360effc21b52328b2eb1989f3952e38c" title="Post run logic, disconnects the switch and waits for each graph to terminate." alt="" coords="309,214,536,254"/>
+</map>

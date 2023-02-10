@@ -1,0 +1,4 @@
+<map id="hh::AbstractCUDATask::initializeCuda" name="hh::AbstractCUDATask::initializeCuda">
+<area shape="rect" id="node1" title="Virtual initialization step, where user defined data structure can be initialized." alt="" coords="220,5,387,45"/>
+<area shape="rect" id="node2" href="$d2/d22/a01196.html#ac098635fe60879d53901f1c8d441971d" title="Initialize an AbstractCUDATask to bind it to a CUDA device, and do the peer access if enabled...." alt="" coords="5,5,172,45"/>
+</map>

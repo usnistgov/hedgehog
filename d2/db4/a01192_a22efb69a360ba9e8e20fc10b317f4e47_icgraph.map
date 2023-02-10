@@ -1,0 +1,6 @@
+<map id="hh::StateManager::state" name="hh::StateManager::state">
+<area shape="rect" id="node1" title="AbstractState accessor." alt="" coords="513,35,692,60"/>
+<area shape="rect" id="node2" href="$d2/db4/a01192.html#a8046339ab1fcf22fc8bfc6903a902e1c" title="Main state manager constructor." alt="" coords="229,5,465,31"/>
+<area shape="rect" id="node3" href="$d2/db4/a01192.html#a9e3f195f443285a4ac15277af045eb33" title="Customizable copy method." alt="" coords="242,55,453,95"/>
+<area shape="rect" id="node4" href="$d2/db4/a01192.html#a6419b20ebe4fee351f1af5c61e9ee325" title="Provide a copy of the state manager." alt="" coords="5,63,181,88"/>
+</map>
