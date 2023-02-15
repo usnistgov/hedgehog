@@ -54,6 +54,9 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
   behavior::Node *
       node_ = nullptr; ///< Node attache to this task-like core
 
+  std::mutex
+      initMutex_ = {}; ///< Mutex used to set initialisation flag
+
  public:
   /// @brief Create the abstraction with the node's name
   /// @param name Name of the node
@@ -71,8 +74,11 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
 
   /// @brief Accessor to initialized flag
   /// @return True if the task is initialized, else false
-  [[nodiscard]] bool isInitialized() const {
-    return isInitialized_;
+  [[nodiscard]] bool isInitialized() {
+    initMutex_.lock();
+    auto ret = isInitialized_;
+    initMutex_.unlock();
+    return ret;
   }
 
   /// @brief Accessor to the number of received elements
@@ -148,7 +154,11 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
 
  protected:
   /// @brief Set the task as initialized
-  void setInitialized() { isInitialized_ = true; }
+  void setInitialized() {
+    initMutex_.lock();
+    isInitialized_ = true;
+    initMutex_.unlock();
+  }
 };
 }
 }
