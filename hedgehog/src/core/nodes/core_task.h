@@ -84,12 +84,14 @@ class CoreTask
       TaskNodeAbstraction("Task", task),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(task)),
       CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(task)),
-      abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(task,
-                                                                                                                1),
+      abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(
+          task, 1
+      ),
       TIM<Separator, AllTypes...>(task, this),
       TOM<Separator, AllTypes...>(),
       task_(task),
-      automaticStart_(false) {}
+      automaticStart_(false) {
+  }
 
   /// @brief Create a CoreTask from a user-defined AbstractTask, its  name, the number of threads and the automatic
   /// start flag
@@ -102,8 +104,9 @@ class CoreTask
       TaskNodeAbstraction(name, task),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(task)),
       CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(task)),
-      abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(task,
-                                                                                                                numberThreads),
+      abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(
+          task, numberThreads
+      ),
       TIM<Separator, AllTypes...>(task, this),
       TOM<Separator, AllTypes...>(),
       task_(task),
@@ -200,10 +203,10 @@ class CoreTask
     this->preRun();
 
     if (this->automaticStart_) {
-      start = std::chrono::system_clock::now();
+//      start = std::chrono::system_clock::now();
       this->callAllExecuteWithNullptr();
-      finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+//      finish = std::chrono::system_clock::now();
+//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Actual computation loop
@@ -218,10 +221,10 @@ class CoreTask
       if (canTerminate) { break; }
 
       // Operate the connectedReceivers to get a data and send it to execute
-      start = std::chrono::system_clock::now();
+//      start = std::chrono::system_clock::now();
       this->operateReceivers();
-      finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+//      finish = std::chrono::system_clock::now();
+//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Do the shutdown phase
@@ -360,6 +363,23 @@ class CoreTask
     this->duplicateOutputEdges(mapping);
   }
 
+  /// @brief Accessor to the execution duration per input
+  /// @return A Map where the key is the type as string, and the value is the associated duration
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &executionDurationPerInput() const final {
+    return this->executionDurationPerInput_;
+  }
+
+  /// @brief Accessor to the number of elements per input
+  /// @return A Map where the key is the type as string, and the value is the associated number of elements received
+  [[nodiscard]] std::map<std::string, std::size_t> const &nbElementsPerInput() const final {
+    return this->nbElementsPerInput_;
+  }
+
+  /// @brief Accessor to the dequeue + execution duration per input
+  /// @return Map in which the key is the type and the value is the duration
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &dequeueExecutionDurationPerInput() const final {
+    return this->dequeueExecutionDurationPerInput_;
+  }
 };
 }
 }

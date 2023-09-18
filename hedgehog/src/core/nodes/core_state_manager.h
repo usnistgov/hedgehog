@@ -31,6 +31,7 @@
 #include "../abstractions/base/can_terminate_abstraction.h"
 #include "../abstractions/node/task_inputs_management_abstraction.h"
 #include "../abstractions/node/task_outputs_management_abstraction.h"
+#include "../abstractions/base/node/state_manager_node_abstraction.h"
 #include "../implementors/concrete_implementor/multi_queue_receivers.h"
 #include "../implementors/concrete_implementor/default_multi_executes.h"
 #include "../../behavior/input_output/state_sender.h"
@@ -70,7 +71,7 @@ using TOM = tool::TaskOutputsManagementAbstractionTypeDeducer_t
 /// @tparam AllTypes List of input and output types
 template<size_t Separator, class ...AllTypes>
 class CoreStateManager
-    : public abstraction::TaskNodeAbstraction,
+    : public abstraction::StateManagerNodeAbstraction,
       public abstraction::ClonableAbstraction,
       public abstraction::CleanableAbstraction,
       public abstraction::CanTerminateAbstraction,
@@ -104,7 +105,7 @@ class CoreStateManager
       StateManager<Separator, AllTypes...> *const stateManager,
       std::shared_ptr<AbstractState<Separator, AllTypes...>> const &state,
       std::string const &name, bool const automaticStart)
-      : TaskNodeAbstraction(name, stateManager),
+      : StateManagerNodeAbstraction(name, stateManager),
         CleanableAbstraction(static_cast<behavior::Cleanable *>(stateManager)),
         CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(stateManager)),
         abstraction::CopyableAbstraction<StateManager<Separator, AllTypes...>>(stateManager),
@@ -143,7 +144,7 @@ class CoreStateManager
                    std::shared_ptr<ConcreteMultiExecutes> concreteMultiExecutes,
                    std::shared_ptr<implementor::ImplementorNotifier> const &concreteNotifier,
                    std::shared_ptr<ConcreteMultiSenders> concreteMultiSenders) :
-      TaskNodeAbstraction(name, stateManager),
+      StateManagerNodeAbstraction(name, stateManager),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(stateManager)),
       CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(stateManager)),
       abstraction::CopyableAbstraction<StateManager<Separator, AllTypes...>>(stateManager),
@@ -237,12 +238,16 @@ class CoreStateManager
       start = std::chrono::system_clock::now();
       state_->lock();
       state_->stateManager(this->stateManager_);
+      finish = std::chrono::system_clock::now();
+      this->incrementAcquireStateDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+
+//      start = std::chrono::system_clock::now();
       this->callAllExecuteWithNullptr();
       emptyReadyLists<Outputs_t>(indices);
       state_->stateManager(nullptr);
       state_->unlock();
-      finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+//      finish = std::chrono::system_clock::now();
+//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Actual computation loop
@@ -260,12 +265,19 @@ class CoreStateManager
       start = std::chrono::system_clock::now();
       state_->lock();
       state_->stateManager(this->stateManager_);
+      finish = std::chrono::system_clock::now();
+      this->incrementAcquireStateDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+
+//      start = std::chrono::system_clock::now();
       this->operateReceivers();
+      start = std::chrono::system_clock::now();
       emptyReadyLists<Outputs_t>(indices);
+            finish = std::chrono::system_clock::now();
+      this->incrementEmptyRdyListDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
       state_->stateManager(nullptr);
       state_->unlock();
-      finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+//      finish = std::chrono::system_clock::now();
+//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Do the shutdown phase
@@ -356,6 +368,24 @@ class CoreStateManager
   /// @param mapping Correspondence map of belonging graph's node
   void duplicateEdge(std::map<NodeAbstraction *, std::shared_ptr<NodeAbstraction>> &mapping) override {
     this->duplicateOutputEdges(mapping);
+  }
+
+  /// @brief Accessor to the execution duration per input
+  /// @return A Map where the key is the type as string, and the value is the associated duration
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &executionDurationPerInput() const final {
+    return this->executionDurationPerInput_;
+  }
+
+  /// @brief Accessor to the number of elements per input
+  /// @return A Map where the key is the type as string, and the value is the associated number of elements received
+  [[nodiscard]] std::map<std::string, std::size_t> const &nbElementsPerInput() const final {
+    return this->nbElementsPerInput_;
+  }
+
+  /// @brief Accessor to the dequeue + execution duration per input
+  /// @return Map in which the key is the type and the value is the duration
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &dequeueExecutionDurationPerInput() const final {
+    return this->dequeueExecutionDurationPerInput_;
   }
 
 };

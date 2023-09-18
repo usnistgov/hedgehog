@@ -131,17 +131,17 @@ class GraphNodeAbstraction : public NodeAbstraction, public PrintableAbstraction
           minMaxExecDuration.first = std::min(minMaxExecDuration.first, epMinMax.first);
           minMaxExecDuration.second = std::max(minMaxExecDuration.second, epMinMax.second);
         } else {
-          auto execDuration = node->executionDuration();
+          auto execDuration = node->dequeueExecDuration();
           minMaxExecDuration.first = std::min(minMaxExecDuration.first, execDuration);
           minMaxExecDuration.second = std::max(minMaxExecDuration.second, execDuration);
           std::vector<NodeAbstraction *> &group = insideNode.second;
           if (!group.empty()) {
             auto [minElement, maxElement] = std::minmax_element(
                 group.begin(), group.end(),
-                [](auto lhs, auto rhs) { return lhs->executionDuration() < rhs->executionDuration(); }
+                [](auto lhs, auto rhs) { return lhs->dequeueExecDuration() < rhs->dequeueExecDuration(); }
             );
-            minMaxExecDuration.first = std::min(minMaxExecDuration.first, (*minElement)->executionDuration());
-            minMaxExecDuration.second = std::max(minMaxExecDuration.second, (*maxElement)->executionDuration());
+            minMaxExecDuration.first = std::min(minMaxExecDuration.first, (*minElement)->dequeueExecDuration());
+            minMaxExecDuration.second = std::max(minMaxExecDuration.second, (*maxElement)->dequeueExecDuration());
           }
         }
       }

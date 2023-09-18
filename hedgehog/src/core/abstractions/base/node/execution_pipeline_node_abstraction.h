@@ -63,6 +63,7 @@ class ExecutionPipelineNodeAbstraction : public TaskNodeAbstraction{
   /// @brief Getter to the min max execution duration from the nodes inside the graphs in the execution pipeline
   /// @return Min max execution duration from the nodes inside the graphs in the execution pipeline
   [[nodiscard]] virtual std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> minMaxExecutionDuration() const  = 0;
+
   /// @brief Getter to the min max wait duration from the nodes inside the graphs in the execution pipeline
   /// @return Min max wait duration from the nodes inside the graphs in the execution pipeline
   [[nodiscard]] virtual std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> minMaxWaitDuration() const  = 0;

@@ -66,7 +66,8 @@ class StateManager
       public tool::BehaviorMultiSendersTypeDeducer_t<tool::Outputs<Separator, AllTypes...>> {
  private:
   std::shared_ptr<AbstractState<Separator, AllTypes...>> state_ = nullptr; ///< AbstractState managed
-  std::shared_ptr<core::CoreStateManager<Separator, AllTypes...>> coreStateManager_ = nullptr; ///<AbstractState manager core
+  std::shared_ptr<core::CoreStateManager<Separator, AllTypes...>>
+      coreStateManager_ = nullptr; ///<AbstractState manager core
 
  public:
   /// @brief Main state manager constructor
@@ -79,10 +80,8 @@ class StateManager
       std::shared_ptr<AbstractState<Separator, AllTypes...>> state,
       std::string const &name = "State manager",
       bool const automaticStart = false)
-      : behavior::TaskNode(std::make_shared<core::CoreStateManager<Separator, AllTypes...>>(this,
-                                                                                            state,
-                                                                                            name,
-                                                                                            automaticStart)),
+      : behavior::TaskNode(
+      std::make_shared<core::CoreStateManager<Separator, AllTypes...>>(this, state, name, automaticStart)),
         behavior::Copyable<StateManager<Separator, AllTypes...>>(1),
         tool::BehaviorMultiSendersTypeDeducer_t<tool::Outputs<Separator, AllTypes...>>(),
         state_(state) {

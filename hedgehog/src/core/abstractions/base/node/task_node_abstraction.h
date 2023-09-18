@@ -23,9 +23,10 @@
 
 #include <ostream>
 #include "node_abstraction.h"
-#include "../../../../api/memory_manager/manager/abstract_memory_manager.h"
-#include "../../../../tools/nvtx_profiler.h"
 #include "../printable_abstraction.h"
+#include "../../../../tools/nvtx_profiler.h"
+#include "../../../../tools/meta_functions.h"
+#include "../../../../api/memory_manager/manager/abstract_memory_manager.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -35,7 +36,7 @@ namespace core {
 namespace abstraction {
 
 /// @brief Task core abstraction used to define some method for task-like behaving cores like CoreExecutionPipeline,
-/// CoreStateManager, CoreTask
+/// CoreTask
 class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction {
  private:
   size_t numberReceivedElements_ = 0; ///< Number of elements received
@@ -44,9 +45,9 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
   isInitialized_ = false; ///< Is initialized flag
 
   std::chrono::nanoseconds
-      perElementExecutionDuration_ = std::chrono::nanoseconds::zero(), ///< Node per element duration
-  waitDuration_ = std::chrono::nanoseconds::zero(), ///< Node wait duration
-  memoryWaitDuration_ = std::chrono::nanoseconds::zero(); ///< Node memory wait duration
+      executionDuration_ = std::chrono::nanoseconds::zero(), ///< Node per element duration
+      waitDuration_ = std::chrono::nanoseconds::zero(), ///< Node wait duration
+      memoryWaitDuration_ = std::chrono::nanoseconds::zero(); ///< Node memory wait duration
 
   std::shared_ptr<NvtxProfiler>
       nvtxProfiler_ = nullptr; ///< Store hedgehog nvtx profiler for the task
@@ -97,14 +98,60 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
   /// @return Wait state duration in nanoseconds
   [[nodiscard]] std::shared_ptr<NvtxProfiler> const &nvtxProfiler() const { return nvtxProfiler_; }
 
-  /// @brief Accessor to the duration the average duration of processing an input data
+  /// @brief Accessor to the average duration of processing an input data
   /// @return Average duration of processing an input data in nanoseconds
-  [[nodiscard]] std::chrono::nanoseconds perElementExecutionDuration() const {
+  [[nodiscard]] std::chrono::nanoseconds averageExecutionDurationPerElement() const {
     return
         this->numberReceivedElements() == 0 ?
         std::chrono::nanoseconds::zero() :
-        (std::chrono::nanoseconds) (perElementExecutionDuration_ / this->numberReceivedElements());
+        (std::chrono::nanoseconds) (executionDuration_ / this->numberReceivedElements());
   }
+
+  /// @brief Accessor to the average duration of processing an input data for each input types
+  /// @return Average duration of processing an input data for each input type in nanoseconds
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> averageExecutionDurationPerInputType() const {
+    auto ret = executionDurationPerInput();
+    for(auto & [type, duration] : ret){
+      auto const & nbElements = nbElementsPerInput().at(type);
+      if(nbElements == 0){ duration = std::chrono::nanoseconds::zero(); }
+      else { duration = duration / nbElements; }
+    }
+    return ret;
+  }
+
+//  /// @brief Accessor to the average duration of dequeue + processing an input data
+//  /// @return Average duration of dequeue + processing an input data in nanoseconds
+//  [[nodiscard]] std::chrono::nanoseconds averageDequeExecutionDurationPerElement() const {
+//    return
+//        this->numberReceivedElements() == 0 ?
+//        std::chrono::nanoseconds::zero() :
+//        (std::chrono::nanoseconds) (dequeueExecDuration() / this->numberReceivedElements());
+//  }
+
+//  /// @brief Accessor to the average duration of dequeue + processing an input data for all input types
+//  /// @return Average duration of dequeue + processing an input data for all input types in nanoseconds
+//  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> averageDequeExecutionDurationPerInputType() const {
+//    auto ret = dequeueExecutionDurationPerInput();
+//    for(auto & [type, duration] : ret){
+//      auto const & nbElements = nbElementsPerInput().at(type);
+//      if(nbElements == 0){ duration = std::chrono::nanoseconds::zero(); }
+//      else { duration = duration / nbElements; }
+//    }
+//    return ret;
+//  }
+
+
+  /// @brief Accessor to the execution duration per input
+  /// @return A Map where the key is the type as string, and the value is the associated duration
+  [[nodiscard]] virtual std::map<std::string, std::chrono::nanoseconds> const &executionDurationPerInput() const = 0;
+
+  /// @brief Accessor to the number of elements per input
+  /// @return A Map where the key is the type as string, and the value is the associated number of elements received
+  [[nodiscard]] virtual std::map<std::string, std::size_t> const &nbElementsPerInput() const = 0;
+
+  /// @brief Accessor to the dequeue + execution duration per input
+  /// @return Map in which the key is the type and the value is the duration
+  [[nodiscard]] virtual std::map<std::string, std::chrono::nanoseconds> const &dequeueExecutionDurationPerInput() const = 0;
 
   /// @brief Setter to the task status
   /// @param isActive Status to set
@@ -123,9 +170,9 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
 
   /// @brief Increase the execution time per elements
   /// @param exec Duration in nanoseconds
-  void incrementPerElementExecutionDuration(std::chrono::nanoseconds const &exec) {
-    this->perElementExecutionDuration_ += exec;
-  }
+  void incrementExecutionDuration(std::chrono::nanoseconds const &exec) { this->executionDuration_ += exec; }
+
+
 
   /// @brief Pre run method, called only once
   virtual void preRun() = 0;
@@ -159,6 +206,7 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
     isInitialized_ = true;
     initMutex_.unlock();
   }
+
 };
 }
 }

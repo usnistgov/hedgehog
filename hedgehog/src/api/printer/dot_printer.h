@@ -36,6 +36,8 @@
 #include "../../core/abstractions/base/node/graph_node_abstraction.h"
 #include "../../core/abstractions/base/node/task_node_abstraction.h"
 #include "../../core/abstractions/base/any_groupable_abstraction.h"
+#include "options/input_option.h"
+#include "../../core/abstractions/base/node/state_manager_node_abstraction.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -126,6 +128,7 @@ class DotPrinter : public Printer {
   std::ofstream outputFile_ = {}; ///< Output file stream
   ColorScheme colorScheme_ = {}; ///< Color scheme chosen
   StructureOptions structureOptions_ = {}; ///< Structure options chosen
+  InputOptions inputOptions_ = {}; ///< Input option chosen
   DebugOptions debugOptions_ = {}; ///< Debug option chosen
   std::unique_ptr<ColorPicker> colorPicker_ = nullptr; ///< Color picker used to generate the dot file
 
@@ -160,12 +163,14 @@ class DotPrinter : public Printer {
   DotPrinter(std::filesystem::path const &dotFilePath,
              ColorScheme colorScheme,
              StructureOptions structureOptions,
+             InputOptions inputOptions,
              DebugOptions debugOptions,
              core::abstraction::GraphNodeAbstraction const *graph,
              std::unique_ptr<ColorPicker> colorPicker,
              bool verbose)
       : colorScheme_(colorScheme),
         structureOptions_(structureOptions),
+        inputOptions_(inputOptions),
         debugOptions_(debugOptions),
         colorPicker_(std::move(colorPicker)),
         edges_(std::make_unique<std::vector<Edge>>()) {
@@ -200,8 +205,8 @@ class DotPrinter : public Printer {
         maxWaitDurationInAllGraphs_ - minWaitDurationInAllGraphs_;
 
     graphTotalExecution_ =
-        graph->executionDuration() == std::chrono::nanoseconds::zero() ?
-        std::chrono::system_clock::now() - graph->startExecutionTimeStamp() : graph->executionDuration();
+        graph->dequeueExecDuration() == std::chrono::nanoseconds::zero() ?
+        std::chrono::system_clock::now() - graph->startExecutionTimeStamp() : graph->dequeueExecDuration();
   }
 
   /// @brief Dot Printer destructor
@@ -438,6 +443,7 @@ class DotPrinter : public Printer {
 
     auto copyableTask = dynamic_cast<core::abstraction::AnyGroupableAbstraction const *>(task);
     auto slotTask = dynamic_cast<core::abstraction::SlotAbstraction const *>(task);
+    auto sm = dynamic_cast<core::abstraction::StateManagerNodeAbstraction const *>(task);
 
     bool printAllNodes =
         this->structureOptions_ == StructureOptions::THREADING || this->structureOptions_ == StructureOptions::ALL;
@@ -472,73 +478,148 @@ class DotPrinter : public Printer {
       }
     }
     // If all nodes in a group need to be printed OR is state manager
-    if (printAllNodes || !copyableTask) {
-      ss << "\\nNumber Elements Received: " << task->numberReceivedElements();
-      ss << "\\nWait Duration: " << durationPrinter(task->waitDuration());
-      ss << "\\nDequeue + Execution Duration: " << durationPrinter(task->executionDuration());
-      ss << "\\nExecution Duration Per Element: " << durationPrinter(task->perElementExecutionDuration());
+    if (printAllNodes || sm) {
+      if(inputOptions_ == InputOptions::GATHERED) {
+        ss << "\\nElements: " << task->numberReceivedElements();
+      }else {
+        ss << "\\nElements/Input:";
+        for(auto const &[typeStr, nbElements] : task->nbElementsPerInput()){
+          ss << " (" << typeStr << ")" << nbElements;
+        }
+      }
+
+      ss << "\\nWait: " << durationPrinter(task->waitDuration());
+      if(sm){
+        ss << "\\nLock state: " << durationPrinter(sm->acquireStateDuration());
+        ss << "\\nEmpty ready list: " << durationPrinter(sm->emptyRdyListDuration());
+      }
+
+      if(inputOptions_ == InputOptions::GATHERED){
+        ss << "\\nDequeue+Exec: " << durationPrinter(task->dequeueExecDuration());
+        ss << "\\nExec/Element: " << durationPrinter(task->averageExecutionDurationPerElement());
+      }else {
+        ss << "\\nDequeue+Exec/Input: ";
+        for(auto const &[typeStr, duration] : task->dequeueExecutionDurationPerInput()){
+          ss << " (" << typeStr << ") " << durationPrinter(duration);
+        }
+        ss << "\\nExec/Element/Input:";
+        for(auto const &[typeStr, duration] : task->averageExecutionDurationPerInputType()){
+          ss << " (" << typeStr << ") " << durationPrinter(duration);
+        }
+      }
+
       if (task->hasMemoryManagerAttached()) {
         ss << "\\nMemory manager (" << task->memoryManager()->managedType() << "): "
            << task->memoryManager()->currentSize() << "/" << task->memoryManager()->capacity();
-        ss << "\\nMemory Wait Duration: " << durationPrinter(task->memoryWaitDuration());
+        ss << "\\nMemory Wait: " << durationPrinter(task->memoryWaitDuration());
       }
+
       // If all nodes in a group should NOT be printed
     } else {
       //Get the time in the groups
       if (copyableTask) {
         // Print the number of element received per task
-        ss << "\\nNumber of Elements Received Per Task: ";
+
         if (copyableTask->numberThreads() > 1) {
-          auto minmaxElements = copyableTask->minmaxNumberElementsReceivedGroup();
-          auto meanSDNumberElements = copyableTask->meanSDNumberElementsReceivedGroup();
-          ss << "\\n"
-             << "  Min: " << minmaxElements.first << "\\n"
-             << "  Avg: " << std::setw(3) << meanSDNumberElements.first
-             << " +- " << std::setw(3) << meanSDNumberElements.second
-             << "\\n"
-             << "  Max: " << std::setw(3) << minmaxElements.second << "\\n";
+          if(inputOptions_ == InputOptions::GATHERED) {
+            ss << "\\nElements: ";
+            auto minmaxElements = copyableTask->minmaxNumberElementsReceivedGroup();
+            auto meanSDNumberElements = copyableTask->meanSDNumberElementsReceivedGroup();
+            ss << "\\nMin: " << minmaxElements.first << ""
+               << "\\Avg: " << std::setw(1) << meanSDNumberElements.first
+               << " +- " << std::setw(1) << meanSDNumberElements.second
+               << "\\Max: " << minmaxElements.second;
+          }else {
+            ss << "\\nElements/Input: ";
+            auto minmaxElementsPerInputs = copyableTask->minmaxNumberElementsReceivedGroupPerInput();
+            auto meanSDNumberElementsPerInputs = copyableTask->meanSDNumberElementsReceivedGroupPerInput();
+            for(auto [key, minMax] : minmaxElementsPerInputs){
+              ss << "\\n(" << key << ") Min: " << minMax.first
+                 << "\\Avg: " << std::setw(1) << meanSDNumberElementsPerInputs.at(key).first
+                 << " +- " << std::setw(1) << meanSDNumberElementsPerInputs.at(key).second
+                 << "\\Max: " << minMax.second;
+            }
+          }
         } else {
-          ss << task->numberReceivedElements() << "\\n";
+          if(inputOptions_ == InputOptions::GATHERED) {
+            ss << "\\nElements: ";
+            ss << task->numberReceivedElements();
+          }else {
+            ss << "\\nElements/Input:";
+            for(auto [key, nbElem] : task->nbElementsPerInput()){
+              ss << " (" << key << ") " << nbElem;
+            }
+          }
         }
         // Print the wait time
-        ss << "Wait Time: ";
+        ss << "\nWait Time: ";
         if (copyableTask->numberThreads() > 1) {
           auto minmaxWait = copyableTask->minmaxWaitDurationGroup();
           auto meanSDWait = copyableTask->meanSDWaitDurationGroup();
-          ss << "\\n"
-             << "  Min: " << durationPrinter(minmaxWait.first) << "\\n"
-             << "  Avg: " << durationPrinter(meanSDWait.first) << " +- "
-             << durationPrinter(meanSDWait.second) << "\\n"
-             << "  Max: " << durationPrinter(minmaxWait.second) << "\\n";
-        } else {
-          ss << durationPrinter(task->waitDuration()) << "\\n";
-        }
+          ss << "\\nMin: " << durationPrinter(minmaxWait.first)
+             << "\\Avg: " << durationPrinter(meanSDWait.first)
+             << " +- " << durationPrinter(meanSDWait.second)
+             << "\\Max: " << durationPrinter(minmaxWait.second) << "\\n";
+        } else { ss << durationPrinter(task->waitDuration()) << "\\n"; }
         // Print the execution time
-        ss << "Dequeue + Execution Time: ";
-        if (copyableTask->numberThreads() > 1) {
-          auto minmaxExec = copyableTask->minmaxExecutionDurationGroup();
-          auto meanSDExec = copyableTask->meanSDExecutionDurationGroup();
-          ss << "\\n"
-             << "  Min: " << durationPrinter(minmaxExec.first) << "\\n"
-             << "  Avg: " << durationPrinter(meanSDExec.first) << " +- "
-             << durationPrinter(meanSDExec.second) << "\\n"
-             << "  Max: " << durationPrinter(minmaxExec.second) << "\\n";
-        } else {
-          ss << durationPrinter(task->executionDuration()) << "\\n";
-        }
+        if(inputOptions_ == InputOptions::GATHERED) {
+          ss << "Dequeue+Exec: ";
+          if (copyableTask->numberThreads() > 1) {
+            auto minmaxExec = copyableTask->minmaxDequeueExecutionDurationGroup();
+            auto meanSDExec = copyableTask->meanSDDequeueExecutionDurationGroup();
+            ss << "\\nMin: " << durationPrinter(minmaxExec.first)
+               << "\\Avg: " << durationPrinter(meanSDExec.first)
+               << " +- " << durationPrinter(meanSDExec.second)
+               << "\\Max: " << durationPrinter(minmaxExec.second) << "\\n";
+          } else { ss << durationPrinter(task->dequeueExecDuration()) << "\\n"; }
+        }else {
+          ss << "Dequeue+Exec/Input:";
+          if (copyableTask->numberThreads() > 1) {
+            auto minmaxExec = copyableTask->minmaxDequeueExecutionDurationGroupPerInput();
+            auto meanSDExec = copyableTask->meanSDDequeueExecutionDurationGroupPerInput();
+            for(auto const & [key, minMax] : minmaxExec) {
+              ss << "\\n(" << key << ") Min: " << durationPrinter(minmaxExec.at(key).first)
+                 << "\\Avg: " << durationPrinter(meanSDExec.at(key).first)
+                 << " +- " << durationPrinter(meanSDExec.at(key).second)
+                 << "\\Max: " << durationPrinter(minmaxExec.at(key).second) << "\\n";
+            }
+          } else {
+            for(auto const & [key, duration] : task->dequeueExecutionDurationPerInput()){
+              ss << " (" << key << ") " << durationPrinter(duration);
+            }
+            ss << "\\n";
+          }
 
+        }
         // Print the execution time per Element
-        ss << "Execution Time Per Element: ";
-        if (copyableTask->numberThreads() > 1) {
-          auto minmaxExecPerElement = copyableTask->minmaxExecTimePerElementGroup();
-          auto meanSDExecPerElement = copyableTask->meanSDExecTimePerElementGroup();
-          ss << "\\n"
-             << "  Min: " << durationPrinter(minmaxExecPerElement.first) << "\\n"
-             << "  Avg: " << durationPrinter(meanSDExecPerElement.first) << " +- "
-             << durationPrinter(meanSDExecPerElement.second) << "\\n"
-             << "  Max: " << durationPrinter(minmaxExecPerElement.second) << "\\n";
-        } else {
-          ss << durationPrinter(task->perElementExecutionDuration()) << "\\n";
+        if(inputOptions_ == InputOptions::GATHERED) {
+          ss << "Exec: ";
+          if (copyableTask->numberThreads() > 1) {
+            auto minmaxExecPerElement = copyableTask->minmaxExecTimePerElementGroup();
+            auto meanSDExecPerElement = copyableTask->meanSDExecTimePerElementGroup();
+            ss << "\\n"
+               << "  Min: " << durationPrinter(minmaxExecPerElement.first) << "\\n"
+               << "  Avg: " << durationPrinter(meanSDExecPerElement.first) << " +- "
+               << durationPrinter(meanSDExecPerElement.second) << "\\n"
+               << "  Max: " << durationPrinter(minmaxExecPerElement.second) << "\\n";
+          } else { ss << durationPrinter(task->averageExecutionDurationPerElement()) << "\\n"; }
+        }else {
+          ss << "Exec/input: ";
+          if (copyableTask->numberThreads() > 1) {
+            auto minMaxExec = copyableTask->minmaxExecTimePerElementGroupPerInput();
+            auto meanSDExec = copyableTask->meanSDExecTimePerElementGroupPerInput();
+            for(auto const & [key, minMax] : minMaxExec) {
+              ss << "\\n(" << key << ") Min: " << durationPrinter(minMaxExec.at(key).first)
+                 << "\\Avg: " << durationPrinter(meanSDExec.at(key).first)
+                 << " +- " << durationPrinter(meanSDExec.at(key).second)
+                 << "\\Max: " << durationPrinter(minMaxExec.at(key).second) << "\\n";
+            }
+          } else {
+            for(auto const & [key, duration] : task->executionDurationPerInput()){
+              ss << " (" << key << ") " << durationPrinter(duration);
+            }
+            ss << "\\n";
+          }
         }
 
         // Print the memory wait time
@@ -568,7 +649,7 @@ class DotPrinter : public Printer {
     ss << ",shape=rect";
     // Change the color of the rect depending on the user choice
     switch (this->colorScheme_) {
-      case ColorScheme::EXECUTION:ss << ",color=" << this->getExecRGB(task->executionDuration()) << ", penwidth=3";
+      case ColorScheme::EXECUTION:ss << ",color=" << this->getExecRGB(task->dequeueExecDuration()) << ", penwidth=3";
         break;
       case ColorScheme::WAIT:ss << ",color=" << this->getWaitRGB(task->waitDuration()) << ", penwidth=3";
         break;
@@ -647,7 +728,7 @@ class DotPrinter : public Printer {
     } else if (us > std::chrono::microseconds::zero()) {
       oss << us.count() << "." << std::setfill('0') << std::setw(3) << (ns - us).count() << "us";
     } else {
-      oss << std::setw(3) << ns.count() << "ns";
+      oss << ns.count() << "ns";
     }
     return oss.str();
   }

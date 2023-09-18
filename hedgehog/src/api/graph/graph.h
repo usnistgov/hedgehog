@@ -317,6 +317,7 @@ class Graph :
   /// times, or nothing. The chosen color depends on the colorPicker.
   /// @param structureOptions Show how the graph is represented, with or without input queue size, with or without all
   /// task groups.
+  /// @param inputOption Select how the execution should be printed, by input type or gathered
   /// @param debugOption Add debug information on the dot graph.
   /// @param colorPicker Color scheme used to generate the dotfile, JetColor by default.
   /// @param verbose Enable verbose mode: report when dot files are created or overwritten to standard out, default
@@ -324,13 +325,14 @@ class Graph :
   void createDotFile(std::filesystem::path const &dotFilePath,
                      ColorScheme colorScheme = ColorScheme::NONE,
                      StructureOptions structureOptions = StructureOptions::NONE,
+                     InputOptions inputOption = InputOptions::GATHERED,
                      DebugOptions debugOption = DebugOptions::NONE,
                      std::unique_ptr<ColorPicker> colorPicker = std::make_unique<JetColor>(),
                      bool verbose = false) {
     core::abstraction::GraphNodeAbstraction *core = this->coreGraph_.get();
     DotPrinter
         printer(
-        std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, debugOption, core,
+        std::filesystem::absolute(dotFilePath), colorScheme, structureOptions, inputOption, debugOption, core,
         std::move(colorPicker), verbose);
     core->visit(&printer);
   }

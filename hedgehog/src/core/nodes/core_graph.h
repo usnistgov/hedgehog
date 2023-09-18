@@ -289,7 +289,7 @@ class CoreGraph :
     joinThreads();
     std::chrono::time_point<std::chrono::system_clock>
         endExecutionTimeStamp = std::chrono::system_clock::now();
-    this->incrementExecutionDuration(endExecutionTimeStamp - this->startExecutionTimeStamp());
+    this->incrementDequeueExecutionDuration(endExecutionTimeStamp - this->startExecutionTimeStamp());
   }
 
   /// @brief Broadcast an input data to all inputs nodes

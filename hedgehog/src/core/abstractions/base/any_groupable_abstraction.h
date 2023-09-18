@@ -210,23 +210,25 @@ class AnyGroupableAbstraction {
     return meanSD;
   }
 
-  /// @brief Accessor to the min / max execution duration of the nodes in the group
-  /// @return Min / max execution duration in nanoseconds of the nodes in the group
-  [[nodiscard]] std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> minmaxExecutionDurationGroup() const {
+  /// @brief Accessor to the min / max dequeue + execution duration of the nodes in the group
+  /// @return Min / max dequeue + execution duration in nanoseconds of the nodes in the group
+  [[nodiscard]] std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>
+  minmaxDequeueExecutionDurationGroup() const {
     auto groupAsNode = this->groupAsNodes();
     auto minMaxElem = std::minmax_element(
         groupAsNode->cbegin(), groupAsNode->cend(),
         [](auto lhs, auto rhs) {
-          return lhs->executionDuration() < rhs->executionDuration();
+          return lhs->dequeueExecDuration() < rhs->dequeueExecDuration();
         }
     );
-    return {(*minMaxElem.first)->executionDuration(),
-            (*minMaxElem.second)->executionDuration()};
+    return {(*minMaxElem.first)->dequeueExecDuration(),
+            (*minMaxElem.second)->dequeueExecDuration()};
   }
 
-  /// @brief Accessor to the mean / standard deviation execution duration of the nodes in the group
-  /// @return Mean / standard deviation execution duration in nanoseconds of the nodes in the group
-  [[nodiscard]] std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> meanSDExecutionDurationGroup() const {
+  /// @brief Accessor to the mean / standard deviation dequeue + execution duration of the nodes in the group
+  /// @return Mean / standard deviation dequeue + execution duration in nanoseconds of the nodes in the group
+  [[nodiscard]] std::pair<std::chrono::nanoseconds,
+                          std::chrono::nanoseconds> meanSDDequeueExecutionDurationGroup() const {
     auto groupAsNode = groupAsNodes();
     std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> meanSD =
         {std::chrono::nanoseconds::zero(), std::chrono::nanoseconds::zero()};
@@ -238,13 +240,13 @@ class AnyGroupableAbstraction {
         sd = 0;
 
     for (auto taskInGroup : *groupAsNode) {
-      sum += taskInGroup->executionDuration();
+      sum += taskInGroup->dequeueExecDuration();
     }
     mean = sum / (groupAsNode->size());
 
     for (auto taskInGroup : *groupAsNode) {
-      sd += (double) (taskInGroup->executionDuration().count() - mean.count()) *
-          (double) (taskInGroup->executionDuration().count() - mean.count());
+      sd += (double) (taskInGroup->dequeueExecDuration().count() - mean.count()) *
+          (double) (taskInGroup->dequeueExecDuration().count() - mean.count());
     }
 
     meanSD = {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) groupAsNode->size()))};
@@ -266,7 +268,7 @@ class AnyGroupableAbstraction {
             auto lhsAsTask = dynamic_cast<TaskNodeAbstraction const *>(lhs);
             auto rhsAsTask = dynamic_cast<TaskNodeAbstraction const *>(rhs);
             if (lhsAsTask && rhsAsTask) {
-              return lhsAsTask->perElementExecutionDuration() < rhsAsTask->perElementExecutionDuration();
+              return lhsAsTask->averageExecutionDurationPerElement() < rhsAsTask->averageExecutionDurationPerElement();
             } else {
               throw std::runtime_error("All the nodes in a group should be of the same type, the representative is of"
                                        " type TaskNodeAbstraction but not the group members.");
@@ -277,7 +279,7 @@ class AnyGroupableAbstraction {
       auto minTask = dynamic_cast<TaskNodeAbstraction *>(*minMaxElem.first);
       auto maxTask = dynamic_cast<TaskNodeAbstraction *>(*minMaxElem.second);
       if (minTask && maxTask) {
-        minMax = {minTask->perElementExecutionDuration(), maxTask->perElementExecutionDuration()};
+        minMax = {minTask->averageExecutionDurationPerElement(), maxTask->averageExecutionDurationPerElement()};
       } else {
         throw std::runtime_error("All the nodes in a group should be of the same type, the representative is of"
                                  " type TaskNodeAbstraction but not the group members.");
@@ -302,7 +304,7 @@ class AnyGroupableAbstraction {
       for (auto taskInGroup : *this->group_) {
         auto task = dynamic_cast<TaskNodeAbstraction *>(taskInGroup);
         if (task) {
-          sum += task->perElementExecutionDuration();
+          sum += task->averageExecutionDurationPerElement();
         } else {
           throw std::runtime_error("All the nodes in a group should be of the same type, the representative is of"
                                    " type TaskNodeAbstraction but not the group members.");
@@ -313,7 +315,7 @@ class AnyGroupableAbstraction {
       for (auto taskInGroup : *this->group_) {
         auto task = dynamic_cast<TaskNodeAbstraction *>(taskInGroup);
         if (task) {
-          auto diff = (double) (task->perElementExecutionDuration().count() - mean.count());
+          auto diff = (double) (task->averageExecutionDurationPerElement().count() - mean.count());
           sd += diff * diff;
         } else {
           throw std::runtime_error("All the nodes in a group should be of the same type, the representative is of"
@@ -360,7 +362,8 @@ class AnyGroupableAbstraction {
   /// @brief Accessor to the mean / standard deviation wait time duration of the nodes in the group
   /// @return Mean / standard deviation wait time duration in nanoseconds of the nodes in the group
   /// @throw std::runtime_error All the nodes in a group are not of the same types
-  [[nodiscard]] std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> meanSDMemoryWaitTimePerElementGroup() const {
+  [[nodiscard]] std::pair<std::chrono::nanoseconds,
+                          std::chrono::nanoseconds> meanSDMemoryWaitTimePerElementGroup() const {
     std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds> meanSD =
         {std::chrono::nanoseconds::zero(), std::chrono::nanoseconds::zero()};
     if (dynamic_cast<TaskNodeAbstraction const *>(this)) {
@@ -463,6 +466,184 @@ class AnyGroupableAbstraction {
       meanSD = {mean, std::sqrt(sd / (double) this->group_->size())};
     }
     return meanSD;
+  }
+
+  /// @brief Accessor to the min / max number of elements per input type received in the group
+  /// @return Min / max number of elements per input type received in the group
+  [[nodiscard]] std::map<std::string, std::pair<size_t, size_t>> minmaxNumberElementsReceivedGroupPerInput() const {
+    auto firstIterator = this->group_->cbegin();
+    std::map<std::string, std::pair<size_t, size_t>> minMax;
+
+    for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
+      minMax.at(t) = {nbElem, nbElem};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
+        auto &mm = minMax.at(t);
+        mm = {std::min(mm.first, nbElem), std::max(mm.second, nbElem)};
+      }
+    }
+    return minMax;
+  }
+
+  /// @brief Accessor to the mean / standard deviation number of elements received per input in the group
+  /// @return Mean / standard deviation number of elements received per input in the group
+  [[nodiscard]] std::map<std::string, std::pair<double, double>> meanSDNumberElementsReceivedGroupPerInput() const {
+    std::map<std::string, std::vector<size_t>> nbElementsGathered;
+    std::map<std::string, std::pair<double, double>> ret;
+
+    auto firstIterator = this->group_->cbegin();
+
+    for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
+      nbElementsGathered.at(t) = {nbElem};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
+        nbElementsGathered.at(t).push_back(nbElem);
+      }
+    }
+
+    for (auto const &[t, values] : nbElementsGathered) {
+      double mean = std::accumulate(values.cbegin(), values.cend(), 0, std::plus<>()), sd = 0;
+      mean /= (double) (values.size());
+      for (auto const &value : values) {
+        auto diff = (double) value - mean;
+        sd += diff * diff;
+      }
+      ret.at(t) = {mean, std::sqrt(sd / (double) values.size())};
+    }
+
+    return ret;
+  }
+
+  /// @brief Accessor to the min / max dequeue + execution duration per input of the nodes in the group
+  /// @return Min / max dequeue + execution duration per input in nanoseconds of the nodes in the group
+  [[nodiscard]] std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>>
+  minmaxDequeueExecutionDurationGroupPerInput() const {
+    auto firstIterator = this->group_->cbegin();
+    std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>> minMax;
+
+    for (auto const &[t, duration]
+        : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
+      minMax.at(t) = {duration, duration};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &[t, duration]
+          : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
+        auto &mm = minMax.at(t);
+        mm = {std::min(mm.first, duration), std::max(mm.second, duration)};
+      }
+    }
+    return minMax;
+  }
+
+  /// @brief Accessor to the mean / standard deviation dequeue + execution duration per input of the nodes in the group
+  /// @return Mean / standard deviation dequeue + execution duration per input in nanoseconds of the nodes in the group
+  [[nodiscard]] std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>>
+  meanSDDequeueExecutionDurationGroupPerInput() const {
+    std::map<std::string, std::vector<std::chrono::nanoseconds>> nbElementsGathered;
+    std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>> ret;
+
+    auto firstIterator = this->group_->cbegin();
+
+    for (auto const &
+          [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
+      nbElementsGathered.at(t) = {nbElem};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &
+            [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
+        nbElementsGathered.at(t).push_back(nbElem);
+      }
+    }
+
+    for (auto const &[t, values] : nbElementsGathered) {
+      std::chrono::nanoseconds mean = std::chrono::nanoseconds::zero();
+      double sd = 0;
+      for (auto const &v : values) { mean += v; }
+      mean = mean / values.size();
+      for (auto const &value : values) {
+        auto diff = (double) (value.count()) - (double) (mean.count());
+        sd += diff * diff;
+      }
+      ret.at(t) = {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))};
+    }
+
+    return ret;
+  }
+
+  /// @brief Accessor to the min / max execution per elements duration per input of the nodes in the group
+  /// @return Min / max execution per elements duration per input in nanoseconds of the nodes in the group
+  [[nodiscard]] std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>>
+  minmaxExecTimePerElementGroupPerInput() const {
+    auto firstIterator = this->group_->cbegin();
+    std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>> minMax;
+
+    for (auto const &
+          [t, duration] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
+      minMax.at(t) = {duration, duration};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &
+            [t, duration] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
+        auto &mm = minMax.at(t);
+        mm = {std::min(mm.first, duration), std::max(mm.second, duration)};
+      }
+    }
+    return minMax;
+  }
+
+  /// @brief Accessor to the mean / standard deviation execution per elements duration per input of the nodes in the group
+  /// @return >ean / standard deviation execution per elements duration per input in nanoseconds of the nodes in the group
+  [[nodiscard]] std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>>
+  meanSDExecTimePerElementGroupPerInput() const {
+    std::map<std::string, std::vector<std::chrono::nanoseconds>> nbElementsGathered;
+    std::map<std::string, std::pair<std::chrono::nanoseconds, std::chrono::nanoseconds>> ret;
+
+    auto firstIterator = this->group_->cbegin();
+
+    for (auto const &
+          [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
+      nbElementsGathered.at(t) = {nbElem};
+    }
+
+    std::advance(firstIterator, 1);
+
+    for (auto it = firstIterator; it != this->group_->cend(); ++it) {
+      for (auto const &
+            [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
+        nbElementsGathered.at(t).push_back(nbElem);
+      }
+    }
+
+    for (auto const &[t, values] : nbElementsGathered) {
+      std::chrono::nanoseconds mean = std::chrono::nanoseconds::zero();
+      double sd = 0;
+      for (auto const &v : values) { mean += v; }
+      mean = mean / values.size();
+      for (auto const &value : values) {
+        auto diff = (double) (value.count()) - (double) (mean.count());
+        sd += diff * diff;
+      }
+      ret.at(t) = {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))};
+    }
+
+    return ret;
   }
 
   /// @brief Create a group to insert in the map

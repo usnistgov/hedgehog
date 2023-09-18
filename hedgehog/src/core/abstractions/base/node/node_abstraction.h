@@ -64,7 +64,8 @@ class NodeAbstraction {
   bool isRegistered_ = false; ///< Is registered into a graph
 
   GraphNodeAbstraction *belongingGraph_ = nullptr; ///< Graph holding this node
-  std::chrono::nanoseconds executionDuration_ = std::chrono::nanoseconds::zero(); ///< Node execution duration
+  std::chrono::nanoseconds dequeueExecDuration_ = std::chrono::nanoseconds::zero(); ///< Node execution duration
+
 
   std::chrono::time_point<std::chrono::system_clock>
       startExecutionTimeStamp_ = std::chrono::system_clock::now(); ///< Node begin execution timestamp
@@ -108,7 +109,7 @@ class NodeAbstraction {
 
   /// @brief Execution duration
   /// @return Duration in nanosecond
-  [[nodiscard]] std::chrono::nanoseconds const &executionDuration() const { return executionDuration_; }
+  [[nodiscard]] std::chrono::nanoseconds const &dequeueExecDuration() const { return dequeueExecDuration_; }
 
   /// @brief Accessor to the starting execution timestamp
   /// @return Execution time starting timestamp
@@ -124,7 +125,7 @@ class NodeAbstraction {
 
   /// @brief Increment execution duration
   /// @param exec Duration to add in nanoseconds
-  void incrementExecutionDuration(std::chrono::nanoseconds const &exec) { this->executionDuration_ += exec; }
+  void incrementDequeueExecutionDuration(std::chrono::nanoseconds const &exec) { this->dequeueExecDuration_ += exec; }
 
   /// @brief Register node to the given graph
   /// @param belongingGraph Belonging graph

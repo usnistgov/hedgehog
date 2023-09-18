@@ -152,7 +152,7 @@ class CoreExecutionPipeline
       start = std::chrono::system_clock::now();
       this->operateReceivers<Inputs_t>(Indices{});
       finish = std::chrono::system_clock::now();
-      this->incrementExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
+      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Do the shutdown phase
@@ -340,6 +340,26 @@ class CoreExecutionPipeline
     this->duplicateOutputEdges(mapping);
   }
 
+  /// @brief Accessor to the execution duration per input
+  /// @return A Map where the key is the type as string, and the value is the associated duration
+  /// @throw std::runtime_error Not defined for ep
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &executionDurationPerInput() const final {
+    throw std::runtime_error("The execution per in put is not defined on an Execution Pipeline.");
+  }
+
+  /// @brief Accessor to the number of elements per input
+  /// @return A Map where the key is the type as string, and the value is the associated number of elements received
+  /// @throw std::runtime_error Not defined for ep
+  [[nodiscard]] std::map<std::string, std::size_t> const &nbElementsPerInput() const final {
+    throw std::runtime_error("The nb of elements per in put is not defined on an Execution Pipeline.");
+  }
+
+  /// @brief Accessor to the dequeue + execution duration per input
+  /// @return Map in which the key is the type and the value is the duration
+  /// @throw std::runtime_error Not defined for ep
+  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> const &dequeueExecutionDurationPerInput() const final {
+    throw std::runtime_error("The execution per in put is not defined on an Execution Pipeline.");
+  }
 };
 
 }

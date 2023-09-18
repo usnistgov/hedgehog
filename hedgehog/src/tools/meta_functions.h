@@ -229,7 +229,7 @@ constexpr auto typeToStrView() {
   std::string_view name, prefix, suffix;
 #ifdef __clang__
   name = __PRETTY_FUNCTION__;
-  prefix = "auto hh::tool::typeToStr() [T = ";
+  prefix = "auto hh::tool::typeToStrView() [T = ";
   suffix = "]";
 #elif defined(__GNUC__)
   name = __PRETTY_FUNCTION__;
@@ -237,7 +237,7 @@ constexpr auto typeToStrView() {
   suffix = "]";
 #elif defined(_MSC_VER)
   name = __FUNCSIG__;
-    prefix = "auto __cdecl typeToStr<";
+    prefix = "auto __cdecl typeToStrView<";
     suffix = ">(void)";
 #endif
   name.remove_prefix(prefix.size());

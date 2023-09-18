@@ -49,6 +49,14 @@ class TaskInputsManagementAbstraction :
     public ExecuteAbstraction<Inputs> ... {
  private:
   TaskNodeAbstraction *const coreTask_ = nullptr; ///< Accessor to the core task
+
+ protected:
+  std::map<std::string, std::chrono::nanoseconds>
+      executionDurationPerInput_, ///< Node execution per input
+  dequeueExecutionDurationPerInput_; ///< Node dequeue + execution per input
+
+  std::map<std::string, std::size_t> nbElementsPerInput_; ///< Number of elements received per input
+
  public:
   using inputs_t = std::tuple<Inputs...>; ///< Accessor to the input types
 
@@ -64,7 +72,9 @@ class TaskInputsManagementAbstraction :
         )...,
       ExecuteAbstraction<Inputs>(std::make_shared<implementor::DefaultExecute<Inputs>>(
   static_cast<behavior::Execute<Inputs>*>(nodeTask)))...,
-  coreTask_(coreTask) {}
+  coreTask_(coreTask) {
+      (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
+  }
 
   /// @brief Constructor using a node and the concrete implementor
   /// @tparam ConcreteMultiReceivers Concrete implementation of multi receivers abstraction
@@ -83,11 +93,12 @@ class TaskInputsManagementAbstraction :
       std::shared_ptr<ConcreteMultiReceivers> concreteMultiReceivers,
       std::shared_ptr<ConcreteMultiExecutes> concreteMultiExecutes) :
       SlotAbstraction(concreteSlot),
-      ReceiverAbstraction<Inputs>(concreteMultiReceivers,
-                                  SlotAbstraction::mutex())...,
+      ReceiverAbstraction<Inputs>(concreteMultiReceivers, SlotAbstraction::mutex())...,
       ExecuteAbstraction<Inputs>(concreteMultiExecutes)
   ...,
-  coreTask_(coreTask) {}
+  coreTask_(coreTask) {
+      (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
+  }
 
   /// @brief Default destructor
   ~TaskInputsManagementAbstraction() override = default;
@@ -108,7 +119,7 @@ class TaskInputsManagementAbstraction :
   void operateReceivers() { (this->operateReceiver<Inputs>(), ...); }
 
   /// @brief Call for all types the user-defined execute method with nullptr as data
-  void callAllExecuteWithNullptr() { (ExecuteAbstraction<Inputs>::callExecute(nullptr), ...); }
+  void callAllExecuteWithNullptr() { (callExecuteForATypeWithNullptr<Inputs>(), ...); }
 
   /// @brief Wake up implementation (notify one node waiting on the condition variable)
   void wakeUp() final { this->slotConditionVariable()->notify_one(); }
@@ -128,26 +139,82 @@ class TaskInputsManagementAbstraction :
 
  private:
   /// @brief Access the ReceiverAbstraction of the type InputDataType to process an element
-  /// @tparam InputDataType
+  /// @tparam InputDataType Type of input data
   template<tool::ContainsConcept<Inputs...> InputDataType>
   void operateReceiver() {
+    static std::string const typeStr = hh::tool::typeToStr<InputDataType>();
+    std::chrono::time_point<std::chrono::system_clock>
+        start = std::chrono::system_clock::now(),
+        finish;
     this->lockSlotMutex();
     auto typedReceiver = static_cast<ReceiverAbstraction<InputDataType> *>(this);
     if (!typedReceiver->empty()) {
       std::shared_ptr<InputDataType> data = typedReceiver->getInputData();
       coreTask_->incrementNumberReceivedElements();
       this->unlockSlotMutex();
-      std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
-      coreTask_->nvtxProfiler()->startRangeExecuting();
-      ExecuteAbstraction<InputDataType>::callExecute(data);
-      coreTask_->nvtxProfiler()->endRangeExecuting();
-      std::chrono::time_point<std::chrono::system_clock> finish = std::chrono::system_clock::now();
-      coreTask_->incrementPerElementExecutionDuration(
-          std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start)
-      );
-    } else {
-      this->unlockSlotMutex();
-    }
+      callExecuteForAType(data);
+    } else { this->unlockSlotMutex(); }
+    finish = std::chrono::system_clock::now();
+    incrementDequeueExecutionPerInput<InputDataType>(finish - start);
+    coreTask_->incrementDequeueExecutionDuration(finish - start);
+  }
+
+  /// @brief Call execute function with nullptr
+  /// @tparam InputDataType input data type
+  template<tool::ContainsConcept<Inputs...> InputDataType>
+  void callExecuteForATypeWithNullptr() {
+    static std::string const typeStr = hh::tool::typeToStr<InputDataType>();
+    std::chrono::time_point<std::chrono::system_clock>
+        start = std::chrono::system_clock::now(),
+        finish;
+    callExecuteForAType<InputDataType>(nullptr);
+    finish = std::chrono::system_clock::now();
+    incrementDequeueExecutionPerInput<InputDataType>(finish - start);
+    coreTask_->incrementDequeueExecutionDuration(finish - start);
+  }
+
+  /// @brief Call Execute with a type and log execution time for a type
+  /// @tparam InputDataType Type of input data
+  /// @param inputDataType Input data type
+  template<class InputDataType>
+  void callExecuteForAType(std::shared_ptr<InputDataType> inputDataType) {
+    static std::string typeStr = hh::tool::typeToStr<InputDataType>();
+    std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+    coreTask_->nvtxProfiler()->startRangeExecuting();
+    ExecuteAbstraction<InputDataType>::callExecute(inputDataType);
+    coreTask_->nvtxProfiler()->endRangeExecuting();
+    std::chrono::time_point<std::chrono::system_clock> finish = std::chrono::system_clock::now();
+    this->template incrementExecutionPerInput<InputDataType>(finish - start);
+    coreTask_->incrementExecutionDuration(finish - start);
+    this->nbElementsPerInput_.at(typeStr)++;
+  }
+
+ private:
+  /// @brief Initialize the data structures for the execution duration per input
+  /// @tparam Input Input type to initialize
+  template<class Input>
+  void initializeMapsExecutionDurationPerInput() {
+    static std::string typeStr = hh::tool::typeToStr<Input>();
+    this->nbElementsPerInput_[typeStr] = {};
+    this->executionDurationPerInput_[typeStr] = {};
+    this->dequeueExecutionDurationPerInput_[typeStr] = {};
+  }
+
+  /// @brief Increment the execution duration per input
+  /// @tparam Input Input type to initialize
+  /// @param exec Execution time to add
+  template<class Input>
+  void incrementExecutionPerInput(std::chrono::nanoseconds const &exec) {
+    this->executionDurationPerInput_.at(hh::tool::typeToStr<Input>()) += exec;
+  }
+
+  /// @brief Increment the dequeue + execution duration per input
+  /// @tparam Input Input type to initialize
+  /// @param exec Execution time to add
+  template<class Input>
+  void incrementDequeueExecutionPerInput(std::chrono::nanoseconds const &exec) {
+    static std::string const InputStr = hh::tool::typeToStr<Input>();
+    this->dequeueExecutionDurationPerInput_.at(InputStr) += exec;
   }
 
 };

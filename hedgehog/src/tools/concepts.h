@@ -23,6 +23,7 @@
 #pragma once
 
 #include <type_traits>
+#include <concepts>
 
 #include "meta_functions.h"
 
