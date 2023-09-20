@@ -475,7 +475,7 @@ class AnyGroupableAbstraction {
     std::map<std::string, std::pair<size_t, size_t>> minMax;
 
     for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
-      minMax.at(t) = {nbElem, nbElem};
+      minMax.insert({t, {nbElem, nbElem}});
     }
 
     std::advance(firstIterator, 1);
@@ -498,7 +498,7 @@ class AnyGroupableAbstraction {
     auto firstIterator = this->group_->cbegin();
 
     for (auto const &[t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->nbElementsPerInput()) {
-      nbElementsGathered.at(t) = {nbElem};
+      nbElementsGathered.insert({t, {nbElem}});
     }
 
     std::advance(firstIterator, 1);
@@ -516,7 +516,7 @@ class AnyGroupableAbstraction {
         auto diff = (double) value - mean;
         sd += diff * diff;
       }
-      ret.at(t) = {mean, std::sqrt(sd / (double) values.size())};
+      ret.insert({t, {mean, std::sqrt(sd / (double) values.size())}});
     }
 
     return ret;
@@ -531,7 +531,7 @@ class AnyGroupableAbstraction {
 
     for (auto const &[t, duration]
         : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
-      minMax.at(t) = {duration, duration};
+      minMax.insert({t, {duration, duration}});
     }
 
     std::advance(firstIterator, 1);
@@ -557,7 +557,7 @@ class AnyGroupableAbstraction {
 
     for (auto const &
           [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->dequeueExecutionDurationPerInput()) {
-      nbElementsGathered.at(t) = {nbElem};
+      nbElementsGathered.insert({t, {nbElem}});
     }
 
     std::advance(firstIterator, 1);
@@ -578,7 +578,7 @@ class AnyGroupableAbstraction {
         auto diff = (double) (value.count()) - (double) (mean.count());
         sd += diff * diff;
       }
-      ret.at(t) = {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))};
+      ret.insert({t, {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))}});
     }
 
     return ret;
@@ -593,7 +593,7 @@ class AnyGroupableAbstraction {
 
     for (auto const &
           [t, duration] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
-      minMax.at(t) = {duration, duration};
+      minMax.insert({t, {duration, duration}});
     }
 
     std::advance(firstIterator, 1);
@@ -619,7 +619,7 @@ class AnyGroupableAbstraction {
 
     for (auto const &
           [t, nbElem] : dynamic_cast<TaskNodeAbstraction const *>(*firstIterator)->executionDurationPerInput()) {
-      nbElementsGathered.at(t) = {nbElem};
+      nbElementsGathered.insert({t, {nbElem}});
     }
 
     std::advance(firstIterator, 1);
@@ -640,7 +640,7 @@ class AnyGroupableAbstraction {
         auto diff = (double) (value.count()) - (double) (mean.count());
         sd += diff * diff;
       }
-      ret.at(t) = {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))};
+      ret.insert({t, {mean, std::chrono::nanoseconds((int64_t) std::sqrt(sd / (double) this->group_->size()))}});
     }
 
     return ret;
