@@ -23,8 +23,6 @@
 #pragma once
 
 #include <type_traits>
-#include <concepts>
-
 #include "meta_functions.h"
 
 /// @brief Hedgehog main namespace
