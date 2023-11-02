@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(hedgehog VERSION 3.1.4 LANGUAGES CXX)
+project(hedgehog VERSION 3.1.5 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -52,13 +52,13 @@ if (TEST_HEDGEHOG)
     if (POLICY CMP0135)
         FetchContent_Declare(
                 googletest
-                URL https://github.com/google/googletest/archive/af29db7ec28d6df1c7f0f745186884091e602e07.zip
+                URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
                 DOWNLOAD_EXTRACT_TIMESTAMP true
         )
     else ()
         FetchContent_Declare(
                 googletest
-                URL https://github.com/google/googletest/archive/af29db7ec28d6df1c7f0f745186884091e602e07.zip
+                URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
         )
     endif ()
 

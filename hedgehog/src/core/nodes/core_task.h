@@ -203,10 +203,7 @@ class CoreTask
     this->preRun();
 
     if (this->automaticStart_) {
-//      start = std::chrono::system_clock::now();
       this->callAllExecuteWithNullptr();
-//      finish = std::chrono::system_clock::now();
-//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Actual computation loop
@@ -221,10 +218,7 @@ class CoreTask
       if (canTerminate) { break; }
 
       // Operate the connectedReceivers to get a data and send it to execute
-//      start = std::chrono::system_clock::now();
       this->operateReceivers();
-//      finish = std::chrono::system_clock::now();
-//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Do the shutdown phase
@@ -319,6 +313,10 @@ class CoreTask
   /// @brief Test if a memory manager is attached
   /// @return True if there is a memory manager attached, else false
   [[nodiscard]] bool hasMemoryManagerAttached() const override { return this->memoryManager() != nullptr; }
+
+  /// @brief Accessor to the automatic start flag
+  /// @return true if the core start automatically, else false
+  [[nodiscard]] bool automaticStart() const { return automaticStart_; }
 
   /// @brief Accessor to user-defined extra information for the task
   /// @return User-defined extra information for the task

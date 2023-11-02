@@ -166,6 +166,10 @@ class AbstractTask
     return !coreTask_->hasNotifierConnected() && coreTask_->receiversEmpty();
   }
 
+  /// @brief Automatic start flag accessor
+  /// @return True if the task is set to automatically start, else false
+  [[nodiscard]] bool automaticStart() const { return this->coreTask()->automaticStart(); }
+
  protected:
   /// @brief Accessor to the core task
   /// @return Core task

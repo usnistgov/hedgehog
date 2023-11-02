@@ -158,7 +158,7 @@ class CoreStateManager
   ~CoreStateManager() override = default;
 
   /// @brief Accessor to the automatic start flag
-  /// @return
+  /// @return true if the core start automatically, else false
   [[nodiscard]] bool automaticStart() const { return automaticStart_; }
 
   /// @brief Call user-definable termination
