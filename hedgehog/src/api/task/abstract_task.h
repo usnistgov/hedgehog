@@ -177,7 +177,7 @@ class AbstractTask
 
   /// @brief Accessor to device id linked to the task (default 0 for CPU task)
   /// @return Device id linked to the task
-  int deviceId() { return coreTask_->deviceId(); }
+  [[nodiscard]] int deviceId() const { return coreTask_->deviceId(); }
 };
 }
 #endif //HEDGEHOG_ABSTRACT_TASK_H

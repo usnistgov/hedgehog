@@ -119,28 +119,6 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
     return ret;
   }
 
-//  /// @brief Accessor to the average duration of dequeue + processing an input data
-//  /// @return Average duration of dequeue + processing an input data in nanoseconds
-//  [[nodiscard]] std::chrono::nanoseconds averageDequeExecutionDurationPerElement() const {
-//    return
-//        this->numberReceivedElements() == 0 ?
-//        std::chrono::nanoseconds::zero() :
-//        (std::chrono::nanoseconds) (dequeueExecDuration() / this->numberReceivedElements());
-//  }
-
-//  /// @brief Accessor to the average duration of dequeue + processing an input data for all input types
-//  /// @return Average duration of dequeue + processing an input data for all input types in nanoseconds
-//  [[nodiscard]] std::map<std::string, std::chrono::nanoseconds> averageDequeExecutionDurationPerInputType() const {
-//    auto ret = dequeueExecutionDurationPerInput();
-//    for(auto & [type, duration] : ret){
-//      auto const & nbElements = nbElementsPerInput().at(type);
-//      if(nbElements == 0){ duration = std::chrono::nanoseconds::zero(); }
-//      else { duration = duration / nbElements; }
-//    }
-//    return ret;
-//  }
-
-
   /// @brief Accessor to the execution duration per input
   /// @return A Map where the key is the type as string, and the value is the associated duration
   [[nodiscard]] virtual std::map<std::string, std::chrono::nanoseconds> const &executionDurationPerInput() const = 0;
@@ -171,8 +149,6 @@ class TaskNodeAbstraction : public NodeAbstraction, public PrintableAbstraction 
   /// @brief Increase the execution time per elements
   /// @param exec Duration in nanoseconds
   void incrementExecutionDuration(std::chrono::nanoseconds const &exec) { this->executionDuration_ += exec; }
-
-
 
   /// @brief Pre run method, called only once
   virtual void preRun() = 0;
