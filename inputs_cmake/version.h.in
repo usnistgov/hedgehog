@@ -19,7 +19,6 @@
 #include <string>
 
 /// @file version.h
-/// @author Alexandre Bardakoff - Timothy Blattner
 /// @brief Hedgehog version
 
 namespace hh{

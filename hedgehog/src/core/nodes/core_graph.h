@@ -329,9 +329,9 @@ class CoreGraph :
     if (this->graphStatus_ != Status::TERM) {
       std::unordered_set<behavior::Cleanable *> cleanableSet;
       for (auto insideNodeGroups : *(this->insideNodesAndGroups_)) {
-        if (auto cleanableReresentative =
+        if (auto cleanableRepresentative =
             dynamic_cast<hh::core::abstraction::CleanableAbstraction *>(insideNodeGroups.first)) {
-          cleanableReresentative->gatherCleanable(cleanableSet);
+          cleanableRepresentative->gatherCleanable(cleanableSet);
           for (auto copy : insideNodeGroups.second) {
             dynamic_cast<hh::core::abstraction::CleanableAbstraction *>(copy)->gatherCleanable(cleanableSet);
           }
@@ -556,12 +556,12 @@ class CoreGraph :
   }
 
   /// @brief Gather cleanable nodes
-  /// @param cleanableSet Mutable set of cleanable ndoes
+  /// @param cleanableSet Mutable set of cleanable nodes
   void gatherCleanable(std::unordered_set<hh::behavior::Cleanable *> &cleanableSet) override {
     for (auto insideNodeGroups : *(this->insideNodesAndGroups_)) {
-      if (auto cleanableReresentative =
+      if (auto cleanableRepresentative =
           dynamic_cast<hh::core::abstraction::CleanableAbstraction *>(insideNodeGroups.first)) {
-        cleanableReresentative->gatherCleanable(cleanableSet);
+        cleanableRepresentative->gatherCleanable(cleanableSet);
         for (auto copy : insideNodeGroups.second) {
           if (auto cleanableCopy = dynamic_cast<hh::core::abstraction::CleanableAbstraction *>(copy)) {
             cleanableCopy->gatherCleanable(cleanableSet);
@@ -573,7 +573,7 @@ class CoreGraph :
 
   /// @brief Clone the current graph
   /// @param correspondenceMap Correspondence map to register clone
-  /// @return Clone of the grpah
+  /// @return Clone of the graph
   std::shared_ptr<abstraction::NodeAbstraction> clone(std::map<NodeAbstraction *,
                                                                std::shared_ptr<NodeAbstraction>> &correspondenceMap) override {
     return std::make_shared<CoreGraph<Separator, AllTypes...>>(*this, correspondenceMap);
