@@ -38,6 +38,7 @@ namespace implementor {
 /// @brief Forward declaration Notifier implementor
 class ImplementorNotifier;
 }
+
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 /// @brief Hedgehog abstraction namespace
@@ -81,9 +82,7 @@ class NotifierAbstraction {
 
   /// @brief Accessor to the slots attached to this notifier
   /// @return The SlotAbstraction attached to this notifier
-  [[nodiscard]] std::set<SlotAbstraction *> const &connectedSlots() const {
-    return concreteNotifier_->connectedSlots();
-  }
+  [[nodiscard]] std::set<SlotAbstraction *> const &connectedSlots() const { return concreteNotifier_->connectedSlots(); }
 
   /// @brief Notify a slot to wake up
   void notify() { concreteNotifier_->notify(); }
@@ -118,7 +117,7 @@ class NotifierAbstraction {
                 throw std::runtime_error("The mapped type of a node is not of the right type: SlotAbstraction.");
               }
 
-              for(auto mmapedS : mappedSlot->slots()) {
+              for (auto mmapedS : mappedSlot->slots()) {
                 for (auto mmapedN : mappedNotifier->notifiers()) {
                   mmapedN->addSlot(mmapedS);
                   mmapedS->addNotifier(mmapedN);
@@ -137,4 +136,5 @@ class NotifierAbstraction {
 }
 }
 }
+
 #endif //HEDGEHOG_NOTIFIER_ABSTRACTION_H

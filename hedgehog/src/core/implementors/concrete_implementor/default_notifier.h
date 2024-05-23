@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_DEFAULT_NOTIFIER_H
 #define HEDGEHOG_DEFAULT_NOTIFIER_H
 
@@ -38,6 +36,7 @@ class DefaultNotifier : public ImplementorNotifier {
  private:
   std::unique_ptr<std::set<abstraction::SlotAbstraction *>> const
       slots_ = nullptr; ///< Slot getting the message
+  std::mutex mutex_{}; ///< Mutex used to protect the list of connected slots
 
  public:
   /// @brief Default constructor
@@ -48,11 +47,17 @@ class DefaultNotifier : public ImplementorNotifier {
 
   /// @brief Add a slot to transmit messages to
   /// @param slot Slot to add
-  void addSlot(abstraction::SlotAbstraction *const slot) override { slots_->insert(slot); }
+  void addSlot(abstraction::SlotAbstraction *const slot) override {
+    std::lock_guard<std::mutex> lck(mutex_);
+    slots_->insert(slot);
+  }
 
   /// @brief Remove a slot to transmit messages to
   /// @param slot Slot to remove
-  void removeSlot(abstraction::SlotAbstraction *const slot) override { slots_->erase(slot); }
+  void removeSlot(abstraction::SlotAbstraction *const slot) override {
+    std::lock_guard<std::mutex> lck(mutex_);
+    slots_->erase(slot);
+  }
 
   /// @brief Accessor to the connected slots
   /// @return Connected slots
@@ -60,11 +65,13 @@ class DefaultNotifier : public ImplementorNotifier {
 
   /// @brief Notify method, calls wakeUp on all connected slots
   void notify() override {
+    std::lock_guard<std::mutex> lck(mutex_);
     for (const auto &slot : *slots_) { slot->wakeUp(); }
   }
 
   /// @brief Remove the notifier connection from all connected slots, and calls wakeUp on all
   void notifyAllTerminated() override {
+    std::lock_guard<std::mutex> lck(mutex_);
     for (auto notifier : *(this->abstractNotifiers_)) {
       for (abstraction::SlotAbstraction *slot : *slots_) { slot->removeNotifier(notifier); }
     }
@@ -76,4 +83,5 @@ class DefaultNotifier : public ImplementorNotifier {
 }
 }
 }
+
 #endif //HEDGEHOG_DEFAULT_NOTIFIER_H

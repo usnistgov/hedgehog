@@ -16,9 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-#ifndef HEDGEHOG_TEST_MATRIX_ROW_TRAVERSAL_TASK_H
-#define HEDGEHOG_TEST_MATRIX_ROW_TRAVERSAL_TASK_H
+#ifndef HEDGEHOG_MATRIX_ROW_TRAVERSAL_TASK_H
+#define HEDGEHOG_MATRIX_ROW_TRAVERSAL_TASK_H
 
 #include "../../../../hedgehog/hedgehog.h"
 #include "../data/data_type.h"
@@ -60,4 +59,4 @@ class MatrixRowTraversalTask : public hh::AbstractTask<1, MatrixData<Type, Id, O
   }
 };
 
-#endif //HEDGEHOG_TEST_MATRIX_ROW_TRAVERSAL_TASK_H
+#endif //HEDGEHOG_MATRIX_ROW_TRAVERSAL_TASK_H

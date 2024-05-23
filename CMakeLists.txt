@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(hedgehog VERSION 3.1.7 LANGUAGES CXX)
+project(hedgehog VERSION 3.3.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -13,13 +13,21 @@ option(ENABLE_CHECK_CUDA "Enable extra checks for CUDA library if found" ON)
 option(ENABLE_NVTX "Enable NVTX if CUDA is found" OFF)
 option(BUILD_MAIN "Compiles main function for testing changes to API" ON)
 
+set(CACHE_LINE_SIZE 64)
+
+find_package(TBB QUIET COMPONENTS tbb)
 find_package(Threads REQUIRED)
 find_package(CUDAToolkit QUIET)
 
 link_libraries(Threads::Threads)
 
+if (NOT CACHE_LINE_SIZE)
+    set(CACHE_LINE_SIZE 64)
+endif (NOT CACHE_LINE_SIZE)
+
 # Create version.h file in api folder
 configure_file(inputs_cmake/version.h.in "${PROJECT_SOURCE_DIR}/hedgehog/version.h")
+configure_file(inputs_cmake/constants.h.in "${PROJECT_SOURCE_DIR}/hedgehog/constants.h")
 
 if (HH_CX)
     message("Hedgehog CX enabled")
@@ -28,7 +36,7 @@ endif (HH_CX)
 
 if (CUDAToolkit_FOUND)
     message("CUDA found: ${CUDAToolkit_INCLUDE_DIRS}")
-    if (ENABLE_CHECK_CUDA)
+    if (ENABLE_CHECK_CUDA) 
         message("CUDA check enabled")
         add_definitions(-DHH_ENABLE_CHECK_CUDA)
     else (ENABLE_CHECK_CUDA)
@@ -70,7 +78,13 @@ if (TEST_HEDGEHOG)
 
     file(GLOB_RECURSE test_hedgehog_header tests/*.h)
     add_executable(gtest_hedgehog ${test_hedgehog_header} tests/test_hedgehog.cc)
+
     target_link_libraries(gtest_hedgehog gtest_main)
+
+    if(TBB_FOUND)
+        target_link_libraries(gtest_hedgehog tbb)
+    endif (TBB_FOUND)
+
     include(GoogleTest)
     gtest_discover_tests(gtest_hedgehog)
 endif (TEST_HEDGEHOG)
@@ -82,11 +96,16 @@ if (BUILD_MAIN)
     if (MSVC)
         set(CMAKE_CXX_FLAGS "-Wall")
     else (MSVC)
-        set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wconversion -Wshadow -Werror -pedantic -pipe -v -Werror=address")
+        set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wconversion -Wshadow -Werror -pedantic -pipe -v")
     endif (MSVC)
 
     file(GLOB_RECURSE hedgehog_header hedgehog/*.h)
 
     add_executable(hedgehog main.cc ${hedgehog_header})
+
+    if(TBB_FOUND)
+        target_link_libraries(hedgehog tbb)
+    endif (TBB_FOUND)
+
 endif (BUILD_MAIN)
 

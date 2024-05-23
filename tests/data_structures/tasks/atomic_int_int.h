@@ -16,17 +16,15 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-//#include "cstdint"
-//
-#ifndef HEDGEHOG_HEDGEHOG_SRC_TOOLS_COLOR_H_
-#define HEDGEHOG_HEDGEHOG_SRC_TOOLS_COLOR_H_
-//
-//namespace hh {
-//namespace tool {
-//
-//struct Color { uint8_t r_, g_, b_, a_; };
-//
-//} // hh
-//} // tool
+#ifndef HEDGEHOG_ATOMIC_INT_INT_H
+#define HEDGEHOG_ATOMIC_INT_INT_H
 
-#endif //HEDGEHOG_HEDGEHOG_SRC_TOOLS_COLOR_H_
+#include "../../../hedgehog/hedgehog.h"
+
+class AtomicIntInt : public hh::AbstractAtomicTask<1, int, int> {
+ public:
+  explicit AtomicIntInt(std::string const &name) : hh::AbstractAtomicTask<1, int, int>(name) {}
+  void execute(std::shared_ptr<int> ptr) override { this->addResult(ptr); }
+};
+
+#endif //HEDGEHOG_ATOMIC_INT_INT_H

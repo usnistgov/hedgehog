@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_IMPLEMENTOR_RECEIVER_H
 #define HEDGEHOG_IMPLEMENTOR_RECEIVER_H
 
@@ -27,6 +25,18 @@
 namespace hh {
 /// @brief Hedgehog core namespace
 namespace core {
+
+/// @brief Hedgehog abstraction namespace
+namespace abstraction {
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+/// @brief Forward declaration of SenderAbstraction
+/// @tparam Output Data type sent
+template<class Output>
+class SenderAbstraction;
+#endif //DOXYGEN_SHOULD_SKIP_THIS
+}
+
 /// @brief Hedgehog implementor namespace
 namespace implementor {
 
@@ -38,6 +48,7 @@ class ImplementorSender;
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 /// @brief Implementor for the ReceiverAbstraction
+/// @warning Each concrete receiver is responsible of making its data structure thread-safe
 /// @tparam Input Data type received
 template<class Input>
 class ImplementorReceiver {
@@ -77,15 +88,18 @@ class ImplementorReceiver {
 
   /// @brief Receive data interface
   /// @param data Data received by the core
-  virtual void receive(std::shared_ptr<Input> data) = 0;
+  /// @return True if the piece of data has been received, else false.
+  virtual bool receive(std::shared_ptr<Input> data) = 0;
 
-  /// @brief Accessor to a received data
-  /// @return Data previously received
-  [[nodiscard]] virtual std::shared_ptr<Input> getInputData() = 0;
+  /// @brief Get an input data
+  /// @details If a data is available, it is placed in data
+  /// @param data Reference to the data to get from the receiver
+  /// @return True if a data is available, else false
+  [[nodiscard]] virtual bool getInputData(std::shared_ptr<Input> &data) = 0;
 
   /// @brief Accessor to number of data waiting to be processed in the queue
   /// @return Number of data waiting to be processed in the queue
-  [[nodiscard]] virtual size_t numberElementsReceived() const = 0;
+  [[nodiscard]] virtual size_t numberElementsReceived() = 0;
 
   /// @brief Accessor to the maximum number of data waiting to be processed in the queue during the whole execution
   /// @return Maximum number of data waiting to be processed in the queue during the whole execution
@@ -93,9 +107,11 @@ class ImplementorReceiver {
 
   /// @brief Test if the receiver is empty or not
   /// @return True if the receiver is empty, else false
-  [[nodiscard]] virtual bool empty() const = 0;
+  [[nodiscard]] virtual bool empty() = 0;
+
 };
 }
 }
 }
+
 #endif //HEDGEHOG_IMPLEMENTOR_RECEIVER_H

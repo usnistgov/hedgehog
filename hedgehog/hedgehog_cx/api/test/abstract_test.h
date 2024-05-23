@@ -72,5 +72,6 @@ class AbstractTest {
 };
 
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_ABSTRACT_TEST_H_

@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TEST_COMPLEX_GRAPH_H_
-#define HEDGEHOG_TEST_COMPLEX_GRAPH_H_
 
 #include "../../hedgehog/hedgehog.h"
 #include "../data_structures/states/int_state.h"
@@ -25,6 +23,9 @@
 
 #include "../data_structures/tasks/int_float_double_task.h"
 #include "../data_structures/tasks/int_int_priority_queue_task.h"
+#include "../data_structures/tasks/atomic_int_int.h"
+#include "../data_structures/tasks/limited_int_int.h"
+#include "../data_structures/tasks/mix_int_int.h"
 #include "../data_structures/graph/int_float_double_graph.h"
 #include "../data_structures/execution_pipelines/int_float_double_execution_pipeline.h"
 #include "../data_structures/execution_pipelines/int_execution_pipeline.h"
@@ -347,4 +348,31 @@ void testCustomizedNodes() {
   }
 }
 
-#endif //HEDGEHOG_TEST_COMPLEX_GRAPH_H_
+void testAtomicTask() {
+  size_t nbOutput = 0;
+  auto g = std::make_shared<hh::Graph<1, int, int>>();
+  auto at = std::make_shared<AtomicIntInt>("Atomic");
+  auto lt = std::make_shared<LimitedIntInt>("Limited");
+  auto mt = std::make_shared<MixIntInt>("Mixed");
+
+  g->inputs(at);
+  g->inputs(lt);
+  g->inputs(mt);
+
+  g->outputs(at);
+  g->outputs(lt);
+  g->outputs(mt);
+
+  g->executeGraph();
+
+  for(int i = 0; i < 1000; ++i){ g->pushData(std::make_shared<int>(i)); }
+
+  g->finishPushingData();
+
+  while(g->getBlockingResult()) { ++nbOutput; }
+
+  g->waitForTermination();
+
+  ASSERT_EQ(3000, nbOutput);
+}
+

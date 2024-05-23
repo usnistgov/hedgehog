@@ -11,15 +11,28 @@
 # This module defines
 #  Hedgehog_INCLUDE_DIRS
 #  Hedgehog_FOUND
+#  CACHE_LINE_SIZE
+#  HH_ENABLE_HH_CX (OPTIONAL)
+#  CMAKE_CXX_FLAGS (OPTIONAL)
 #
-
 
 # Ensure C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(TEST_HEDGEHOG "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" ON)
+option(HH_CX "Enable compile-time library for Hedgehog" OFF)
 option(ENABLE_CHECK_CUDA "Enable extra checks for CUDA library if found" ON)
+option(ENABLE_NVTX "Enable NVTX if CUDA is found" OFF)
+
+if (NOT CACHE_LINE_SIZE)
+    set(CACHE_LINE_SIZE 64)
+endif (NOT CACHE_LINE_SIZE)
+
+if (HH_CX)
+    message("Hedgehog CX enabled")
+    add_definitions(-DHH_ENABLE_HH_CX)
+endif (HH_CX)
 
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
@@ -49,9 +62,21 @@ if (CUDAToolkit_FOUND)
     include_directories(CUDAToolkit_INCLUDE_DIRS)
     link_libraries(CUDA::cudart CUDA::cuda_driver CUDA::cupti)
     add_definitions(-DHH_USE_CUDA)
+
+    if (ENABLE_NVTX)
+        link_libraries(CUDA::nvToolsExt)
+        link_libraries(dl)
+        add_definitions(-DHH_USE_NVTX)
+    endif (ENABLE_NVTX)
+
 else (CUDAToolkit_FOUND)
     message("CUDA not found, all features will not be available.")
 endif (CUDAToolkit_FOUND)
+
+find_package(TBB QUIET COMPONENTS tbb)
+if(TBB_FOUND)
+    link_libraries(tbb)
+endif (TBB_FOUND)
 
 IF (NOT Hedgehog_INCLUDE_DIR)
     SET(Hedgehog_FOUND OFF)
@@ -70,7 +95,7 @@ ELSE (Hedgehog_FOUND)
     ENDIF (Hedgehog_FIND_REQUIRED)
 ENDIF (Hedgehog_FOUND)
 
+
 include_directories(${Hedgehog_INCLUDE_DIRS})
 
 MARK_AS_ADVANCED(Hedgehog_INCLUDE_DIR)
-

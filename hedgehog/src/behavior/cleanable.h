@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_CLEANABLE_H_
-#define HEDGEHOG_CLEANABLE_H_
+#ifndef HEDGEHOG_CLEANABLE_H
+#define HEDGEHOG_CLEANABLE_H
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -42,4 +42,5 @@ class Cleanable {
 
 }
 }
-#endif //HEDGEHOG_CLEANABLE_H_
+
+#endif //HEDGEHOG_CLEANABLE_H

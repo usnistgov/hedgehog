@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_TASK_INPUTS_MANAGEMENT_ABSTRACTION_H
 #define HEDGEHOG_TASK_INPUTS_MANAGEMENT_ABSTRACTION_H
 
@@ -29,10 +27,12 @@
 #include "../base/execute_abstraction.h"
 #include "../base/input_output/slot_abstraction.h"
 
-#include "../../../tools/concepts.h"
-#include "../../implementors/concrete_implementor/default_slot.h"
-#include "../../implementors/concrete_implementor/queue_receiver.h"
+#include "../../implementors/concrete_implementor/slot/default_slot.h"
+#include "../../implementors/concrete_implementor/receiver/queue_receiver.h"
 #include "../../implementors/concrete_implementor/default_execute.h"
+
+#include "../../../tools/concepts.h"
+#include "../../../behavior/can_terminate.h"
 /// @brief Hedgehog main namespace
 namespace hh {
 /// @brief Hedgehog core namespace
@@ -49,6 +49,7 @@ class TaskInputsManagementAbstraction :
     public ExecuteAbstraction<Inputs> ... {
  private:
   TaskNodeAbstraction *const coreTask_ = nullptr; ///< Accessor to the core task
+  hh::behavior::CanTerminate *const canTerminateNode_ = nullptr; ///< Accessor to the can terminate abstraction
 
  protected:
   std::map<std::string, std::chrono::nanoseconds>
@@ -67,37 +68,41 @@ class TaskInputsManagementAbstraction :
   template<class NodeType>
   explicit TaskInputsManagementAbstraction(NodeType *const nodeTask, TaskNodeAbstraction *const coreTask)
       : SlotAbstraction(std::make_shared<implementor::DefaultSlot>()),
-        ReceiverAbstraction<Inputs>(
-            std::make_shared<implementor::QueueReceiver<Inputs>>(), SlotAbstraction::mutex()
-        )...,
+        ReceiverAbstraction<Inputs>(std::make_shared<implementor::QueueReceiver<Inputs>>())...,
       ExecuteAbstraction<Inputs>(std::make_shared<implementor::DefaultExecute<Inputs>>(
   static_cast<behavior::Execute<Inputs>*>(nodeTask)))...,
-  coreTask_(coreTask) {
-      (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
+  coreTask_(coreTask),
+      canTerminateNode_(
+  static_cast<hh::behavior::CanTerminate *>(nodeTask)) {
+    (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
   }
 
   /// @brief Constructor using a node and the concrete implementor
   /// @tparam ConcreteMultiReceivers Concrete implementation of multi receivers abstraction
   /// @tparam ConcreteMultiExecutes Concrete implementation of execute abstraction
+  /// @param nodeTask Node task instance
   /// @param coreTask Core task instance
   /// @param concreteSlot Concrete slot implementation
   /// @param concreteMultiReceivers Concrete multi receivers implementation
   /// @param concreteMultiExecutes Concrete multi executes implementation
   template<
+      class NodeType,
       hh::tool::ConcreteMultiReceiverImplementation<Inputs...> ConcreteMultiReceivers,
       hh::tool::ConcreteMultiExecuteImplementation<Inputs...> ConcreteMultiExecutes
   >
   explicit TaskInputsManagementAbstraction(
+      NodeType *const nodeTask,
       TaskNodeAbstraction *const coreTask,
       std::shared_ptr<implementor::ImplementorSlot> concreteSlot,
       std::shared_ptr<ConcreteMultiReceivers> concreteMultiReceivers,
       std::shared_ptr<ConcreteMultiExecutes> concreteMultiExecutes) :
       SlotAbstraction(concreteSlot),
-      ReceiverAbstraction<Inputs>(concreteMultiReceivers, SlotAbstraction::mutex())...,
-      ExecuteAbstraction<Inputs>(concreteMultiExecutes)
-  ...,
-  coreTask_(coreTask) {
-      (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
+      ReceiverAbstraction<Inputs>(concreteMultiReceivers)...,
+      ExecuteAbstraction<Inputs>(concreteMultiExecutes)...,
+  coreTask_(coreTask),
+  canTerminateNode_(
+  static_cast<hh::behavior::CanTerminate *>(nodeTask)) {
+    (initializeMapsExecutionDurationPerInput<Inputs>(), ...);
   }
 
   /// @brief Default destructor
@@ -105,24 +110,24 @@ class TaskInputsManagementAbstraction :
 
   /// @brief Test if the receivers are empty for the task
   /// @return True if the receivers are empty, else false
-  [[nodiscard]] bool receiversEmpty() const { return (ReceiverAbstraction<Inputs>::empty() && ...); }
+  [[nodiscard]] bool receiversEmpty() { return (ReceiverAbstraction<Inputs>::empty() && ... && true); }
 
  protected:
 
-  /// @brief Accessor to the total number of elements received for all input types
-  /// @return The total number of elements received for all input types
-  [[nodiscard]] size_t totalNumberElementsReceived() const {
-    return (ReceiverAbstraction<Inputs>::numberElementsReceived() + ...);
-  }
+  /// @brief The thread wait termination condition
+  /// @return The thread should not wait if there is data available or if the node should terminate
+  [[nodiscard]] bool waitTerminationCondition() override{ return (!this->receiversEmpty()||canTerminate()); }
+
+  /// @brief The thread wait termination condition
+  /// @return A user defined condition or by default the thread should not wait if there is data available or if the
+  /// node should terminate
+  [[nodiscard]] bool canTerminate() override { return canTerminateNode_->canTerminate(); }
 
   /// @brief Access all the task receivers to process an element
   void operateReceivers() { (this->operateReceiver<Inputs>(), ...); }
 
   /// @brief Call for all types the user-defined execute method with nullptr as data
   void callAllExecuteWithNullptr() { (callExecuteForATypeWithNullptr<Inputs>(), ...); }
-
-  /// @brief Wake up implementation (notify one node waiting on the condition variable)
-  void wakeUp() final { this->slotConditionVariable()->notify_one(); }
 
   /// @brief Copy the task core inner structure to this
   /// @param copyableCore Task core to copy from
@@ -142,28 +147,24 @@ class TaskInputsManagementAbstraction :
   /// @tparam InputDataType Type of input data
   template<tool::ContainsConcept<Inputs...> InputDataType>
   void operateReceiver() {
-    static std::string const typeStr = hh::tool::typeToStr<InputDataType>();
+    auto typedReceiver = static_cast<ReceiverAbstraction<InputDataType> *>(this);
     std::chrono::time_point<std::chrono::system_clock>
         start = std::chrono::system_clock::now(),
         finish;
-    this->lockSlotMutex();
-    auto typedReceiver = static_cast<ReceiverAbstraction<InputDataType> *>(this);
-    if (!typedReceiver->empty()) {
-      std::shared_ptr<InputDataType> data = typedReceiver->getInputData();
+    std::shared_ptr<InputDataType> data = nullptr;
+    [[likely]] if (typedReceiver->getInputData(data)) {
       coreTask_->incrementNumberReceivedElements();
-      this->unlockSlotMutex();
       callExecuteForAType(data);
-    } else { this->unlockSlotMutex(); }
-    finish = std::chrono::system_clock::now();
-    incrementDequeueExecutionPerInput<InputDataType>(finish - start);
-    coreTask_->incrementDequeueExecutionDuration(finish - start);
+      finish = std::chrono::system_clock::now();
+      incrementDequeueExecutionPerInput<InputDataType>(finish - start);
+      coreTask_->incrementDequeueExecutionDuration(finish - start);
+    }
   }
 
   /// @brief Call execute function with nullptr
   /// @tparam InputDataType input data type
   template<tool::ContainsConcept<Inputs...> InputDataType>
   void callExecuteForATypeWithNullptr() {
-    static std::string const typeStr = hh::tool::typeToStr<InputDataType>();
     std::chrono::time_point<std::chrono::system_clock>
         start = std::chrono::system_clock::now(),
         finish;
@@ -186,10 +187,9 @@ class TaskInputsManagementAbstraction :
     std::chrono::time_point<std::chrono::system_clock> finish = std::chrono::system_clock::now();
     this->template incrementExecutionPerInput<InputDataType>(finish - start);
     coreTask_->incrementExecutionDuration(finish - start);
-    this->nbElementsPerInput_.at(typeStr)++;
+    this->nbElementsPerInput_[typeStr]++;
   }
 
- private:
   /// @brief Initialize the data structures for the execution duration per input
   /// @tparam Input Input type to initialize
   template<class Input>
@@ -221,4 +221,5 @@ class TaskInputsManagementAbstraction :
 }
 }
 }
+
 #endif //HEDGEHOG_TASK_INPUTS_MANAGEMENT_ABSTRACTION_H

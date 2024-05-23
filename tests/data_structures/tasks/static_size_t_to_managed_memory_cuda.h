@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H_
-#define HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H_
+#ifndef HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H
+#define HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H
 
 #ifdef HH_USE_CUDA
 #include "../data/static_managed_memory.h"
@@ -38,4 +38,4 @@ class StaticSizeTToManagedACUDA : public hh::AbstractCUDATask<1, size_t, StaticM
 };
 #endif //HH_USE_CUDA
 
-#endif //HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H_
+#endif //HEDGEHOG_STATIC_SIZE_T_TO_MANAGED_MEMORY_CUDA_H

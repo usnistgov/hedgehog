@@ -44,4 +44,5 @@ class ColorPicker {
       std::chrono::nanoseconds const &min, std::chrono::nanoseconds const &range) = 0;
 };
 }
+
 #endif //HEDGEHOG_COLOR_PICKER_H

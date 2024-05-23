@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H_
-#define HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H_
+#ifndef HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H
+#define HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H
 
 #include "../../../hedgehog/hedgehog.h"
 
@@ -27,9 +27,11 @@ class DynamicManagedMemory : public hh::ManagedMemory {
   DynamicManagedMemory() = default;
   ~DynamicManagedMemory() override = default;
 
-  void alloc(size_t const sizeAlloc) { array_ = new int[sizeAlloc]; }
-  void dealloc() { delete[] array_; }
+  void alloc(size_t const sizeAlloc) {
+    array_ = new int[sizeAlloc]; }
+  void dealloc() {
+    delete[] array_;
+  }
 };
 
-
-#endif //HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H_
+#endif //HEDGEHOG_DYNAMIC_MANAGED_MEMORY_H

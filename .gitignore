@@ -17,4 +17,7 @@ auto
 *.mtc
 *.mtc0
 /**/version.h
+/**/constants.h
 /**/cmake-build-*/
+/.vs
+/out/

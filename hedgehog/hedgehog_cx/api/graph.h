@@ -464,5 +464,6 @@ class Graph : public Node<GraphType> {
   }
 };
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_GRAPH_H_

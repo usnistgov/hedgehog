@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_IMPLEMENTOR_SLOT_H
 #define HEDGEHOG_IMPLEMENTOR_SLOT_H
 
@@ -56,13 +54,17 @@ class ImplementorSlot {
     abstractSlots_->insert(slotAbstraction);
   }
 
+  /// @brief Test if there is any notifiers connected
+  /// @return True if at least a notifier is connected, else false
+  [[nodiscard]] virtual bool hasNotifierConnected() = 0;
+
+  /// @brief Accessor to the number of notifiers connected
+  /// @return The number of notifiers connected
+  [[nodiscard]] virtual size_t nbNotifierConnected() = 0;
+
   /// @brief Accessor to the connected notifiers
   /// @return Set of connected NotifierAbstraction
   [[nodiscard]] virtual std::set<abstraction::NotifierAbstraction *> const &connectedNotifiers() const = 0;
-
-  /// @brief Test if there is any notifiers connected
-  /// @return True if at least a notifier is connected, else false
-  [[nodiscard]] virtual bool hasNotifierConnected() const = 0;
 
   /// @brief Add a notifier to the set of NotifierAbstraction
   /// @param notifier NotifierAbstraction to add
@@ -71,8 +73,17 @@ class ImplementorSlot {
   /// @brief Remove notifier to the set of NotifierAbstraction
   /// @param notifier NotifierAbstraction to remove
   virtual void removeNotifier(abstraction::NotifierAbstraction *notifier) = 0;
+
+  /// @brief Sleep mechanism used to make the thread enter in a sleep state
+  /// @param slot Slot abstraction (core attache to the thread), used for callbacks
+  /// @return True if the node can terminate, else false
+  virtual bool sleep(abstraction::SlotAbstraction * slot) = 0;
+
+  /// @brief Function used to wake up a thread attached to this slot
+  virtual void wakeUp() = 0;
 };
 }
 }
 }
+
 #endif //HEDGEHOG_IMPLEMENTOR_SLOT_H

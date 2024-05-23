@@ -77,4 +77,5 @@ class JetColor : public ColorPicker {
 };
 
 }
+
 #endif //HEDGEHOG_JET_COLOR_H

@@ -1,4 +1,4 @@
-//  NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the
+ //  NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the
 //  software in any medium, provided that you keep intact this entire notice. You may improve, modify and create
 //  derivative works of the software or any portion of the software, and you may copy and distribute such modifications
 //  or works. Modified works should carry a notice stating that you changed the software and should note the date and
@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_QUEUE_RECEIVER_H
 #define HEDGEHOG_QUEUE_RECEIVER_H
 
@@ -28,19 +26,14 @@
 #include <set>
 #include <utility>
 
-#include "../../abstractions/base/input_output/receiver_abstraction.h"
-#include "../implementor/implementor_receiver.h"
+#include "../../../abstractions/base/input_output/receiver_abstraction.h"
+#include "../../implementor/implementor_receiver.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
+
 /// @brief Hedgehog core namespace
 namespace core {
-
-/// @brief Hedgehog abstraction namespace
-namespace abstraction {
-template<class Output>
-class SenderAbstraction;
-}
 
 /// @brief Hedgehog implementor namespace
 namespace implementor {
@@ -50,14 +43,16 @@ namespace implementor {
 template<class Input>
 class QueueReceiver : public ImplementorReceiver<Input> {
  private:
-  std::unique_ptr<std::queue<std::shared_ptr<Input>>> const
-      queue_ = nullptr; ///< Queue storing to be processed data
+  std::unique_ptr<std::queue<std::shared_ptr<Input>>> const queue_ = nullptr; ///< Queue storing to be processed data
 
   std::unique_ptr<std::set<abstraction::SenderAbstraction<Input> *>> const
       senders_ = nullptr; ///< List of senders attached to this receiver
 
-  size_t
-      maxSize_ = 0; ///< Maximum size attained by the queue
+  size_t maxSize_ = 0; ///< Maximum size attained by the queue
+
+  std::mutex
+    queueMutex_{}, ///< Mutex protecting the queue from multiple access
+    sendersMutex_{}; ///< Mutex protecting the list of connecting senders
 
  public:
   /// @brief Default constructor
@@ -70,24 +65,35 @@ class QueueReceiver : public ImplementorReceiver<Input> {
 
   /// @brief Receive a data and store it in the queue
   /// @param data Data to store
-  void receive(std::shared_ptr<Input> const data) final {
+  /// @return True
+  bool receive(std::shared_ptr<Input> data) final {
+    std::lock_guard<std::mutex> lck(queueMutex_);
     queue_->push(data);
     maxSize_ = std::max(queue_->size(), maxSize_);
+    return true;
   }
 
   /// @brief Get a data from the queue
-  /// @attention The queue should not be empty
+  /// @warning The queue should not be empty
+  /// @param data Data to get from the queue
   /// @return The data in front of the queue
-  [[nodiscard]] std::shared_ptr<Input> getInputData() override {
-    assert(!queue_->empty());
-    auto front = queue_->front();
-    queue_->pop();
-    return front;
+  [[nodiscard]] bool getInputData(std::shared_ptr<Input> &data) override {
+    std::lock_guard<std::mutex> lck(queueMutex_);
+    bool ret = false;
+    if(!queue_->empty()){
+      data = queue_->front();
+      queue_->pop();
+      ret = true;
+    }
+    return ret;
   }
 
   /// @brief Accessor to the current size of the queue
   /// @return Current size of the queue
-  [[nodiscard]] size_t numberElementsReceived() const override { return queue_->size(); }
+  [[nodiscard]] size_t numberElementsReceived() override {
+//    std::lock_guard<std::mutex> lck(sendersMutex_);
+    return queue_->size();
+  }
 
   /// @brief Accessor to the maximum queue size
   /// @return Maximum queue size
@@ -95,7 +101,10 @@ class QueueReceiver : public ImplementorReceiver<Input> {
 
   /// @brief Test if the queue is empty
   /// @return True if the queue is empty, else false
-  [[nodiscard]] bool empty() const override { return queue_->empty(); }
+  [[nodiscard]] bool empty() override {
+//    std::lock_guard<std::mutex> lck(sendersMutex_);
+    return queue_->empty();
+  }
 
   /// @brief Accessor to the set of connected senders
   /// @return Set of connected senders
@@ -105,15 +114,33 @@ class QueueReceiver : public ImplementorReceiver<Input> {
 
   /// @brief Add a sender to the set of connected senders
   /// @param sender Sender to add
-  void addSender(abstraction::SenderAbstraction<Input> *const sender) override { senders_->insert(sender); }
+  void addSender(abstraction::SenderAbstraction<Input> *const sender) override {
+    std::lock_guard<std::mutex> lck(sendersMutex_);
+    senders_->insert(sender);
+  }
 
   /// @brief Remove a sender to the set of connected senders
   /// @param sender Sender to remove
-  void removeSender(abstraction::SenderAbstraction<Input> *const sender) override { senders_->erase(sender); }
+  void removeSender(abstraction::SenderAbstraction<Input> *const sender) override {
+    std::lock_guard<std::mutex> lck(sendersMutex_);
+    senders_->erase(sender);
+  }
+};
 
+/// @brief Concrete implementation of the receiver core abstraction for multiple types using a std::queue
+/// @tparam Inputs List of input types
+template<class ...Inputs>
+class MultiQueueReceivers : public QueueReceiver<Inputs> ... {
+ public:
+  /// @brief Constructor using an abstraction for callbacks
+  explicit MultiQueueReceivers(): QueueReceiver<Inputs>()... {}
+
+  /// Default destructor
+  virtual ~MultiQueueReceivers() = default;
 };
 
 }
 }
 }
+
 #endif //HEDGEHOG_QUEUE_RECEIVER_H

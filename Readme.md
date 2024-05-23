@@ -62,8 +62,6 @@ Mary Brady
 We would like to thank Prof. Joel Falcou (https://www.lri.fr/~falcou/ / https://github.com/jfalcou) and Jules Penuchot (https://github.com/JPenuchot)
 for their advice!
 
-# Contact Us
-
-<a target="_blank" href="mailto:alexandre.bardakoff@prometheuscomputing.com">Alexandre Bardakoff (alexandre.bardakoff ( at ) prometheuscomputing.com</a>
+# Contact us
 
 <a target="_blank" href="mailto:timothy.blattner@nist.gov">Timothy Blattner (timothy.blattner ( at ) nist.gov</a>

@@ -71,4 +71,5 @@ class GraphSender : public ImplementorSender<Output> {
 }
 }
 }
+
 #endif //HEDGEHOG_GRAPH_SENDER_H

@@ -16,10 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_HEDGEHOG_SRC_TOOLS_PRINT_OPTIONS_H_
-#define HEDGEHOG_HEDGEHOG_SRC_TOOLS_PRINT_OPTIONS_H_
-
-#include "color.h"
+#ifndef HEDGEHOG_PRINT_OPTIONS_H
+#define HEDGEHOG_PRINT_OPTIONS_H
 
 /// Hedgehog tool namespace
 namespace hh {
@@ -58,4 +56,4 @@ struct PrintOptions {
 } // hh
 } // tools
 
-#endif //HEDGEHOG_HEDGEHOG_SRC_TOOLS_PRINT_OPTIONS_H_
+#endif //HEDGEHOG_PRINT_OPTIONS_H

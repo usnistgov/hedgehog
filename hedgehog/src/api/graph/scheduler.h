@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_SCHEDULER_H
 #define HEDGEHOG_SCHEDULER_H
 
@@ -52,4 +50,5 @@ class Scheduler {
 };
 
 }
+
 #endif //HEDGEHOG_SCHEDULER_H

@@ -117,6 +117,7 @@ class NvtxProfiler {
   /// @details Each NvtxProfiler will hold profiling information for each task. It will profile all stages of the task's
   /// life cycle: initialize, execution, waiting for data, waiting for memory, releasing memory, and shutting down.
   explicit NvtxProfiler(std::string const &) {}
+
 #endif //HH_USE_NVTX
 
 #ifdef HH_USE_NVTX
@@ -260,6 +261,7 @@ class NvtxProfiler {
  private:
   /// @brief Creates an event attribute with hedgehog specified color
   /// @param color the color shown in the timeline view
+  /// @return The attribute created
   static nvtxEventAttributes_t *createEventAttribute(uint32_t color) {
     auto *event = new nvtxEventAttributes_t;
     bzero(event, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
@@ -273,4 +275,5 @@ class NvtxProfiler {
 
 };
 }
+
 #endif //HEDGEHOG_NVTX_PROFILER_H

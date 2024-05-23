@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_SLOT_ABSTRACTION_H
 #define HEDGEHOG_SLOT_ABSTRACTION_H
 #pragma once
@@ -41,6 +39,7 @@ namespace implementor {
 /// @brief Forward declaration ImplementorSlot
 class ImplementorSlot;
 }
+
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 /// @brief Hedgehog abstraction namespace
@@ -54,24 +53,14 @@ class NotifierAbstraction;
 /// @brief Core's abstraction to receive a signal
 class SlotAbstraction {
  private:
-  std::shared_ptr<std::mutex>
-      mutex_ = nullptr; ///< Slot mutex
-
-  std::shared_ptr<std::condition_variable>
-      slotConditionVariable_ = nullptr; ///< Slot condition variable
-
   std::shared_ptr<implementor::ImplementorSlot>
       concreteSlot_ = nullptr; ///< Concrete implementation of the slot
 
  public:
   /// @brief Constructor using a concrete slot implementation
   /// @param concreteSlot Concrete slot implementation
-  explicit SlotAbstraction(std::shared_ptr<implementor::ImplementorSlot> concreteSlot) :
-      mutex_(std::make_shared<std::mutex>()),
-      slotConditionVariable_(std::make_shared<std::condition_variable>()),
-      concreteSlot_(std::move(concreteSlot)) {
-    concreteSlot_->initialize(this);
-  }
+  explicit SlotAbstraction(std::shared_ptr<implementor::ImplementorSlot> concreteSlot)
+      : concreteSlot_(std::move(concreteSlot)) { concreteSlot_->initialize(this); }
 
   /// @brief Default destructor
   virtual ~SlotAbstraction() = default;
@@ -91,60 +80,44 @@ class SlotAbstraction {
   /// @brief Accessor to the NotifierAbstraction attached to this slot, protected with mutex
   /// @return The NotifierAbstraction attached to this slot
   [[nodiscard]] std::set<NotifierAbstraction *> const &connectedNotifiers() const {
-    mutex_->lock();
-    std::set<NotifierAbstraction *> const &  cn = concreteSlot_->connectedNotifiers();
-    mutex_->unlock();
-    return cn;
+    return concreteSlot_->connectedNotifiers();
   }
 
   /// @brief Add a NotifierAbstraction to this slot
   /// @param notifier NotifierAbstraction to add
-  void addNotifier(NotifierAbstraction *const notifier) {
-    mutex_->lock();
-    concreteSlot_->addNotifier(notifier);
-    mutex_->unlock();
-  }
+  void addNotifier(NotifierAbstraction *const notifier) { concreteSlot_->addNotifier(notifier); }
 
   /// @brief Remove a NotifierAbstraction to this slot
   /// @param notifier NotifierAbstraction to add
-  void removeNotifier(NotifierAbstraction *const notifier) {
-    mutex_->lock();
-    concreteSlot_->removeNotifier(notifier);
-    mutex_->unlock();
-  }
+  void removeNotifier(NotifierAbstraction *const notifier) { concreteSlot_->removeNotifier(notifier); }
 
-  /// @brief Wake up mechanism, called to notify the std::condition_variable
-  virtual void wakeUp() = 0;
+  /// @brief Callback to the concrete slot wake up function
+  void wakeUp() { concreteSlot_->wakeUp(); }
+
+  /// @brief Callback to the concrete slot sleep function
+  /// @return True if the node can terminate, else false
+  bool sleep() { return concreteSlot_->sleep(this); }
 
   /// @brief Test if there is at least one notifier connected
   /// @return True if there is at least one notifier connected, else false
-  [[nodiscard]] bool hasNotifierConnected() const {
-    return concreteSlot_->hasNotifierConnected();
-  };
+  [[nodiscard]] bool hasNotifierConnected() const { return concreteSlot_->hasNotifierConnected(); };
 
-  /// @brief Lock mutex
-  void lockSlotMutex() { mutex_->lock(); }
+  /// @brief Callback to the concrete number of notifiers connected
+  /// @return The number of notifiers connected
+  size_t nbNotifierConnected() { return concreteSlot_->nbNotifierConnected(); }
 
-  /// @brief Unlock mutex
-  void unlockSlotMutex() { mutex_->unlock(); }
+  /// @brief Copy the inner structure of the slot by duplicating the concrete slot
+  /// @param copyableCore Core to copy into this
+  void copyInnerStructure(SlotAbstraction *copyableCore) { this->concreteSlot_ = copyableCore->concreteSlot_; }
 
- protected:
-  /// @brief Protected accessor to mutex
-  /// @return Mutex
-  [[nodiscard]] std::shared_ptr<std::mutex> const &mutex() const { return mutex_; }
+  /// @brief Callback to the concrete wait termination condition
+  /// @return True if the node can terminate, else false
+  [[nodiscard]] virtual bool waitTerminationCondition() = 0;
 
-  /// @brief Protected accessor to condition variable
-  /// @return Condition variable
-  [[nodiscard]] std::shared_ptr<std::condition_variable> const &slotConditionVariable() const {
-    return slotConditionVariable_;
-  }
+  /// @brief Callback to the concrete can terminate condition
+  /// @return True if the node can terminate, else false
+  [[nodiscard]] virtual bool canTerminate() = 0;
 
-  /// @brief Copy the inner structure of copyableCore into this
-  /// @param copyableCore SlotAbstraction to copy inner structure from
-  void copyInnerStructure(SlotAbstraction *copyableCore) {
-    this->mutex_ = copyableCore->mutex_;
-    this->slotConditionVariable_ = copyableCore->slotConditionVariable_;
-  }
 };
 }
 }

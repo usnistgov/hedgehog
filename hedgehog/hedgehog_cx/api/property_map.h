@@ -115,5 +115,6 @@ class PropertyMap {
 
 };
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_PROPERTY_MAP_H_

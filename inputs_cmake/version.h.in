@@ -16,6 +16,9 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
+#ifndef HEDGEHOG_VERSION_H
+#define HEDGEHOG_VERSION_H
+
 #include <string>
 
 /// @file version.h
@@ -30,3 +33,5 @@ const int MINOR_VERSION = @PROJECT_VERSION_MINOR@; ///< Hedgehog minor version
 const int PATCH_VERSION = @PROJECT_VERSION_PATCH@; ///< Hedgehog patch version
 const std::string FULL_VERSION = "@PROJECT_VERSION@"; ///< Hedgehog full version
 }
+
+#endif // HEDGEHOG_VERSION_H

@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_CORE_GRAPH_H
 #define HEDGEHOG_CORE_GRAPH_H
 
@@ -155,9 +153,7 @@ class CoreGraph :
     testRegistered(__FUNCTION__);
     using input_t = tool::Intersect_t<CoreInputTypes, typename GIM<Separator, AllTypes...>::inputs_t>;
     using Indices = std::make_index_sequence<std::tuple_size_v<input_t>>;
-
     testAbstractReceivers<input_t>(core, Indices{});
-
     registerNodeInsideGraph(core);
     this->template addInputNodeToGraph<InputType>(core);
   }
@@ -349,17 +345,7 @@ class CoreGraph :
   /// @return  Node ids [nodeId, nodeGroupId]
   /// @throw std::runtime_error if the node is ill-formed
   [[nodiscard]] std::vector<std::pair<std::string const, std::string const>> ids() const override {
-    std::vector<std::pair<std::string const, std::string const>> idInputNodesAndGroups;
-    for (auto inputNodes : abstraction::SlotAbstraction::connectedNotifiers()) {
-      for (auto inputNotifier : inputNodes->notifiers()) {
-        if (auto inputNode = dynamic_cast<NodeAbstraction *>(inputNotifier)) {
-          for (auto const &id : inputNode->ids()) { idInputNodesAndGroups.push_back(id); }
-        } else {
-          throw std::runtime_error("An input node should derive from NodeAbstraction.");
-        }
-      }
-    }
-    return idInputNodesAndGroups;
+    throw std::runtime_error("A graph is not part of a group and has therefore no ids.");
   }
 
   /// @brief Node accessor
@@ -491,8 +477,7 @@ class CoreGraph :
     if (((dynamic_cast<abstraction::ReceiverAbstraction<std::tuple_element_t<Indices, TupleInputs>> *>(core)
         == nullptr) || ... )) {
       std::ostringstream oss;
-      oss << "The node " << core->name()
-          << " does not have a well defined core (missing inheritance from ReceiverAbstraction).";
+      oss << "The node " << core->name() << " does not have a well defined core (missing inheritance from ReceiverAbstraction).";
       throw std::runtime_error(oss.str());
     }
   }
@@ -617,4 +602,5 @@ class CoreGraph :
 };
 }
 }
+
 #endif //HEDGEHOG_CORE_GRAPH_H

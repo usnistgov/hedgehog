@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_GRAPH_SINK_H
 #define HEDGEHOG_GRAPH_SINK_H
 
@@ -26,8 +24,8 @@
 #include "../abstractions/base/node/node_abstraction.h"
 #include "../abstractions/base/input_output/receiver_abstraction.h"
 
-#include "../implementors/concrete_implementor/default_slot.h"
-#include "../implementors/concrete_implementor/queue_receiver.h"
+#include "../implementors/concrete_implementor/slot/default_slot.h"
+#include "../implementors/concrete_implementor/receiver/queue_receiver.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -49,27 +47,16 @@ class GraphSink :
       NodeAbstraction("Sink"),
       SlotAbstraction(std::static_pointer_cast<implementor::ImplementorSlot>(std::make_shared<implementor::DefaultSlot>())),
       abstraction::ReceiverAbstraction<Outputs>(
-          std::make_shared<implementor::QueueReceiver < Outputs>>(),
-          SlotAbstraction::mutex())... {}
+          std::make_shared<implementor::QueueReceiver<Outputs>>())... {}
 
   /// @brief Default destructor
   ~GraphSink() override = default;
 
-  /// @brief Wake up implementation (notify one node waiting on the condition variable)
-  void wakeUp() override { this->slotConditionVariable()->notify_one(); }
-
   /// @brief Get a result from the sink, if none is available wait for it (block the current thread)
   /// @return A variant of shared pointers containing an output data
   ResultType_t getBlockingResult() {
-    std::unique_lock<std::mutex> lock(*(this->mutex()));
-
-    this->slotConditionVariable()->wait(
-        lock,
-        [this]() { return !this->receiversEmpty() || !this->hasNotifierConnected(); }
-    );
-
     ResultType_t res = nullptr;
-    if (!receiversEmpty()) {
+    if (!sleep()) {
       res = std::make_shared<std::variant<std::shared_ptr<Outputs>...>>();
       bool outputFound = false;
       (getOneAvailableResultForAType<Outputs>(outputFound, res), ...);
@@ -77,10 +64,9 @@ class GraphSink :
     return res;
   }
 
-
   /// @brief Gather sink information
   /// @param printer Printer visitor gathering information on nodes
-  void print(Printer *printer){
+  void print(Printer *printer) {
     printer->printSink(this);
     (abstraction::ReceiverAbstraction<Outputs>::printEdgeInformation(printer), ...);
   }
@@ -90,6 +76,16 @@ class GraphSink :
   [[nodiscard]] std::vector<std::pair<std::string const, std::string const>> ids() const override {
     return {{this->id(), this->id()}};
   }
+
+  /// @brief Test if the sink can leave its wait state or not
+  /// @return Yes if it can leave its wait state, else false
+  [[nodiscard]] bool waitTerminationCondition() override {
+    return !this->receiversEmpty() || !this->hasNotifierConnected();
+  }
+
+  /// @brief Test if the sink can terminate or not
+  /// @return Yes if it can terminate, else false
+  [[nodiscard]] bool canTerminate() override { return !this->hasNotifierConnected() && this->receiversEmpty(); }
 
  private:
   /// @brief Test if there is an available output data for a data
@@ -101,16 +97,15 @@ class GraphSink :
   template<class Output>
   void getOneAvailableResultForAType(bool &outputFound, ResultType_t &res) {
     if (!outputFound) {
-      if (!abstraction::ReceiverAbstraction<Output>::empty()) {
-        outputFound = true;
-        *res = abstraction::ReceiverAbstraction<Output>::getInputData();
-      }
+      std::shared_ptr<Output> data = nullptr;
+      outputFound = abstraction::ReceiverAbstraction<Output>::getInputData(data);
+      if (outputFound) { *res = data; }
     }
   }
 
   /// @brief Test if the receivers for all types are empty
   /// @return True if the receivers for all types are empty, else false
-  inline bool receiversEmpty() { return (abstraction::ReceiverAbstraction<Outputs>::empty() && ...); }
+  [[nodiscard]] inline bool receiversEmpty() { return (abstraction::ReceiverAbstraction<Outputs>::empty() && ...); }
 
   /// @brief Getter to the node counterpart
   /// @return Nothing, throw an error because there is no Node attached to the core
@@ -121,4 +116,5 @@ class GraphSink :
 };
 }
 }
+
 #endif //HEDGEHOG_GRAPH_SINK_H

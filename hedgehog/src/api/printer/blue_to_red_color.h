@@ -23,6 +23,7 @@
 #include <cmath>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 #include "options/color_picker.h"
 
@@ -62,4 +63,5 @@ class BlueToRedColor : public ColorPicker {
 };
 
 }
+
 #endif //HEDGEHOG_BLUE_TO_RED_COLOR_H

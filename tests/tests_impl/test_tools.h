@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TEST_TOOLS_H_
-#define HEDGEHOG_TEST_TOOLS_H_
 
 #include <array>
 #include <gtest/gtest.h>
@@ -81,5 +79,3 @@ void testTupleIntersection() {
   };
   ASSERT_TRUE(std::all_of(tests.cbegin(), tests.cend(), [](auto const & test){ return test == true;}));
 }
-
-#endif //HEDGEHOG_TEST_TOOLS_H_

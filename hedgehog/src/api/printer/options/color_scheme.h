@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_COLOR_SCHEME_H
 #define HEDGEHOG_COLOR_SCHEME_H
 

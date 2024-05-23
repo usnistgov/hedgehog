@@ -16,8 +16,8 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-#ifndef HEDGEHOG_TASK_NODE_H_
-#define HEDGEHOG_TASK_NODE_H_
+#ifndef HEDGEHOG_TASK_NODE_H
+#define HEDGEHOG_TASK_NODE_H
 
 #include "node.h"
 
@@ -90,4 +90,5 @@ class TaskNode : public Node {
 };
 }
 }
-#endif //HEDGEHOG_TASK_NODE_H_
+
+#endif //HEDGEHOG_TASK_NODE_H

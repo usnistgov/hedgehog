@@ -47,16 +47,17 @@ class GraphSlot : public ImplementorSlot {
   /// @brief Do nothing, throw an error
   /// @return Nothing, throw an error
   /// @throw std::runtime_error A graph has no connected connectedNotifiers by itself
-  [[nodiscard]] std::set<abstraction::NotifierAbstraction *> const &connectedNotifiers() const override {
-    throw std::runtime_error("A graph has no connected connectedNotifiers by itself");
+  [[nodiscard]] bool hasNotifierConnected() override {
+    throw std::runtime_error("A graph has no connected notifiers connected");
   }
 
-  /// @brief Do nothing, throw an error
-  /// @return Nothing, throw an error
-  /// @throw std::runtime_error A graph has no connected connectedNotifiers by itself
-  [[nodiscard]] bool hasNotifierConnected() const override {
-    throw std::runtime_error("A graph has no connected connectedNotifiers by itself");
+  size_t nbNotifierConnected() override { return 0; }
+
+  bool sleep([[maybe_unused]] abstraction::SlotAbstraction *slot) override {
+    throw std::runtime_error("A graph slot cannot sleep, it is not attached to a thread.");
   }
+
+  void wakeUp() override { for (auto slot : *abstractSlots_) { slot->wakeUp(); }}
 
   /// @brief Add a notifier to all input nodes
   /// @param notifier Notifier top add to the input nodes
@@ -69,8 +70,13 @@ class GraphSlot : public ImplementorSlot {
   void removeNotifier(abstraction::NotifierAbstraction *notifier) override {
     for (auto slot : *abstractSlots_) { slot->removeNotifier(notifier); }
   }
+
+  [[nodiscard]] std::set<abstraction::NotifierAbstraction *> const &connectedNotifiers() const override {
+    throw std::runtime_error("A graph has no connected notifiers connected");
+  }
 };
 }
 }
 }
+
 #endif //HEDGEHOG_GRAPH_SLOT_H

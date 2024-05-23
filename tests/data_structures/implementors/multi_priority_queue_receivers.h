@@ -1,4 +1,3 @@
-
 // NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the
 // software in any medium, provided that you keep intact this entire notice. You may improve, modify and create
 // derivative works of the software or any portion of the software, and you may copy and distribute such modifications
@@ -17,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H_
-#define HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H_
+#ifndef HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H
+#define HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H
 
 #include "priority_queue_receiver.h"
 
@@ -44,4 +43,4 @@ template<size_t Separator, class ...AllTypes>
 using MPQR = MultiPriorityQueueReceiversTypeDeducer_t<hh::tool::Inputs<Separator, AllTypes...>>;
 
 
-#endif //HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H_
+#endif //HEDGEHOG_MULTI_PRIORITY_QUEUE_RECEIVERS_H

@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_RECEIVER_ABSTRACTION_H
 #define HEDGEHOG_RECEIVER_ABSTRACTION_H
 
@@ -42,6 +40,7 @@ namespace implementor {
 template<class Input>
 class ImplementorReceiver;
 }
+
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 
@@ -63,20 +62,11 @@ class ReceiverAbstraction {
   std::shared_ptr<implementor::ImplementorReceiver<Input>>
       concreteReceiver_ = nullptr; ///< Concrete implementation of the interface
 
-  std::shared_ptr<std::mutex> const
-      slotMutex_ = nullptr; ///< Mutex shared from the slot abstraction
-
  public:
-  /// @brief Constructor using a concrete implementation of a receiver implementor, and the mutex from the slot
+  /// @brief Constructor using a concrete implementation of a receiver implementor
   /// @param concreteReceiver Concrete implementation of the ImplementorReceiver
-  /// @param slotMutex Mutex from the slot
-  explicit ReceiverAbstraction(
-      std::shared_ptr<implementor::ImplementorReceiver<Input>> concreteReceiver,
-      std::shared_ptr<std::mutex> slotMutex) :
-      concreteReceiver_(std::move(concreteReceiver)),
-      slotMutex_(std::move(slotMutex)) {
-    concreteReceiver_->initialize(this);
-  }
+  explicit ReceiverAbstraction(std::shared_ptr<implementor::ImplementorReceiver<Input>> concreteReceiver)
+      : concreteReceiver_(std::move(concreteReceiver)) { concreteReceiver_->initialize(this); }
 
   /// @brief Default destructor
   virtual ~ReceiverAbstraction() = default;
@@ -100,30 +90,28 @@ class ReceiverAbstraction {
   }
 
   /// @brief Receive a piece of data
-  /// @details Receive a piece of data and transmit it to the concrete receiver implementation. The call to the concrete
-  /// receiver is protected via the mutex
+  /// @details Receive a piece of data and transmit it to the concrete receiver implementation.
   /// @param inputData Data to transmit to the implementation
-  void receive(std::shared_ptr<Input> const inputData) {
-    slotMutex_->lock();
-    concreteReceiver_->receive(inputData);
-    slotMutex_->unlock();
-  }
+  /// @return True if the piece of data has been received, else false.
+  bool receive(std::shared_ptr<Input> const inputData) { return concreteReceiver_->receive(inputData); }
 
   /// @brief Get an input data from the concrete receiver implementation
-  /// @return An input data
-  std::shared_ptr<Input> getInputData() { return concreteReceiver_->getInputData(); }
+  /// @details If a data is available, it is placed in data
+  /// @param data Reference to the data to get from the receiver
+  /// @return True if a data is available, else false
+  bool getInputData(std::shared_ptr<Input> &data) { return concreteReceiver_->getInputData(data); }
 
   /// @brief Accessor to the current number of input data received and waiting to be processed
   /// @return The current number of input data received and waiting to be processed
-  [[nodiscard]] size_t numberElementsReceived() const { return concreteReceiver_->numberElementsReceived(); }
+  [[nodiscard]] size_t numberElementsReceived() { return concreteReceiver_->numberElementsReceived(); }
 
   /// @brief Accessor to the maximum number of input data received and waiting to be processed
   /// @return The maximum number of input data received and waiting to be processed
-  [[nodiscard]] size_t maxNumberElementsReceived() const { return concreteReceiver_->maxNumberElementsReceived(); }
+  [[nodiscard]] size_t maxNumberElementsReceived() const { return concreteReceiver_->maxNumberElementsReceived();}
 
   /// @brief Test if the receiver is empty
   /// @return True if the receiver is empty, else false
-  [[nodiscard]] bool empty() const { return concreteReceiver_->empty(); }
+  [[nodiscard]] bool empty() { return concreteReceiver_->empty(); }
 
   /// @brief Add a SenderAbstraction to the concrete receiver implementation
   /// @param sender SenderAbstraction to add
@@ -168,4 +156,5 @@ class ReceiverAbstraction {
 }
 }
 }
+
 #endif //HEDGEHOG_RECEIVER_ABSTRACTION_H

@@ -17,8 +17,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TYPE_NODES_MAP_ARRAY_H_
-#define HEDGEHOG_TYPE_NODES_MAP_ARRAY_H_
+#ifndef HEDGEHOG_CX_TYPE_NODES_MAP_ARRAY_H_
+#define HEDGEHOG_CX_TYPE_NODES_MAP_ARRAY_H_
 #ifdef HH_ENABLE_HH_CX
 
 
@@ -79,5 +79,6 @@ class TypeNodesMapArray {
 };
 }
 }
+
 #endif //HH_ENABLE_HH_CX
-#endif //HEDGEHOG_TYPE_NODES_MAP_ARRAY_H_
+#endif //HEDGEHOG_CX_TYPE_NODES_MAP_ARRAY_H_

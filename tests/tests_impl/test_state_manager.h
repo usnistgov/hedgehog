@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TEST_STATE_MANAGER_H_
-#define HEDGEHOG_TEST_STATE_MANAGER_H_
 
 #include "../data_structures/tasks/abc_to_def_task.h"
 #include "../data_structures/states/def_to_abc_state.h"
@@ -66,4 +64,3 @@ void testSharedState() {
   g.waitForTermination();
 }
 
-#endif //HEDGEHOG_TEST_STATE_MANAGER_H_

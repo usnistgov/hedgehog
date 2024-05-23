@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_MULTI_SENDERS_H
 #define HEDGEHOG_MULTI_SENDERS_H
 

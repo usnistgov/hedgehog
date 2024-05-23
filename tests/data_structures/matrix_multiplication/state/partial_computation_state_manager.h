@@ -16,9 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-#ifndef HEDGEHOG_TEST_PARTIAL_COMPUTATION_STATE_MANAGER_H
-#define HEDGEHOG_TEST_PARTIAL_COMPUTATION_STATE_MANAGER_H
+#ifndef HEDGEHOG_PARTIAL_COMPUTATION_STATE_MANAGER_H
+#define HEDGEHOG_PARTIAL_COMPUTATION_STATE_MANAGER_H
 #include "../../../../hedgehog/hedgehog.h"
 #include "../data/data_type.h"
 #include "../data/matrix_block_data.h"
@@ -49,4 +48,4 @@ class PartialComputationStateManager
   }
 };
 
-#endif //HEDGEHOG_TEST_PARTIAL_COMPUTATION_STATE_MANAGER_H
+#endif //HEDGEHOG_PARTIAL_COMPUTATION_STATE_MANAGER_H

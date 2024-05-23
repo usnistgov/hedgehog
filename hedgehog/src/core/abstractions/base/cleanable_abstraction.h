@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_CLEANABLE_ABSTRACTION_H_
-#define HEDGEHOG_CLEANABLE_ABSTRACTION_H_
+#ifndef HEDGEHOG_CLEANABLE_ABSTRACTION_H
+#define HEDGEHOG_CLEANABLE_ABSTRACTION_H
 
 #include <stdexcept>
 #include <unordered_set>
@@ -61,4 +61,5 @@ class CleanableAbstraction {
 }
 }
 }
-#endif //HEDGEHOG_CLEANABLE_ABSTRACTION_H_
+
+#endif //HEDGEHOG_CLEANABLE_ABSTRACTION_H

@@ -18,6 +18,7 @@
 
 #ifndef HEDGEHOG_STRUCTURE_OPTIONS_H
 #define HEDGEHOG_STRUCTURE_OPTIONS_H
+
 /// @brief Hedgehog main namespace
 namespace hh {
 /// @brief Enum structural options

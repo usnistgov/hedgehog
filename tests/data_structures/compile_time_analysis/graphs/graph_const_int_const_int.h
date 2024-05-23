@@ -15,9 +15,6 @@
 // operation. This software is not intended to be used in any situation where a failure could cause risk of injury or
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
-//
-// Created by Bardakoff, Alexandre (IntlAssoc) on 12/4/20.
-//
 
 #ifndef HEDGEHOG_GRAPH_CONST_INT_CONST_INT_H
 #define HEDGEHOG_GRAPH_CONST_INT_CONST_INT_H

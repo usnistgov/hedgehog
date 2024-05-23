@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_HEDGEHOG_SRC_CORE_ABSTRACTIONS_PRINTABLE_ABSTRACTION_H_
-#define HEDGEHOG_HEDGEHOG_SRC_CORE_ABSTRACTIONS_PRINTABLE_ABSTRACTION_H_
+#ifndef HEDGEHOG_PRINTABLE_ABSTRACTION_H
+#define HEDGEHOG_PRINTABLE_ABSTRACTION_H
 
 #include "../../../api/printer/printer.h"
 #include "../../../tools/print_options.h"
@@ -51,4 +51,5 @@ class PrintableAbstraction {
 }
 }
 }
-#endif //HEDGEHOG_HEDGEHOG_SRC_CORE_ABSTRACTIONS_PRINTABLE_ABSTRACTION_H_
+
+#endif //HEDGEHOG_PRINTABLE_ABSTRACTION_H

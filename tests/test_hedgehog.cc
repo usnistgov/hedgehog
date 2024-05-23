@@ -46,6 +46,7 @@ TEST(HedgehogGraph, complexGraph) {
   ASSERT_NO_THROW(testEPComposition());
   ASSERT_NO_THROW(testComplexEPComposition());
   ASSERT_NO_THROW(testCustomizedNodes());
+  ASSERT_NO_THROW(testAtomicTask());
 }
 
 TEST(HedgehogTools, metafunctions) {

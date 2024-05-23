@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_CORE_EXECUTION_PIPELINE_H_
-#define HEDGEHOG_CORE_EXECUTION_PIPELINE_H_
+#ifndef HEDGEHOG_CORE_EXECUTION_PIPELINE_H
+#define HEDGEHOG_CORE_EXECUTION_PIPELINE_H
 
 #include <utility>
 
@@ -132,21 +132,23 @@ class CoreExecutionPipeline
         start,
         finish;
 
+    volatile bool isDone;
+
     using Inputs_t = typename EPIM<Separator, AllTypes...>::inputs_t;
     using Indices = std::make_index_sequence<std::tuple_size_v<Inputs_t>>;
 
     this->isActive(true);
 
     // Actual computation loop
-    while (!this->canTerminate(true)) {
+    while (!this->canTerminate()) {
       // Wait for a data to arrive or termination
       start = std::chrono::system_clock::now();
-      volatile bool canTerminate = this->wait();
+      isDone = this->sleep();
       finish = std::chrono::system_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
       // If te can terminate break the loop early
-      if (canTerminate) { break; }
+      if (isDone) { break; }
 
       // Operate the connectedReceivers to get a data and send it to execute
       start = std::chrono::system_clock::now();
@@ -198,7 +200,7 @@ class CoreExecutionPipeline
         std::chrono::nanoseconds::max(), std::chrono::nanoseconds::min()
     };
 
-    for(auto const & graph : coreGraphs_){
+    for (auto const &graph : coreGraphs_) {
       auto const minMaxGraph = graph->minMaxExecutionDuration();
       minMaxExecDuration.first = std::min(minMaxExecDuration.first, minMaxGraph.first);
       minMaxExecDuration.second = std::max(minMaxExecDuration.second, minMaxGraph.second);
@@ -213,7 +215,7 @@ class CoreExecutionPipeline
         std::chrono::nanoseconds::max(), std::chrono::nanoseconds::min()
     };
 
-    for(auto const & graph : coreGraphs_){
+    for (auto const &graph : coreGraphs_) {
       auto const minMaxGraph = graph->minMaxWaitDuration();
       minMaxWaitDuration.first = std::min(minMaxWaitDuration.first, minMaxGraph.first);
       minMaxWaitDuration.second = std::max(minMaxWaitDuration.second, minMaxGraph.second);
@@ -245,7 +247,7 @@ class CoreExecutionPipeline
   }
 
   /// @brief Register and duplicate the coreGraph in the execution pipeline
-  /// @details The CoreGraph is duplicated n times cy calling clone() on it, all of the graphs are initialized and
+  /// @details The CoreGraph is duplicated n times by calling clone() on it, all of the graphs are initialized and
   /// registered in the execution pipeline.
   /// @param coreGraph CoreGraph to duplicate and register
   void registerAndDuplicateGraph(std::shared_ptr<CoreGraph<Separator, AllTypes...>> const coreGraph) {
@@ -294,19 +296,18 @@ class CoreExecutionPipeline
   /// @tparam Input
   template<class Input>
   void operateReceiver() {
-    this->lockSlotMutex();
     auto typedReceiver = static_cast<abstraction::ReceiverAbstraction<Input> *>(this);
     if (!typedReceiver->empty()) {
-      std::shared_ptr<Input> data = typedReceiver->getInputData();
-      this->unlockSlotMutex();
+      std::shared_ptr<Input> data = nullptr;
+      typedReceiver->getInputData(data);
       for (auto coreGraph : this->coreGraphs_) {
         if (EPIM<Separator, AllTypes...>::callSendToGraph(data, coreGraph->graphId())) {
-          std::static_pointer_cast<abstraction::ReceiverAbstraction<Input>>(coreGraph)->receive(data);
+          while(!std::static_pointer_cast<abstraction::ReceiverAbstraction<Input>>(coreGraph)->receive(data)) {
+            _mm_pause();
+          }
           std::static_pointer_cast<abstraction::SlotAbstraction>(coreGraph)->wakeUp();
         }
       }
-    } else {
-      this->unlockSlotMutex();
     }
   }
 
@@ -364,4 +365,5 @@ class CoreExecutionPipeline
 
 }
 }
-#endif //HEDGEHOG_CORE_EXECUTION_PIPELINE_H_
+
+#endif //HEDGEHOG_CORE_EXECUTION_PIPELINE_H

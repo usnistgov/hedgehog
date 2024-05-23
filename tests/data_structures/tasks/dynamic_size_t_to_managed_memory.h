@@ -16,15 +16,15 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H_
-#define HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H_
+#ifndef HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H
+#define HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H
 
 #include "../data/dynamic_managed_memory.h"
 
 class DynamicSizeTToManagedMemory : public hh::AbstractTask<1, size_t, DynamicManagedMemory> {
  public:
   explicit DynamicSizeTToManagedMemory(size_t numberThread = 1)
-      : hh::AbstractTask<1, size_t, DynamicManagedMemory>("SizeTToManagedA", numberThread, false) {}
+      : hh::AbstractTask<1, size_t, DynamicManagedMemory>("DynamicSizeTToManagedA", numberThread, false) {}
   ~DynamicSizeTToManagedMemory() override = default;
 
   void execute(std::shared_ptr<size_t> data) override {
@@ -38,4 +38,4 @@ class DynamicSizeTToManagedMemory : public hh::AbstractTask<1, size_t, DynamicMa
   }
 };
 
-#endif //HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H_
+#endif //HEDGEHOG_DYNAMIC_SIZE_T_TO_MANAGED_MEMORY_H

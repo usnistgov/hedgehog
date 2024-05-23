@@ -28,7 +28,6 @@
 #include "../abstractions/base/clonable_abstraction.h"
 #include "../abstractions/base/groupable_abstraction.h"
 #include "../abstractions/base/cleanable_abstraction.h"
-#include "../abstractions/base/can_terminate_abstraction.h"
 
 #include "../abstractions/base/node/task_node_abstraction.h"
 
@@ -65,7 +64,6 @@ class CoreTask
     : public abstraction::TaskNodeAbstraction,
       public abstraction::ClonableAbstraction,
       public abstraction::CleanableAbstraction,
-      public abstraction::CanTerminateAbstraction,
       public abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>,
       public TIM<Separator, AllTypes...>,
       public TOM<Separator, AllTypes...> {
@@ -83,15 +81,13 @@ class CoreTask
   explicit CoreTask(AbstractTask<Separator, AllTypes...> *const task) :
       TaskNodeAbstraction("Task", task),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(task)),
-      CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(task)),
       abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(
           task, 1
       ),
       TIM<Separator, AllTypes...>(task, this),
       TOM<Separator, AllTypes...>(),
       task_(task),
-      automaticStart_(false) {
-  }
+      automaticStart_(false) {}
 
   /// @brief Create a CoreTask from a user-defined AbstractTask, its  name, the number of threads and the automatic
   /// start flag
@@ -103,7 +99,6 @@ class CoreTask
            std::string const &name, size_t const numberThreads, bool const automaticStart) :
       TaskNodeAbstraction(name, task),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(task)),
-      CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(task)),
       abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>(
           task, numberThreads
       ),
@@ -138,10 +133,9 @@ class CoreTask
            std::shared_ptr<ConcreteMultiSenders> concreteMultiSenders) :
       TaskNodeAbstraction(name, task),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(task)),
-      CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(task)),
       abstraction::GroupableAbstraction<AbstractTask<Separator, AllTypes...>, CoreTask<Separator, AllTypes...>>
           (task, numberThreads),
-      TIM<Separator, AllTypes...>(this, concreteSlot, concreteMultiReceivers, concreteMultiExecutes),
+      TIM<Separator, AllTypes...>(task, this, concreteSlot, concreteMultiReceivers, concreteMultiExecutes),
       TOM<Separator, AllTypes...>(concreteNotifier, concreteMultiSenders),
       task_(task),
       automaticStart_(automaticStart) {
@@ -156,17 +150,6 @@ class CoreTask
   [[nodiscard]] std::shared_ptr<AbstractMemoryManager> memoryManager() const override {
     return this->task_->memoryManager();
   }
-
-  /// @brief Call user-definable termination
-  /// @param lock Flag if the call to the user-definable termination need to be protected
-  /// @return True if the node can terminate, else false
-  bool callCanTerminate(bool lock) override {
-    bool result;
-    if (lock) { this->lockSlotMutex(); }
-    result = this->callNodeCanTerminate();
-    if (lock) { this->unlockSlotMutex(); }
-    return result;
-  };
 
   /// @brief Initialize the task
   /// @details Call user define initialize, initialise memory manager if present
@@ -198,19 +181,19 @@ class CoreTask
         start,
         finish;
 
+    volatile bool canTerminate = false;
+
     this->isActive(true);
     this->nvtxProfiler()->initialize(this->threadId());
     this->preRun();
 
-    if (this->automaticStart_) {
-      this->callAllExecuteWithNullptr();
-    }
+    if (this->automaticStart_) {  this->callAllExecuteWithNullptr(); }
 
     // Actual computation loop
-    while (!this->callCanTerminate(true)) {
+    while (!this->canTerminate()) {
       // Wait for a data to arrive or termination
       start = std::chrono::system_clock::now();
-      volatile bool canTerminate = this->wait();
+      canTerminate = this->sleep();
       finish = std::chrono::system_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
@@ -223,7 +206,7 @@ class CoreTask
 
     // Do the shutdown phase
     this->postRun();
-    // Wake up node that this is linked to
+    // Wake up a node that this node is linked to
     this->wakeUp();
   }
 
@@ -235,19 +218,6 @@ class CoreTask
     this->task_->shutdown();
     this->notifyAllTerminated();
     this->nvtxProfiler()->endRangeShuttingDown();
-  }
-
-  /// @brief Wait statement when the node is alive and no input data are available
-  /// @return True if the node can terminate, else false
-  bool wait() {
-    this->nvtxProfiler()->startRangeWaiting(this->totalNumberElementsReceived());
-    std::unique_lock<std::mutex> lock(*(this->mutex()));
-    this->slotConditionVariable()->wait(
-        lock,
-        [this]() { return !this->receiversEmpty() || this->callCanTerminate(false); }
-    );
-    this->nvtxProfiler()->endRangeWaiting();
-    return callCanTerminate(false);
   }
 
   /// @brief Create a group for this task, and connect each copies to the predecessor and successor nodes
@@ -381,4 +351,5 @@ class CoreTask
 };
 }
 }
+
 #endif //HEDGEHOG_CORE_TASK_H

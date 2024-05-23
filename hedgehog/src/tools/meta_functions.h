@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_META_FUNCTIONS_H
 #define HEDGEHOG_META_FUNCTIONS_H
 
@@ -25,7 +23,6 @@
 #include <iostream>
 #include <tuple>
 
-//todo clean code
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -47,6 +44,7 @@ template<class Output>
 class SenderAbstraction;
 }
 }
+
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
 /// Hedgehog tool namespace

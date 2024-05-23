@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H_
-#define HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H_
+#ifndef HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H
+#define HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H
 
 #include "../../../hedgehog/hedgehog.h"
 #include "../tasks/int_float_double_task.h"
@@ -46,4 +46,4 @@ class IntFloatDoubleGraph : public  hh::Graph<3, int, float, double, int, float,
   }
 };
 
-#endif //HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H_
+#endif //HEDGEHOG_INT_FLOAT_DOUBLE_GRAPH_H

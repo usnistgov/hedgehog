@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_GRAPH_NODE_ABSTRACTION_H
 #define HEDGEHOG_GRAPH_NODE_ABSTRACTION_H
 
@@ -232,4 +230,5 @@ class GraphNodeAbstraction : public NodeAbstraction, public PrintableAbstraction
 }
 }
 }
+
 #endif //HEDGEHOG_GRAPH_NODE_ABSTRACTION_H

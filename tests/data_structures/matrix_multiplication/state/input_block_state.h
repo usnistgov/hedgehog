@@ -16,9 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-#ifndef HEDGEHOG_TEST_INPUT_BLOCK_STATE_H
-#define HEDGEHOG_TEST_INPUT_BLOCK_STATE_H
+#ifndef HEDGEHOG_INPUT_BLOCK_STATE_H
+#define HEDGEHOG_INPUT_BLOCK_STATE_H
 #include <ostream>
 
 #include "../../../../hedgehog/hedgehog.h"
@@ -158,4 +157,4 @@ class InputBlockState : public hh::AbstractState<
   }
 };
 
-#endif //HEDGEHOG_TEST_INPUT_BLOCK_STATE_H
+#endif //HEDGEHOG_INPUT_BLOCK_STATE_H

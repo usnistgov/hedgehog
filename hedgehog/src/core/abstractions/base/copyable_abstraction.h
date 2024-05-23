@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_COPYABLE_ABSTRACTION_H_
-#define HEDGEHOG_COPYABLE_ABSTRACTION_H_
+#ifndef HEDGEHOG_COPYABLE_ABSTRACTION_H
+#define HEDGEHOG_COPYABLE_ABSTRACTION_H
 #include <memory>
 #include <sstream>
 #include "../../../tools/concepts.h"
@@ -91,4 +91,5 @@ class CopyableAbstraction {
 }
 }
 }
-#endif //HEDGEHOG_COPYABLE_ABSTRACTION_H_
+
+#endif //HEDGEHOG_COPYABLE_ABSTRACTION_H

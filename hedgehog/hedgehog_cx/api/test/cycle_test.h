@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_CYCLE_TEST_H_
-#define HEDGEHOG_CYCLE_TEST_H_
+#ifndef HEDGEHOG_CX_CYCLE_TEST_H_
+#define HEDGEHOG_CX_CYCLE_TEST_H_
 
 #ifdef HH_ENABLE_HH_CX
 #include "abstract_test.h"
@@ -439,5 +439,6 @@ class CycleTest : public hh_cx::AbstractTest<GraphType> {
 };
 
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CYCLE_TEST_H_

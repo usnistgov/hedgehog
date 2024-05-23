@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_ABSTRACT_STATE_H_
-#define HEDGEHOG_ABSTRACT_STATE_H_
+#ifndef HEDGEHOG_ABSTRACT_STATE_H
+#define HEDGEHOG_ABSTRACT_STATE_H
 
 #include <shared_mutex>
 
@@ -72,4 +72,5 @@ class AbstractState
   void stateManager(StateManager<Separator, AllTypes...> *stateManager) { stateManager_ = stateManager; }
 };
 }
-#endif //HEDGEHOG_ABSTRACT_STATE_H_
+
+#endif //HEDGEHOG_ABSTRACT_STATE_H

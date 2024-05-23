@@ -16,10 +16,11 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_DEFAULT_SENDER_H
 #define HEDGEHOG_DEFAULT_SENDER_H
+
+#include <execution>
+#include <emmintrin.h>
 
 #include "../implementor/implementor_sender.h"
 #include "../implementor/implementor_receiver.h"
@@ -38,6 +39,8 @@ class DefaultSender : public ImplementorSender<Output> {
   std::unique_ptr<std::set<abstraction::ReceiverAbstraction<Output> *>> const
       receivers_{}; ///< List of receivers
 
+  std::mutex mutex_{}; ///< Mutex used to protect the list of receivers
+
  public:
   /// @brief Default constructor
   explicit DefaultSender()
@@ -54,19 +57,29 @@ class DefaultSender : public ImplementorSender<Output> {
 
   /// @brief Add a receiver to the list
   /// @param receiver Receiver to add
-  void addReceiver(abstraction::ReceiverAbstraction<Output> *receiver) override { receivers_->insert(receiver); }
+  void addReceiver(abstraction::ReceiverAbstraction<Output> *receiver) override {
+    std::lock_guard<std::mutex> lck(mutex_);
+    receivers_->insert(receiver);
+  }
 
   /// @brief Remove a receiver to the list
   /// @param receiver Receiver to remove
-  void removeReceiver(abstraction::ReceiverAbstraction<Output> *receiver) override { receivers_->erase(receiver); }
+  void removeReceiver(abstraction::ReceiverAbstraction<Output> *receiver) override {
+    std::lock_guard<std::mutex> lck(mutex_);
+    receivers_->erase(receiver);
+  }
 
   /// @brief Send a piece of data to all connected receivers
   /// @param data Data to send
   void send(std::shared_ptr<Output> data) override {
-    for (auto const &receiver : *receivers_) { receiver->receive(data); }
+    std::lock_guard<std::mutex> lck(mutex_);
+    for (auto const &receiver : *receivers_) {
+      while(!receiver->receive(data)){ _mm_pause(); }
+    }
   }
 };
 }
 }
 }
+
 #endif //HEDGEHOG_DEFAULT_SENDER_H

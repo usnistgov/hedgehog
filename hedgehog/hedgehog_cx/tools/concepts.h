@@ -74,5 +74,6 @@ HedgehogConnectableNode<DynamicHedgehogNode>
 }
 
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_CONCEPTS_H_

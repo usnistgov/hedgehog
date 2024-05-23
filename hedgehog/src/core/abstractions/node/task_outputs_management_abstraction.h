@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_TASK_OUTPUTS_MANAGEMENT_ABSTRACTION_H
 #define HEDGEHOG_TASK_OUTPUTS_MANAGEMENT_ABSTRACTION_H
 
@@ -92,4 +90,5 @@ class TaskOutputsManagementAbstraction : public NotifierAbstraction, public Send
 }
 }
 }
+
 #endif //HEDGEHOG_TASK_OUTPUTS_MANAGEMENT_ABSTRACTION_H

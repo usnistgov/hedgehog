@@ -17,8 +17,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_DEFAULT_EXECUTE_H_
-#define HEDGEHOG_DEFAULT_EXECUTE_H_
+#ifndef HEDGEHOG_DEFAULT_EXECUTE_H
+#define HEDGEHOG_DEFAULT_EXECUTE_H
 
 #include "../implementor/implementor_execute.h"
 #include "../../../behavior/execute.h"
@@ -56,4 +56,5 @@ class DefaultExecute : public hh::core::implementor::ImplementorExecute<Input> {
 }
 }
 }
-#endif //HEDGEHOG_DEFAULT_EXECUTE_H_
+
+#endif //HEDGEHOG_DEFAULT_EXECUTE_H

@@ -139,7 +139,7 @@ class Defroster {
           << "\" has not been found in the list of names identifier of static nodes.";
       throw std::runtime_error(oss.str());
     } else {
-      if (setName.insert(name).second == false) {
+      if (!setName.insert(name).second) {
         std::ostringstream oss;
         oss << "The node name identifier \"" << name << "\" has already been used to map a dynamic node.";
         throw std::runtime_error(oss.str());
@@ -337,7 +337,7 @@ class Defroster {
                   std::find(dynamicNameIds.begin(), dynamicNameIds.end(), staticReceiverNodeNameId)
               );
           auto dynamicReceiverNodeVariant = dynamicNodesVariant.at(positionReceiverDynNode);
-          // Visit the vriant
+          // Visit the variant
           std::visit([&](auto const &dynamicReceiverNode) {
             // Get the common types between the 2 nodes
             using commonTypesDynamicNodes =
@@ -729,6 +729,7 @@ constexpr auto createDefroster() {
       inputTypeNodesMapArray, outputTypeNodesMapArray);
 }
 }
+
 #endif //HH_ENABLE_HH_CX
 
 #endif //HEDGEHOG_CX_DEFROSTER_H_

@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_TRAITS_H
 #define HEDGEHOG_TRAITS_H
 
@@ -368,4 +366,5 @@ template<class TupleOutputs>
 using BehaviorStateMultiSendersTypeDeducer_t = typename BehaviorStateMultiSenderTypeDeducer<TupleOutputs>::type;
 }
 }
+
 #endif //HEDGEHOG_TRAITS_H

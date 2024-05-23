@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TEST_MEMORY_MANAGER_H_
-#define HEDGEHOG_TEST_MEMORY_MANAGER_H_
 
 #include <gtest/gtest.h>
 #include "../../hedgehog/hedgehog.h"
@@ -64,11 +62,11 @@ void testMemoryManagers() {
   while (auto result = graph->getBlockingResult()) {
     ++count;
     std::visit(hh::ResultVisitor{
-        [&countStatic]([[maybe_unused]]std::shared_ptr<StaticManagedMemory> &val) {
+        [&countStatic](std::shared_ptr<StaticManagedMemory> &val) {
           ++countStatic;
           val->returnToMemoryManager();
           },
-        [&countDynamic]([[maybe_unused]]std::shared_ptr<DynamicManagedMemory> &val) {
+        [&countDynamic](std::shared_ptr<DynamicManagedMemory> &val) {
           ++countDynamic;
           val->dealloc();
           val->returnToMemoryManager();
@@ -121,4 +119,3 @@ void testPool(){
   ASSERT_EQ(pool.empty(), false);
 }
 
-#endif //HEDGEHOG_TEST_MEMORY_MANAGER_H_

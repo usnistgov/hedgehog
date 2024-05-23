@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_DEF_TO_ABC_STATE_H_
-#define HEDGEHOG_DEF_TO_ABC_STATE_H_
+#ifndef HEDGEHOG_DEF_TO_ABC_STATE_H
+#define HEDGEHOG_DEF_TO_ABC_STATE_H
 
 #include "../../../hedgehog/hedgehog.h"
 #include "../data/a.h"
@@ -51,4 +51,4 @@ class DEFToABCState : public hh::AbstractState<3, D, E, F, A, B, C> {
   }
 };
 
-#endif //HEDGEHOG_DEF_TO_ABC_STATE_H_
+#endif //HEDGEHOG_DEF_TO_ABC_STATE_H

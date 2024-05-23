@@ -21,6 +21,9 @@
 
 #include <memory>
 #include <mutex>
+#include <execution>
+#include <emmintrin.h>
+
 #include "../../implementor/implementor_receiver.h"
 #include "../../../abstractions/base/input_output/receiver_abstraction.h"
 
@@ -51,7 +54,7 @@ class GraphReceiver : public ImplementorReceiver<Input> {
   /// @return Nothing, throw a std::runtime_error
   /// @throw std::runtime_error It is not possible to get the number of input data from the graph receiver as it is only
   /// used to transfer data to input nodes.
-  [[nodiscard]] size_t numberElementsReceived() const override {
+  [[nodiscard]] size_t numberElementsReceived() override {
     throw std::runtime_error("It is not possible to get the number of input data from the graph receiver as it is only "
                              "used to transfer data to input nodes.");
   }
@@ -69,16 +72,17 @@ class GraphReceiver : public ImplementorReceiver<Input> {
   /// @return Nothing, throw a std::runtime_error
   /// @throw std::runtime_error It is not possible to get the number of input data from the graph receiver as it is only
   /// used to transfer data to input nodes.
-  [[nodiscard]] bool empty() const override {
+  [[nodiscard]] bool empty() override {
     throw std::runtime_error("It is not possible to test if there is input data from the graph receiver as it is only "
                              "used to transfer data to input nodes.");
   }
 
   /// @brief Do nothing, throw an error, a graph does not receive data, its input nodes do
+  /// @param data Not used
   /// @return Nothing, throw a std::runtime_error
   /// @throw std::runtime_error It is not possible to get the number of input data from the graph receiver as it is only
   /// used to transfer data to input nodes.
-  std::shared_ptr<Input> getInputData() override {
+  bool getInputData([[maybe_unused]]std::shared_ptr<Input> &data) override {
     throw std::runtime_error("It is not possible to get input data from the graph receiver as it is only used to "
                              "transfer data to input nodes.");
   }
@@ -90,13 +94,19 @@ class GraphReceiver : public ImplementorReceiver<Input> {
     throw std::runtime_error("A graph is not connected to any senders");
   }
 
-  /// @brief Receive a data and transmit to its input nodes
+  /// @brief Receive a data and transmit to its input nodes, wait until it is transmitted to all of its input nodes
   /// @param data Dat ato transmit to input nodes
-  void receive(std::shared_ptr<Input> data) override {
+  /// @return True
+  /// @note Returns always true, this receiver send data to all input nodes. If the node cannot receive the data, it is
+  /// retried until the data go through.
+  bool receive(std::shared_ptr<Input> data) override {
     std::for_each(
         this->abstractReceivers_->begin(), this->abstractReceivers_->end(),
-        [&data](abstraction::ReceiverAbstraction<Input> *receiver) { receiver->receive(data); }
+        [&data](abstraction::ReceiverAbstraction<Input> *receiver) {
+          while(!receiver->receive(data)) { _mm_pause(); }
+        }
     );
+    return true;
   }
 
   /// @brief Add a sender to add to the graph input nodes
@@ -104,7 +114,7 @@ class GraphReceiver : public ImplementorReceiver<Input> {
   void addSender(abstraction::SenderAbstraction<Input> *const sender) override {
     std::for_each(
         this->abstractReceivers_->begin(), this->abstractReceivers_->end(),
-        [&sender](abstraction::ReceiverAbstraction<Input> *receiver) { receiver->addSender(sender); }
+        [&sender](abstraction::ReceiverAbstraction<Input> *receiver) {  receiver->addSender(sender); }
     );
   }
 
@@ -116,8 +126,10 @@ class GraphReceiver : public ImplementorReceiver<Input> {
         [&sender](abstraction::ReceiverAbstraction<Input> *receiver) { receiver->removeSender(sender); }
     );
   }
+
 };
 }
 }
 }
+
 #endif //HEDGEHOG_GRAPH_RECEIVER_H

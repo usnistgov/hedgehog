@@ -94,7 +94,7 @@ class DefaultScheduler : public Scheduler {
 
   /// Wait for all inside nodes to join and join the threads of all inside graphs
   void joinAll() override {
-    std::for_each(threads_->begin(), threads_->end(), [](std::thread &t) { t.join(); });
+    std::for_each(threads_->begin(), threads_->end(), [](std::thread &t) {  t.join(); });
     for (core::abstraction::GraphNodeAbstraction *innerGraph : *(this->innerGraphs_)) {
       innerGraph->joinThreads();
     }
@@ -102,4 +102,5 @@ class DefaultScheduler : public Scheduler {
 
 };
 }
+
 #endif //HEDGEHOG_DEFAULT_SCHEDULER_H

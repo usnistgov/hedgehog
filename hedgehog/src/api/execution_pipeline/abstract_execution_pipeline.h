@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H_
-#define HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H_
+#ifndef HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H
+#define HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H
 
 #include "../graph/graph.h"
 #include "../../behavior/copyable.h"
@@ -145,19 +145,15 @@ class AbstractExecutionPipeline
   ~AbstractExecutionPipeline() override = default;
 
  private:
-  /// Accessor top the base graph
+  /// Accessor to the base graph
   /// @return The base Graph
-  std::shared_ptr<Graph<Separator, AllTypes...>> const &graph() const {
-    return graph_;
-  }
+  std::shared_ptr<Graph<Separator, AllTypes...>> const &graph() const { return graph_; }
 
-  /// Base graph setter
+  /// @brief graph setter
   /// @param graph Graph to set
-  void graph(std::shared_ptr<Graph<Separator, AllTypes...>> graph) {
-    graph_ = graph;
-  }
+  void graph(std::shared_ptr<Graph<Separator, AllTypes...>> graph) { graph_ = graph; }
 };
 
 }
 
-#endif //HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H_
+#endif //HEDGEHOG_ABSTRACT_EXECUTION_PIPELINE_H

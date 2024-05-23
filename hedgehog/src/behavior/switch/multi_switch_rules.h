@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_MULTI_SWITCH_RULES_H_
-#define HEDGEHOG_MULTI_SWITCH_RULES_H_
+#ifndef HEDGEHOG_MULTI_SWITCH_RULES_H
+#define HEDGEHOG_MULTI_SWITCH_RULES_H
 
 #include "switch_rule.h"
 
@@ -40,4 +40,5 @@ class MultiSwitchRules : public SwitchRule<Inputs>... {
 };
 }
 }
-#endif //HEDGEHOG_MULTI_SWITCH_RULES_H_
+
+#endif //HEDGEHOG_MULTI_SWITCH_RULES_H

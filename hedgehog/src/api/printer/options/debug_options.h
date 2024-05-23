@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_DEBUG_OPTIONS_H
 #define HEDGEHOG_DEBUG_OPTIONS_H
 
@@ -29,4 +27,5 @@ enum class DebugOptions {
   ALL ///< Shows debug information such as pointer addresses for nodes and edges
 };
 }
+
 #endif //HEDGEHOG_DEBUG_OPTIONS_H

@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H_
-#define HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H_
+#ifndef HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H
+#define HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H
 
 #include "task_node_abstraction.h"
 
@@ -71,4 +71,5 @@ class ExecutionPipelineNodeAbstraction : public TaskNodeAbstraction{
 }
 }
 }
-#endif //HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H_
+
+#endif //HEDGEHOG_EXECUTION_PIPELINE_NODE_ABSTRACTION_H

@@ -16,13 +16,10 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_EXECUTE_H
 #define HEDGEHOG_EXECUTE_H
 
 #include <memory>
-
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -55,4 +52,5 @@ class Execute {
 };
 }
 }
+
 #endif //HEDGEHOG_EXECUTE_H

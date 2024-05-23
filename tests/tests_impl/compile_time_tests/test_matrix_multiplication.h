@@ -16,7 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
 #ifdef HH_ENABLE_HH_CX
 
 #include "../../data_structures/matrix_multiplication/data/matrix_data.h"

@@ -146,5 +146,6 @@ class Node : public hh_cx::behavior::AbstractNode {
 };
 
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_NODE_H_

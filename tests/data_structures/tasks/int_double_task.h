@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_INT_DOUBLE_H_
-#define HEDGEHOG_INT_DOUBLE_H_
+#ifndef HEDGEHOG_INT_DOUBLE_H
+#define HEDGEHOG_INT_DOUBLE_H
 
 #include "../../../hedgehog/hedgehog.h"
 
@@ -32,4 +32,4 @@ class IntDoubleTask : public hh::AbstractTask<2, int, double, int, double> {
   }
 };
 
-#endif //HEDGEHOG_INT_DOUBLE_H_
+#endif //HEDGEHOG_INT_DOUBLE_H

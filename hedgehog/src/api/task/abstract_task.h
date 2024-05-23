@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_ABSTRACT_TASK_H
 #define HEDGEHOG_ABSTRACT_TASK_H
 
@@ -180,4 +178,5 @@ class AbstractTask
   [[nodiscard]] int deviceId() const { return coreTask_->deviceId(); }
 };
 }
+
 #endif //HEDGEHOG_ABSTRACT_TASK_H

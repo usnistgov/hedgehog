@@ -17,8 +17,8 @@
 // United States.
 
 
-#ifndef HEDGEHOG_TEST_MATRIXBLOCKDATA_H
-#define HEDGEHOG_TEST_MATRIXBLOCKDATA_H
+#ifndef HEDGEHOG_MATRIXBLOCKDATA_H
+#define HEDGEHOG_MATRIXBLOCKDATA_H
 
 #include <iostream>
 #include <memory>
@@ -162,4 +162,5 @@ class MatrixBlockData {
     return os;
   }
 };
-#endif //HEDGEHOG_TEST_MATRIXBLOCKDATA_H
+
+#endif //HEDGEHOG_MATRIXBLOCKDATA_H

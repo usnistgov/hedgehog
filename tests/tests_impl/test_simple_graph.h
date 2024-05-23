@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_TEST_SIMPLE_GRAPH_H_
-#define HEDGEHOG_TEST_SIMPLE_GRAPH_H_
 
 #include <gtest/gtest.h>
 #include "../data_structures/tasks/int_task.h"
@@ -88,4 +86,3 @@ void graphSimpleMultiGroups(){
   EXPECT_EQ(count, 200);
 }
 
-#endif //HEDGEHOG_TEST_SIMPLE_GRAPH_H_

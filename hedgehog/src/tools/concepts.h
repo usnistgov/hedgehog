@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_CONCEPTS_H
 #define HEDGEHOG_CONCEPTS_H
 #pragma once
@@ -280,4 +278,5 @@ concept ConcreteMultiExecuteImplementation =
 
 }
 }
+
 #endif //HEDGEHOG_CONCEPTS_H

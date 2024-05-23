@@ -65,5 +65,6 @@ class AbstractNode {
 };
 }
 }
+
 #endif //HH_ENABLE_HH_CX
 #endif //HEDGEHOG_CX_ABSTRACT_NODE_H_

@@ -16,9 +16,9 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
+#ifndef HEDGEHOG_PRODUCT_TASK_H
+#define HEDGEHOG_PRODUCT_TASK_H
 
-#ifndef HEDGEHOG_TEST_PRODUCT_TASK_H
-#define HEDGEHOG_TEST_PRODUCT_TASK_H
 #include "../../../../hedgehog/hedgehog.h"
 #include "../data/matrix_block_data.h"
 
@@ -77,4 +77,4 @@ class ProductTask : public hh::AbstractTask<
   }
 };
 
-#endif //HEDGEHOG_TEST_PRODUCT_TASK_H
+#endif //HEDGEHOG_PRODUCT_TASK_H

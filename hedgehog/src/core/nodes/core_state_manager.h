@@ -16,8 +16,8 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-#ifndef HEDGEHOG_CORE_STATE_MANAGER_H_
-#define HEDGEHOG_CORE_STATE_MANAGER_H_
+#ifndef HEDGEHOG_CORE_STATE_MANAGER_H
+#define HEDGEHOG_CORE_STATE_MANAGER_H
 
 #include <ostream>
 #include <sstream>
@@ -28,11 +28,10 @@
 
 #include "../abstractions/base/cleanable_abstraction.h"
 #include "../abstractions/base/copyable_abstraction.h"
-#include "../abstractions/base/can_terminate_abstraction.h"
 #include "../abstractions/node/task_inputs_management_abstraction.h"
 #include "../abstractions/node/task_outputs_management_abstraction.h"
 #include "../abstractions/base/node/state_manager_node_abstraction.h"
-#include "../implementors/concrete_implementor/multi_queue_receivers.h"
+#include "../implementors/concrete_implementor/receiver/queue_receiver.h"
 #include "../implementors/concrete_implementor/default_multi_executes.h"
 #include "../../behavior/input_output/state_sender.h"
 
@@ -74,7 +73,6 @@ class CoreStateManager
     : public abstraction::StateManagerNodeAbstraction,
       public abstraction::ClonableAbstraction,
       public abstraction::CleanableAbstraction,
-      public abstraction::CanTerminateAbstraction,
       public abstraction::CopyableAbstraction<StateManager<Separator, AllTypes...>>,
       public TIM<Separator, AllTypes...>,
       public TOM<Separator, AllTypes...> {
@@ -107,9 +105,9 @@ class CoreStateManager
       std::string const &name, bool const automaticStart)
       : StateManagerNodeAbstraction(name, stateManager),
         CleanableAbstraction(static_cast<behavior::Cleanable *>(stateManager)),
-        CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(stateManager)),
         abstraction::CopyableAbstraction<StateManager<Separator, AllTypes...>>(stateManager),
         TIM<Separator, AllTypes...>(
+            stateManager,
             this,
             std::make_shared<implementor::DefaultSlot>(),
             std::make_shared<tool::MultiQueueReceiversTypeDeducer_t<tool::Inputs<Separator, AllTypes...>>>(),
@@ -146,9 +144,8 @@ class CoreStateManager
                    std::shared_ptr<ConcreteMultiSenders> concreteMultiSenders) :
       StateManagerNodeAbstraction(name, stateManager),
       CleanableAbstraction(static_cast<behavior::Cleanable *>(stateManager)),
-      CanTerminateAbstraction(static_cast<behavior::CanTerminate *>(stateManager)),
       abstraction::CopyableAbstraction<StateManager<Separator, AllTypes...>>(stateManager),
-      TIM<Separator, AllTypes...>(this, concreteSlot, concreteMultiReceivers, concreteMultiExecutes),
+      TIM<Separator, AllTypes...>(stateManager, this, concreteSlot, concreteMultiReceivers, concreteMultiExecutes),
       TOM<Separator, AllTypes...>(concreteNotifier, concreteMultiSenders),
       stateManager_(stateManager),
       state_(state),
@@ -161,16 +158,16 @@ class CoreStateManager
   /// @return true if the core start automatically, else false
   [[nodiscard]] bool automaticStart() const { return automaticStart_; }
 
-  /// @brief Call user-definable termination
-  /// @param lock Flag if the call to the user-definable termination need to be protected
-  /// @return True if the node can terminate, else false
-  bool callCanTerminate(bool lock) override {
-    bool result;
-    if (lock) { this->lockSlotMutex(); }
-    result = this->callNodeCanTerminate();
-    if (lock) { this->unlockSlotMutex(); }
-    return result;
-  }
+//  /// @brief Call user-definable termination
+//  /// @param lock Flag if the call to the user-definable termination need to be protected
+//  /// @return True if the node can terminate, else false
+//  bool callCanTerminate(bool lock) override {
+//    bool result;
+//    if (lock) { this->lockSlotMutex(); }
+//    result = this->callNodeCanTerminate();
+//    if (lock) { this->unlockSlotMutex(); }
+//    return result;
+//  }
 
   /// @brief Visit the state manager
   /// @param printer Printer gathering node information
@@ -229,6 +226,7 @@ class CoreStateManager
     std::chrono::time_point<std::chrono::system_clock>
         start,
         finish;
+    volatile bool canTerminate;
 
     this->isActive(true);
     this->nvtxProfiler()->initialize(0);
@@ -241,20 +239,18 @@ class CoreStateManager
       finish = std::chrono::system_clock::now();
       this->incrementAcquireStateDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
-//      start = std::chrono::system_clock::now();
       this->callAllExecuteWithNullptr();
       emptyReadyLists<Outputs_t>(indices);
       state_->stateManager(nullptr);
       state_->unlock();
-//      finish = std::chrono::system_clock::now();
-//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Actual computation loop
-    while (!this->callCanTerminate(true)) {
+    while (!this->canTerminate()) {
+//    while (!this->callCanTerminate(true)) {
       // Wait for a data to arrive or termination
       start = std::chrono::system_clock::now();
-      volatile bool canTerminate = this->wait();
+      canTerminate = this->sleep();
       finish = std::chrono::system_clock::now();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
@@ -268,16 +264,13 @@ class CoreStateManager
       finish = std::chrono::system_clock::now();
       this->incrementAcquireStateDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
-//      start = std::chrono::system_clock::now();
       this->operateReceivers();
       start = std::chrono::system_clock::now();
       emptyReadyLists<Outputs_t>(indices);
-            finish = std::chrono::system_clock::now();
+      finish = std::chrono::system_clock::now();
       this->incrementEmptyRdyListDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
       state_->stateManager(nullptr);
       state_->unlock();
-//      finish = std::chrono::system_clock::now();
-//      this->incrementDequeueExecutionDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
     }
 
     // Do the shutdown phase
@@ -311,21 +304,8 @@ class CoreStateManager
     return this->stateManager_->memoryManager();
   }
 
- protected:
-  /// @brief Wait statement when the node is alive and no input data are available
-  /// @return True if the node can terminate, else false
-  bool wait() {
-    this->nvtxProfiler()->startRangeWaiting(this->totalNumberElementsReceived());
-    std::unique_lock<std::mutex> lock(*(this->mutex()));
-    this->slotConditionVariable()->wait(
-        lock,
-        [this]() { return !this->receiversEmpty() || this->callCanTerminate(false); }
-    );
-    this->nvtxProfiler()->endRangeWaiting();
-    return callCanTerminate(false);
-  }
-
  private:
+
   /// @brief Gather the state manager and the state into the cleanableSet
   /// @param cleanableSet Set of cleanable nodes
   void gatherCleanable(std::unordered_set<hh::behavior::Cleanable *> &cleanableSet) override {
@@ -392,4 +372,5 @@ class CoreStateManager
 
 }
 }
-#endif //HEDGEHOG_CORE_STATE_MANAGER_H_
+
+#endif //HEDGEHOG_CORE_STATE_MANAGER_H

@@ -1,4 +1,3 @@
-
 // NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the
 // software in any medium, provided that you keep intact this entire notice. You may improve, modify and create
 // derivative works of the software or any portion of the software, and you may copy and distribute such modifications
@@ -17,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H_
-#define HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H_
+#ifndef HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H
+#define HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H
 
 #include "../implementors/multi_priority_queue_receivers.h"
 
@@ -40,4 +39,4 @@ class PriorityQueueStateManager : public hh::StateManager<Separator, AllTypes...
   ) {}
 };
 
-#endif //HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H_
+#endif //HEDGEHOG_PRIORITY_QUEUE_STATE_MANAGER_H

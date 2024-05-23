@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_HEDGEHOG_H
 #define HEDGEHOG_HEDGEHOG_H
 
@@ -31,6 +29,9 @@
 #endif // HH_ENABLE_HH_CX
 
 #include "src/api/task/abstract_task.h"
+#include "src/api/task/abstract_mixed_task.h"
+#include "src/api/task/abstract_atomic_task.h"
+#include "src/api/task/abstract_limited_atomic_task.h"
 #include "src/api/graph/graph.h"
 #include "src/api/graph/graph_signal_handler.h"
 #include "src/api/execution_pipeline/abstract_execution_pipeline.h"

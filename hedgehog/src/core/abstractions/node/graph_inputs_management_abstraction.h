@@ -16,8 +16,6 @@
 //  damage to property. The software developed by NIST employees is not subject to copyright protection within the
 //  United States.
 
-
-
 #ifndef HEDGEHOG_GRAPH_INPUTS_MANAGEMENT_ABSTRACTION_H
 #define HEDGEHOG_GRAPH_INPUTS_MANAGEMENT_ABSTRACTION_H
 
@@ -57,26 +55,15 @@ class GraphInputsManagementAbstraction :
   /// @brief Default constructor
   GraphInputsManagementAbstraction() :
       SlotAbstraction(
-          std::static_pointer_cast<implementor::ImplementorSlot>(
-              std::make_shared<implementor::GraphSlot>()
-          )
+          std::static_pointer_cast<implementor::ImplementorSlot>(std::make_shared<implementor::GraphSlot>())
       ),
-      ReceiverAbstraction<Inputs>(
-          std::make_shared<implementor::GraphReceiver<Inputs>>(), SlotAbstraction::mutex()
-      )...,
-      source_(std::make_unique<GraphSource < Inputs...>>
-  ()
-  ) {}
+      ReceiverAbstraction<Inputs>(std::make_shared<implementor::GraphReceiver<Inputs>>())...,
+      source_(std::make_unique<GraphSource < Inputs...>>()) {
+
+  }
 
   /// @brief Default destructor
   ~GraphInputsManagementAbstraction() override = default;
-
-  /// @brief Graph wake up, wakes up all registered slots of the input node
-  void wakeUp() override {
-    for (auto slot : this->slots()) {
-      slot->wakeUp();
-    }
-  }
 
   /// @brief Wait for the graph, should not be called a graph does not wait !
   /// @return nothing, throw in all cases
@@ -86,7 +73,8 @@ class GraphInputsManagementAbstraction :
  protected:
   /// @brief Source accessor
   /// @return Graph's source
-  std::unique_ptr<GraphSource < Inputs...>> const &source() const { return source_; }
+  std::unique_ptr<GraphSource < Inputs...>> const &
+  source() const { return source_; }
 
   /// @brief Terminate a source, notify all input nodes to terminate
   void terminateSource() { this->source_->notifyAllTerminated(); }
@@ -164,6 +152,19 @@ class GraphInputsManagementAbstraction :
   }
 
  private:
+  /// @brief So nothing and should not be called
+  /// @throw std::runtime_error because the graph is not attached to a thread
+  /// @return Nothing throw an error
+  [[nodiscard]] bool waitTerminationCondition() override {
+    throw std::runtime_error("A graph is not attached to a thread it cannot wait for termination.");
+  }
+
+  /// @brief So nothing and should not be called
+  /// @throw std::runtime_error because the graph is not attached to a thread
+  /// @return Nothing throw an error
+  [[nodiscard]] bool canTerminate() override {
+    throw std::runtime_error("A graph is not attached to a thread it cannot terminate.");
+  }
   /// @brief Disconnect the source from the input node receivers
   /// @tparam Input Type of input node receivers to disconnect from the source
   template<class Input>
@@ -178,7 +179,6 @@ class GraphInputsManagementAbstraction :
       }
     }
   }
-
 
   /// @brief Duplicate source edge for a type
   /// @tparam Input Type of input node receivers to duplicate
@@ -222,4 +222,5 @@ class GraphInputsManagementAbstraction :
 }
 }
 }
+
 #endif //HEDGEHOG_GRAPH_INPUTS_MANAGEMENT_ABSTRACTION_H

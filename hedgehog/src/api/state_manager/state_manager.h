@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_STATE_MANAGER_H_
-#define HEDGEHOG_STATE_MANAGER_H_
+#ifndef HEDGEHOG_STATE_MANAGER_H
+#define HEDGEHOG_STATE_MANAGER_H
 
 #include <utility>
 
@@ -177,4 +177,4 @@ class StateManager
 };
 }
 
-#endif //HEDGEHOG_STATE_MANAGER_H_
+#endif //HEDGEHOG_STATE_MANAGER_H

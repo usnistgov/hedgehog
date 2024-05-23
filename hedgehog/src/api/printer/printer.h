@@ -16,8 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-
 #ifndef HEDGEHOG_PRINTER_H
 #define HEDGEHOG_PRINTER_H
 
@@ -81,7 +79,7 @@ class Printer {
 
   /// @brief Print node information
   /// @param node Node to print
-  virtual void printNodeInformation(core::abstraction::NodeAbstraction const *node) = 0;
+  virtual void printNodeInformation(core::abstraction::NodeAbstraction *node) = 0;
 
   /// @brief Print edge information
   /// @param from From node
@@ -116,4 +114,5 @@ class Printer {
 };
 
 }
+
 #endif //HEDGEHOG_PRINTER_H

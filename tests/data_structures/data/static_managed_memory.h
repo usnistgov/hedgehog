@@ -16,8 +16,8 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_STATIC_MANAGED_MEMORY_H_
-#define HEDGEHOG_STATIC_MANAGED_MEMORY_H_
+#ifndef HEDGEHOG_STATIC_MANAGED_MEMORY_H
+#define HEDGEHOG_STATIC_MANAGED_MEMORY_H
 
 #include "../../../hedgehog/hedgehog.h"
 
@@ -28,4 +28,4 @@ class StaticManagedMemory : public hh::ManagedMemory {
   ~StaticManagedMemory() override { delete[] array_; }
 };
 
-#endif //HEDGEHOG_STATIC_MANAGED_MEMORY_H_
+#endif //HEDGEHOG_STATIC_MANAGED_MEMORY_H

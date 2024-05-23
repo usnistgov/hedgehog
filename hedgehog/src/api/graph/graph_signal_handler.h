@@ -16,7 +16,6 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
 #ifndef HEDGEHOG_GRAPH_SIGNAL_HANDLER_H
 #define HEDGEHOG_GRAPH_SIGNAL_HANDLER_H
 #pragma  once
@@ -38,11 +37,12 @@ namespace hh {
 template<size_t Separator, class ...AllTypes>
 class GraphSignalHandler {
  private:
-  static Graph<Separator, AllTypes...> *graphInstance_; ///<< The outer graph instance
+  static hh::Graph<Separator, AllTypes...> *graphInstance_; ///<< The outer graph instance
   static bool signalHandled_; ///< Flag to indicate if a signal has been fired or not
-  static ColorScheme colorScheme; ///<< The color scheme to use for graph dot file
-  static StructureOptions structureOptions; ///<< The structure options to use for graph dot file
-  static DebugOptions debugOptions; ///<< The debug options to use for graph dot file
+  static hh::ColorScheme colorScheme_; ///<< The color scheme to use for graph dot file
+  static hh::StructureOptions structureOptions_; ///<< The structure options to use for graph dot file
+  static hh::DebugOptions debugOptions_; ///<< The debug options to use for graph dot file
+  static hh::InputOptions inputOptions_; ///<< The input options to use for graph dot file
 
  public:
   /// @brief Function that handles signals.
@@ -61,39 +61,32 @@ class GraphSignalHandler {
       signalHandled_ = true;
       std::cout << "signal caught: " << signum << ": (" << signalString << ")" << std::endl;
       graphInstance_->createDotFile(
-          signalString + "-graph-output.dot", colorScheme, structureOptions, debugOptions);
+          signalString + "-graph-output.dot", colorScheme_, structureOptions_, inputOptions_, debugOptions_);
     }
   }
 
   /// @brief Create a dot file at exit if the instance still exist
-  static void atExit() {
-    if (graphInstance_)
-      graphInstance_->createDotFile("Exit-graph-output.dot");
-  }
+  static void atExit() { if (graphInstance_) { graphInstance_->createDotFile("Exit-graph-output.dot"); } }
 
   /// @brief Sets the color scheme for dot file generation
   /// @param scheme the color scheme
-  static void setColorScheme(ColorScheme scheme) {
-    colorScheme = scheme;
-  }
+  static void setColorScheme(hh::ColorScheme scheme) { colorScheme_ = scheme; }
 
   /// @brief Sets the structure options for dot file generation
   /// @param options the structure options
-  static void setStructureOptions(StructureOptions options) {
-    structureOptions = options;
-  }
+  static void setStructureOptions(hh::StructureOptions options) { structureOptions_ = options; }
 
   /// @brief Sets the debug options for dot file generation
   /// @param options the debug options
-  static void setDebugOptions(DebugOptions options) {
-    debugOptions = options;
-  }
+  static void setDebugOptions(hh::DebugOptions options) { debugOptions_ = options; }
+
+  /// @brief Sets the input options for dot file generation
+  /// @param options the input options
+  static void setInputOptions(hh::InputOptions options) { inputOptions_ = options; }
 
   /// @brief Registers a task graph to be displayed when a signal is fired.
   /// @param graph the task graph to be displayed.
-  static void registerGraph(Graph<Separator, AllTypes...> *graph) {
-    graphInstance_ = graph;
-  }
+  static void registerGraph(hh::Graph<Separator, AllTypes...> *graph) { graphInstance_ = graph; }
 
   /// @brief Registers a signal for handling. (default SIGTERM)
   /// @param signum Signal number id
@@ -116,24 +109,31 @@ bool GraphSignalHandler<Separator, AllTypes...>::signalHandled_ = false;
 /// @tparam Separator Separator position between input types and output types
 /// @tparam AllTypes List of input and output types
 template<size_t Separator, class ...AllTypes>
-Graph<Separator, AllTypes...> *GraphSignalHandler<Separator, AllTypes...>::graphInstance_ = nullptr;
+hh::Graph<Separator, AllTypes...> *GraphSignalHandler<Separator, AllTypes...>::graphInstance_ = nullptr;
 
 /// @brief Sets the default color scheme
 /// @tparam Separator Separator position between input types and output types
 /// @tparam AllTypes List of input and output types
 template<size_t Separator, class ...AllTypes>
-ColorScheme GraphSignalHandler<Separator, AllTypes...>::colorScheme = ColorScheme::EXECUTION;
+hh::ColorScheme GraphSignalHandler<Separator, AllTypes...>::colorScheme_ = hh::ColorScheme::EXECUTION;
 
 /// @brief Sets the default structure options
 /// @tparam Separator Separator position between input types and output types
 /// @tparam AllTypes List of input and output types
 template<size_t Separator, class ...AllTypes>
-StructureOptions GraphSignalHandler<Separator, AllTypes...>::structureOptions = StructureOptions::ALL;
+hh::StructureOptions GraphSignalHandler<Separator, AllTypes...>::structureOptions_ = hh::StructureOptions::ALL;
 
 /// @brief Sets the default debug options
 /// @tparam Separator Separator position between input types and output types
 /// @tparam AllTypes List of input and output types
 template<size_t Separator, class ...AllTypes>
-DebugOptions GraphSignalHandler<Separator, AllTypes...>::debugOptions = DebugOptions::ALL;
+hh::DebugOptions GraphSignalHandler<Separator, AllTypes...>::debugOptions_ = hh::DebugOptions::ALL;
+
+/// @brief Sets the default input options
+/// @tparam Separator Separator position between input types and output types
+/// @tparam AllTypes List of input and output types
+template<size_t Separator, class ...AllTypes>
+hh::InputOptions GraphSignalHandler<Separator, AllTypes...>::inputOptions_ = hh::InputOptions::SEPARATED;
 }
+
 #endif //HEDGEHOG_GRAPH_SIGNAL_HANDLER_H

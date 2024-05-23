@@ -16,16 +16,16 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H_
-#define HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H_
+#ifndef HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H
+#define HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H
 
 #include "../../parts/core_switch.h"
 
 #include "../base/input_output/slot_abstraction.h"
 #include "../base/input_output/receiver_abstraction.h"
 
-#include "../../implementors/concrete_implementor/default_slot.h"
-#include "../../implementors/concrete_implementor/queue_receiver.h"
+#include "../../implementors/concrete_implementor/slot/default_slot.h"
+#include "../../implementors/concrete_implementor/receiver/queue_receiver.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -54,9 +54,7 @@ class ExecutionPipelineInputsManagementAbstraction :
                                                                              ExecutionPipelineImplementation>
   explicit ExecutionPipelineInputsManagementAbstraction(ExecutionPipelineImplementation *const executionPipeline)
       : SlotAbstraction(std::make_shared<implementor::DefaultSlot>()),
-        ReceiverAbstraction<Inputs>(
-            std::make_shared<implementor::QueueReceiver<Inputs>>(),
-            SlotAbstraction::mutex())...,
+        ReceiverAbstraction<Inputs>(std::make_shared<implementor::QueueReceiver<Inputs>>())...,
       coreSwitch_(std::make_unique<CoreSwitch < Inputs...>>
   (static_cast<behavior::MultiSwitchRules<Inputs...> * >(executionPipeline))){}
 
@@ -82,7 +80,7 @@ class ExecutionPipelineInputsManagementAbstraction :
 
   /// @brief Test if the receivers are empty
   /// @return True if the receivers queue are empty, else false
-  [[nodiscard]] bool receiversEmpty() const { return (ReceiverAbstraction<Inputs>::empty() && ...); }
+  [[nodiscard]] bool receiversEmpty() { return (ReceiverAbstraction<Inputs>::empty() && ...); }
 
   /// @brief Connect a graph to the switch
   /// @param graph Graph to connect to the switch
@@ -106,33 +104,19 @@ class ExecutionPipelineInputsManagementAbstraction :
     }
   }
 
-  /// @brief Wake up implementation (notify one node waiting on the condition variable)
-  void wakeUp() override { this->slotConditionVariable()->notify_one(); }
-
-  /// @brief Can terminate implementation
-  /// @details Terminate if there is no predecessor nodes connected and if there is no data in the input queues
-  /// @param lock Flag to lock the test or not
-  /// @return True if the node can terminate, else false
-  [[nodiscard]] bool canTerminate(bool lock) {
-    bool result;
-    if (lock) { lockSlotMutex(); }
-    result = !this->hasNotifierConnected() && this->receiversEmpty();
-    if (lock) { unlockSlotMutex(); }
-    return result;
+  /// @brief The thread wait termination condition
+  /// @return The thread should not wait if there is data available or if the node should terminate
+  [[nodiscard]] bool waitTerminationCondition() final {
+    return !this->receiversEmpty() || canTerminate();
   }
 
-  /// @brief Wait statement when the node is alive and no input data are available
-  /// @return True if the node can terminate, else false
-  bool wait() {
-    std::unique_lock<std::mutex> lock(*(this->mutex()));
-    this->slotConditionVariable()->wait(
-        lock,
-        [this]() { return !this->receiversEmpty() || this->canTerminate(false); }
-    );
-
-    return canTerminate(false);
+  /// @brief The thread wait termination condition
+  /// @return The thread should not wait if there is data available or if the node should terminate
+  [[nodiscard]] bool canTerminate() override {
+    return !this->hasNotifierConnected() && this->receiversEmpty();
   }
 
+ protected:
   /// @brief Visitor for the execution pipeline edge
   /// @param printer Printer gathering data information
   void printEdgesInformation(Printer *printer) {
@@ -156,4 +140,5 @@ class ExecutionPipelineInputsManagementAbstraction :
 }
 }
 }
-#endif //HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H_
+
+#endif //HEDGEHOG_EXECUTION_PIPELINE_INPUTS_MANAGEMENT_ABSTRACTION_H

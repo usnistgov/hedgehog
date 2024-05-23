@@ -16,8 +16,9 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_RESULT_VISITOR_H_
-#define HEDGEHOG_RESULT_VISITOR_H_
+#ifndef HEDGEHOG_RESULT_VISITOR_H
+#define HEDGEHOG_RESULT_VISITOR_H
+
 /// @brief Hedgehog main namespace
 namespace hh {
 
@@ -29,4 +30,5 @@ struct ResultVisitor : Ts ... { using Ts::operator()...; };
 /// @brief Helper to the visitor
 template<class... Ts> ResultVisitor(Ts...) -> ResultVisitor<Ts...>;
 }
-#endif //HEDGEHOG_RESULT_VISITOR_H_
+
+#endif //HEDGEHOG_RESULT_VISITOR_H

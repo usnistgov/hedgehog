@@ -15,12 +15,9 @@
 // operation. This software is not intended to be used in any situation where a failure could cause risk of injury or
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
-//
-// Created by Bardakoff, Alexandre (IntlAssoc) on 12/4/20.
-//
 
-#ifndef HEDGEHOG_TEST_CRITICAL_PATH_H
-#define HEDGEHOG_TEST_CRITICAL_PATH_H
+#ifndef HEDGEHOG_CRITICAL_PATH_H
+#define HEDGEHOG_CRITICAL_PATH_H
 
 #include "../../../../hedgehog/hedgehog.h"
 
@@ -98,4 +95,4 @@ class TestCriticalPath : public hh_cx::AbstractTest<GraphType> {
 
 #endif //HH_ENABLE_HH_CX
 
-#endif //HEDGEHOG_TEST_CRITICAL_PATH_H
+#endif //HEDGEHOG_CRITICAL_PATH_H

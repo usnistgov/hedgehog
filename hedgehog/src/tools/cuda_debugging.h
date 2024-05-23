@@ -17,13 +17,13 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_CUDADEBUGGING_H
-#define HEDGEHOG_CUDADEBUGGING_H
+#ifndef HEDGEHOG_CUDA_DEBUGGING_H
+#define HEDGEHOG_CUDA_DEBUGGING_H
 
 #ifdef HH_USE_CUDA
 
 #include <iostream>
-#include <cublas.h>
+#include <cublas_v2.h>
 #include <cuda_runtime.h>
 
 #ifndef checkCudaErrors
@@ -68,4 +68,4 @@ inline void __checkCudaErrors(cublasStatus_t status, const char *file, const int
 
 #endif //HH_USE_CUDA
 
-#endif //HEDGEHOG_CUDADEBUGGING_H
+#endif //HEDGEHOG_CUDA_DEBUGGING_H

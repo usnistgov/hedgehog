@@ -16,11 +16,10 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-
-#ifndef HEDGEHOG_TEST_DATATYPE_H
-#define HEDGEHOG_TEST_DATATYPE_H
+#ifndef HEDGEHOG_ORDER_H
+#define HEDGEHOG_ORDER_H
 
 // Enum matrix ordering
 enum class Order {Row, Column};
 
-#endif //HEDGEHOG_TEST_DATATYPE_H
+#endif //HEDGEHOG_ORDER_H
