@@ -200,7 +200,7 @@ class NvtxProfiler {
   /// @brief Starts tracking execution in the timeline to show when the task has started waiting for data.
   /// @details This event shows the current queue size in the payload within the attribute.
   /// @param queueSize the queue size
-  void startRangeWaiting([[maybe_unused]]size_t const &queueSize) {
+  void startRangeWaiting([[maybe_unused]]size_t const &queueSize = 0 ) {
 #ifdef HH_USE_NVTX
     waitAttrib_->payload.ullValue = queueSize;
     waitRangeId_ = nvtxDomainRangeStartEx(taskDomain_, waitAttrib_);

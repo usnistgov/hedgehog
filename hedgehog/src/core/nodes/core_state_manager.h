@@ -247,11 +247,12 @@ class CoreStateManager
 
     // Actual computation loop
     while (!this->canTerminate()) {
-//    while (!this->callCanTerminate(true)) {
       // Wait for a data to arrive or termination
+      this->nvtxProfiler()->startRangeWaiting();
       start = std::chrono::system_clock::now();
       canTerminate = this->sleep();
       finish = std::chrono::system_clock::now();
+      this->nvtxProfiler()->endRangeWaiting();
       this->incrementWaitDuration(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start));
 
       // If it can terminate break the loop early
