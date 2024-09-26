@@ -17,8 +17,11 @@
 #
 
 # Ensure C++20
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if (CMAKE_CXX_STANDARD LESS 20)
+  message(FATAL_ERROR
+    "Hedgehog requires at least C++20 and the current version of C++ is set to '${CMAKE_CXX_STANDARD}'.\n"
+    "Consider setting CMAKE_CXX_STANDARD to 20 or higher.")
+endif()
 
 option(TEST_HEDGEHOG "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" ON)
 option(HH_CX "Enable compile-time library for Hedgehog" OFF)
