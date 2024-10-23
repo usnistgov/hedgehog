@@ -152,6 +152,7 @@ class DotPrinter : public Printer {
   /// @param dotFilePath Path for the generated dot file
   /// @param colorScheme Color scheme options (Color depending on exec time or wait time)
   /// @param structureOptions Structure options
+  /// @param inputOptions Input options
   /// @param debugOptions Debug options
   /// @param graph Graph to represent
   /// @param colorPicker Range of colors used to generate the dot file
