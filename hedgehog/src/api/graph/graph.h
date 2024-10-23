@@ -32,8 +32,10 @@
 #include "../printer/options/structure_options.h"
 #include "../printer/options/debug_options.h"
 #include "../printer/dot_printer.h"
-#include "../printer/jet_color.h"
+#include "../printer/color/jet_color.h"
+#include "../printer/color/blue_to_red_color.h"
 #include "result_visitor.h"
+#include "../printer/hedgehog_export_file.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
@@ -344,6 +346,13 @@ class Graph :
   /// between computations.
   void cleanGraph() {
     this->coreGraph_->cleanGraph();
+  }
+
+  /// @brief Generate a read only hedgehog report file (graph name + .hhrojson) used in the GUI
+  void generateHedgehogExportFile() const {
+    core::abstraction::GraphNodeAbstraction *core = this->coreGraph_.get();
+    HedgehogExportFile printer(core);
+    core->visit(&printer);
   }
 };
 }

@@ -428,7 +428,7 @@ class DotPrinter : public Printer {
     std::ostringstream ossId;
     ossId << "edge" << id << type;
     Edge temp(ossId.str(), type, belongingGraph);
-    auto it = std::find(this->edges_->begin(), this->edges_->end(), temp);
+    auto const & it = std::find(this->edges_->begin(), this->edges_->end(), temp);
     if (it != this->edges_->end()) { return it; }
     else { return this->edges_->insert(this->edges_->end(), temp); }
   }
@@ -439,11 +439,11 @@ class DotPrinter : public Printer {
   std::string getTaskInformation(core::abstraction::TaskNodeAbstraction *task) {
     std::stringstream ss;
 
-    auto copyableTask = dynamic_cast<core::abstraction::AnyGroupableAbstraction const *>(task);
-    auto slotTask = dynamic_cast<core::abstraction::SlotAbstraction *>(task);
-    auto sm = dynamic_cast<core::abstraction::StateManagerNodeAbstraction const *>(task);
+    auto const copyableTask = dynamic_cast<core::abstraction::AnyGroupableAbstraction const *>(task);
+    auto const slotTask = dynamic_cast<core::abstraction::SlotAbstraction *>(task);
+    auto const sm = dynamic_cast<core::abstraction::StateManagerNodeAbstraction const *>(task);
 
-    bool printAllNodes =
+    bool const printAllNodes =
         this->structureOptions_ == StructureOptions::THREADING || this->structureOptions_ == StructureOptions::ALL;
 
     // Print the name
@@ -531,7 +531,7 @@ class DotPrinter : public Printer {
             ss << "\\nElements/Input: ";
             auto minmaxElementsPerInputs = copyableTask->minmaxNumberElementsReceivedGroupPerInput();
             auto meanSDNumberElementsPerInputs = copyableTask->meanSDNumberElementsReceivedGroupPerInput();
-            for(auto [key, minMax] : minmaxElementsPerInputs){
+            for(const auto& [key, minMax] : minmaxElementsPerInputs){
               ss << "\\n(" << key << ") Min: " << minMax.first
                  << " Avg: " << std::setw(1) << meanSDNumberElementsPerInputs.at(key).first
                  << " +- " << std::setw(1) << meanSDNumberElementsPerInputs.at(key).second
@@ -544,7 +544,7 @@ class DotPrinter : public Printer {
             ss << task->numberReceivedElements();
           }else {
             ss << "\\nElements/Input:";
-            for(auto [key, nbElem] : task->nbElementsPerInput()){
+            for(const auto& [key, nbElem] : task->nbElementsPerInput()){
               ss << " (" << key << ") " << nbElem;
             }
           }

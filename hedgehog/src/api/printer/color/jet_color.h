@@ -17,51 +17,65 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_BLUE_TO_RED_COLOR_H
-#define HEDGEHOG_BLUE_TO_RED_COLOR_H
+#ifndef HEDGEHOG_JET_COLOR_H
+#define HEDGEHOG_JET_COLOR_H
 
-#include <cmath>
 #include <sstream>
 #include <iomanip>
-#include <algorithm>
 
-#include "options/color_picker.h"
+#include "../options/color_picker.h"
 
 /// @brief Hedgehog main namespace
 namespace hh {
 
-/// Blue to Red color range.
-/// @brief Return a color from only blue to only red, blue being the lowest value, red the highest value in range
-class BlueToRedColor : public ColorPicker {
+/// Jet color range.
+/// @brief Return a color from the jet color range
+class JetColor : public ColorPicker {
  public:
   /// @brief Default constructor
-  BlueToRedColor() = default;
-  /// @brief Default destructor
-  ~BlueToRedColor() override = default;
+  JetColor() = default;
 
-  /// @brief Return a color from only blue to only red, blue being the lowest value, red the highest value in range
-  /// @param value Value to get the color from
-  /// @param min Minimum value of the range
+  /// @brief Default destructor
+  ~JetColor() override = default;
+
+  /// @brief Get RGB value for a duration within a range for the jet color range
+  /// @param value Value to get the RGB color
+  /// @param min Min value in the range
   /// @param range Range of values
-  /// @return RGB color for the  value
+  /// @return String representing the RGB values
   std::string getRGBFromRange(std::chrono::nanoseconds const &value,
                               std::chrono::nanoseconds const &min,
                               std::chrono::nanoseconds const &range) override {
+    double
+        dVal = (double) value.count(), dMin = (double) min.count(), dRange = (double) range.count(),
+        dR = 1, dG = 1, dB = 1;
 
-    auto posRedToBlue = (uint64_t) std::round((double) (value.count() - min.count()) / (double) range.count() * 255);
-    posRedToBlue = std::clamp(posRedToBlue, (uint64_t) 0, (uint64_t) 255);
-    std::stringstream ss;
-    ss << "\"#"
-       << std::setfill('0') << std::setw(2) << std::hex << posRedToBlue
-       << "00"
-       << std::setfill('0') << std::setw(2) << std::hex << 255 - posRedToBlue
-       << "\"";
+    std::ostringstream oss;
 
-    return ss.str();
+    if (dVal < dMin + 0.25 * dRange) {
+      dR = 0;
+      dG = (4 * dVal - dMin) / dRange;
+    } else if (dVal < (dMin + 0.5 * dRange)) {
+      dR = 0;
+      dB = 1 + 4 * (dMin + 0.25 * dRange - dVal) / dRange;
+    } else if (dVal < (dMin + 0.75 * dRange)) {
+      dR = 4 * (dVal - dMin - 0.5 * dRange) / dRange;
+      dB = 0;
+    } else {
+      dG = 1 + 4 * (dMin + 0.75 * dRange - dVal) / dRange;
+      dB = 0;
+    }
+
+    oss << "\"#"
+        << std::setfill('0') << std::setw(2) << std::hex << (uint16_t) std::clamp(dR * 255, 0., 255.)
+        << std::setfill('0') << std::setw(2) << std::hex << (uint16_t) std::clamp(dG * 255, 0., 255.)
+        << std::setfill('0') << std::setw(2) << std::hex << (uint16_t) std::clamp(dB * 255, 0., 255.)
+        << "\"";
+
+    return oss.str();
   }
-
 };
 
 }
 
-#endif //HEDGEHOG_BLUE_TO_RED_COLOR_H
+#endif //HEDGEHOG_JET_COLOR_H

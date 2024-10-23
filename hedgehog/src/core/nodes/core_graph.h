@@ -308,8 +308,9 @@ class CoreGraph :
 
       for (auto insideNodeGroups : *(this->insideNodesAndGroups_)) {
         if (insideNodeGroups.second.size() == 0) {
-          if(auto printableNode = dynamic_cast<abstraction::PrintableAbstraction*>(insideNodeGroups.first))
+          if(auto printableNode = dynamic_cast<abstraction::PrintableAbstraction*>(insideNodeGroups.first)) {
             printableNode->visit(printer);
+          }
         } else {
           printer->printGroup(insideNodeGroups.first, insideNodeGroups.second);
         }
