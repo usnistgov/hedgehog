@@ -184,7 +184,7 @@ class CoreTask
     volatile bool canTerminate = false;
 
     this->isActive(true);
-    this->nvtxProfiler()->initialize(this->threadId());
+    this->nvtxProfiler()->initialize(this->threadId(), this->graphId());
     this->preRun();
 
     if (this->automaticStart_) {  this->callAllExecuteWithNullptr(); }

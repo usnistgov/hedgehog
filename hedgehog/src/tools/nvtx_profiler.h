@@ -92,13 +92,12 @@ class NvtxProfiler {
   /// @brief Deleted default constructor
   NvtxProfiler() = delete;
 
-
 #ifdef HH_USE_NVTX
   /// @brief Constructs the NvtxProfiler with the name of the task
   /// @details Each NvtxProfiler will hold profiling information for each task. It will profile all stages of the task's
   /// life cycle: initialize, execution, waiting for data, waiting for memory, releasing memory, and shutting down.
   /// @param taskName the name of the task
-  explicit NvtxProfiler(std::string const & taskName) {
+  explicit NvtxProfiler(std::string const &taskName) {
     taskDomain_ = nvtxDomainCreateA(taskName.data());
 
     initializeAttrib_ = createEventAttribute(NVTX_COLOR_INITIALIZING);
@@ -139,15 +138,16 @@ class NvtxProfiler {
   /// Initializes the NvtxProfiler, and adds the threadId that is associated with the task.
   /// @details Initialization of the NvtxProfiler creates and cache's the string names of the various event attributes
   /// @param threadId the thread identifier
-  void initialize([[maybe_unused]]int threadId) {
+  /// @param graphId the graph identifier
+  void initialize([[maybe_unused]]int threadId, [[maybe_unused]]size_t graphId) {
 #ifdef HH_USE_NVTX
-    std::string prefixName(std::to_string(threadId));
-    initializeName_ = prefixName + ":Initializing";
-    executeName_ = prefixName + ":Executing";
-    waitName_ = prefixName + ":Waiting";
-    waitForMemName_ = prefixName + ":MemWait";
-    releaseMemName_ = prefixName + ":Release";
-    shutdownName_ = prefixName + ":Shutdown";
+    std::string const prefix = std::to_string(threadId) + ":" + std::to_string(graphId) + ":";
+    initializeName_ = prefix + "Initializing";
+    executeName_ = prefix + "Executing";
+    waitName_ = prefix + "Waiting";
+    waitForMemName_ = prefix + "MemWait";
+    releaseMemName_ = prefix + "Release";
+    shutdownName_ = prefix + "Shutdown";
 
     initializeString_ = nvtxDomainRegisterStringA(taskDomain_, initializeName_.data());
     executeString_ = nvtxDomainRegisterStringA(taskDomain_, executeName_.data());
@@ -183,7 +183,7 @@ class NvtxProfiler {
 #endif
   }
 
-   /// @brief Starts tracking intialization in the timeline to show when the task has started its initialization phase.
+  /// @brief Starts tracking intialization in the timeline to show when the task has started its initialization phase.
   void startRangeInitializing() {
 #ifdef HH_USE_NVTX
     initializeRangeId_ = nvtxDomainRangeStartEx(taskDomain_, initializeAttrib_);
@@ -200,7 +200,7 @@ class NvtxProfiler {
   /// @brief Starts tracking execution in the timeline to show when the task has started waiting for data.
   /// @details This event shows the current queue size in the payload within the attribute.
   /// @param queueSize the queue size
-  void startRangeWaiting([[maybe_unused]]size_t const &queueSize = 0 ) {
+  void startRangeWaiting([[maybe_unused]]size_t const &queueSize = 0) {
 #ifdef HH_USE_NVTX
     waitAttrib_->payload.ullValue = queueSize;
     waitRangeId_ = nvtxDomainRangeStartEx(taskDomain_, waitAttrib_);

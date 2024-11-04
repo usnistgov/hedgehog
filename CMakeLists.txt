@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(hedgehog VERSION 3.3.2 LANGUAGES CXX)
+project(hedgehog VERSION 3.3.3 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)

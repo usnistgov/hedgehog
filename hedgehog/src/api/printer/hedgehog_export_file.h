@@ -38,8 +38,10 @@ class HedgehogExportFile : public Printer {
  private:
   std::ofstream outputFile_ = {}; ///< Output file stream
   std::ostringstream buffer_; ///< Buffer for the file
-  std::map<std::pair<std::string, std::string>, std::unordered_set<std::string>> edges_;
-  ///< Map of edges to create {fromId, toId} -> edge type
+
+  std::map<std::pair<core::abstraction::NodeAbstraction const *, core::abstraction::NodeAbstraction const *>,
+           std::list<std::string>> edges_; ///< list of edges to print
+  std::map<core::abstraction::NodeAbstraction const *, std::pair<std::string, size_t>> mapExecutionPipelineAlias_; ///< Mapping of execution pipeline node and its switch to an alias name
  public:
   /// @brief Create a HedgehogExportFile from the graph pointer
   /// @details the graph's name is the name of the file + ".hhrojson"
@@ -63,6 +65,7 @@ class HedgehogExportFile : public Printer {
       buffer_ << "\"type\": \"graph\",\n";
     } else {
       buffer_ << "\"type\": \"innerGraph\",\n";
+      buffer_ << R"("graphIdentifier": ")" << graph->graphId() << "\",\n";
     }
     buffer_ << R"("instanceIdentifier": ")" << graph->name() << "\",\n";
     // Open the node definitions
@@ -72,6 +75,7 @@ class HedgehogExportFile : public Printer {
   /// @brief Print graph footer under json format
   /// @param graph Graph to print
   void printGraphFooter(core::abstraction::GraphNodeAbstraction const *graph) override {
+    std::pair<std::string, size_t> infoSrc, infoDest;
     // Remove ",\n"
     buffer_.seekp(-2, buffer_.cur);
     // Close the node definitions
@@ -81,10 +85,20 @@ class HedgehogExportFile : public Printer {
       // Export edges
       buffer_ << "\"edges\": [\n";
       for (auto const &edge : edges_) {
+        auto const &[src, dest] = edge.first;
+
+        if(mapExecutionPipelineAlias_.contains(src)){ infoSrc = mapExecutionPipelineAlias_.at(src);}
+        else { infoSrc = {src->name(), src->graphId()}; }
+
+        if(mapExecutionPipelineAlias_.contains(dest)){ infoDest = mapExecutionPipelineAlias_.at(dest);}
+        else { infoDest = {dest->name(), dest->graphId()}; }
+
         buffer_ << "{\n";
         buffer_
-            << R"("source": ")" << edge.first.first << "\",\n"
-            << R"("destination": ")" << edge.first.second << "\",\n"
+            << R"("sourceId": ")" << infoSrc.first << "\",\n"
+            << R"("sourceGraphId": ")" << infoSrc.second << "\",\n"
+            << R"("destId": ")" << infoDest.first << "\",\n"
+            << R"("destGraphId": ")" << infoDest.second << "\",\n"
             << R"("types": [)" << "\n";
         auto const &types = edge.second;
         for (auto const &type : types) {
@@ -112,7 +126,15 @@ class HedgehogExportFile : public Printer {
     buffer_ << "{\n";
     buffer_ << "\"type\": \"executionPipeline\",\n";
     buffer_ << R"("instanceIdentifier": ")" << ep->name() << "\",\n";
+    buffer_ << R"("graphIdentifier": ")" << switchNode->graphId() << "\",\n";
+    buffer_ << R"("switch": ")" << switchNode->name() << "\",\n";
     buffer_ << "\"graphs\": [";
+
+    std::ostringstream oss;
+    oss << ep->name() << " switch";
+
+    mapExecutionPipelineAlias_.insert({ep, {oss.str(), switchNode->graphId()}});
+    mapExecutionPipelineAlias_.insert({switchNode, {oss.str(), switchNode->graphId()}});
   }
 
   /// @brief Print execution pipeline footer under the json format
@@ -137,6 +159,7 @@ class HedgehogExportFile : public Printer {
       buffer_ << "\"type\": \"other\",\n";
     }
     buffer_ << R"("instanceIdentifier": ")" << node->name() << "\",\n";
+    buffer_ << R"("graphIdentifier": ")" << node->graphId() << "\",\n";
     if (nodeAsTask && nodeAsTask->hasMemoryManagerAttached()) {
       buffer_ << R"("managedMemory": ")" << nodeAsTask->memoryManager()->managedType() << "\",\n";
     }
@@ -156,7 +179,9 @@ class HedgehogExportFile : public Printer {
                  std::string const &edgeType,
                  [[maybe_unused]]size_t const &queueSize,
                  [[maybe_unused]]size_t const &maxQueueSize) override {
-    edges_[{from->name(), to->name()}].insert(edgeType);
+    std::pair<core::abstraction::NodeAbstraction const *, core::abstraction::NodeAbstraction const *> key{from, to};
+    if (!edges_.contains(key)) { edges_.insert({key, {}}); }
+    edges_[key].push_back(edgeType);
   }
 
   /// @brief Print a group of nodes under the json format
@@ -177,10 +202,24 @@ class HedgehogExportFile : public Printer {
 
   /// @brief Do nothing, the source already exists by default in the GUI
   /// @param source Source to print (unused)
-  void printSource([[maybe_unused]]core::abstraction::NodeAbstraction const *source) override {}
+  void printSource([[maybe_unused]]core::abstraction::NodeAbstraction const *source) override {
+    buffer_ << "{\n";
+    buffer_ << "\"type\": \"IONode\",\n";
+    buffer_ << R"("instanceIdentifier": ")" << source->name() << "\",\n";
+    buffer_ << R"("graphIdentifier": ")" << source->graphId() << "\",\n";
+    buffer_ << R"("thread": 1)" << "\n";
+    buffer_ << "},\n";
+  }
   /// @brief Do nothing, the sink already exists by default in the GUI
   /// @param sink Sink to print (unused)
-  void printSink([[maybe_unused]]core::abstraction::NodeAbstraction const *sink) override {}
+  void printSink([[maybe_unused]]core::abstraction::NodeAbstraction const *sink) override {
+    buffer_ << "{\n";
+    buffer_ << "\"type\": \"IONode\",\n";
+    buffer_ << R"("instanceIdentifier": ")" << sink->name() << "\",\n";
+    buffer_ << R"("graphIdentifier": ")" << sink->graphId() << "\",\n";
+    buffer_ << R"("thread": 1)" << "\n";
+    buffer_ << "},\n";
+  }
 };
 }
 #endif //HEDGEHOG_HEDGEHOG_EXPORT_FILE_H_

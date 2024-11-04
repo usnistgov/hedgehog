@@ -229,7 +229,7 @@ class CoreStateManager
     volatile bool canTerminate;
 
     this->isActive(true);
-    this->nvtxProfiler()->initialize(0);
+    this->nvtxProfiler()->initialize(0, this->graphId());
     this->preRun();
 
     if (this->automaticStart_) {

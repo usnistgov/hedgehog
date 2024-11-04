@@ -190,6 +190,7 @@ class CoreExecutionPipeline
   /// @param belongingGraph Graph to register the execution pipeline into
   void registerNode(abstraction::GraphNodeAbstraction *belongingGraph) override {
     NodeAbstraction::registerNode(belongingGraph);
+    EPIM<Separator, AllTypes...>::coreSwitch()->registerNode(belongingGraph);
     for (auto coreGraph : coreGraphs_) { coreGraph->registerNode(belongingGraph); }
   }
 
