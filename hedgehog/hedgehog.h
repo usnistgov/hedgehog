@@ -35,12 +35,14 @@
 #include "src/api/graph/graph.h"
 #include "src/api/graph/graph_signal_handler.h"
 #include "src/api/execution_pipeline/abstract_execution_pipeline.h"
+#include "src/api/task/lambda_task.h"
 
 #include "src/api/memory_manager/manager/memory_manager.h"
 #include "src/api/memory_manager/managed_memory.h"
 #include "src/api/memory_manager/manager/static_memory_manager.h"
 
 #include "src/api/state_manager/state_manager.h"
+
 
 #ifdef HH_USE_CUDA
 #include "src/api/task/abstract_cuda_task.h"
