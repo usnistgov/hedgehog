@@ -22,6 +22,8 @@
 #pragma once
 #include <iostream>
 #include <tuple>
+#include <memory>
+#include "task_interface.h"
 
 
 /// @brief Hedgehog main namespace
@@ -218,6 +220,31 @@ constexpr bool isContainedIn_v = std::disjunction_v<std::is_same<T, Ts>...>;
 /// @tparam Tuple Tuple of types
 template<class T, class Tuple>
 constexpr bool isContainedInTuple_v = std::tuple_size_v<Intersect_t<std::tuple<T>, Tuple>> == 1;
+
+/// @brief Lambda container type for the lambda task
+/// @tparam LambdaTaskType Type of the lambda task (CRTP)
+/// @tparam Inputs Input types of the lambda task
+template <class LambdaTaskType, class ...Inputs>
+using LambdaContainer = std::tuple<void(*)(std::shared_ptr<Inputs>, TaskInterface<LambdaTaskType>)...>;
+
+/// @brief Deduce the type of the lambda container in a lambda task
+/// @tparam LambdaTaskType Type of the lambda task (CRTP)
+/// @tparam Tuple Tuple of types
+template<class LambdaTaskType, class Tuple>
+struct LambdaContainerDeducer;
+
+/// @brief Deduce the type of the lambda container in a lambda task
+/// @tparam LambdaTaskType Type of the lambda task (CRTP)
+/// @tparam Inputs Input types of the lambda task
+template<class LambdaTaskType, class ...Inputs>
+struct LambdaContainerDeducer<LambdaTaskType, std::tuple<Inputs...>> { 
+    /// @brief Accessor to the type of the lambda container
+    using type = LambdaContainer<LambdaTaskType, Inputs...>; 
+};
+
+/// @brief Helper that gives the type of the lambda container in a lambda task
+template<class LambdaTaskType, class Tuple>
+using LambdaContainerDeducer_t = typename LambdaContainerDeducer<LambdaTaskType, Tuple>::type;
 
 /// @brief Create a string_view containing the type name
 /// @tparam T Type to create the string_view from

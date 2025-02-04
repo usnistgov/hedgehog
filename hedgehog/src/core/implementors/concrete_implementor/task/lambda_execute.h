@@ -16,41 +16,58 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_HEDGEHOG_H
-#define HEDGEHOG_HEDGEHOG_H
-
-#include <version>
-
-#ifdef HH_ENABLE_HH_CX
-#if !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
-#error The compiler has not the features for Hedgehog CX
-#undef HH_ENABLE_HH_CX
-#endif // !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
-#endif // HH_ENABLE_HH_CX
-
-#include "src/api/task/abstract_task.h"
-#include "src/api/task/abstract_mixed_task.h"
-#include "src/api/task/abstract_atomic_task.h"
-#include "src/api/task/abstract_limited_atomic_task.h"
-#include "src/api/graph/graph.h"
-#include "src/api/graph/graph_signal_handler.h"
-#include "src/api/execution_pipeline/abstract_execution_pipeline.h"
-#include "src/api/task/lambda_task.h"
-
-#include "src/api/memory_manager/manager/memory_manager.h"
-#include "src/api/memory_manager/managed_memory.h"
-#include "src/api/memory_manager/manager/static_memory_manager.h"
-
-#include "src/api/state_manager/state_manager.h"
+#ifndef HEDGEHOG_LAMBDA_EXECUTE_H
+#define HEDGEHOG_LAMBDA_EXECUTE_H
+#include <memory>
+#include "../../../../tools/task_interface.h"
+#include "../../../../tools/traits.h"
 
 
-#ifdef HH_USE_CUDA
-#include "src/api/task/abstract_cuda_task.h"
-#include "src/tools/cuda_debugging.h"
-#endif //HH_USE_CUDA
+/// @brief Hedgehog main namespace
+namespace hh {
+/// @brief Hedgehog core namespace
+namespace core {
+/// @brief Hedgehog implementor namespace
+namespace implementor {
 
-#ifdef HH_ENABLE_HH_CX
-#include "hedgehog_cx/hedgehog_cx.h"
-#endif //HH_ENABLE_HH_CX
+/// @brief Implementation of the Execute traits for the lambda task
+/// @tparam LambdaTaskType Type of the lambda task (CRTP)
+/// @tparam Input Type of the input.
+template <typename LambdaTaskType, typename Input>
+class LambdaExecute
+    : public tool::BehaviorMultiExecuteTypeDeducer_t<std::tuple<Input>>
+{
+ public:
+  /// @brief Type of the lambda function
+  using LambdaType = void(*)(std::shared_ptr<Input>, tool::TaskInterface<LambdaTaskType>);
 
-#endif //HEDGEHOG_HEDGEHOG_H
+ private:
+  LambdaType lambda_; ///< Lambda function that should process the input type
+  tool::TaskInterface<LambdaTaskType> task_; ///< Interface to the inheriting task
+
+ public:
+  /// @brief Constructor with the lambda and the task
+  /// @param lambda Lambda function that will process the input type
+  /// @param task Pointer to the task (CRTP)
+  LambdaExecute(LambdaType lambda, LambdaTaskType *task) : lambda_(lambda), task_(task) { }
+
+  /// @brief Implementation of the execute function from the Execute trait
+  /// @param data Input data
+  void execute(std::shared_ptr<Input> data) override {
+      lambda_(data, task_);
+  }
+
+  /// @brief Reinitialize the members when the user call the `setLambda` function in the lambda task
+  /// @parma lambda New lambda function
+  /// @parma task New task
+  void reinitialize(LambdaType lambda, LambdaTaskType *task) {
+      lambda_ = lambda;
+      task_.task(task);
+  }
+};
+
+}
+}
+}
+
+#endif //HEDGEHOG_TASK_LAMBDA_EXECUTE_H

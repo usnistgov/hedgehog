@@ -22,6 +22,7 @@
 #include "tests_impl/test_complex_graph.h"
 #include "tests_impl/test_state_manager.h"
 #include "tests_impl/test_memory_manager.h"
+#include "tests_impl/test_lambda_task.h"
 
 #include "tests_impl/compile_time_tests/test_basic.h"
 #include "tests_impl/compile_time_tests/test_critical_path.h"
@@ -47,6 +48,12 @@ TEST(HedgehogGraph, complexGraph) {
   ASSERT_NO_THROW(testComplexEPComposition());
   ASSERT_NO_THROW(testCustomizedNodes());
   ASSERT_NO_THROW(testAtomicTask());
+}
+
+TEST(LambdaTask, lambdaTask) {
+  ASSERT_NO_THROW(lambdaTaskSingleInput());
+  ASSERT_NO_THROW(lambdaTaskMultipleInputs());
+  ASSERT_NO_THROW(lambdaTaskSpecializedTask());
 }
 
 TEST(HedgehogTools, metafunctions) {

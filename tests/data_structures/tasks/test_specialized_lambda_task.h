@@ -16,41 +16,23 @@
 // damage to property. The software developed by NIST employees is not subject to copyright protection within the
 // United States.
 
-#ifndef HEDGEHOG_HEDGEHOG_H
-#define HEDGEHOG_HEDGEHOG_H
+#ifndef HEDGEHOG_TEST_SPECIALIZED_LAMBDA_TASK_H
+#define HEDGEHOG_TEST_SPECIALIZED_LAMBDA_TASK_H
+#include "../../../hedgehog/hedgehog.h"
+#include <memory>
 
-#include <version>
+template <size_t Separator, typename ...AllTypes>
+class TestSpecializedLambdaTask 
+    : public hh::SpecializedLambdaTask<TestSpecializedLambdaTask<Separator, AllTypes...>, Separator, AllTypes...> {
+ private:
+  int number_ = 0;
 
-#ifdef HH_ENABLE_HH_CX
-#if !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
-#error The compiler has not the features for Hedgehog CX
-#undef HH_ENABLE_HH_CX
-#endif // !__cpp_lib_constexpr_string || !__cpp_lib_constexpr_vector
-#endif // HH_ENABLE_HH_CX
+ public:
+  TestSpecializedLambdaTask(int number)
+      : hh::SpecializedLambdaTask<TestSpecializedLambdaTask, 1, int, int>(this),
+        number_(number) {}
 
-#include "src/api/task/abstract_task.h"
-#include "src/api/task/abstract_mixed_task.h"
-#include "src/api/task/abstract_atomic_task.h"
-#include "src/api/task/abstract_limited_atomic_task.h"
-#include "src/api/graph/graph.h"
-#include "src/api/graph/graph_signal_handler.h"
-#include "src/api/execution_pipeline/abstract_execution_pipeline.h"
-#include "src/api/task/lambda_task.h"
+  [[nodiscard]] int number() const { return number_; }
+};
 
-#include "src/api/memory_manager/manager/memory_manager.h"
-#include "src/api/memory_manager/managed_memory.h"
-#include "src/api/memory_manager/manager/static_memory_manager.h"
-
-#include "src/api/state_manager/state_manager.h"
-
-
-#ifdef HH_USE_CUDA
-#include "src/api/task/abstract_cuda_task.h"
-#include "src/tools/cuda_debugging.h"
-#endif //HH_USE_CUDA
-
-#ifdef HH_ENABLE_HH_CX
-#include "hedgehog_cx/hedgehog_cx.h"
-#endif //HH_ENABLE_HH_CX
-
-#endif //HEDGEHOG_HEDGEHOG_H
+#endif //HEDGEHOG_TEST_SPECIALIZED_LAMBDA_TASK_H
