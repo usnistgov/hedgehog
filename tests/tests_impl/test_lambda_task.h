@@ -19,7 +19,7 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include "../data_structures/tasks/int_task.h"
+#include "../data_structures/tasks/test_specialized_lambda_task.h"
 
 void lambdaTaskSingleInput(){
   size_t count = 0;
@@ -39,7 +39,6 @@ void lambdaTaskSingleInput(){
   g.waitForTermination();
 
   EXPECT_EQ(count, 100);
-
 }
 
 void lambdaTaskMultipleInputs(){
@@ -75,3 +74,24 @@ void lambdaTaskMultipleInputs(){
   EXPECT_EQ(countDouble, 20);
 }
 
+void lambdaTaskSpecializedTask(){
+  size_t count = 0;
+  hh::Graph<1, int, int> g;
+  auto task = std::make_shared<TestSpecializedLambdaTask<1, int, int>>(4);
+  task->setLambda<int>([](std::shared_ptr<int> data, auto self) {
+      self.addResult(std::make_shared<int>(*data * self->number()));
+  });
+  g.inputs(task);
+  g.outputs(task);
+  g.executeGraph();
+  for(int i = 0; i < 4; ++i){ g.pushData(std::make_shared<int>(i)); }
+  g.finishPushingData();
+
+  while(auto res = g.getBlockingResult()){ 
+      count += *std::get<std::shared_ptr<int>>(*res); 
+  }
+
+  g.waitForTermination();
+
+  EXPECT_EQ(count, (0*4 + 1*4 + 2*4 + 3*4));
+}

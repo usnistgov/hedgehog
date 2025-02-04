@@ -53,6 +53,7 @@ TEST(HedgehogGraph, complexGraph) {
 TEST(LambdaTask, lambdaTask) {
   ASSERT_NO_THROW(lambdaTaskSingleInput());
   ASSERT_NO_THROW(lambdaTaskMultipleInputs());
+  ASSERT_NO_THROW(lambdaTaskSpecializedTask());
 }
 
 TEST(HedgehogTools, metafunctions) {
