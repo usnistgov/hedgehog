@@ -23,6 +23,7 @@
 #include <iostream>
 #include <tuple>
 #include <memory>
+#include <functional>
 #include "task_interface.h"
 
 
@@ -225,7 +226,7 @@ constexpr bool isContainedInTuple_v = std::tuple_size_v<Intersect_t<std::tuple<T
 /// @tparam LambdaTaskType Type of the lambda task (CRTP)
 /// @tparam Inputs Input types of the lambda task
 template <class LambdaTaskType, class ...Inputs>
-using LambdaContainer = std::tuple<void(*)(std::shared_ptr<Inputs>, TaskInterface<LambdaTaskType>)...>;
+using LambdaContainer = std::tuple<std::function<void(std::shared_ptr<Inputs>, TaskInterface<LambdaTaskType>)>...>;
 
 /// @brief Deduce the type of the lambda container in a lambda task
 /// @tparam LambdaTaskType Type of the lambda task (CRTP)
