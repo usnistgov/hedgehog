@@ -22,7 +22,7 @@
 #include <memory>
 #include <mutex>
 #include <execution>
-#include <emmintrin.h>
+// #include "../../../tools/intrinsics.h"
 
 #include "../../implementor/implementor_receiver.h"
 #include "../../../abstractions/base/input_output/receiver_abstraction.h"
@@ -103,7 +103,7 @@ class GraphReceiver : public ImplementorReceiver<Input> {
     std::for_each(
         this->abstractReceivers_->begin(), this->abstractReceivers_->end(),
         [&data](abstraction::ReceiverAbstraction<Input> *receiver) {
-          while(!receiver->receive(data)) { _mm_pause(); }
+          while(!receiver->receive(data)) { cross_platform_yield(); }
         }
     );
     return true;

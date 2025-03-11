@@ -20,8 +20,7 @@
 #define HEDGEHOG_DEFAULT_SENDER_H
 
 #include <execution>
-#include <emmintrin.h>
-
+#include "../../../tools/intrinsics.h"
 #include "../implementor/implementor_sender.h"
 #include "../implementor/implementor_receiver.h"
 /// @brief Hedgehog main namespace
@@ -74,7 +73,7 @@ class DefaultSender : public ImplementorSender<Output> {
   void send(std::shared_ptr<Output> data) override {
     std::lock_guard<std::mutex> lck(mutex_);
     for (auto const &receiver : *receivers_) {
-      while(!receiver->receive(data)){ _mm_pause(); }
+      while(!receiver->receive(data)){ cross_platform_yield(); }
     }
   }
 };

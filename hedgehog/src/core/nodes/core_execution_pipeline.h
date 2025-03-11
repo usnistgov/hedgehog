@@ -304,7 +304,7 @@ class CoreExecutionPipeline
       for (auto coreGraph : this->coreGraphs_) {
         if (EPIM<Separator, AllTypes...>::callSendToGraph(data, coreGraph->graphId())) {
           while(!std::static_pointer_cast<abstraction::ReceiverAbstraction<Input>>(coreGraph)->receive(data)) {
-            _mm_pause();
+            cross_platform_yield();
           }
           std::static_pointer_cast<abstraction::SlotAbstraction>(coreGraph)->wakeUp();
         }

@@ -43,7 +43,7 @@
 #define HEDGEHOG_LIMITED_ATOMIC_QUEUE_RECEIVER_H
 
 #include <execution>
-#include <mmintrin.h>
+// #include "../../tools/intrinsics.h"
 
 #include "../../implementor/implementor_receiver.h"
 #include "../../../abstractions/base/input_output/receiver_abstraction.h"
@@ -94,7 +94,7 @@ class LimitedAtomicQueueReceiver : public ImplementorReceiver<Input> {
   /// @brief Add a sender to the set of connected senders
   /// @param sender Sender to add to the connected senders
   void addSender(abstraction::SenderAbstraction<Input> *sender) override {
-    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { _mm_pause(); }
+    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { cross_platform_yield(); }
     senders_->insert(sender);
     senderAccessFlag_.clear(std::memory_order_release);
   }
@@ -102,7 +102,7 @@ class LimitedAtomicQueueReceiver : public ImplementorReceiver<Input> {
   /// @brief Remove a sender to the set of connected senders
   /// @param sender Sender to remove from the connected senders
   void removeSender(abstraction::SenderAbstraction<Input> *sender) override {
-    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { _mm_pause(); }
+    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { cross_platform_yield(); }
     senders_->erase(sender);
     senderAccessFlag_.clear(std::memory_order_release);
   }
@@ -121,7 +121,7 @@ class LimitedAtomicQueueReceiver : public ImplementorReceiver<Input> {
 
     while (!refData.compare_exchange_strong(expected, data, std::memory_order_relaxed, std::memory_order_relaxed)) {
       expected = nullptr;
-      do { _mm_pause(); } while (refData.load(std::memory_order_relaxed) != nullptr);
+      do { cross_platform_yield(); } while (refData.load(std::memory_order_relaxed) != nullptr);
     }
 
     auto diff = head - tail_.load(std::memory_order_relaxed);;
@@ -145,7 +145,7 @@ class LimitedAtomicQueueReceiver : public ImplementorReceiver<Input> {
     while (true) {
       data = refData.exchange(nullptr, std::memory_order_acquire);
       if (data != nullptr) { return true; }
-      do { _mm_pause(); } while (refData.load(std::memory_order_relaxed) == nullptr);
+      do { cross_platform_yield(); } while (refData.load(std::memory_order_relaxed) == nullptr);
     }
   }
 
