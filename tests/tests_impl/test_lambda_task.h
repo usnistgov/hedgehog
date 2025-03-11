@@ -95,3 +95,21 @@ void lambdaTaskSpecializedTask(){
 
   EXPECT_EQ(count, (0*4 + 1*4 + 2*4 + 3*4));
 }
+
+void lambdaTaskCaptureContext(){
+  size_t count = 0;
+  hh::Graph<1, int, int> g;
+  auto task = std::make_shared<hh::LambdaTask<1, int, int>>();
+  task->setLambda<int>([&count](std::shared_ptr<int> data, auto self) {
+      ++count;
+      self.addResult(data);
+  });
+  g.inputs(task);
+  g.outputs(task);
+  g.executeGraph();
+  for(int i = 0; i < 100; ++i){ g.pushData(std::make_shared<int>(i)); }
+  g.finishPushingData();
+  g.waitForTermination();
+
+  EXPECT_EQ(count, 100);
+}

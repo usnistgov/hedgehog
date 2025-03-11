@@ -23,6 +23,7 @@
 #include <string>
 #include <ostream>
 #include <utility>
+#include <functional>
 
 #include "../../../nodes/core_lambda_task.h"
 #include "../../../../behavior/task_node.h"
@@ -120,8 +121,8 @@ class InternalLambdaTask
   /// @tparam Input Input type
   /// @param lambda Lambda function
   template<hh::tool::ContainsInTupleConcept<tool::Inputs<Separator, AllTypes...>> Input>
-  void setLambda(void(lambda)(std::shared_ptr<Input>, tool::TaskInterface<SubType>)) {
-      std::get<void(*)(std::shared_ptr<Input>, tool::TaskInterface<SubType>)>(lambdas_) = lambda;
+  void setLambda(std::function<void(std::shared_ptr<Input>, tool::TaskInterface<SubType>)> lambda) {
+      std::get<std::function<void(std::shared_ptr<Input>, tool::TaskInterface<SubType>)>>(lambdas_) = lambda;
       LambdaMultiExecute<SubType, tool::Inputs<Separator, AllTypes...>>::reinitialize(lambdas_, self_);
   }
 
