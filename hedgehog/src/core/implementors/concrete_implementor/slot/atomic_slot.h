@@ -22,8 +22,7 @@
 #include <set>
 #include <atomic>
 #include <execution>
-#include <mmintrin.h>
-
+#include "../../../../tools/intrinsics.h"
 #include "../../implementor/implementor_slot.h"
 #include "../../implementor/implementor_notifier.h"
 #include "../../../../../constants.h"
@@ -50,7 +49,7 @@ class AtomicSlot : public ImplementorSlot {
   /// @brief Test if there is any notifiers connected
   /// @return True if there is any, else false
   [[nodiscard]] bool hasNotifierConnected() override {
-    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { _mm_pause(); }
+    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { cross_platform_yield(); }
     auto ret = !notifiers_->empty();
     notifierFlag_.store(false, std::memory_order_release);
     return ret;
@@ -59,7 +58,7 @@ class AtomicSlot : public ImplementorSlot {
   /// @brief Accessor to the number of notifiers connected
   /// @return Number of notifiers connected
   size_t nbNotifierConnected() override {
-    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { _mm_pause(); }
+    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { cross_platform_yield(); }
     auto ret = notifiers_->size();
     notifierFlag_.store(false, std::memory_order_release);
     return ret;
@@ -72,7 +71,7 @@ class AtomicSlot : public ImplementorSlot {
   /// @brief Add a notifier to the list of connected notifiers
   /// @param notifier Notifier to add to the list of connected notifiers
   void addNotifier(abstraction::NotifierAbstraction *notifier) override {
-    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { _mm_pause(); }
+    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { cross_platform_yield(); }
     notifiers_->insert(notifier);
     notifierFlag_.store(false, std::memory_order_release);
   }
@@ -80,7 +79,7 @@ class AtomicSlot : public ImplementorSlot {
   /// @brief Remove a notifier to the list of connected notifiers
   /// @param notifier Notifier to remove from the list of connected notifiers
   void removeNotifier(abstraction::NotifierAbstraction *notifier) override {
-    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { _mm_pause(); }
+    while (notifierFlag_.exchange(true, std::memory_order_acquire)) { cross_platform_yield(); }
     notifiers_->erase(notifier);
     notifierFlag_.store(false, std::memory_order_release);
   }

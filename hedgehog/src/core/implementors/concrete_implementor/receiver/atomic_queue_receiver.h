@@ -100,7 +100,7 @@ class AtomicQueueReceiver : public ImplementorReceiver<Input> {
   /// @brief Add a sender to the set of connected senders
   /// @param sender Sender to add to the connected senders
   void addSender(abstraction::SenderAbstraction<Input> *sender) override {
-    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { _mm_pause(); }
+    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { cross_platform_yield(); }
     senders_->insert(sender);
     senderAccessFlag_.clear(std::memory_order_release);
   }
@@ -108,7 +108,7 @@ class AtomicQueueReceiver : public ImplementorReceiver<Input> {
   /// @brief Remove a sender to the set of connected senders
   /// @param sender Sender to remove from the connected senders
   void removeSender(abstraction::SenderAbstraction<Input> *sender) override {
-    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { _mm_pause(); }
+    while (senderAccessFlag_.test_and_set(std::memory_order_acquire)) { cross_platform_yield(); }
     senders_->erase(sender);
     senderAccessFlag_.clear(std::memory_order_release);
   }
