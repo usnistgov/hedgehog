@@ -19,6 +19,7 @@
 #ifndef HEDGEHOG_LAMBDA_EXECUTE_H
 #define HEDGEHOG_LAMBDA_EXECUTE_H
 #include <memory>
+#include <functional>
 #include "../../../../tools/task_interface.h"
 #include "../../../../tools/traits.h"
 
@@ -39,7 +40,7 @@ class LambdaExecute
 {
  public:
   /// @brief Type of the lambda function
-  using LambdaType = void(*)(std::shared_ptr<Input>, tool::TaskInterface<LambdaTaskType>);
+  using LambdaType = std::function<void(std::shared_ptr<Input>, tool::TaskInterface<LambdaTaskType>)>;
 
  private:
   LambdaType lambda_; ///< Lambda function that should process the input type

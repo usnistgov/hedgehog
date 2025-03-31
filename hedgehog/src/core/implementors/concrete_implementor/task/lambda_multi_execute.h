@@ -19,6 +19,7 @@
 #ifndef HEDGEHOG_LAMBDA_MULTI_EXECUTE_H
 #define HEDGEHOG_LAMBDA_MULTI_EXECUTE_H
 #include <tuple>
+#include <functional>
 #include "lambda_execute.h"
 
 
@@ -41,7 +42,7 @@ class LambdaMultiExecute<LambdaTaskType, std::tuple<Inputs...>>
     : public LambdaExecute<LambdaTaskType, Inputs>... {
   public:
       /// @brief Type alias for the lambda container type
-      using LambdaContainer = std::tuple<void(*)(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)...>;
+      using LambdaContainer = std::tuple<std::function<void(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)>...>;
 
   public:
       /// @brief Construct a LambdaMultiExecute with a tuple of lambdas and a pointer to the lambda task
@@ -49,13 +50,17 @@ class LambdaMultiExecute<LambdaTaskType, std::tuple<Inputs...>>
       /// @param task Pointer to the lambda task
       LambdaMultiExecute(LambdaContainer lambdas, LambdaTaskType *task)
           : LambdaExecute<LambdaTaskType, Inputs>(
-                  std::get<void(*)(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)>(lambdas), task)... {}
+                  std::get<std::function<void(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)>>(lambdas),
+                  task)... {}
 
       /// @breif Reinitialize the LambdaExecute (used when the user call `setLambda`)
       /// @param lambdas Lambda container (new lambdas)
       /// @parma task Pointer to the lambda task
       void reinitialize(LambdaContainer lambdas, LambdaTaskType *task) {
-          (LambdaExecute<LambdaTaskType, Inputs>::reinitialize(std::get<void(*)(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)>(lambdas), task), ...);
+        (LambdaExecute<LambdaTaskType, Inputs>::reinitialize(
+             std::get<std::function<void(std::shared_ptr<Inputs>, tool::TaskInterface<LambdaTaskType>)>>(lambdas),
+             task),
+         ...);
       }
 };
 

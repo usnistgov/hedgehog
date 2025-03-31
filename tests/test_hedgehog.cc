@@ -54,6 +54,7 @@ TEST(LambdaTask, lambdaTask) {
   ASSERT_NO_THROW(lambdaTaskSingleInput());
   ASSERT_NO_THROW(lambdaTaskMultipleInputs());
   ASSERT_NO_THROW(lambdaTaskSpecializedTask());
+  ASSERT_NO_THROW(lambdaTaskCaptureContext());
 }
 
 TEST(HedgehogTools, metafunctions) {
