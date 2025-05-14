@@ -79,6 +79,10 @@ if (TEST_HEDGEHOG)
     file(GLOB_RECURSE test_hedgehog_header tests/*.h)
     add_executable(gtest_hedgehog ${test_hedgehog_header} tests/test_hedgehog.cc)
 
+    if (MSVC)
+        target_compile_options(gtest_hedgehog PRIVATE /bigobj)
+    endif (MSVC)
+
     target_link_libraries(gtest_hedgehog gtest_main)
 
     if(TBB_FOUND)
@@ -94,18 +98,53 @@ if (BUILD_MAIN)
     message(STATUS "Build main")
 
     if (MSVC)
-        set(CMAKE_CXX_FLAGS "-Wall")
+        set(CMAKE_CXX_FLAGS "/EHsc -Wall")
     else (MSVC)
         set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wconversion -Wshadow -Werror -pedantic -pipe -v")
     endif (MSVC)
 
     file(GLOB_RECURSE hedgehog_header hedgehog/*.h)
 
-    add_executable(hedgehog main.cc ${hedgehog_header})
+    add_executable(hedgehog_main main.cc ${hedgehog_header})
 
     if(TBB_FOUND)
-        target_link_libraries(hedgehog tbb)
+        target_link_libraries(hedgehog_main tbb)
     endif (TBB_FOUND)
 
 endif (BUILD_MAIN)
 
+
+# Add a dummy target to make the export work
+add_library(hedgehog INTERFACE)
+target_include_directories(hedgehog INTERFACE $<INSTALL_INTERFACE:include>)
+
+# Install the target
+install(TARGETS hedgehog EXPORT hedgehogTargets)
+
+configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/hedgehogConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/hedgehogConfig.cmake"
+        @ONLY
+)
+
+install(
+        FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/hedgehogConfig.cmake"
+        DESTINATION
+        "${CMAKE_INSTALL_PREFIX}/share/hedgehog"
+)
+
+install(
+        EXPORT
+        hedgehogTargets
+        NAMESPACE
+        hedgehog::
+        DESTINATION
+        "${CMAKE_INSTALL_PREFIX}/share/hedgehog"
+        FILE hedgehogTargets.cmake
+)
+
+
+install(DIRECTORY hedgehog
+        DESTINATION include
+        COMPONENT headers)
