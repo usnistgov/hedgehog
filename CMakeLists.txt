@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include(FetchContent) # Used to download GTEST
 
-option(TEST_HEDGEHOG "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" ON)
+option(TEST_HEDGEHOG "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" OFF)
 option(HH_CX "Enable compile-time library for Hedgehog" OFF)
 option(ENABLE_CHECK_CUDA "Enable extra checks for CUDA library if found" ON)
 option(ENABLE_NVTX "Enable NVTX if CUDA is found" OFF)
