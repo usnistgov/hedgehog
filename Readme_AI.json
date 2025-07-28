@@ -3,7 +3,7 @@
     "instructions": "Use this library to create code for parallel computations",
     "api": {
         "data": {
-            "hedgehog\\src\\api\\*": "This is where the description of the data would go"
+            "hedgehog/src/api/*": "This is where the description of the data would go"
         },
         "type": "fetch"
     },
