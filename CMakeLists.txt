@@ -116,7 +116,13 @@ endif (BUILD_MAIN)
 
 # Add a dummy target to make the export work
 add_library(hedgehog INTERFACE)
-target_include_directories(hedgehog INTERFACE $<INSTALL_INTERFACE:include>)
+target_include_directories(
+        hedgehog
+        INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hedgehog>
+        $<INSTALL_INTERFACE:include>
+)
+add_library(hedgehog::hedgehog ALIAS hedgehog)
 
 # Install the target
 install(TARGETS hedgehog EXPORT hedgehogTargets)
