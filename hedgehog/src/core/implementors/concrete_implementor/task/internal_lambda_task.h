@@ -126,6 +126,10 @@ class InternalLambdaTask
       LambdaMultiExecute<SubType, tool::Inputs<Separator, AllTypes...>>::reinitialize(lambdas_, self_);
   }
 
+  /// @brief Lambda functions container accessor
+  /// @return Lambda functions container
+  [[nodiscard]] auto lambdas() const { return lambdas_; }
+
   /// @brief Belonging graph id accessor
   /// @return  Belonging graph id
   [[nodiscard]] size_t graphId() const { return coreTask_->graphId(); }
@@ -145,7 +149,7 @@ class InternalLambdaTask
   std::shared_ptr<InternalLambdaTask<SubType, Separator, AllTypes...>>
   copy() override {
     return std::make_shared<InternalLambdaTask<SubType, Separator, AllTypes...>>(
-        this->self_, this->lambdas_, this->name(), this->numberThreads(), this->automaticStart());
+        this->self_, this->lambdas(), this->name(), this->numberThreads(), this->automaticStart());
   }
 
  protected:
