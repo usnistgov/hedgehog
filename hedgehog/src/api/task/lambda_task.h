@@ -114,6 +114,13 @@ class LambdaTask
   /// @param coreTask Custom core used to change the behavior of the task
   explicit LambdaTask(std::shared_ptr<core::implementor::LambdaCoreTask<void, Separator, AllTypes...>> coreTask) 
       : ILT<LambdaTask<Separator, AllTypes...>, Separator, AllTypes...>(this, coreTask) {}
+
+  /// @brief Implementation of the copy trait
+  /// @return Copy of the lambda task
+  std::shared_ptr<ILT<LambdaTask, Separator, AllTypes...>>
+  copy() override {
+    return std::make_shared<LambdaTask>(this->lambdas(), this->name(), this->numberThreads(), this->automaticStart());
+  }
 };
 
 }
