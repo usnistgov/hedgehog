@@ -264,7 +264,7 @@ class NvtxProfiler {
   /// @return The attribute created
   static nvtxEventAttributes_t *createEventAttribute(uint32_t color) {
     auto *event = new nvtxEventAttributes_t;
-    bzero(event, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
+    memset(event, 0, NVTX_EVENT_ATTRIB_STRUCT_SIZE);
     event->version = NVTX_VERSION;
     event->size = NVTX_EVENT_ATTRIB_STRUCT_SIZE;
     event->colorType = NVTX_COLOR_ARGB;
