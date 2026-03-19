@@ -144,14 +144,6 @@ class InternalLambdaTask
   /// @return True if the task is set to automatically start, else false
   [[nodiscard]] bool automaticStart() const { return this->coreTask()->automaticStart(); }
 
-  /// @brief Implementation of the copy trait
-  /// @return Copy of the lambda task
-  std::shared_ptr<InternalLambdaTask<SubType, Separator, AllTypes...>>
-  copy() override {
-    return std::make_shared<InternalLambdaTask<SubType, Separator, AllTypes...>>(
-        this->self_, this->lambdas(), this->name(), this->numberThreads(), this->automaticStart());
-  }
-
  protected:
   /// @brief Accessor to the core task
   /// @return Core task

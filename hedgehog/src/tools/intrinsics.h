@@ -21,7 +21,14 @@
 
 #pragma once
 
-#if defined(__x86_64__) || defined(_M_X64)
+#if defined(_MSC_VER)
+    #include <intrin.h>
+    #if defined(_M_IX86) || defined(_M_X64)
+        #define cross_platform_yield() _mm_pause()
+    #else
+        #define cross_platform_yield() YieldProcessor()
+    #endif
+#elif defined(__x86_64__) || defined(__i386__)
     #include <emmintrin.h>
     #define cross_platform_yield() _mm_pause()
 #else
