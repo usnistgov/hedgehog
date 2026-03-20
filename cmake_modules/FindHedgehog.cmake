@@ -39,6 +39,7 @@ endif (HH_CX)
 
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
+    add_definitions(-DNOMINMAX)
 endif (MSVC)
 
 # Try to found Hedgehog
@@ -67,8 +68,14 @@ if (CUDAToolkit_FOUND)
     add_definitions(-DHH_USE_CUDA)
 
     if (ENABLE_NVTX)
-        link_libraries(CUDA::nvToolsExt)
-        link_libraries(dl)
+        if (TARGET CUDA::nvtx3)
+            link_libraries(CUDA::nvtx3)
+        elseif (TARGET CUDA::nvToolsExt)
+            link_libraries(CUDA::nvToolsExt)
+        endif ()
+        if (NOT WIN32)
+            link_libraries(dl)
+        endif ()
         add_definitions(-DHH_USE_NVTX)
     endif (ENABLE_NVTX)
 

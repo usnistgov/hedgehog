@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+if (MSVC)
+    add_definitions(-DNOMINMAX)
+endif (MSVC)
+
 include(FetchContent) # Used to download GTEST
 
 option(TEST_HEDGEHOG "Downloads google unit test API and runs google test scripts to test Hedgehog core and api" OFF)
@@ -46,8 +50,14 @@ if (CUDAToolkit_FOUND)
     link_libraries(CUDA::cudart CUDA::cuda_driver CUDA::cupti)
     add_definitions(-DHH_USE_CUDA)
     if (ENABLE_NVTX)
-        link_libraries(CUDA::nvToolsExt)
-        link_libraries(dl)
+        if (TARGET CUDA::nvtx3)
+            link_libraries(CUDA::nvtx3)
+        elseif (TARGET CUDA::nvToolsExt)
+            link_libraries(CUDA::nvToolsExt)
+        endif ()
+        if (NOT WIN32)
+            link_libraries(dl)
+        endif ()
         add_definitions(-DHH_USE_NVTX)
     endif (ENABLE_NVTX)
 else (CUDAToolkit_FOUND)
